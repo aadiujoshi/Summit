@@ -32,7 +32,13 @@ public class BufferedSprites{
                         for (int c = 0; c < dataBuffer[0].length; c++) {
                             int argb = sprite.getRGB(c, r);
                             
-                            // argb = (((argb >> 24) > 0 ? argb: -1));
+                            if((argb >> 24) > 0){
+                                argb |= 0b11111111000000000000000000000000;
+                            }
+
+                            if((argb >> 24) == 0){
+                                argb = -1;
+                            }
 
                             dataBuffer[r][c] = argb;
                         }

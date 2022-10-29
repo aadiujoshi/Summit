@@ -1,5 +1,6 @@
 package summit.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import summit.gfx.Paintable;
 import summit.gui.Window;
 import summit.util.Time;
 
-public class GameWorld implements Paintable{
+public class GameWorld implements Paintable, Serializable{
 
     private List<GameMap> maps;
     private GameMap loadedMap;

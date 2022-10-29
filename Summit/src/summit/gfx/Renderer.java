@@ -2,6 +2,7 @@ package summit.gfx;
 
 import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.awt.image.BufferedImage;
 
 public class Renderer {
     
@@ -77,10 +78,8 @@ public class Renderer {
         for(int yy = ny; yy < ny+sprite.length; yy++) {
             for(int xx = nx; xx < nx+sprite[0].length; xx++) {
                 //fully transparent pixel
-                if(sprite[yy-ny][xx-nx] == -1)
-                    continue;
                 if(inArrBounds(yy-ny, xx-nx, sprite.length, sprite[0].length) && 
-                    inArrBounds(yy, xx, frame.length, frame[0].length))
+                    inArrBounds(yy, xx, frame.length, frame[0].length) && validRGB(sprite[yy-ny][xx-nx]))
                     frame[yy][xx] = sprite[yy-ny][xx-nx];
             }
         }
@@ -97,6 +96,23 @@ public class Renderer {
         this.render(s, spritePos.x, spritePos.y, flip);
     }
 
+    /**
+     * x and y are center coordinates
+     * 
+     * @param img
+     * @param x
+     * @param y
+     */
+    public void renderImage(BufferedImage img, int x, int y){
+        for (int xx = x-(img.getWidth()/2); xx < x+(img.getWidth()/2); xx++) {
+            for (int yy = y-(img.getHeight()/2); yy < y+(img.getHeight()/2); yy++) {
+                int rgb = img.getRGB(xx - (x-(img.getWidth()/2)), yy - (y-(img.getHeight()/2)));
+                if(inArrBounds(yy, xx, frame.length, frame[0].length) && validRGB(rgb))
+                    frame[yy][xx] = rgb;
+            }
+        }
+    }
+
     public int[] frameAsArray(){
         int[] reformated = new int[frame.length*frame[0].length];
 
@@ -110,6 +126,10 @@ public class Renderer {
     //--------------------------------------------------------------------
     // utility methods
     //--------------------------------------------------------------------
+
+    public static boolean validRGB(int rgb){
+        return rgb != -1;
+    }
 
     /**
      * Camera is left in gamecoordinates

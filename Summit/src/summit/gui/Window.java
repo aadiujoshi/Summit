@@ -16,9 +16,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
 import java.awt.event.KeyAdapter;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -49,7 +52,7 @@ public class Window {
     private int width;
     private int height;
 
-    private Color bg;
+    private BufferedImage bg;
 
     private Stack<Menu> menus;
     private WindowState state;
@@ -71,7 +74,11 @@ public class Window {
 
         // world = new GameWorld(this);
 
-        bg = Color.LIGHT_GRAY;
+        try {
+            bg = ImageIO.read(new File("Summit/Summit/src/summit/deprecated/extra/gradient-background.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         graphicsThread = new Thread(new Runnable() {
             @Override
@@ -188,8 +195,14 @@ public class Window {
 
         PaintEvent pe = new PaintEvent(renderer, Time.timeMs());
 
-        if(world != null)
-            world.paint(pe);
+        if(state == WindowState.SELECTIONMENUS){
+            renderer.renderImage(bg, Renderer.WIDTH/2, Renderer.HEIGHT/2);
+        }
+        else if(state == WindowState.GAME){
+            if(world != null)
+                world.paint(pe);
+        }
+
 
         for(Menu menu: menus){
             menu.paint(pe);
@@ -206,17 +219,16 @@ public class Window {
         // int[] finalFrameArray = renderer.frameAsArray();
         BufferedImage finalFrame = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
+        Graphics2D g2 = finalFrame.createGraphics();
+        g2.setColor(Color.BLUE);
+        g2.fillRect(0, 0, finalFrame.getWidth(), finalFrame.getHeight());
+        g2.dispose();
+
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
                 finalFrame.setRGB(c, r, frame[r][c]);
             }
         }
-
-        Graphics2D g2 = finalFrame.createGraphics();
-        // g2.setColor(Color.red);
-        // g2.setStroke(new BasicStroke(10));
-        // g2.drawRect(0, 0, finalFrame.getWidth(), finalFrame.getHeight());
-
 
         g.drawImage(finalFrame, null, 0, 0);
         

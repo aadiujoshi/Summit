@@ -1,6 +1,6 @@
 package summit.game.entity;
 
-public class Entity{
+public abstract class Entity{
 
     public Entity(){
         
