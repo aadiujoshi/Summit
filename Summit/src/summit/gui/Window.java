@@ -30,7 +30,7 @@ import summit.game.GameWorld;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
-import summit.gui.menu.Menu;
+import summit.gui.menu.Container;
 import summit.util.Time;
 
 public class Window {
@@ -54,7 +54,7 @@ public class Window {
 
     private BufferedImage bg;
 
-    private Stack<Menu> menus;
+    private Stack<Container> guiContainers;
     private WindowState state;
 
     private GameWorld world;
@@ -68,7 +68,7 @@ public class Window {
         width = w;
         height = h;
         
-        menus = new Stack<>();
+        guiContainers = new Stack<>();
 
         renderer = new Renderer();
 
@@ -204,7 +204,7 @@ public class Window {
         }
 
 
-        for(Menu menu: menus){
+        for(Container menu: guiContainers){
             menu.paint(pe);
         }
 
@@ -258,16 +258,16 @@ public class Window {
     //getters and setters
     //--------------------------------------------------------------------
 
-    public void pushMenu(Menu menu){
-        menus.push(menu);
+    public void pushContainer(Container cont){
+        guiContainers.push(cont);
     }
 
-    public void popMenu(){
-        menus.pop();
+    public void popContainer(){
+        guiContainers.pop();
     }
 
     public void clearMenus(){
-
+        guiContainers.clear();
     }
 
     public void setFullscreen(boolean full) {

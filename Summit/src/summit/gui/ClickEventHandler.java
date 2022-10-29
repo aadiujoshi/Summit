@@ -20,7 +20,7 @@ public class ClickEventHandler extends java.awt.Component implements MouseListen
         // float nx = Renderer.toTile(e.getX(), map.getCamera());
         // float ny = Renderer.toTile(e.getY(), map.getCamera());
 
-        // ((Clickable)map.getRegionAt(nx, ny)).click(map, e);
+        // ((GameClickable)map.getRegionAt(nx, ny)).click(map, e);
     }
 
     @Override
