@@ -18,6 +18,7 @@ public class Container implements Paintable, GUIClickListener{
     private List<Container> components;
     private Region region;
     private Container parent;
+    private Window window;
 
     public Container(Container parent, float relX, float relY, float relWidth, float relHeight){
         components = new ArrayList<>();
@@ -148,5 +149,9 @@ public class Container implements Paintable, GUIClickListener{
 
     public int getHeight(){
         return (int)this.region.getHeight();
+    }
+
+    public void setParentWindow(Window window){
+        this.window = window;
     }
 }

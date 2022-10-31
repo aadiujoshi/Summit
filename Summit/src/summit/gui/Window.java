@@ -254,6 +254,7 @@ public class Window implements MouseListener, KeyListener{
 
     public void pushContainer(Container cont){
         guiContainers.push(cont);
+        cont.setParentWindow(this);
     }
 
     public void popContainer(){
