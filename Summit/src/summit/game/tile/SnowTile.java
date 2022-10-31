@@ -20,7 +20,7 @@ public class SnowTile extends Tile{
     }
 
     @Override
-    public void click(GameMap map, MouseEvent e){
+    public void gameClick(GameMap map, MouseEvent e){
         // if(map.getPlayer().inHand() instanceof ShovelTool){
 
         // }
@@ -28,7 +28,6 @@ public class SnowTile extends Tile{
 
     @Override
     public void update(GameUpdateEvent e) {
-        // TODO Auto-generated method stub
-        
+        //do nothing
     }
 }

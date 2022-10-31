@@ -11,6 +11,7 @@ public class GameMap implements Paintable, GameUpdate{
     
     // List<Entity> entities;
     private TileStack[][] map;
+
     private String name;
 
     private Camera camera;
@@ -51,6 +52,10 @@ public class GameMap implements Paintable, GameUpdate{
         this.camera = cam;
     }
     
+    public TileStack[][] getMap() {
+        return this.map;
+    }
+
     // public Player getPlayer() {
     //     return this.player;
     // }

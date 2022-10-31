@@ -9,45 +9,39 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
-import summit.gui.Clickable;
+import summit.gui.GUIClickListener;
+import summit.gui.Window;
 import summit.util.Region;
 
-public class Container implements Paintable, Clickable{
+public class Container implements Paintable, GUIClickListener{
 
     private List<Container> components;
     private Region region;
     private Container parent;
 
-    private float REL_WIDTH;
-    private float REL_HEIGHT;
-    private float REL_X;
-    private float REL_Y;
-
     public Container(Container parent, float relX, float relY, float relWidth, float relHeight){
         components = new ArrayList<>();
         this.parent = parent;
         if(parent == null)
-            region = new Region(Renderer.WIDTH*relX, Renderer.HEIGHT*relY, Renderer.WIDTH*relWidth, Renderer.HEIGHT*relHeight);
+            region = new Region(((int)(Renderer.WIDTH*relX)/16)*16, ((int)(Renderer.HEIGHT*relY)/16)*16, 
+                                ((int)(Renderer.WIDTH*relWidth)/16)*16, ((int)(Renderer.HEIGHT*relHeight)/16)*16);
         else {
+            float w = ((int)(parent.getWidth()*relWidth)/16)*16;
+            float h = ((int)(parent.getHeight()*relHeight)/16)*16;
+            float x = ((int)(parent.getWidth()*relX)/16)*16;
+            float y = ((int)(parent.getHeight()*relY)/16)*16;
             
-            region = new Region(Renderer.WIDTH*relX, Renderer.HEIGHT*relY, Renderer.WIDTH*relWidth, Renderer.HEIGHT*relHeight);
+            region = new Region(x+(parent.getX()-(parent.getWidth()/2)), y+(parent.getY()-(parent.getHeight()/2)), w, h);
         }
-
-        REL_WIDTH = relWidth;
-        REL_HEIGHT = relHeight;
-        REL_X = relX;
-        REL_Y = relY;
-    }
-
-    protected Container(){
-        //use for subclasses
+        System.out.println(region);
     }
 
     @Override
-    public void click(GameMap map, MouseEvent e) {
+    public void guiClick(MouseEvent e) {
+        System.out.println("container " + super.hashCode() + " clicked");
         for(int i = 0; i < components.size(); i++){
-            if(components.get(i).getRegion().contains(e.getX(), e.getY())){
-                components.get(i).click(map, e);
+            if(components.get(i).getRegion().contains(e.getX()/(Window.SCREEN_WIDTH/Renderer.WIDTH), e.getY()/(Window.SCREEN_HEIGHT/Renderer.HEIGHT))){
+                components.get(i).guiClick(e);
             }
         }
     }
@@ -57,9 +51,8 @@ public class Container implements Paintable, Clickable{
 
         Renderer ren = e.getRenderer();
 
-        int rWidth = ((int)(region.getWidth()/16))*16;
-        int rHeight = ((int)(region.getHeight()/16))*16;
-
+        int rWidth = (int)region.getWidth();
+        int rHeight = (int)region.getHeight();
 
         int startX = (int)(region.getX()-(rWidth/2));
         int startY = (int)(region.getY()-(rHeight/2));
@@ -140,8 +133,20 @@ public class Container implements Paintable, Clickable{
     public Region getRegion() {
         return this.region;
     }
+    
+    public int getX(){
+        return (int)this.region.getX();
+    }
 
-    public void setRegion(Region region) {
-        this.region = region;
+    public int getY(){
+        return (int)this.region.getY();
+    }
+
+    public int getWidth(){
+        return (int)this.region.getWidth();
+    }
+
+    public int getHeight(){
+        return (int)this.region.getHeight();
     }
 }

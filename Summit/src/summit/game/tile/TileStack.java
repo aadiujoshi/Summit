@@ -6,13 +6,13 @@ import summit.game.GameUpdateEvent;
 import summit.game.tile.Tile;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
-import summit.gui.Clickable;
-import summit.gui.GameClickable;
+import summit.gui.GUIClickListener;
+import summit.gui.GameClickListener;
 
 import java.awt.event.MouseEvent;
 import java.util.Stack;
 
-public class TileStack implements GameClickable, Paintable, GameUpdate {
+public class TileStack implements GameClickListener, Paintable, GameUpdate {
 
     private Stack<Tile> tiles;
     private float x, y;
@@ -32,9 +32,9 @@ public class TileStack implements GameClickable, Paintable, GameUpdate {
     }
 
     @Override
-    public void click(GameMap map, MouseEvent e){
+    public void gameClick(GameMap map, MouseEvent e){
         for(Tile t: tiles){
-            t.click(map, e);
+            t.gameClick(map, e);
         }
     }
 

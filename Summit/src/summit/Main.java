@@ -22,8 +22,13 @@ public class Main {
                 
                 window.setState(WindowState.SELECTIONMENUS);
 
-                Container menu1 = new Container(null ,0.2f, 0.5f, 0.25f, 0.85f);
-                Container menu2 = new Container(null ,0.666f, 0.5f, 0.55f, 0.85f);
+                Container menu1 = new Container(null ,0.4f, 0.5f, 0.3f, 0.5f);
+                // Container menu2 = new Container(null ,0.666f, 0.5f, 0.55f, 0.85f);
+
+                Container submenu1 = new Container(menu1, 0.5f, 0.5f, 0.5f, 0.5f);
+
+                menu1.addComponent(submenu1);
+
                 // menu1.addComponent(new MenuComponent(menu1, 0.5f, 0.5f, 0.5f, 0.5f));//{
                 //     @Override
                 //     public void paint(PaintEvent e){
@@ -35,7 +40,7 @@ public class Main {
                 // Menu menu2 = new Menu(0.5f, 0.5f, 0.5f, 0.5f);
 
                 window.pushContainer(menu1);
-                window.pushContainer(menu2);
+                // window.pushContainer(menu2);
 
             }
         });

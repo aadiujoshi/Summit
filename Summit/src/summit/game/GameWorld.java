@@ -16,7 +16,6 @@ public class GameWorld implements Paintable, Serializable{
 
     private Window parentWindow;
 
-
     private Thread gameUpdateThread;
 
     public GameWorld(Window parentWindow){
@@ -37,7 +36,7 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     private void invokeGameUpdates(){
-        GameUpdateEvent gue = new GameUpdateEvent(loadedMap);
+        GameUpdateEvent gue = new GameUpdateEvent(loadedMap, false);
 
         if(loadedMap != null)
             loadedMap.update(gue);
@@ -49,5 +48,11 @@ public class GameWorld implements Paintable, Serializable{
             loadedMap.paint(e);
     }
 
+    public GameMap getLoadedMap() {
+        return this.loadedMap;
+    }
 
+    public void setLoadedMap(GameMap loadedMap) {
+        this.loadedMap = loadedMap;
+    }
 }

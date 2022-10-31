@@ -26,14 +26,18 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import summit.game.GameMap;
 import summit.game.GameWorld;
+import summit.game.tile.TileStack;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.menu.Container;
 import summit.util.Time;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
-public class Window {
+public class Window implements MouseListener, KeyListener{
     
     private JFrame frame;
     private Canvas canvas;
@@ -107,86 +111,68 @@ public class Window {
         });
 
         //init window frame, canvas, and buffer strategy
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                {
-                    frame = new JFrame(title);
-                    frame.getContentPane().setPreferredSize(new Dimension(width, height));
-                    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                    frame.setResizable(true);
+        {
+            frame = new JFrame(title);
+            frame.getContentPane().setPreferredSize(new Dimension(width, height));
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setResizable(true);
 
-                    GraphicsConfiguration graphicsConfiguration =
-                            GraphicsEnvironment
-                                    .getLocalGraphicsEnvironment()
-                                    .getDefaultScreenDevice()
-                                    .getDefaultConfiguration();
-
-                    canvas = new Canvas(graphicsConfiguration);
-
-                    canvas.setIgnoreRepaint(true);
-                    canvas.setPreferredSize(new Dimension(width, height));
-                    canvas.setSize(width, height);
-                    canvas.setFocusable(true);
-                    frame.add(canvas);
-
-                    frame.pack();
-                    frame.setLocationRelativeTo(null);
-
-                    canvas.createBufferStrategy(2);
-                    buffer = canvas.getBufferStrategy();
-
-                    
-                    frame.addKeyListener(new KeyAdapter(){
-                        @Override
-                        public void keyPressed(KeyEvent e) {
-                            System.out.println("dfsaaf");
-                            if(e.getKeyCode() == KeyEvent.VK_F11){
-                                setFullscreen(!fullscreen);
-                            }
-                        }
-
-                        @Override
-                        public void keyReleased(KeyEvent e) { }
-                        @Override
-                        public void keyTyped(KeyEvent e) { }
-                    });
-
-                    frame.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            closed = true;
-                            super.windowClosing(e);
-                        }
-
-                        @Override
-                        public void windowGainedFocus(WindowEvent e) {
-                            super.windowGainedFocus(e);
-                        }
-
-                        @Override
-                        public void windowLostFocus(WindowEvent e) {
-                            super.windowLostFocus(e);
-                        }
-                    });
-
-                    frame.addComponentListener(new ComponentAdapter() {
-                        @Override
-                        public void componentResized(ComponentEvent e) {
-                            super.componentResized(e);
-                            width = canvas.getWidth();
-                            height = canvas.getHeight();
-                        }
-                    });
-
-                    frame.setVisible(true);
-
-                    graphicsThread.start();
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    closed = true;
+                    super.windowClosing(e);
                 }
-            }
-        });
 
-        // mouseThread.start();
+                @Override
+                public void windowGainedFocus(WindowEvent e) {
+                    super.windowGainedFocus(e);
+                }
+
+                @Override
+                public void windowLostFocus(WindowEvent e) {
+                    super.windowLostFocus(e);
+                }
+            });
+
+            frame.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    super.componentResized(e);
+                    width = canvas.getWidth();
+                    height = canvas.getHeight();
+                }
+            });
+
+            GraphicsConfiguration graphicsConfiguration =
+                    GraphicsEnvironment
+                            .getLocalGraphicsEnvironment()
+                            .getDefaultScreenDevice()
+                            .getDefaultConfiguration();
+
+            canvas = new Canvas(graphicsConfiguration);
+
+            canvas.setIgnoreRepaint(true);
+            canvas.setPreferredSize(new Dimension(width, height));
+            canvas.setSize(width, height);
+            canvas.setFocusable(true);
+
+            canvas.addKeyListener(this);
+            canvas.addMouseListener(this);
+
+            frame.add(canvas);
+
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+
+            canvas.createBufferStrategy(2);
+            buffer = canvas.getBufferStrategy();
+
+            frame.setVisible(true);
+
+            graphicsThread.start();
+        }
+        
     }
     
     private void renderFrame(Graphics2D g){
@@ -213,7 +199,7 @@ public class Window {
         //----------------------------------------------------------------------------------
         // draw final frame to screen
         //----------------------------------------------------------------------------------
-
+        
         renderer.uspscale(SCREEN_WIDTH, SCREEN_HEIGHT);
         int[][] frame = renderer.getFrame();
         // int[] finalFrameArray = renderer.frameAsArray();
@@ -258,6 +244,14 @@ public class Window {
     //getters and setters
     //--------------------------------------------------------------------
 
+    /**
+     * Used for anonymous classes
+     * @return This window instance
+     */
+    private Window getThis(){
+        return this;
+    }
+
     public void pushContainer(Container cont){
         guiContainers.push(cont);
     }
@@ -284,5 +278,78 @@ public class Window {
                 }
             }
         });
+    }
+
+    //-------------------------------------------------------------------
+    // Key Events
+    //-------------------------------------------------------------------
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_F11){
+            setFullscreen(!fullscreen);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        
+    }
+
+    //-------------------------------------------------------------------
+    // Mouse Events
+    //-------------------------------------------------------------------
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        float rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
+        float ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
+
+        if(state == WindowState.GAME){
+            if(world != null){
+                GameMap loadedmap = world.getLoadedMap();
+                if(loadedmap != null){
+                    TileStack[][] map = loadedmap.getMap();
+                    for (int i = 0; i < map.length; i++) {
+                        for (int j = 0; j < map[0].length; j++) {
+                            // if(){
+
+                            // }
+                        }
+                    }
+                }
+            }
+        }
+        
+        for(Container container : guiContainers) {
+            if(container.getRegion().contains(rx, ry)){
+                container.guiClick(e);
+            }
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
     }
 }

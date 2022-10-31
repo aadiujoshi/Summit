@@ -2,10 +2,10 @@ package summit.game.tile;
 
 import summit.game.GameUpdate;
 import summit.gfx.Paintable;
-import summit.gui.GameClickable;
+import summit.gui.GameClickListener;
 import summit.util.Region;
 
-public abstract class Tile extends Region implements GameClickable, Paintable, GameUpdate {
+public abstract class Tile extends Region implements GameClickListener, Paintable, GameUpdate {
 
     private boolean setToDestroy;
 

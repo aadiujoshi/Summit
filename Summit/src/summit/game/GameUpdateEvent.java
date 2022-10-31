@@ -1,12 +1,12 @@
 package summit.game;
 
-import summit.game.GameMap;
-
 public class GameUpdateEvent{
 
     GameMap map;
+    boolean tickInstance;
 
-    public GameUpdateEvent(GameMap map){
+    public GameUpdateEvent(GameMap map, boolean tickInstance){
         this.map = map;
+        this.tickInstance = tickInstance;
     }
 }
