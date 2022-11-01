@@ -11,15 +11,21 @@ public class GameMap implements Paintable, GameUpdate{
     
     // List<Entity> entities;
     private TileStack[][] map;
+    private final int WIDTH;
+    private final int HEIGHT;
+    private final String NAME;
 
-    private String name;
+    private final long SEED;
 
     private Camera camera;
     // private Player player;
 
-    public GameMap(String name) {
-        map = new TileStack[256][256];
-        this.name = name;
+    public GameMap(String name, final long seed, final int width, final int height) {
+        map = new TileStack[height][width];
+        this.NAME = name;
+        this.SEED = seed;
+        this.WIDTH = width;
+        this.HEIGHT = height;
     }
 
     @Override

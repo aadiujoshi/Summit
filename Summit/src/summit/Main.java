@@ -29,14 +29,6 @@ public class Main {
 
                 menu1.addComponent(submenu1);
 
-                // menu1.addComponent(new MenuComponent(menu1, 0.5f, 0.5f, 0.5f, 0.5f));//{
-                //     @Override
-                //     public void paint(PaintEvent e){
-                //         super.paint(e);
-                //         System.out.println(this.getRegion());
-                //     }
-                // });
-
                 // Menu menu2 = new Menu(0.5f, 0.5f, 0.5f, 0.5f);
 
                 window.pushContainer(menu1);
