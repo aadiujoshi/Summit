@@ -11,8 +11,6 @@ public class GameMapGenerator {
 
         map.getMap();
 
-
-
         return map;
     }
 
