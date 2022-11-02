@@ -3,18 +3,26 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import summit.gfx.Renderer;
+import summit.util.Region;
 
 public class Testing {
 
     public static void main(String args[]){
 
-        int[][] arr = new int[][]{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+//         x: 66.4, y: 80.0, width: 32.0, height: 16.0
+// x: 128.0, y: 80.0, width: 32.0, height: 16.0
+// x: 189.6, y: 80.0, width: 32.0, height: 16.0
+// 66  79
 
-        arr = Renderer.rotate(arr);
+        System.out.println(new Region(66.4f, 80f, 32f, 16f).contains(66, 79));
 
-        for (int[] is : arr) {
-            System.out.println(Arrays.toString(is));
-        }
+        // int[][] arr = new int[][]{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+
+        // arr = Renderer.rotate(arr);
+
+        // for (int[] is : arr) {
+        //     System.out.println(Arrays.toString(is));
+        // }
 
         // int[][] arr = new int[][]{{1,2,4,5,56,7,7,8,8}};
 

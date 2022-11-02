@@ -16,4 +16,13 @@ public class TextContainer extends Container{
     public void paint(PaintEvent e){
         super.paint(e);
     }
+
+    public String getText() {
+        return this.text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
 }

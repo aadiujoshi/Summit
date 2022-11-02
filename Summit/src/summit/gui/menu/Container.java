@@ -29,8 +29,8 @@ public class Container implements Paintable, GUIClickListener{
         else {
             float w = ((int)(parent.getWidth()*relWidth)/16)*16;
             float h = ((int)(parent.getHeight()*relHeight)/16)*16;
-            float x = ((int)(parent.getWidth()*relX)/16)*16;
-            float y = ((int)(parent.getHeight()*relY)/16)*16;
+            float x = (parent.getWidth()*relX);
+            float y = (parent.getHeight()*relY);
             
             region = new Region(x+(parent.getX()-(parent.getWidth()/2)), y+(parent.getY()-(parent.getHeight()/2)), w, h);
         }
@@ -39,12 +39,15 @@ public class Container implements Paintable, GUIClickListener{
 
     @Override
     public void guiClick(MouseEvent e) {
-        System.out.println("container " + super.hashCode() + " clicked");
+        // System.out.println("container " + super.hashCode() + " clicked");
         for(int i = 0; i < components.size(); i++){
+            System.out.println(components.get(i).getRegion().contains(e.getX()/(Window.SCREEN_WIDTH/Renderer.WIDTH), e.getY()/(Window.SCREEN_HEIGHT/Renderer.HEIGHT)));
             if(components.get(i).getRegion().contains(e.getX()/(Window.SCREEN_WIDTH/Renderer.WIDTH), e.getY()/(Window.SCREEN_HEIGHT/Renderer.HEIGHT))){
                 components.get(i).guiClick(e);
+                System.out.println("hello " + i);
             }
         }
+        System.out.println(e.getX()/(Window.SCREEN_WIDTH/Renderer.WIDTH) + "  " + (e.getY()/(Window.SCREEN_HEIGHT/Renderer.HEIGHT)));
     }
 
     @Override
@@ -108,8 +111,10 @@ public class Container implements Paintable, GUIClickListener{
             }
         }
 
-        //draw components
+        paintComponents(e);
+    }
 
+    protected void paintComponents(PaintEvent e){
         for (int i = 0; i < components.size(); i++) {
             components.get(i).paint(e);
         }
@@ -153,5 +158,13 @@ public class Container implements Paintable, GUIClickListener{
 
     public void setParentWindow(Window window){
         this.window = window;
+    }
+
+    public Window getParentWindow(){
+        return this.window;
+    }
+
+    public Container getComponent(int index){
+        return this.components.get(index);
     }
 }

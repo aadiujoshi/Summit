@@ -33,6 +33,7 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.menu.Container;
+import summit.gui.menu.MainSelectionMenu;
 import summit.util.Time;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
@@ -58,7 +59,8 @@ public class Window implements MouseListener, KeyListener{
 
     private BufferedImage bg;
 
-    private Stack<Container> guiContainers;
+    private Stack<Container> guiContainersHome;
+    private Stack<Container> guiContainersGame;
     private WindowState state;
 
     private GameWorld world;
@@ -67,14 +69,20 @@ public class Window implements MouseListener, KeyListener{
 
     private Thread graphicsThread;
     
+    private MainSelectionMenu mainMenu;
+
     public Window(String title, int w, int h){
 
         width = w;
         height = h;
         
-        guiContainers = new Stack<>();
+        guiContainersHome = new Stack<>();
+        guiContainersGame = new Stack<>();
 
         renderer = new Renderer();
+
+        mainMenu = new MainSelectionMenu();
+        pushHomeContainer(mainMenu);
 
         // world = new GameWorld(this);
 
@@ -87,7 +95,7 @@ public class Window implements MouseListener, KeyListener{
         graphicsThread = new Thread(new Runnable() {
             @Override
             public void run(){
-                while(true){
+                while(!closed){
                     Graphics2D g = null;
                     do {
                         try{
@@ -104,7 +112,11 @@ public class Window implements MouseListener, KeyListener{
                         } finally {
                             g.dispose();
                         }
-                        buffer.show();
+                        try{
+                            buffer.show();
+                        } catch(java.lang.IllegalStateException e) {
+                            
+                        }
                     } while (buffer.contentsLost());
                 }
             }
@@ -172,7 +184,6 @@ public class Window implements MouseListener, KeyListener{
 
             graphicsThread.start();
         }
-        
     }
     
     private void renderFrame(Graphics2D g){
@@ -190,11 +201,17 @@ public class Window implements MouseListener, KeyListener{
         }
 
 
-        for(Container menu: guiContainers){
+        for(Container menu: guiContainersHome){
             menu.paint(pe);
         }
 
         // renderer.render(Sprite.PINE_TREE, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.FLIP_NONE);
+        // try {
+        //     renderer.renderImage(ImageIO.read(new File("C:/Users/aadiu/Desktop/Programming Files/Personal Projects/Java Projects/Summit Game/Summit/Summit/src/summit/deprecated/extra/final-transparent-mountain.png")), Renderer.WIDTH/2, Renderer.HEIGHT/2);
+        // } catch (IOException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
 
         //----------------------------------------------------------------------------------
         // draw final frame to screen
@@ -203,7 +220,7 @@ public class Window implements MouseListener, KeyListener{
         renderer.uspscale(SCREEN_WIDTH, SCREEN_HEIGHT);
         int[][] frame = renderer.getFrame();
         // int[] finalFrameArray = renderer.frameAsArray();
-        BufferedImage finalFrame = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage finalFrame = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
         Graphics2D g2 = finalFrame.createGraphics();
         g2.setColor(Color.BLUE);
@@ -239,6 +256,12 @@ public class Window implements MouseListener, KeyListener{
         this.state = newState;
     }
 
+    public void quit(){
+        closed = true;
+        canvas.setVisible(false);
+        frame.setVisible(false);
+        frame.dispose();
+    }
     
     //--------------------------------------------------------------------
     //getters and setters
@@ -252,17 +275,30 @@ public class Window implements MouseListener, KeyListener{
         return this;
     }
 
-    public void pushContainer(Container cont){
-        guiContainers.push(cont);
+    public void pushHomeContainer(Container cont){
+        guiContainersHome.push(cont);
         cont.setParentWindow(this);
     }
 
-    public void popContainer(){
-        guiContainers.pop();
+    public void popHomeContainer(){
+        guiContainersHome.pop();
     }
 
-    public void clearMenus(){
-        guiContainers.clear();
+    public void clearHomeContainers(){
+        guiContainersHome.clear();
+    }
+
+    public void pushGameContainer(Container cont){
+        guiContainersGame.push(cont);
+        cont.setParentWindow(this);
+    }
+
+    public void popGameContainer(){
+        guiContainersGame.pop();
+    }
+
+    public void clearGameContainers(){
+        guiContainersGame.clear();
     }
 
     public void setFullscreen(boolean full) {
@@ -330,11 +366,18 @@ public class Window implements MouseListener, KeyListener{
                     }
                 }
             }
+
+            for(Container container : guiContainersGame) {
+                if(container.getRegion().contains(rx, ry)){
+                    container.guiClick(e);
+                }
+            }
         }
-        
-        for(Container container : guiContainers) {
-            if(container.getRegion().contains(rx, ry)){
-                container.guiClick(e);
+        else {
+            for(Container container : guiContainersHome) {
+                if(container.getRegion().contains(rx, ry)){
+                    container.guiClick(e);
+                }
             }
         }
     }
@@ -353,4 +396,78 @@ public class Window implements MouseListener, KeyListener{
     public void mouseExited(MouseEvent e) {
         
     }
+
+    {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+        {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+            {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+                {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+                    {{{{{{{{{{{{{{{{{{{{{{{{{{
+                        {{{{{{{{{{{{{{{{{{{{{{
+                            {{{{{{{{{{{{{{{{{{
+                                {{{{{{{{{{{{{{
+                                    {{{{{{{{{{
+                                        {{{{{{
+                                            {{
+                                             {
+                                             }
+                                            }}
+                                        }}}}}}
+                                    }}}}}}}}}}
+                                }}}}}}}}}}}}}}
+                            }}}}}}}}}}}}}}}}}}
+                        }}}}}}}}}}}}}}}}}}}}}}
+                    }}}}}}}}}}}}}}}}}}}}}}}}}}
+                }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+            }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+        }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+    }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+    {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+        {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+            {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+                {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+                    {{{{{{{{{{{{{{{{{{{{{{{{{{
+                        {{{{{{{{{{{{{{{{{{{{{{
+                            {{{{{{{{{{{{{{{{{{
+                                {{{{{{{{{{{{{{
+                                    {{{{{{{{{{
+                                        {{{{{{
+                                            {{
+                                             {
+                                             }
+                                            }}
+                                        }}}}}}
+                                    }}}}}}}}}}
+                                }}}}}}}}}}}}}}
+                            }}}}}}}}}}}}}}}}}}
+                        }}}}}}}}}}}}}}}}}}}}}}
+                    }}}}}}}}}}}}}}}}}}}}}}}}}}
+                }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+            }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+        }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+    }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+    {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+        {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+            {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+                {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
+                    {{{{{{{{{{{{{{{{{{{{{{{{{{
+                        {{{{{{{{{{{{{{{{{{{{{{
+                            {{{{{{{{{{{{{{{{{{
+                                {{{{{{{{{{{{{{
+                                    {{{{{{{{{{
+                                        {{{{{{
+                                            {{
+                                             {
+                                             }
+                                            }}
+                                        }}}}}}
+                                    }}}}}}}}}}
+                                }}}}}}}}}}}}}}
+                            }}}}}}}}}}}}}}}}}}
+                        }}}}}}}}}}}}}}}}}}}}}}
+                    }}}}}}}}}}}}}}}}}}}}}}}}}}
+                }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+            }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+        }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+    }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 }
+

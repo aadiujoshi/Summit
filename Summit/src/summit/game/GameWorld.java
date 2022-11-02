@@ -18,6 +18,11 @@ public class GameWorld implements Paintable, Serializable{
 
     private Thread gameUpdateThread;
 
+
+    /**
+     * Use this constructor to create a new game
+     * @param parentWindow
+     */
     public GameWorld(Window parentWindow){
         this.parentWindow = parentWindow;
 

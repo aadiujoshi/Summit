@@ -31,7 +31,7 @@ public class Main {
 
                 // Menu menu2 = new Menu(0.5f, 0.5f, 0.5f, 0.5f);
 
-                window.pushContainer(menu1);
+                // window.pushHomeContainer(menu1);
                 // window.pushContainer(menu2);
 
             }
