@@ -105,7 +105,7 @@ public class Window implements MouseListener, KeyListener{
                     Graphics2D g = null;
                     do {
                         try{
-                            // Time.nanoDelay((long)(Time.NS_IN_MS*16.67));
+                            // Time.nanoDelay((long)(Time.NS_IN_MS*(1000/144)));
                             g = (Graphics2D)buffer.getDrawGraphics();
 
                             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
