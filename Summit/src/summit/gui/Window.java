@@ -98,13 +98,14 @@ public class Window implements MouseListener, KeyListener{
         }
 
         graphicsThread = new Thread(new Runnable() {
+            
             @Override
             public void run(){
                 while(!closed){
                     Graphics2D g = null;
                     do {
                         try{
-                            // Time.nanoDelay(Time.NS_IN_MS);
+                            // Time.nanoDelay((long)(Time.NS_IN_MS*16.67));
                             g = (Graphics2D)buffer.getDrawGraphics();
 
                             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -347,19 +348,19 @@ public class Window implements MouseListener, KeyListener{
             setFullscreen(!fullscreen);
         }
         
+
         if(e.getKeyChar() == 'w'){
-            world.getCamera().setY(world.getCamera().getY()+.1f);
+            world.getCamera().setY(world.getCamera().getY()+0.0625f);
         }
         if(e.getKeyChar() == 'a'){
-            world.getCamera().setX(world.getCamera().getX()-.1f);
+            world.getCamera().setX(world.getCamera().getX()-0.0625f);
         }
         if(e.getKeyChar() == 's'){
-            world.getCamera().setY(world.getCamera().getY()-.1f);
+            world.getCamera().setY(world.getCamera().getY()-0.0625f);
         }
         if(e.getKeyChar() == 'd'){
-            world.getCamera().setX(world.getCamera().getX()+.1f);
+            world.getCamera().setX(world.getCamera().getX()+0.0625f);
         }
-        // System.out.println(world.getCamera());
     }
 
     @Override

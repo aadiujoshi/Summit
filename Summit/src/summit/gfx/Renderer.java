@@ -89,7 +89,7 @@ public class Renderer {
     public void renderGame(String s, float x, float y, int flip, Camera camera){
 
         Point2D.Float spritePos = toPixel(x, y, camera);
-        
+        System.out.println(camera);
         this.render(s, spritePos.x, spritePos.y, flip);
     }
 
