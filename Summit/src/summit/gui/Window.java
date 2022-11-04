@@ -104,7 +104,7 @@ public class Window implements MouseListener, KeyListener{
                     Graphics2D g = null;
                     do {
                         try{
-                            Time.nanoDelay(Time.NS_IN_MS);
+                            // Time.nanoDelay(Time.NS_IN_MS);
                             g = (Graphics2D)buffer.getDrawGraphics();
 
                             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -348,18 +348,18 @@ public class Window implements MouseListener, KeyListener{
         }
         
         if(e.getKeyChar() == 'w'){
-            world.getCamera().setY(world.getCamera().getY()+1f);
+            world.getCamera().setY(world.getCamera().getY()+.1f);
         }
         if(e.getKeyChar() == 'a'){
-            world.getCamera().setX(world.getCamera().getX()-1f);
+            world.getCamera().setX(world.getCamera().getX()-.1f);
         }
         if(e.getKeyChar() == 's'){
-            world.getCamera().setY(world.getCamera().getY()-1f);
+            world.getCamera().setY(world.getCamera().getY()-.1f);
         }
         if(e.getKeyChar() == 'd'){
-            world.getCamera().setX(world.getCamera().getX()+1f);
+            world.getCamera().setX(world.getCamera().getX()+.1f);
         }
-        System.out.println(world.getCamera());
+        // System.out.println(world.getCamera());
     }
 
     @Override

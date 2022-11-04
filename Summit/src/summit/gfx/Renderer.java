@@ -56,8 +56,8 @@ public class Renderer {
         
         int[][] sprite = BufferedSprites.getSprite(s);
 
-        int nx = (int)x-(sprite[0].length/2);
-        int ny = (int)y-(sprite.length/2);
+        int nx = Math.round(x-(sprite[0].length/2));
+        int ny = Math.round(y-(sprite.length/2));
 
         if(transform != FLIP_NONE){
             if((transform & ROTATE_90) == ROTATE_90){
@@ -89,7 +89,7 @@ public class Renderer {
     public void renderGame(String s, float x, float y, int flip, Camera camera){
 
         Point2D.Float spritePos = toPixel(x, y, camera);
-
+        
         this.render(s, spritePos.x, spritePos.y, flip);
     }
 
