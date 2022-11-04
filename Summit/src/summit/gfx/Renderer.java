@@ -1,7 +1,6 @@
 package summit.gfx;
 
 import java.awt.geom.Point2D;
-import java.util.Arrays;
 import java.awt.image.BufferedImage;
 
 public class Renderer {
@@ -15,8 +14,6 @@ public class Renderer {
     public static final int FLIP_X = 0b1;
     public static final int FLIP_Y = 0b10;
     public static final int ROTATE_90 = 0b100;
-
-    private Camera camera;
 
     public Renderer(){
         frame = new int[HEIGHT][WIDTH];
@@ -55,7 +52,7 @@ public class Renderer {
     /**
      * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
      */
-    public void render(int s, float x, float y, int transform){
+    public void render(String s, float x, float y, int transform){
         
         int[][] sprite = BufferedSprites.getSprite(s);
 
@@ -89,9 +86,9 @@ public class Renderer {
      * USE THIS METHOD FOR RENDERING GAME STUFF (ANYTHING THAT IS POSITIONALLY BASED ON A CAMERA).
      * COORDINATES ARE GAMESPACE COORDINATES.
     */
-    public void renderGame(int s, float x, float y, int flip){
+    public void renderGame(String s, float x, float y, int flip, Camera camera){
 
-        Point2D.Float spritePos = toPixel(x, y, this.camera);
+        Point2D.Float spritePos = toPixel(x, y, camera);
 
         this.render(s, spritePos.x, spritePos.y, flip);
     }
@@ -186,15 +183,15 @@ public class Renderer {
     /**
      * Camera is left in gamecoordinates
      */
-    public static Point2D.Float toTile(float x, float y, Camera cam){
+    // public static Point2D.Float toTile(float x, float y, Camera cam){
         
-        //inverted equation of topixel
-        //REDO IT IS WRONG 
-        float nx = (x+cam.getX()-(WIDTH/2))/16F;
-        float ny = (y-cam.getY()-(HEIGHT/2))/(-16F);
+    //     //inverted equation of topixel
+    //     //REDO IT IS WRONG 
+    //     float nx = (x+cam.getX()-(WIDTH/2))/16F;
+    //     float ny = (y-cam.getY()-(HEIGHT/2))/(-16F);
 
-        return new Point2D.Float(nx, ny); 
-    }
+    //     return new Point2D.Float(nx, ny); 
+    // }
 
     public static boolean onScreen(float x, float y, Camera cam){
         return false;
@@ -207,14 +204,6 @@ public class Renderer {
     //------------------------------------------------------------------
     //getters and setters
     //------------------------------------------------------------------
-    
-    public void setCamera(Camera camera) {
-        this.camera = camera;
-    }
-
-    public Camera getCamera() {
-        return this.camera;
-    }
 
     public int[][] getFrame(){
         return frame;

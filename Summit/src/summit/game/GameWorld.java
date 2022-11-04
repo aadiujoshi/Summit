@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import summit.game.mapgenerator.GameMapGenerator;
+import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gui.Window;
@@ -13,31 +15,39 @@ public class GameWorld implements Paintable, Serializable{
 
     private List<GameMap> maps;
     private GameMap loadedMap;
+    private final long SEED;
 
-    private Window parentWindow;
+    private Camera camera;
 
-    private Thread gameUpdateThread;
+    private transient Window parentWindow;
+
+    private transient Thread gameUpdateThread;
 
 
     /**
      * Use this constructor to create a new game
      * @param parentWindow
      */
-    public GameWorld(Window parentWindow){
+    public GameWorld(Window parentWindow, long seed){
         this.parentWindow = parentWindow;
-
+        SEED = seed;
         maps = new ArrayList<>();
 
-        gameUpdateThread = new Thread(new Runnable(){
+        camera = new Camera(0, 0);
 
-            @Override
-            public void run(){
-                while(true){
-                    Time.nanoDelay(Time.NS_IN_MS);
-                    invokeGameUpdates();
-                }
-            }
-        });
+        maps.add(GameMapGenerator.generateStage1(seed));
+        loadedMap = maps.get(0);
+
+        // gameUpdateThread = new Thread(new Runnable(){
+
+        //     @Override
+        //     public void run(){
+        //         while(true){
+        //             Time.nanoDelay(Time.NS_IN_MS);
+        //             invokeGameUpdates();
+        //         }
+        //     }
+        // });
     }
 
     private void invokeGameUpdates(){
@@ -49,8 +59,10 @@ public class GameWorld implements Paintable, Serializable{
 
     @Override
     public void paint(PaintEvent e){
-        if(loadedMap != null)
-            loadedMap.paint(e);
+        if(loadedMap != null){
+            PaintEvent pe = new PaintEvent(e.getRenderer(), e.getPaintTime(), camera);
+            loadedMap.paint(pe);
+        }
     }
 
     public GameMap getLoadedMap() {
@@ -60,4 +72,13 @@ public class GameWorld implements Paintable, Serializable{
     public void setLoadedMap(GameMap loadedMap) {
         this.loadedMap = loadedMap;
     }
+
+    public Camera getCamera() {
+        return this.camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
 }

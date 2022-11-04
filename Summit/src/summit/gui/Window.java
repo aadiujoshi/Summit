@@ -2,6 +2,7 @@ package summit.gui;
 import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -29,6 +30,7 @@ import javax.swing.WindowConstants;
 import summit.game.GameMap;
 import summit.game.GameWorld;
 import summit.game.tile.TileStack;
+import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
@@ -69,7 +71,11 @@ public class Window implements MouseListener, KeyListener{
 
     private Thread graphicsThread;
     
+    //------------------------------------------
     private MainSelectionMenu mainMenu;
+
+    
+    //------------------------------------------
 
     public Window(String title, int w, int h){
 
@@ -82,7 +88,6 @@ public class Window implements MouseListener, KeyListener{
         renderer = new Renderer();
 
         mainMenu = new MainSelectionMenu();
-        pushHomeContainer(mainMenu);
 
         // world = new GameWorld(this);
 
@@ -99,6 +104,7 @@ public class Window implements MouseListener, KeyListener{
                     Graphics2D g = null;
                     do {
                         try{
+                            Time.nanoDelay(Time.NS_IN_MS);
                             g = (Graphics2D)buffer.getDrawGraphics();
 
                             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -111,11 +117,10 @@ public class Window implements MouseListener, KeyListener{
 
                         } finally {
                             g.dispose();
-                        }
-                        try{
+                        } try{
                             buffer.show();
                         } catch(java.lang.IllegalStateException e) {
-                            
+
                         }
                     } while (buffer.contentsLost());
                 }
@@ -184,34 +189,23 @@ public class Window implements MouseListener, KeyListener{
 
             graphicsThread.start();
         }
+        this.setState(WindowState.SELECTIONMENUS);
     }
     
     private void renderFrame(Graphics2D g){
-        // g.setColor(bg);
-        // g.fillRect(0, 0, width, height);
-
-        PaintEvent pe = new PaintEvent(renderer, Time.timeMs());
-
+        
         if(state == WindowState.SELECTIONMENUS){
+            PaintEvent pe = new PaintEvent(renderer, Time.timeMs(), null);
             renderer.renderImage(bg, Renderer.WIDTH/2, Renderer.HEIGHT/2);
+            if (!guiContainersHome.isEmpty())
+                guiContainersHome.peek().paint(pe);
         }
         else if(state == WindowState.GAME){
+            //camera is set by gameworld
+            PaintEvent pe = new PaintEvent(renderer, Time.timeMs(), null);
             if(world != null)
                 world.paint(pe);
         }
-
-
-        for(Container menu: guiContainersHome){
-            menu.paint(pe);
-        }
-
-        // renderer.render(Sprite.PINE_TREE, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.FLIP_NONE);
-        // try {
-        //     renderer.renderImage(ImageIO.read(new File("C:/Users/aadiu/Desktop/Programming Files/Personal Projects/Java Projects/Summit Game/Summit/Summit/src/summit/deprecated/extra/final-transparent-mountain.png")), Renderer.WIDTH/2, Renderer.HEIGHT/2);
-        // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
 
         //----------------------------------------------------------------------------------
         // draw final frame to screen
@@ -241,19 +235,40 @@ public class Window implements MouseListener, KeyListener{
     public void setState(WindowState newState){
         if(state == newState) return;
 
-        if(state == null && newState == WindowState.SELECTIONMENUS){
-            
+        if(newState == WindowState.SELECTIONMENUS){
+            clearHomeContainers();
+            pushHomeContainer(mainMenu);
+            state = newState;
+            return;
         }
 
-        if(state == WindowState.SELECTIONMENUS && newState == WindowState.GAME){
-            
+        if(newState == WindowState.NEWGAME){
+            world = new GameWorld(this, 69);
+            state = WindowState.GAME;
+            return;
         }
 
-        if(state == WindowState.GAME && newState == WindowState.SELECTIONMENUS){
-            
+        if(newState == WindowState.SAVEDGAME){
+            //idk yet
+            return;
         }
 
-        this.state = newState;
+        if(newState == WindowState.BACK){
+            switch(state){
+                case GAME:
+                    setState(WindowState.SELECTIONMENUS);
+                    break;
+                case NEWGAME:
+                    setState(WindowState.SELECTIONMENUS);
+                    break;
+                case SAVEDGAME:
+                    setState(WindowState.SELECTIONMENUS);
+                    break;
+                case SELECTIONMENUS:
+                    //do nothing
+                    break;
+            }
+        }
     }
 
     public void quit(){
@@ -331,6 +346,20 @@ public class Window implements MouseListener, KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_F11){
             setFullscreen(!fullscreen);
         }
+        
+        if(e.getKeyChar() == 'w'){
+            world.getCamera().setY(world.getCamera().getY()+1f);
+        }
+        if(e.getKeyChar() == 'a'){
+            world.getCamera().setX(world.getCamera().getX()-1f);
+        }
+        if(e.getKeyChar() == 's'){
+            world.getCamera().setY(world.getCamera().getY()-1f);
+        }
+        if(e.getKeyChar() == 'd'){
+            world.getCamera().setX(world.getCamera().getX()+1f);
+        }
+        System.out.println(world.getCamera());
     }
 
     @Override
@@ -349,8 +378,11 @@ public class Window implements MouseListener, KeyListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
+        
         float rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
         float ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
+
+        e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(), (int)rx, (int)ry, e.getClickCount(), e.isPopupTrigger(), e.getButton());
 
         if(state == WindowState.GAME){
             if(world != null){
@@ -366,7 +398,7 @@ public class Window implements MouseListener, KeyListener{
                     }
                 }
             }
-
+            
             for(Container container : guiContainersGame) {
                 if(container.getRegion().contains(rx, ry)){
                     container.guiClick(e);
@@ -374,9 +406,9 @@ public class Window implements MouseListener, KeyListener{
             }
         }
         else {
-            for(Container container : guiContainersHome) {
-                if(container.getRegion().contains(rx, ry)){
-                    container.guiClick(e);
+            if(!guiContainersHome.isEmpty()){
+                if(guiContainersHome.peek().getRegion().contains(rx, ry)){
+                    guiContainersHome.peek().guiClick(e);
                 }
             }
         }

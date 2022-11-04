@@ -25,4 +25,10 @@ public class Camera {
     public void setY(float y) {
         this.y = y;
     }
+
+    
+    @Override
+    public String toString(){
+        return this.x + "  " + this.y;
+    }
 }

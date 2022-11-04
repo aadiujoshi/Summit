@@ -3,6 +3,7 @@ package summit.gfx;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -10,7 +11,7 @@ import javax.imageio.ImageIO;
 public class BufferedSprites{
 
     /**'Object' will wrap a 2d int array, ordered by alphabetic file name*/
-    private static HashMap<Integer, Object> sprites = new HashMap<>();
+    private static HashMap<String, Object> sprites = new HashMap<>();
     // private static Object[] sprites;
 
     public static void loadSprites(String path){
@@ -32,19 +33,18 @@ public class BufferedSprites{
                         for (int c = 0; c < dataBuffer[0].length; c++) {
                             int argb = sprite.getRGB(c, r);
                             
-                            if((argb >> 24) > 0){
-                                argb |= 0b11111111000000000000000000000000;
+                            if((argb >> 24) != 0){
+                                argb &= 0b01010101111111111111111111111111;
                             }
-
                             if((argb >> 24) == 0){
                                 argb = -1;
                             }
-
+                            
                             dataBuffer[r][c] = argb;
                         }
                     }
-                    
-                    sprites.put(i, dataBuffer);
+
+                    sprites.put(ref, dataBuffer);
 
                     System.out.println(ref);
                     
@@ -53,7 +53,7 @@ public class BufferedSprites{
         }
     }
 
-    public static int[][] getSprite(int spriteInd){
+    public static int[][] getSprite(String spriteInd){
         return (int[][])sprites.get(spriteInd);
     }
 }

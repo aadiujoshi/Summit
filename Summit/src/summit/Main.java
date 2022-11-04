@@ -18,22 +18,8 @@ public class Main {
 
                 System.out.println(screen);
 
-                Window window = new Window("summit", screen.width/2, screen.height/2);
+                Window window = new Window("Summit", screen.width/2, screen.height/2);
                 
-                window.setState(WindowState.SELECTIONMENUS);
-
-                Container menu1 = new Container(null ,0.4f, 0.5f, 0.3f, 0.5f);
-                // Container menu2 = new Container(null ,0.666f, 0.5f, 0.55f, 0.85f);
-
-                Container submenu1 = new Container(menu1, 0.5f, 0.5f, 0.5f, 0.5f);
-
-                menu1.addComponent(submenu1);
-
-                // Menu menu2 = new Menu(0.5f, 0.5f, 0.5f, 0.5f);
-
-                // window.pushHomeContainer(menu1);
-                // window.pushContainer(menu2);
-
             }
         });
 

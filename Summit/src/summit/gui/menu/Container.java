@@ -39,15 +39,11 @@ public class Container implements Paintable, GUIClickListener{
 
     @Override
     public void guiClick(MouseEvent e) {
-        // System.out.println("container " + super.hashCode() + " clicked");
         for(int i = 0; i < components.size(); i++){
-            System.out.println(components.get(i).getRegion().contains(e.getX()/(Window.SCREEN_WIDTH/Renderer.WIDTH), e.getY()/(Window.SCREEN_HEIGHT/Renderer.HEIGHT)));
-            if(components.get(i).getRegion().contains(e.getX()/(Window.SCREEN_WIDTH/Renderer.WIDTH), e.getY()/(Window.SCREEN_HEIGHT/Renderer.HEIGHT))){
+            if(components.get(i).getRegion().contains(e.getX(), e.getY())){
                 components.get(i).guiClick(e);
-                System.out.println("hello " + i);
             }
         }
-        System.out.println(e.getX()/(Window.SCREEN_WIDTH/Renderer.WIDTH) + "  " + (e.getY()/(Window.SCREEN_HEIGHT/Renderer.HEIGHT)));
     }
 
     @Override
@@ -158,6 +154,9 @@ public class Container implements Paintable, GUIClickListener{
 
     public void setParentWindow(Window window){
         this.window = window;
+        for (Container container : components) {
+            container.setParentWindow(window);
+        }
     }
 
     public Window getParentWindow(){

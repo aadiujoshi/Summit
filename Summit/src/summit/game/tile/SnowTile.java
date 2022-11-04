@@ -6,6 +6,7 @@ import summit.game.GameMap;
 import summit.game.GameUpdate;
 import summit.game.GameUpdateEvent;
 import summit.gfx.PaintEvent;
+import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 
 public class SnowTile extends Tile{
@@ -14,9 +15,13 @@ public class SnowTile extends Tile{
         super(x, y, width, height);
     }
 
+    public SnowTile(float x, float y){
+        super(x, y);
+    }
+
     @Override
     public void paint(PaintEvent e){
-        e.getRenderer().render(Sprite.SNOW_TILE, getX(), getY(), 0);
+        e.getRenderer().renderGame(Sprite.SNOW_TILE, getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
     }
 
     @Override

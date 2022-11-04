@@ -1,6 +1,8 @@
 package summit.game.mapgenerator;
 
 import summit.game.GameMap;
+import summit.game.tile.SnowTile;
+import summit.game.tile.TileStack;
 
 public class GameMapGenerator {
     
@@ -9,7 +11,14 @@ public class GameMapGenerator {
     public static GameMap generateStage1(final long seed){
         GameMap map = new GameMap("stage1", seed, 256, 256);
 
-        map.getMap();
+        TileStack[][] tiles =  map.getMap();
+
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                tiles[i][j] = new TileStack(j, i);
+                tiles[i][j].pushTile(new SnowTile(j, i));
+            }
+        }
 
         return map;
     }

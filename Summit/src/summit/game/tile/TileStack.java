@@ -41,7 +41,8 @@ public class TileStack implements GameClickListener, Paintable, GameUpdate {
     @Override 
     public void paint(PaintEvent e){
         for(Tile t: tiles){
-            t.paint(e);
+            if(t != null)
+                t.paint(e);
         }
     }
 

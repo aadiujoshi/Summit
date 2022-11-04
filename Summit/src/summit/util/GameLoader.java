@@ -10,6 +10,8 @@ import summit.game.GameWorld;
 
 public class GameLoader {
     
+    private GameLoader(){}
+
     public static GameWorld loadWorld(String filename){
         try{
             FileInputStream file = new FileInputStream(filename);
@@ -31,7 +33,7 @@ public class GameLoader {
 
     public static boolean saveWorld(GameWorld world, String filename){
         try{
-        FileOutputStream file = new FileOutputStream(filename);
+            FileOutputStream file = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(file);
               
             out.writeObject(world);
