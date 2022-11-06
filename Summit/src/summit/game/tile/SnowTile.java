@@ -3,7 +3,7 @@ package summit.game.tile;
 import java.awt.event.MouseEvent;
 
 import summit.game.GameMap;
-import summit.game.GameUpdate;
+import summit.game.GameUpdateReciever;
 import summit.game.GameUpdateEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -21,7 +21,9 @@ public class SnowTile extends Tile{
 
     @Override
     public void paint(PaintEvent e){
-        e.getRenderer().renderGame(Sprite.SNOW_TILE, getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
+        // System.out.println(getX() + "  " + getY());
+        if(getX() != 0 || getY() != 0)
+            e.getRenderer().renderGame(Sprite.SNOW_TILE, getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
     }
 
     @Override

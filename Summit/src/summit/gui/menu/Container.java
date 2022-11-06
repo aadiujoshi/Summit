@@ -9,11 +9,12 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
-import summit.gui.GUIClickListener;
+import summit.gui.GUIClickReciever;
 import summit.gui.Window;
 import summit.util.Region;
 
-public class Container implements Paintable, GUIClickListener{
+//should extend Region class!!!!!!!!!
+public class Container implements Paintable, GUIClickReciever{
 
     private List<Container> components;
     private Region region;
@@ -63,7 +64,6 @@ public class Container implements Paintable, GUIClickListener{
         //traversed in pixel coordinates
         for (int x = startX; x <= endX; x+=16) {
             for (int y = startY; y <= endY; y+=16) {
-                // System.out.println(px + "  " + py + "\n\n");
                 
                 if(y == startY && x == startX){
                     ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_NONE);

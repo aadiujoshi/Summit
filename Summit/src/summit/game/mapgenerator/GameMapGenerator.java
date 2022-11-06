@@ -9,7 +9,7 @@ public class GameMapGenerator {
     private GameMapGenerator(){}
 
     public static GameMap generateStage1(final long seed){
-        GameMap map = new GameMap("stage1", seed, 1, 1);
+        GameMap map = new GameMap("stage1", seed, 10, 10);
 
         TileStack[][] tiles =  map.getMap();
 

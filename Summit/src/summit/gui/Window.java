@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Stack;
 import java.awt.event.KeyAdapter;
+import java.awt.image.DataBufferInt;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.menu.Container;
 import summit.gui.menu.MainSelectionMenu;
+import summit.util.Controls;
 import summit.util.Time;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
@@ -48,6 +50,12 @@ public class Window implements MouseListener, KeyListener{
 
     private boolean fullscreen = false;
 
+    //-----------------------
+    public float fps;
+    private long lastFrame;
+
+    //-----------------------
+
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 
@@ -55,11 +63,14 @@ public class Window implements MouseListener, KeyListener{
     // public static final int SCREEN_HEIGHT = 1080;
 
     private boolean closed = false;
+    private boolean mouseDown = false;
 
     private int width;
     private int height;
 
     private BufferedImage bg;
+
+    private BufferedImage finalFrame = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
     private Stack<Container> guiContainersHome;
     private Stack<Container> guiContainersGame;
@@ -67,7 +78,7 @@ public class Window implements MouseListener, KeyListener{
 
     private GameWorld world;
 
-    private BufferStrategy buffer;
+    private BufferStrategy bufferStrategy;
 
     private Thread graphicsThread;
     
@@ -89,6 +100,7 @@ public class Window implements MouseListener, KeyListener{
 
         mainMenu = new MainSelectionMenu();
 
+
         // world = new GameWorld(this);
 
         try {
@@ -101,12 +113,15 @@ public class Window implements MouseListener, KeyListener{
             
             @Override
             public void run(){
+                lastFrame = Time.timeMs();
                 while(!closed){
                     Graphics2D g = null;
                     do {
                         try{
                             // Time.nanoDelay((long)(Time.NS_IN_MS*(1000/144)));
-                            g = (Graphics2D)buffer.getDrawGraphics();
+                            long startFrame = Time.timeNs();
+                            
+                            g = (Graphics2D)bufferStrategy.getDrawGraphics();
 
                             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
                             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -116,14 +131,14 @@ public class Window implements MouseListener, KeyListener{
                                 renderFrame(g);
                             }
 
-                        } finally {
-                            g.dispose();
-                        } try{
-                            buffer.show();
-                        } catch(java.lang.IllegalStateException e) {
+                            // System.out.println(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000));
+                            frame.setTitle(Long.toString(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000)));
+                            lastFrame = startFrame;
 
-                        }
-                    } while (buffer.contentsLost());
+                        } finally { g.dispose(); } 
+                        try { bufferStrategy.show(); } 
+                        catch(java.lang.IllegalStateException e) { }
+                    } while (bufferStrategy.contentsLost());
                 }
             }
         });
@@ -184,26 +199,29 @@ public class Window implements MouseListener, KeyListener{
             frame.setLocationRelativeTo(null);
 
             canvas.createBufferStrategy(2);
-            buffer = canvas.getBufferStrategy();
+            bufferStrategy = canvas.getBufferStrategy();
 
             frame.setVisible(true);
 
             graphicsThread.start();
         }
+        
         this.setState(WindowState.SELECTIONMENUS);
     }
     
     private void renderFrame(Graphics2D g){
         
+        g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
         if(state == WindowState.SELECTIONMENUS){
-            PaintEvent pe = new PaintEvent(renderer, Time.timeMs(), null);
+            PaintEvent pe = new PaintEvent(renderer, lastFrame, null);
             renderer.renderImage(bg, Renderer.WIDTH/2, Renderer.HEIGHT/2);
             if (!guiContainersHome.isEmpty())
                 guiContainersHome.peek().paint(pe);
         }
         else if(state == WindowState.GAME){
             //camera is set by gameworld
-            PaintEvent pe = new PaintEvent(renderer, Time.timeMs(), null);
+            PaintEvent pe = new PaintEvent(renderer, lastFrame, null);
             if(world != null)
                 world.paint(pe);
         }
@@ -211,27 +229,13 @@ public class Window implements MouseListener, KeyListener{
         //----------------------------------------------------------------------------------
         // draw final frame to screen
         //----------------------------------------------------------------------------------
-        
-        renderer.uspscale(SCREEN_WIDTH, SCREEN_HEIGHT);
-        int[][] frame = renderer.getFrame();
-        // int[] finalFrameArray = renderer.frameAsArray();
-        BufferedImage finalFrame = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
-
-        Graphics2D g2 = finalFrame.createGraphics();
-        g2.setColor(Color.BLUE);
-        g2.fillRect(0, 0, finalFrame.getWidth(), finalFrame.getHeight());
-        g2.dispose();
-
-        for (int r = 0; r < frame.length; r++) {
-            for (int c = 0; c < frame[0].length; c++) {
-                finalFrame.setRGB(c, r, frame[r][c]);
-            }
-        }
-
+        renderer.upscaleToImage(finalFrame);
+    
         g.drawImage(finalFrame, null, 0, 0);
         
         renderer.resetFrame();
     }
+
 
     public void setState(WindowState newState){
         if(state == newState) return;
@@ -347,25 +351,13 @@ public class Window implements MouseListener, KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_F11){
             setFullscreen(!fullscreen);
         }
-        
 
-        if(e.getKeyChar() == 'w'){
-            world.getCamera().setY(world.getCamera().getY()+0.0625f);
-        }
-        if(e.getKeyChar() == 'a'){
-            world.getCamera().setX(world.getCamera().getX()-0.0625f);
-        }
-        if(e.getKeyChar() == 's'){
-            world.getCamera().setY(world.getCamera().getY()-0.0625f);
-        }
-        if(e.getKeyChar() == 'd'){
-            world.getCamera().setX(world.getCamera().getX()+0.0625f);
-        }
+        Controls.setPress(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        
+        Controls.setRelease(e);
     }
 
     //-------------------------------------------------------------------
@@ -386,19 +378,19 @@ public class Window implements MouseListener, KeyListener{
         e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(), (int)rx, (int)ry, e.getClickCount(), e.isPopupTrigger(), e.getButton());
 
         if(state == WindowState.GAME){
-            if(world != null){
-                GameMap loadedmap = world.getLoadedMap();
-                if(loadedmap != null){
-                    TileStack[][] map = loadedmap.getMap();
-                    for (int i = 0; i < map.length; i++) {
-                        for (int j = 0; j < map[0].length; j++) {
-                            // if(){
+            // if(world != null){
+            //     GameMap loadedmap = world.getLoadedMap();
+            //     if(loadedmap != null){
+            //         TileStack[][] map = loadedmap.getMap();
+            //         for (int i = 0; i < map.length; i++) {
+            //             for (int j = 0; j < map[0].length; j++) {
+            //                 // if(){
 
-                            // }
-                        }
-                    }
-                }
-            }
+            //                 // }
+            //             }
+            //         }
+            //     }
+            // }
             
             for(Container container : guiContainersGame) {
                 if(container.getRegion().contains(rx, ry)){
@@ -429,78 +421,5 @@ public class Window implements MouseListener, KeyListener{
     public void mouseExited(MouseEvent e) {
         
     }
-
-    {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-        {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-            {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-                {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-                    {{{{{{{{{{{{{{{{{{{{{{{{{{
-                        {{{{{{{{{{{{{{{{{{{{{{
-                            {{{{{{{{{{{{{{{{{{
-                                {{{{{{{{{{{{{{
-                                    {{{{{{{{{{
-                                        {{{{{{
-                                            {{
-                                             {
-                                             }
-                                            }}
-                                        }}}}}}
-                                    }}}}}}}}}}
-                                }}}}}}}}}}}}}}
-                            }}}}}}}}}}}}}}}}}}
-                        }}}}}}}}}}}}}}}}}}}}}}
-                    }}}}}}}}}}}}}}}}}}}}}}}}}}
-                }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-            }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-        }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-    }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-    {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-        {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-            {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-                {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-                    {{{{{{{{{{{{{{{{{{{{{{{{{{
-                        {{{{{{{{{{{{{{{{{{{{{{
-                            {{{{{{{{{{{{{{{{{{
-                                {{{{{{{{{{{{{{
-                                    {{{{{{{{{{
-                                        {{{{{{
-                                            {{
-                                             {
-                                             }
-                                            }}
-                                        }}}}}}
-                                    }}}}}}}}}}
-                                }}}}}}}}}}}}}}
-                            }}}}}}}}}}}}}}}}}}
-                        }}}}}}}}}}}}}}}}}}}}}}
-                    }}}}}}}}}}}}}}}}}}}}}}}}}}
-                }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-            }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-        }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-    }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-    {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-        {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-            {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-                {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
-                    {{{{{{{{{{{{{{{{{{{{{{{{{{
-                        {{{{{{{{{{{{{{{{{{{{{{
-                            {{{{{{{{{{{{{{{{{{
-                                {{{{{{{{{{{{{{
-                                    {{{{{{{{{{
-                                        {{{{{{
-                                            {{
-                                             {
-                                             }
-                                            }}
-                                        }}}}}}
-                                    }}}}}}}}}}
-                                }}}}}}}}}}}}}}
-                            }}}}}}}}}}}}}}}}}}
-                        }}}}}}}}}}}}}}}}}}}}}}
-                    }}}}}}}}}}}}}}}}}}}}}}}}}}
-                }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-            }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-        }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-    }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 }
 

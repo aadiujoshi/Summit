@@ -2,12 +2,12 @@ package summit.gfx;
 
 public class PaintEvent {
     private Renderer renderer;
-    private long paintTime;
+    private long lastFrame;
     private Camera camera;
 
-    public PaintEvent(Renderer renderer, long paintTime, Camera camera){
+    public PaintEvent(Renderer renderer, long lastFrame, Camera camera){
         this.renderer = renderer;
-        this.paintTime = paintTime;
+        this.lastFrame = lastFrame;
         this.camera = camera;
     }
 
@@ -15,8 +15,8 @@ public class PaintEvent {
         return this.renderer;
     }
 
-    public long getPaintTime(){
-        return this.paintTime;
+    public long getLastFrame(){
+        return this.lastFrame;
     }
 
     public Camera getCamera() {

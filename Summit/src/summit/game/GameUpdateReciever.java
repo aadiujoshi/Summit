@@ -1,6 +1,6 @@
 package summit.game;
 
-public interface GameUpdate{
+public interface GameUpdateReciever{
 
     /**
     * ticking + game physics + situational checking

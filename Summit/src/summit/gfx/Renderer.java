@@ -2,10 +2,17 @@ package summit.gfx;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import summit.util.Time;
 
 public class Renderer {
     
     private int[][] frame;
+
+    public static int iterations = 0;
 
     public static final int WIDTH = 256;
     public static final int HEIGHT = 144;
@@ -15,66 +22,108 @@ public class Renderer {
     public static final int FLIP_Y = 0b10;
     public static final int ROTATE_90 = 0b100;
 
+    //Possible color combinations: Red, Yellow, Green, Cyan, Blue, Magenta, White, Black
+    public static final int OUTLINE_RED = 0b1000;
+    public static final int OUTLINE_GREEN = 0b10000;
+    public static final int OUTLINE_BLUE = 0b100000;
+    
+
     public Renderer(){
         frame = new int[HEIGHT][WIDTH];
     }
 
     public void resetFrame(){
         frame = new int[HEIGHT][WIDTH]; 
+        // System.out.println(iterations);
+        iterations = 0;
     }
 
-    public void uspscale(int newWidth, int newHeight){
+    public void upscaleToImage(BufferedImage newFrame){
+        int newWidth = newFrame.getWidth();
+        int newHeight = newFrame.getHeight();
 
-        int[][] newFrame = new int[newHeight][newWidth];
+        // BufferedImage newFrame = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+
+        int[][] upscaled = new int[newHeight][newWidth];
 
         float scaleX = newWidth/WIDTH;
         float scaleY = newHeight/HEIGHT;
 
+        long strt = Time.timeNs();
 
-        //cool looking spaced pixels
-        // for (int r = 0; r < frame.length; r++) {
-        //     for (int c = 0; c < frame[0].length; c++) {
-        //         newFrame[Math.round(r*scaleY)][Math.round(c*scaleX)] = frame[r][c];
-        //     }
-        // }
-
-        for(int r = 0; r < newFrame.length; r++) {
-            for(int c = 0; c < newFrame[0].length; c++){
-                if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length)
-                    newFrame[r][c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
+        // method 1 (working)
+        for(int r = 0; r < upscaled.length; r++) {
+            for(int c = 0; c < upscaled[0].length; c++){
+                iterations++;
+                if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
+                    upscaled[r][c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
+                }
             }
         }
+        
+        this.frame = upscaled;
 
-        this.frame = newFrame;
+        // System.out.println((Time.timeNs()-strt*1f)/Time.NS_IN_MS + "   ");
+
+        newFrame.getRaster().setDataElements(0, 0, newWidth, newHeight, frameAsArray());
+
+        // final byte[] pixels = ((DataBufferByte) newFrame.getRaster().getDataBuffer()).getData();
+
+        //really cool effect i accidentaly created
+        // for(int r = 1; r < newHeight; r+=2) {
+        //     int r1 = Math.round(r/scaleY);
+        //     int r2 = Math.round((r-1)/scaleY);
+
+        //     if(!(r1 < frame.length && r2 < frame.length))
+        //         continue;
+            
+        //     int[] row1 = frame[r1];
+        //     int[] row2 = frame[r2];
+
+        //     for(int c = 0; c < newWidth; c++){
+        //         iterations++;
+
+        //         int cc = Math.round(c/scaleX);
+        //         if(!(cc < frame[0].length))
+        //             continue;
+                
+        //         newFrame.setRGB(c, r, row1[cc]);
+        //         newFrame.setRGB(c, r, row2[cc]);
+        //     }
+        // }
     }
 
 
     /**
      * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
      */
-    public void render(String s, float x, float y, int transform){
+    public void render(String s, float x, float y, int operation){
         
         int[][] sprite = BufferedSprites.getSprite(s);
 
         int nx = Math.round(x-(sprite[0].length/2));
         int ny = Math.round(y-(sprite.length/2));
 
-        if(transform != FLIP_NONE){
-            if((transform & ROTATE_90) == ROTATE_90){
+        if(operation != FLIP_NONE){
+            if((operation & ROTATE_90) == ROTATE_90){
                 sprite = rotate(sprite);
             }
-            if((transform & FLIP_X) == FLIP_X){
+            if((operation & FLIP_X) == FLIP_X){
                 sprite = flip(sprite, FLIP_X);
             }
-            if((transform & FLIP_Y) == FLIP_Y){
+            if((operation & FLIP_Y) == FLIP_Y){
                 sprite = flip(sprite, FLIP_Y);
             }
         }       
 
+        if((operation >> 3) != 0){
+            outline(sprite, operation >> 3);
+        }
+
         //write final sprite
         for(int yy = ny; yy < ny+sprite.length; yy++) {
             for(int xx = nx; xx < nx+sprite[0].length; xx++) {
-                //fully transparent pixel
+                iterations++;
                 if(inArrBounds(yy-ny, xx-nx, sprite.length, sprite[0].length) && 
                     inArrBounds(yy, xx, frame.length, frame[0].length) && validRGB(sprite[yy-ny][xx-nx]))
                     frame[yy][xx] = sprite[yy-ny][xx-nx];
@@ -86,11 +135,11 @@ public class Renderer {
      * USE THIS METHOD FOR RENDERING GAME STUFF (ANYTHING THAT IS POSITIONALLY BASED ON A CAMERA).
      * COORDINATES ARE GAMESPACE COORDINATES.
     */
-    public void renderGame(String s, float x, float y, int flip, Camera camera){
+    public void renderGame(String s, float x, float y, int operation, Camera camera){
 
         Point2D.Float spritePos = toPixel(x, y, camera);
-        System.out.println(camera);
-        this.render(s, spritePos.x, spritePos.y, flip);
+        
+        this.render(s, spritePos.x, spritePos.y, operation);
     }
 
     /**
@@ -103,6 +152,7 @@ public class Renderer {
     public void renderImage(BufferedImage img, int x, int y){
         for (int xx = x-(img.getWidth()/2); xx < x+(img.getWidth()/2); xx++) {
             for (int yy = y-(img.getHeight()/2); yy < y+(img.getHeight()/2); yy++) {
+                iterations++;
                 int rgb = img.getRGB(xx - (x-(img.getWidth()/2)), yy - (y-(img.getHeight()/2)));
                 if(inArrBounds(yy, xx, frame.length, frame[0].length) && validRGB(rgb))
                     frame[yy][xx] = rgb;
@@ -113,10 +163,11 @@ public class Renderer {
     public int[] frameAsArray(){
         int[] reformated = new int[frame.length*frame[0].length];
 
-        for(int i = 0; i < reformated.length; i++) {
-            reformated[i] = frame[ i/frame.length ][ i%frame[0].length ]; 
+        //holy shit that works thank you jni
+        for(int row = 0; row < frame.length; row++) {
+            System.arraycopy( frame[row],0 ,reformated ,row*frame[0].length ,frame[0].length);
         }
-
+        
         return reformated;
     }
 
@@ -149,7 +200,7 @@ public class Renderer {
                 //transform matrix
                 //prev column index becomes row index
                 //arr[0].length-r-1 for new column index
-
+                iterations++;
                 rotated[c][arr[0].length-r-1] = arr[r][c];
             }
         }
@@ -163,6 +214,7 @@ public class Renderer {
         if((transform & FLIP_X) == FLIP_X){
             for(int r = 0; r < arr.length; r++){
                 for(int c = 0; c < arr[0].length/2+1; c++){
+                    iterations++;
                     transformed[r][c] = arr[r][arr[0].length-c-1];
                     transformed[r][arr[0].length-c-1] = arr[r][c];
                 }
@@ -171,6 +223,7 @@ public class Renderer {
         if((transform & FLIP_Y) == FLIP_Y){
             for(int r = 0; r < arr.length/2+1; r++){
                 for(int c = 0; c < arr[0].length; c++){
+                    iterations++;
                     transformed[r][c] = arr[arr.length-r-1][c];
                     transformed[arr.length-r-1][c] = arr[r][c];
                 }
@@ -178,6 +231,25 @@ public class Renderer {
         }
 
         return arr = transformed;
+    }
+
+    /**
+     * leave color packed 
+     * @param s
+     * @param color
+     * @return
+     */
+    public static int[][] outline(int[][] s, int c){
+
+        int color =  ((c & OUTLINE_RED) == OUTLINE_RED ? 0xff << 16 : 0)
+                        | ((c & OUTLINE_GREEN) == OUTLINE_GREEN ? 0xff << 8 : 0)
+                        | ((c & OUTLINE_BLUE) == OUTLINE_BLUE ? 0xff << 0 : 0);
+
+        int[][] outlined = new int[s.length][s[0].length];
+
+        
+
+        return outlined;
     }
 
     /**

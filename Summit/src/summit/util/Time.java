@@ -2,6 +2,8 @@ package summit.util;
 
 public class Time{
 
+    public static long initTime = timeMs();
+
     public static final long MS_IN_S = 1000;
     public static final long NS_IN_MS = 1000000;
     public static final long NS_IN_S = 1000000000;

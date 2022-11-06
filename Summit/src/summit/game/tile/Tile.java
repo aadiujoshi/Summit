@@ -1,11 +1,11 @@
 package summit.game.tile;
 
-import summit.game.GameUpdate;
+import summit.game.GameUpdateReciever;
 import summit.gfx.Paintable;
-import summit.gui.GameClickListener;
+import summit.gui.GameClickReciever;
 import summit.util.Region;
 
-public abstract class Tile extends Region implements GameClickListener, Paintable, GameUpdate {
+public abstract class Tile extends Region implements GameClickReciever, Paintable, GameUpdateReciever {
 
     private boolean setToDestroy;
 
@@ -24,8 +24,4 @@ public abstract class Tile extends Region implements GameClickListener, Paintabl
     public Tile(float x, float y){
         this(x, y, 1, 1);
     }
-
-    // public boolean isSetToDestroy(){
-        
-    // }
 }

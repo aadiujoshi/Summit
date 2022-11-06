@@ -1,18 +1,18 @@
 package summit.game.tile;
 
 import summit.game.GameMap;
-import summit.game.GameUpdate;
+import summit.game.GameUpdateReciever;
 import summit.game.GameUpdateEvent;
 import summit.game.tile.Tile;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
-import summit.gui.GUIClickListener;
-import summit.gui.GameClickListener;
+import summit.gui.GUIClickReciever;
+import summit.gui.GameClickReciever;
 
 import java.awt.event.MouseEvent;
 import java.util.Stack;
 
-public class TileStack implements GameClickListener, Paintable, GameUpdate {
+public class TileStack implements GameClickReciever, Paintable, GameUpdateReciever {
 
     private Stack<Tile> tiles;
     private float x, y;
