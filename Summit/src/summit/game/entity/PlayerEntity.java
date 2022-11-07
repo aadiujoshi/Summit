@@ -24,7 +24,7 @@ public class PlayerEntity extends HumanoidEntity{
     @Override
     public void paint(PaintEvent e) {
         
-        e.getRenderer().renderGame( (Time.timeMs()-lastAnimationChange > 250) ? Sprite.PLAYER_FACE_BACK_1 : Sprite.PLAYER_FACE_BACK_2, 
+        e.getRenderer().renderGame( (Time.timeMs()-lastAnimationChange > 250) ? Sprite.VILLAGE_HOUSE : Sprite.VILLAGE_HOUSE, 
                                     getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
 
         if((Time.timeMs()-lastAnimationChange > 500))

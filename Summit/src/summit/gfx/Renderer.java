@@ -59,14 +59,13 @@ public class Renderer {
                     upscaled[r][c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
                 }
             }
+            newFrame.getRaster().setDataElements(0, r, upscaled[r].length, 1, upscaled[r]);
         }
         
         this.frame = upscaled;
 
         // System.out.println((Time.timeNs()-strt*1f)/Time.NS_IN_MS + "   ");
-
-        newFrame.getRaster().setDataElements(0, 0, newWidth, newHeight, frameAsArray());
-
+        
         // final byte[] pixels = ((DataBufferByte) newFrame.getRaster().getDataBuffer()).getData();
 
         //really cool effect i accidentaly created
@@ -163,11 +162,11 @@ public class Renderer {
     public int[] frameAsArray(){
         int[] reformated = new int[frame.length*frame[0].length];
 
-        //holy shit that works thank you jni
+        //holy shit that works #program_in_c
         for(int row = 0; row < frame.length; row++) {
             System.arraycopy( frame[row],0 ,reformated ,row*frame[0].length ,frame[0].length);
         }
-        
+
         return reformated;
     }
 

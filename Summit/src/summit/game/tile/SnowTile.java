@@ -22,8 +22,7 @@ public class SnowTile extends Tile{
     @Override
     public void paint(PaintEvent e){
         // System.out.println(getX() + "  " + getY());
-        if(getX() != 0 || getY() != 0)
-            e.getRenderer().renderGame(Sprite.SNOW_TILE, getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
+        e.getRenderer().renderGame(Sprite.SNOW_TILE, getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
     }
 
     @Override
