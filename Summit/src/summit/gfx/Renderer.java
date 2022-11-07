@@ -116,7 +116,7 @@ public class Renderer {
         }       
 
         if((operation >> 3) != 0){
-            outline(sprite, operation >> 3);
+            sprite = outline(sprite, operation >> 3);
         }
 
         //write final sprite
@@ -238,15 +238,30 @@ public class Renderer {
      * @param color
      * @return
      */
-    public static int[][] outline(int[][] s, int c){
+    public static int[][] outline(int[][] sprite, int flag){
 
-        int color =  ((c & OUTLINE_RED) == OUTLINE_RED ? 0xff << 16 : 0)
-                        | ((c & OUTLINE_GREEN) == OUTLINE_GREEN ? 0xff << 8 : 0)
-                        | ((c & OUTLINE_BLUE) == OUTLINE_BLUE ? 0xff << 0 : 0);
+        //unpack flag
+        int color =  ((flag & OUTLINE_RED) == OUTLINE_RED ? 0xff << 16 : 0)
+                        | ((flag & OUTLINE_GREEN) == OUTLINE_GREEN ? 0xff << 8 : 0)
+                        | ((flag & OUTLINE_BLUE) == OUTLINE_BLUE ? 0xff << 0 : 0);
 
-        int[][] outlined = new int[s.length][s[0].length];
+        int[][] outlined = new int[sprite.length][sprite[0].length];
 
-        
+        for(int r = 0; r < sprite.length; r++){
+            for(int c = 0; c < sprite[0].length; c++){
+                if(sprite[r][c] != -1){
+                    if(sprite[r-1][c] == -1 ||
+                        sprite[r][c-1] == -1 ||
+                        sprite[r+1][c] == -1 ||
+                        sprite[r][c+1] == -1){
+                        
+                        outlined[r][c] = color;
+                    }
+                } else {
+                    outlined[r][c] = sprite[r][c];
+                }
+            }
+        }
 
         return outlined;
     }
@@ -280,3 +295,4 @@ public class Renderer {
         return frame;
     }
 }
+
