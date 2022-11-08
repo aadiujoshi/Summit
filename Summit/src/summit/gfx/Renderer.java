@@ -12,9 +12,7 @@ import summit.util.Time;
 public class Renderer {
     
     private int[][] frame;
-
-    public static int iterations = 0;
-
+    
     public static final int WIDTH = 256;
     public static final int HEIGHT = 144;
 
@@ -35,8 +33,6 @@ public class Renderer {
 
     public void resetFrame(){
         frame = new int[HEIGHT][WIDTH]; 
-        // System.out.println(iterations);
-        iterations = 0;
     }
 
     public void upscaleToImage(BufferedImage newFrame){
@@ -55,7 +51,6 @@ public class Renderer {
         // method 1 (working)
         for(int r = 0; r < upscaled.length; r++) {
             for(int c = 0; c < upscaled[0].length; c++){
-                iterations++;
                 if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
                     upscaled[r][c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
                 }
@@ -99,7 +94,6 @@ public class Renderer {
         //write final sprite
         for(int yy = ny; yy < ny+sprite.length; yy++) {
             for(int xx = nx; xx < nx+sprite[0].length; xx++) {
-                iterations++;
                 if(inArrBounds(yy-ny, xx-nx, sprite.length, sprite[0].length) && 
                     inArrBounds(yy, xx, frame.length, frame[0].length) && validRGB(sprite[yy-ny][xx-nx]))
                     frame[yy][xx] = sprite[yy-ny][xx-nx];
@@ -128,7 +122,6 @@ public class Renderer {
     public void renderImage(BufferedImage img, int x, int y){
         for (int xx = x-(img.getWidth()/2); xx < x+(img.getWidth()/2); xx++) {
             for (int yy = y-(img.getHeight()/2); yy < y+(img.getHeight()/2); yy++) {
-                iterations++;
                 int rgb = img.getRGB(xx - (x-(img.getWidth()/2)), yy - (y-(img.getHeight()/2)));
                 if(inArrBounds(yy, xx, frame.length, frame[0].length) && validRGB(rgb))
                     frame[yy][xx] = rgb;
@@ -176,7 +169,7 @@ public class Renderer {
                 //transform matrix
                 //prev column index becomes row index
                 //arr[0].length-r-1 for new column index
-                iterations++;
+
                 rotated[c][arr[0].length-r-1] = arr[r][c];
             }
         }
@@ -190,7 +183,6 @@ public class Renderer {
         if((transform & FLIP_X) == FLIP_X){
             for(int r = 0; r < arr.length; r++){
                 for(int c = 0; c < arr[0].length/2+1; c++){
-                    iterations++;
                     transformed[r][c] = arr[r][arr[0].length-c-1];
                     transformed[r][arr[0].length-c-1] = arr[r][c];
                 }
@@ -199,7 +191,6 @@ public class Renderer {
         if((transform & FLIP_Y) == FLIP_Y){
             for(int r = 0; r < arr.length/2+1; r++){
                 for(int c = 0; c < arr[0].length; c++){
-                    iterations++;
                     transformed[r][c] = arr[arr.length-r-1][c];
                     transformed[arr.length-r-1][c] = arr[r][c];
                 }

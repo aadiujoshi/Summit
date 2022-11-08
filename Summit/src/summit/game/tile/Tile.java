@@ -23,7 +23,8 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     
     @Override
     public void paint(PaintEvent e){
-        e.getRenderer().renderGame(sprite, getX(), getY(), 0, e.getCamera());
+        if(sprite != null)
+            e.getRenderer().renderGame(sprite, getX(), getY(), 0, e.getCamera());
     } 
 
 
