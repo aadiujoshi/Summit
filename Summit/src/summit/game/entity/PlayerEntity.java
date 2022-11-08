@@ -19,13 +19,17 @@ public class PlayerEntity extends HumanoidEntity{
 
     public PlayerEntity(float x, float y) {
         super(x, y, 1, 1);
+        super.setDx(2.5f);
+        super.setDy(2.5f);
     }
 
     @Override
     public void paint(PaintEvent e) {
         
-        e.getRenderer().renderGame( (Time.timeMs()-lastAnimationChange > 250) ? Sprite.VILLAGE_HOUSE : Sprite.VILLAGE_HOUSE, 
-                                    getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
+        e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
+                                    getX(), getY(), 
+                                    (Time.timeMs()-lastAnimationChange > 250) ? Renderer.FLIP_NONE : Renderer.FLIP_X, 
+                                    e.getCamera());
 
         if((Time.timeMs()-lastAnimationChange > 500))
             lastAnimationChange = Time.timeMs();
@@ -38,21 +42,27 @@ public class PlayerEntity extends HumanoidEntity{
 
     @Override
     public void update(GameUpdateEvent e) {
+
+        
+
+        float del_x = (getDx()/1000)*e.getDeltaTime();
+        float del_y = (getDy()/1000)*e.getDeltaTime();
+
         if(Controls.W){
-            camera.setY(this.getY()+0.0075f);
-            this.setY(this.getY()+0.0075f);
+            camera.setY(this.getY()+del_y);
+            this.setY(this.getY()+del_y);
         }
         if(Controls.A){
-            camera.setX(getX()-0.0075f);
-            this.setX(this.getX()-0.0075f);
+            camera.setX(getX()-del_x);
+            this.setX(this.getX()-del_x);
         }
         if(Controls.S){
-            camera.setY(getY()-0.0075f);
-            this.setY(this.getY()-0.0075f);
+            camera.setY(getY()-del_y);
+            this.setY(this.getY()-del_y);
         }
         if(Controls.D){
-            camera.setX(getX()+0.0075f);
-            this.setX(this.getX()+0.0075f);
+            camera.setX(getX()+del_x);
+            this.setX(this.getX()+del_x);
         }
     }
 

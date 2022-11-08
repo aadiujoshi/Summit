@@ -8,6 +8,7 @@ import summit.util.Region;
 public abstract class Tile extends Region implements GameClickReciever, Paintable, GameUpdateReciever {
 
     private boolean setToDestroy;
+    private boolean accessible;
 
     // public boolean isSetToDestroy() {
     //     return this.setToDestroy;

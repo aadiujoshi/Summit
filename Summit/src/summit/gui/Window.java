@@ -9,6 +9,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -110,7 +111,9 @@ public class Window implements MouseListener, KeyListener{
         }
 
         graphicsThread = new Thread(new Runnable() {
-            
+
+            long lastFpsUpdate = Time.timeMs();
+
             @Override
             public void run(){
                 lastFrame = Time.timeMs();
@@ -132,7 +135,10 @@ public class Window implements MouseListener, KeyListener{
                             }
 
                             // System.out.println(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000));
-                            frame.setTitle(Long.toString(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000)));
+                            if(Time.timeMs()-lastFpsUpdate > 500){
+                                frame.setTitle(Float.toString(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000f)));
+                                lastFpsUpdate = Time.timeMs();
+                            }
                             lastFrame = startFrame;
 
                         } finally { g.dispose(); } 
@@ -224,13 +230,18 @@ public class Window implements MouseListener, KeyListener{
             PaintEvent pe = new PaintEvent(renderer, lastFrame, null);
             if(world != null)
                 world.paint(pe);
+            
         }
 
         //----------------------------------------------------------------------------------
         // draw final frame to screen
         //----------------------------------------------------------------------------------
         renderer.upscaleToImage(finalFrame);
-    
+        
+        // Image raw = finalFrame.getScaledInstance(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.SCALE_REPLICATE);
+        // BufferedImage scaled = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        // scaled.getGraphics().drawImage(raw, 0, 0, null);
+
         g.drawImage(finalFrame, null, 0, 0);
         
         renderer.resetFrame();
@@ -249,6 +260,7 @@ public class Window implements MouseListener, KeyListener{
 
         if(newState == WindowState.NEWGAME){
             world = new GameWorld(this, 69);
+            world.setGameContainers(guiContainersGame);
             state = WindowState.GAME;
             return;
         }

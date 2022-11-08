@@ -9,4 +9,5 @@ public class Sprite {
     public static final String PLAYER_FACE_BACK_2 = "player-face_back_2";
     public static final String SNOW_TILE = "snow-tile";
     public static final String VILLAGE_HOUSE = "village-house";
+    public static final String STONE_TILE = "stone-tile";
 }

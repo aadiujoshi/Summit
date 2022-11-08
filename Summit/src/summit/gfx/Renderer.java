@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.awt.image.DataBufferInt;
 
 import summit.util.Time;
 
@@ -59,37 +60,13 @@ public class Renderer {
                     upscaled[r][c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
                 }
             }
-            newFrame.getRaster().setDataElements(0, r, upscaled[r].length, 1, upscaled[r]);
+            // newFrame.getRaster().setDataElements(0, r, upscaled[r].length, 1, upscaled[r]);
+            System.arraycopy(upscaled[r], 0, 
+                            ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData(), 
+                            r*upscaled[0].length, upscaled[r].length);
         }
         
         this.frame = upscaled;
-
-        // System.out.println((Time.timeNs()-strt*1f)/Time.NS_IN_MS + "   ");
-        
-        // final byte[] pixels = ((DataBufferByte) newFrame.getRaster().getDataBuffer()).getData();
-
-        //really cool effect i accidentaly created
-        // for(int r = 1; r < newHeight; r+=2) {
-        //     int r1 = Math.round(r/scaleY);
-        //     int r2 = Math.round((r-1)/scaleY);
-
-        //     if(!(r1 < frame.length && r2 < frame.length))
-        //         continue;
-            
-        //     int[] row1 = frame[r1];
-        //     int[] row2 = frame[r2];
-
-        //     for(int c = 0; c < newWidth; c++){
-        //         iterations++;
-
-        //         int cc = Math.round(c/scaleX);
-        //         if(!(cc < frame[0].length))
-        //             continue;
-                
-        //         newFrame.setRGB(c, r, row1[cc]);
-        //         newFrame.setRGB(c, r, row2[cc]);
-        //     }
-        // }
     }
 
 
@@ -250,10 +227,10 @@ public class Renderer {
         for(int r = 0; r < sprite.length; r++){
             for(int c = 0; c < sprite[0].length; c++){
                 if(sprite[r][c] != -1){
-                    if(sprite[r-1][c] == -1 ||
-                        sprite[r][c-1] == -1 ||
-                        sprite[r+1][c] == -1 ||
-                        sprite[r][c+1] == -1){
+                    if((r-1 > -1 && sprite[r-1][c] == -1) ||
+                        (c-1 > -1 && sprite[r][c-1] == -1) ||
+                        (r+1 < sprite.length && sprite[r+1][c] == -1) ||
+                        (c+1 < sprite[0].length && sprite[r][c+1] == -1)){
                         
                         outlined[r][c] = color;
                     }
@@ -265,19 +242,6 @@ public class Renderer {
 
         return outlined;
     }
-
-    /**
-     * Camera is left in gamecoordinates
-     */
-    // public static Point2D.Float toTile(float x, float y, Camera cam){
-        
-    //     //inverted equation of topixel
-    //     //REDO IT IS WRONG 
-    //     float nx = (x+cam.getX()-(WIDTH/2))/16F;
-    //     float ny = (y-cam.getY()-(HEIGHT/2))/(-16F);
-
-    //     return new Point2D.Float(nx, ny); 
-    // }
 
     public static boolean onScreen(float x, float y, Camera cam){
         return false;

@@ -3,6 +3,7 @@ package summit.game;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import summit.game.entity.PlayerEntity;
 import summit.game.mapgenerator.GameMapGenerator;
@@ -10,6 +11,7 @@ import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gui.Window;
+import summit.gui.menu.Container;
 import summit.util.Time;
 
 public class GameWorld implements Paintable, Serializable{
@@ -23,6 +25,8 @@ public class GameWorld implements Paintable, Serializable{
     private PlayerEntity player;
 
     private transient Window parentWindow;
+
+    private transient Stack<Container> gameContainers;
 
     private transient Thread gameUpdateThread;
 
@@ -46,9 +50,13 @@ public class GameWorld implements Paintable, Serializable{
 
             @Override
             public void run(){
+                //in milliseconds
+                int prevDelay = 1;
                 while(true){
-                    Time.nanoDelay(Time.NS_IN_MS);
-                    invokeGameUpdates();
+                    long startTime = Time.timeMs();
+                    // Time.nanoDelay(Time.NS_IN_MS);
+                    invokeGameUpdates(prevDelay);
+                    prevDelay = (int)(Time.timeMs()-startTime);
                 }
             }
         });
@@ -56,8 +64,8 @@ public class GameWorld implements Paintable, Serializable{
         gameUpdateThread.start();
     }
 
-    private void invokeGameUpdates(){
-        GameUpdateEvent gue = new GameUpdateEvent(loadedMap, false);
+    private void invokeGameUpdates(int deltaTime){
+        GameUpdateEvent gue = new GameUpdateEvent(loadedMap, deltaTime, false);
 
         if(loadedMap != null)
             loadedMap.update(gue);
@@ -93,4 +101,19 @@ public class GameWorld implements Paintable, Serializable{
         this.camera = camera;
     }
 
+    public Stack<Container> getGameContainers() {
+        return this.gameContainers;
+    }
+
+    public void setGameContainers(Stack<Container> gameContainers) {
+        this.gameContainers = gameContainers;
+    }
+
+    public Window getParentWindow() {
+        return this.parentWindow;
+    }
+
+    public void setParentWindow(Window parentWindow) {
+        this.parentWindow = parentWindow;
+    }
 }
