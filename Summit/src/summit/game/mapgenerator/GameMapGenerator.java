@@ -2,6 +2,7 @@ package summit.game.mapgenerator;
 
 import summit.game.GameMap;
 import summit.game.tile.SnowTile;
+import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 
 public class GameMapGenerator {
@@ -16,7 +17,7 @@ public class GameMapGenerator {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
                 tiles[i][j] = new TileStack(j, i);
-                tiles[i][j].pushTile(new SnowTile(j, i));
+                tiles[i][j].pushTile(new StoneTile(j, i));
             }
         }
 

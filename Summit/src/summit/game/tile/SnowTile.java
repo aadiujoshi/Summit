@@ -11,18 +11,16 @@ import summit.gfx.Sprite;
 
 public class SnowTile extends Tile{
 
-    public SnowTile(float width, float height, float x, float y){
-        super(x, y, width, height);
-    }
-
+    
     public SnowTile(float x, float y){
         super(x, y);
+        super.setSprite(Sprite.SNOW_TILE);
     }
 
     @Override
     public void paint(PaintEvent e){
         // System.out.println(getX() + "  " + getY());
-        e.getRenderer().renderGame(Sprite.STONE_TILE, getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
+        e.getRenderer().renderGame(Sprite.SNOW_TILE, getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
     }
 
     @Override
