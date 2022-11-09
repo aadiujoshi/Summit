@@ -70,6 +70,10 @@ public class GameMap implements Paintable, GameUpdateReciever{
     // getters and setters
     //--------------------------------------------------------------------
     
+    public TileStack getTileAt(float x, float y){
+        return map[Math.round(y)][Math.round(x)];
+    }
+
     public TileStack[][] getMap() {
         return this.map;
     }

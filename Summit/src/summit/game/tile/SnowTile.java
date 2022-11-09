@@ -10,28 +10,19 @@ import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 
 public class SnowTile extends Tile{
-
     
     public SnowTile(float x, float y){
         super(x, y);
         super.setSprite(Sprite.SNOW_TILE);
     }
-
-    @Override
-    public void paint(PaintEvent e){
-        // System.out.println(getX() + "  " + getY());
-        e.getRenderer().renderGame(Sprite.SNOW_TILE, getX(), getY(), Renderer.FLIP_NONE, e.getCamera());
-    }
-
+    
     @Override
     public void gameClick(GameMap map, MouseEvent e){
-        // if(map.getPlayer().inHand() instanceof ShovelTool){
-
-        // }
+        
     }
 
     @Override
     public void update(GameUpdateEvent e) {
-        //do nothing
+        
     }
 }

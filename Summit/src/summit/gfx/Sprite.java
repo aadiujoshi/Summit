@@ -10,4 +10,6 @@ public class Sprite {
     public static final String SNOW_TILE = "snow-tile";
     public static final String VILLAGE_HOUSE = "village-house";
     public static final String STONE_TILE = "stone-tile";
+    public static final String GRASS_TILE = "grass-tile";
+    public static final String WATER_TILE = "water-tile";
 }

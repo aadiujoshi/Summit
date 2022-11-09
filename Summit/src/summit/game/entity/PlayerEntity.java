@@ -19,8 +19,10 @@ public class PlayerEntity extends HumanoidEntity{
 
     public PlayerEntity(float x, float y) {
         super(x, y, 1, 1);
-        super.setDx(2.5f);
-        super.setDy(2.5f);
+        // super.setDx(2.5f);
+        // super.setDy(2.5f);
+        super.setDx(20f);
+        super.setDy(20f);
     }
 
     @Override
@@ -42,11 +44,9 @@ public class PlayerEntity extends HumanoidEntity{
 
     @Override
     public void update(GameUpdateEvent e) {
-
         
-
-        float del_x = (getDx()/1000)*e.getDeltaTime();
-        float del_y = (getDy()/1000)*e.getDeltaTime();
+        float del_x = (getDx()/Time.MS_IN_S)*e.getDeltaTime();
+        float del_y = (getDy()/Time.MS_IN_S)*e.getDeltaTime();
 
         if(Controls.W){
             camera.setY(this.getY()+del_y);
@@ -68,13 +68,11 @@ public class PlayerEntity extends HumanoidEntity{
 
     @Override
     public void damage(GameUpdateEvent ge, Entity e) {
-        // TODO Auto-generated method stub
         
     }
 
     @Override
     public void destroy(GameUpdateEvent ge) {
-        // TODO Auto-generated method stub
         
     }
 

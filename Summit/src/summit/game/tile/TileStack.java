@@ -33,9 +33,7 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
 
     @Override
     public void gameClick(GameMap map, MouseEvent e){
-        for(Tile t: tiles){
-            t.gameClick(map, e);
-        }
+        tiles.peek().gameClick(map, e);
     }
 
     @Override 
@@ -51,9 +49,10 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
         for(int i = 0; i < tiles.size(); i++){
             Tile t = tiles.get(i);
             t.update(e);
-            // if(t.isSetToDestroy()){
-
-            // }
+            if(t.destroyed()){
+                tiles.remove(i);
+                i--;
+            }
         }
     }
 }

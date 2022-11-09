@@ -12,7 +12,11 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     private boolean boundary;
 
     private String sprite;
-    
+    //random tile rotation
+    private int rotation = (int)(Math.random()*5);
+
+    private boolean destroy = false;
+
     public Tile(float x, float y, float width, float height){
         super(x, y, width, height);
     }
@@ -24,7 +28,7 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     @Override
     public void paint(PaintEvent e){
         if(sprite != null)
-            e.getRenderer().renderGame(sprite, getX(), getY(), 0, e.getCamera());
+            e.getRenderer().renderGame(sprite, getX(), getY(), getRotation(), e.getCamera());
     } 
 
 
@@ -46,4 +50,20 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
         this.boundary = bounded;
     }
 
+    public int getRotation() {
+        return this.rotation;
+    }
+
+    public void setRotation(int rotation) {
+		this.rotation = rotation;
+	}
+
+    public boolean destroyed() {
+        return this.destroy;
+    }
+
+    public void setDestroy(boolean destroy) {
+		this.destroy = destroy;
+        
+	}
 }

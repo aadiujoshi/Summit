@@ -46,6 +46,10 @@ public class GameWorld implements Paintable, Serializable{
         maps.add(GameMapGenerator.generateStage1(seed));
         loadedMap = maps.get(0);
 
+        initUpdateThread();
+    }
+
+    public void initUpdateThread(){
         gameUpdateThread = new Thread(new Runnable(){
 
             @Override

@@ -10,7 +10,7 @@ import java.awt.image.DataBufferInt;
 import summit.util.Time;
 
 public class Renderer {
-    
+
     private int[][] frame;
     
     public static final int WIDTH = 256;
@@ -201,7 +201,7 @@ public class Renderer {
     }
 
     /**
-     * leave color packed 
+     * outline an image, leave flag packed 
      * @param s
      * @param color
      * @return
