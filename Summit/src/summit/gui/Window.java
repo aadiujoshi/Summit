@@ -45,6 +45,8 @@ import java.awt.event.MouseEvent;
 
 public class Window implements MouseListener, KeyListener{
     
+    public static final Object LOCK = new Object();
+
     private JFrame frame;
     private Canvas canvas;
     private Renderer renderer;
@@ -131,7 +133,9 @@ public class Window implements MouseListener, KeyListener{
                             // g.setRenderingHint(RenderingHints.);
 
                             {
-                                renderFrame(g);
+                                synchronized(LOCK){
+                                    renderFrame(g);
+                                }
                             }
 
                             // System.out.println(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000));

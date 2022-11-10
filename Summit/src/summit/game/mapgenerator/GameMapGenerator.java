@@ -17,28 +17,27 @@ public class GameMapGenerator {
 
         TileStack[][] tiles =  map.getMap();
 
-        for (double x = 0; x < heightMap[0].length; x+=0.1) {
-            for (double y = 0; y < heightMap.length; y+=0.1) {
-                heightMap[(int)(y*10)][(int)(x*10)] = gen.eval(x, y);
-                tiles[(int)(y*10)][(int)(x*10)] = new TileStack();
-            }
-        }
+        // for (double x = 0; x < heightMap[0].length; x+=0.1) {
+        //     for (double y = 0; y < heightMap.length; y+=0.1) {
+        //         heightMap[(int)(y*10)][(int)(x*10)] = gen.eval(x, y);
+        //     }
+        // }
 
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[0].length; j++) {
-                double val = heightMap[i][j];
-                if(val < 0){
-                    tiles[i][j].pushTile(new StoneTile(j, i));
-                    if(val < -0.5){
-                        til
-                    }
+        // for (int i = 0; i < tiles.length; i++) {
+        //     for (int j = 0; j < tiles[0].length; j++) {
+        //         double val = heightMap[i][j];
+        //         if(val < 0){
+        //             tiles[i][j].pushTile(new StoneTile(j, i));
+        //             if(val < -0.5){
+        //                 til
+        //             }
 
-                } else if(val > 0){
-                    tiles[i][j].pushTile(new GrassTile(j, i));
-                    tiles[i][j].pushTile(new SnowTile(j, i));
-                }
-            }
-        }
+        //         } else if(val > 0){
+        //             tiles[i][j].pushTile(new GrassTile(j, i));
+        //             tiles[i][j].pushTile(new SnowTile(j, i));
+        //         }
+        //     }
+        // }
 
         return map;
     }
