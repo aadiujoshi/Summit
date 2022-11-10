@@ -12,4 +12,6 @@ public class Sprite {
     public static final String STONE_TILE = "stone-tile";
     public static final String GRASS_TILE = "grass-tile";
     public static final String WATER_TILE = "water-tile";
+    public static final String HALF_HEART = "heart-half";
+    public static final String FULL_HEART = "heart-full";
 }

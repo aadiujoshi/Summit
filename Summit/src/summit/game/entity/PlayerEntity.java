@@ -19,10 +19,8 @@ public class PlayerEntity extends HumanoidEntity{
 
     public PlayerEntity(float x, float y) {
         super(x, y, 1, 1);
-        // super.setDx(2.5f);
-        // super.setDy(2.5f);
-        super.setDx(20f);
-        super.setDy(20f);
+        super.setDx(4f);
+        super.setDy(4f);
     }
 
     @Override

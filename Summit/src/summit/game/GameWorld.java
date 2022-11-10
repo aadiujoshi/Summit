@@ -2,6 +2,7 @@ package summit.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -16,7 +17,7 @@ import summit.util.Time;
 
 public class GameWorld implements Paintable, Serializable{
 
-    private List<GameMap> maps;
+    private HashMap<String, GameMap> maps;
     private GameMap loadedMap;
     private final long SEED;
 
@@ -37,14 +38,21 @@ public class GameWorld implements Paintable, Serializable{
     public GameWorld(Window parentWindow, long seed){
         this.parentWindow = parentWindow;
         SEED = seed;
-        maps = new ArrayList<>();
+        maps = new HashMap<>();
 
         camera = new Camera(0, 0);
         player = new PlayerEntity(0, 0);
         player.setCamera(camera);
 
-        maps.add(GameMapGenerator.generateStage1(seed));
-        loadedMap = maps.get(0);
+        GameMap stage1 = GameMapGenerator.generateStage1(seed);
+        GameMap stage2 = GameMapGenerator.generateStage2(seed);
+        GameMap stage3 = GameMapGenerator.generateStage3(seed);
+
+        maps.put(stage1.getName(), stage1);
+        maps.put(null, stage2);
+        maps.put(null, stage3);
+        
+        loadedMap = maps.get("stage1");
 
         initUpdateThread();
     }

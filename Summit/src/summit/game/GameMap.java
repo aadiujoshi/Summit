@@ -93,4 +93,8 @@ public class GameMap implements Paintable, GameUpdateReciever{
     public void setPlayer(PlayerEntity player) {
         this.player = player;
     }
+    
+    public String getName(){
+        return this.NAME;
+    }
 }

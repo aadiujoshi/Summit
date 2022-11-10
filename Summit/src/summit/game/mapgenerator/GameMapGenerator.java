@@ -21,6 +21,7 @@ public class GameMapGenerator {
             for (int y = 0; y < heightMap.length; y++) {
                 heightMap[y][x] = gen.eval(x/10, y/10);
                 tiles[y][x] = new TileStack(x, y);
+                tiles[y][x].pushTile(new SnowTile(x, y));
                 tiles[y][x].pushTile(new StoneTile(x, y));
             }
         }
