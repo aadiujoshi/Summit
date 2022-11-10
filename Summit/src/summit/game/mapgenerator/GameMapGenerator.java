@@ -17,11 +17,15 @@ public class GameMapGenerator {
 
         TileStack[][] tiles =  map.getMap();
 
-        // for (double x = 0; x < heightMap[0].length; x+=0.1) {
-        //     for (double y = 0; y < heightMap.length; y+=0.1) {
-        //         heightMap[(int)(y*10)][(int)(x*10)] = gen.eval(x, y);
-        //     }
-        // }
+        for (int x = 0; x < heightMap[0].length; x++) {
+            for (int y = 0; y < heightMap.length; y++) {
+                heightMap[y][x] = gen.eval(x/10, y/10);
+                tiles[y][x] = new TileStack(x, y);
+                tiles[y][x].pushTile(new StoneTile(x, y));
+            }
+        }
+
+
 
         // for (int i = 0; i < tiles.length; i++) {
         //     for (int j = 0; j < tiles[0].length; j++) {

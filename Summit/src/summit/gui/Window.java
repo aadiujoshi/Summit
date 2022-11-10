@@ -130,12 +130,9 @@ public class Window implements MouseListener, KeyListener{
 
                             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
                             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-                            // g.setRenderingHint(RenderingHints.);
-
+                            
                             {
-                                synchronized(LOCK){
-                                    renderFrame(g);
-                                }
+                                renderFrame(g);
                             }
 
                             // System.out.println(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000));
@@ -218,7 +215,7 @@ public class Window implements MouseListener, KeyListener{
         
         this.setState(WindowState.SELECTIONMENUS);
     }
-    
+
     private void renderFrame(Graphics2D g){
         
         g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);

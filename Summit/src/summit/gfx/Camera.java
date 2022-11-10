@@ -1,6 +1,6 @@
 package summit.gfx;
 
-public class Camera {
+public class Camera implements Cloneable{
 
     private float x;
     private float y;
@@ -30,5 +30,10 @@ public class Camera {
     @Override
     public String toString(){
         return this.x + "  " + this.y;
+    }
+
+    @Override 
+    public Camera clone(){
+        return new Camera(getX(), getY());
     }
 }

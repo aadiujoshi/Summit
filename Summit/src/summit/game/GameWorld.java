@@ -59,7 +59,9 @@ public class GameWorld implements Paintable, Serializable{
                 while(true){
                     long startTime = Time.timeMs();
                     // Time.nanoDelay(Time.NS_IN_MS);
-                    invokeGameUpdates(prevDelay);
+                    synchronized(Window.LOCK){
+                        invokeGameUpdates(prevDelay);
+                    }
                     prevDelay = (int)(Time.timeMs()-startTime);
                 }
             }
@@ -79,7 +81,7 @@ public class GameWorld implements Paintable, Serializable{
 
     @Override
     public void paint(PaintEvent e){
-        PaintEvent pe = new PaintEvent(e.getRenderer(), e.getLastFrame(), camera);
+        PaintEvent pe = new PaintEvent(e.getRenderer(), e.getLastFrame(), camera.clone());
 
         if(loadedMap != null){
             loadedMap.paint(pe);
