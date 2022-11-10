@@ -26,7 +26,7 @@ public class GameMapGenerator {
             }
         }
 
-
+        
 
         // for (int i = 0; i < tiles.length; i++) {
         //     for (int j = 0; j < tiles[0].length; j++) {

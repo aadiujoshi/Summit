@@ -44,6 +44,9 @@ public class GameMap implements Paintable, GameUpdateReciever{
                 map[i][j].update(e);
             }
         }
+        // for(int i = 0; i < entities.size(); i++) {
+        //     entities.gte4
+        // }
     }
 
     @Override
