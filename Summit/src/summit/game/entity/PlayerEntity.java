@@ -8,6 +8,7 @@ import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
+import summit.gui.HUD;
 import summit.util.Controls;
 import summit.util.Time;
 
@@ -15,12 +16,17 @@ public class PlayerEntity extends HumanoidEntity{
 
     private Camera camera;
 
+    private HUD hud;
+
     private long lastAnimationChange = Time.timeMs();
 
     public PlayerEntity(float x, float y) {
         super(x, y, 1, 1);
-        super.setDx(4f);
-        super.setDy(4f);
+        super.setDx(10f);
+        super.setDy(10f);
+        super.setHealth(10f);
+        //DO THIS
+        // super.setSprites(getName(), getName(), getName(), getName(), getName(), getName());
     }
 
     @Override
@@ -28,8 +34,11 @@ public class PlayerEntity extends HumanoidEntity{
         
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                     getX(), getY(), 
-                                    (Time.timeMs()-lastAnimationChange > 250) ? Renderer.FLIP_NONE : Renderer.FLIP_X, 
+                                    ((Time.timeMs()-lastAnimationChange > 250) ? Renderer.FLIP_NONE : Renderer.FLIP_X) | 
+                                    (inWater() ? Renderer.OUTLINE_RED : Renderer.FLIP_NONE), 
                                     e.getCamera());
+
+
 
         if((Time.timeMs()-lastAnimationChange > 500))
             lastAnimationChange = Time.timeMs();
@@ -42,9 +51,10 @@ public class PlayerEntity extends HumanoidEntity{
 
     @Override
     public void update(GameUpdateEvent e) {
-        
-        float del_x = (getDx()/Time.MS_IN_S)*e.getDeltaTime();
-        float del_y = (getDy()/Time.MS_IN_S)*e.getDeltaTime();
+        super.update(e);
+
+        float del_x = (  getDx() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();
+        float del_y = (  getDy() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();
 
         if(Controls.W){
             camera.setY(this.getY()+del_y);

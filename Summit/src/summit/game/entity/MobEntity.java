@@ -12,7 +12,7 @@ public abstract class MobEntity extends Entity{
     }
 
     //------  getters and setters -------------------------------------------
-
+    
     public Direction getFacing() {
         return this.facing;
     }

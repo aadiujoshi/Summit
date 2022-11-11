@@ -3,15 +3,13 @@ package summit.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.text.html.parser.Entity;
-
+import summit.game.entity.Entity;
 import summit.game.entity.PlayerEntity;
 import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.Renderer;
-import summit.gui.Window;
 
 public class GameMap implements Paintable, GameUpdateReciever{
     
@@ -44,9 +42,9 @@ public class GameMap implements Paintable, GameUpdateReciever{
                 map[i][j].update(e);
             }
         }
-        // for(int i = 0; i < entities.size(); i++) {
-        //     entities.gte4
-        // }
+        for(int i = 0; i < entities.size(); i++) {
+            entities.get(i).update(e);
+        }
     }
 
     @Override
@@ -58,8 +56,6 @@ public class GameMap implements Paintable, GameUpdateReciever{
         //range of tiles to display
         int rwidth = (Renderer.WIDTH/16)+3;
         int rheight = (Renderer.HEIGHT/16)+3;
-
-        // System.out.println(rwidth*rheight);
 
         for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < map.length; i++){
             for(int j = ny-rheight/2; j < ny+rheight/2 && j < map[0].length; j++){
@@ -74,6 +70,10 @@ public class GameMap implements Paintable, GameUpdateReciever{
     //--------------------------------------------------------------------
     
     public TileStack getTileAt(float x, float y){
+        //out of bounds
+        if(Math.round(y) < 0 || Math.round(y) >= map.length ||
+            Math.round(x) < 0 || Math.round(x) > map[0].length)
+            return null;
         return map[Math.round(y)][Math.round(x)];
     }
 
@@ -100,4 +100,17 @@ public class GameMap implements Paintable, GameUpdateReciever{
     public String getName(){
         return this.NAME;
     }
+
+    public int getWidth(){
+        return this.WIDTH;
+    }
+
+    public int getHeight(){
+        return this.HEIGHT;
+    }
+
+    public long getSeed(){
+        return this.SEED;
+    }
+
 }

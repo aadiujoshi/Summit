@@ -40,10 +40,6 @@ public class GameWorld implements Paintable, Serializable{
         SEED = seed;
         maps = new HashMap<>();
 
-        camera = new Camera(0, 0);
-        player = new PlayerEntity(0, 0);
-        player.setCamera(camera);
-
         GameMap stage1 = GameMapGenerator.generateStage1(seed);
         GameMap stage2 = GameMapGenerator.generateStage2(seed);
         GameMap stage3 = GameMapGenerator.generateStage3(seed);
@@ -53,6 +49,10 @@ public class GameWorld implements Paintable, Serializable{
         maps.put(null, stage3);
         
         loadedMap = maps.get("stage1");
+        
+        player = new PlayerEntity(loadedMap.getWidth()/2, loadedMap.getHeight()/2);
+        camera = new Camera(player.getX(), player.getY());
+        player.setCamera(camera);
 
         initUpdateThread();
     }
@@ -66,10 +66,9 @@ public class GameWorld implements Paintable, Serializable{
                 int prevDelay = 1;
                 while(true){
                     long startTime = Time.timeMs();
-                    // Time.nanoDelay(Time.NS_IN_MS);
-                    synchronized(Window.LOCK){
-                        invokeGameUpdates(prevDelay);
-                    }
+                    
+                    invokeGameUpdates(prevDelay);
+                    
                     prevDelay = (int)(Time.timeMs()-startTime);
                 }
             }
@@ -89,7 +88,7 @@ public class GameWorld implements Paintable, Serializable{
 
     @Override
     public void paint(PaintEvent e){
-        PaintEvent pe = new PaintEvent(e.getRenderer(), e.getLastFrame(), camera.clone());
+        PaintEvent pe = new PaintEvent(e.getRenderer(), e.getLastFrame(), camera.clone(), e.getWindow());
 
         if(loadedMap != null){
             loadedMap.paint(pe);

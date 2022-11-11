@@ -23,6 +23,19 @@ public abstract class HumanoidEntity extends MobEntity{
         super(x, y, width, height);
     }
 
+    protected void setSprites(String sprite_north_moving, String sprite_north_neutral, 
+                                String sprite_south_moving, String sprite_south_neutral, 
+                                String sprite_east_moving, String sprite_east_neutral){
+        this.sprite_north_moving = sprite_north_moving;
+        this.sprite_north_neutral = sprite_north_neutral;
+
+        this.sprite_south_moving = sprite_south_moving;
+        this.sprite_south_neutral = sprite_south_neutral;
+        
+        this.sprite_east_moving = sprite_east_moving;
+        this.sprite_east_neutral = sprite_east_neutral;
+    }
+
     @Override
     public void paint(PaintEvent e){
         Direction d = getFacing();

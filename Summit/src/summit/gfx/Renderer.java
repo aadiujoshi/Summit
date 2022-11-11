@@ -2,12 +2,7 @@ package summit.gfx;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import java.awt.image.DataBufferInt;
-
-import summit.util.Time;
 
 public class Renderer {
 
@@ -43,22 +38,18 @@ public class Renderer {
 
         int[][] upscaled = new int[newHeight][newWidth];
 
+        int[] frameBuffer = ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData();
+
         float scaleX = newWidth/WIDTH;
         float scaleY = newHeight/HEIGHT;
-
-        long strt = Time.timeNs();
-
+        
         // method 1 (working)
         for(int r = 0; r < upscaled.length; r++) {
             for(int c = 0; c < upscaled[0].length; c++){
                 if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
-                    upscaled[r][c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
+                    frameBuffer[r*newWidth+c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
                 }
             }
-            // newFrame.getRaster().setDataElements(0, r, upscaled[r].length, 1, upscaled[r]);
-            System.arraycopy(upscaled[r], 0, 
-                            ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData(), 
-                            r*upscaled[0].length, upscaled[r].length);
         }
         
         this.frame = upscaled;
@@ -209,6 +200,7 @@ public class Renderer {
     public static int[][] outline(int[][] sprite, int flag){
 
         //unpack flag
+        flag <<= 3;
         int color =  ((flag & OUTLINE_RED) == OUTLINE_RED ? 0xff << 16 : 0)
                         | ((flag & OUTLINE_GREEN) == OUTLINE_GREEN ? 0xff << 8 : 0)
                         | ((flag & OUTLINE_BLUE) == OUTLINE_BLUE ? 0xff << 0 : 0);
@@ -221,9 +213,16 @@ public class Renderer {
                     if((r-1 > -1 && sprite[r-1][c] == -1) ||
                         (c-1 > -1 && sprite[r][c-1] == -1) ||
                         (r+1 < sprite.length && sprite[r+1][c] == -1) ||
-                        (c+1 < sprite[0].length && sprite[r][c+1] == -1)){
+                        (c+1 < sprite[0].length && sprite[r][c+1] == -1) || 
+
+                        (r-1 > -1 && c-1 > -1 && sprite[r-1][c-1] == -1) || 
+                        (r-1 > -1 && c+1 < sprite[0].length && sprite[r-1][c+1] == -1) ||
+                        (r+1 < sprite.length && c-1 > -1 && sprite[r+1][c-1] == -1) || 
+                        (r+1 < sprite.length && c+1 < sprite[0].length) && sprite[r+1][c+1] == -1){
                         
                         outlined[r][c] = color;
+                    } else {
+                        outlined[r][c] = sprite[r][c];
                     }
                 } else {
                     outlined[r][c] = sprite[r][c];

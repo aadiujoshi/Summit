@@ -18,7 +18,7 @@ public class Main {
 
                 System.out.println(screen);
 
-                Window window = new Window("Summit", (int)(screen.width/1.5), (int)(screen.height/1.5));
+                Window window = new Window("Summit");
                 
             }
         });

@@ -17,6 +17,8 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
 
     private boolean destroy = false;
 
+    private final String NAME = getClass().getSimpleName();
+
     public Tile(float x, float y, float width, float height){
         super(x, y, width, height);
     }
@@ -64,6 +66,9 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
 
     public void setDestroy(boolean destroy) {
 		this.destroy = destroy;
-        
 	}
+    
+    public String getName(){
+        return this.NAME;
+    }
 }

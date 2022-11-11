@@ -21,6 +21,8 @@ public class Container implements Paintable, GUIClickReciever{
     private Container parent;
     private Window window;
 
+    private boolean visible = true;
+
     public Container(Container parent, float relX, float relY, float relWidth, float relHeight){
         components = new ArrayList<>();
         this.parent = parent;
@@ -49,6 +51,7 @@ public class Container implements Paintable, GUIClickReciever{
 
     @Override
     public void paint(PaintEvent e) {
+        if(!visible) return;
 
         Renderer ren = e.getRenderer();
 
@@ -165,5 +168,13 @@ public class Container implements Paintable, GUIClickReciever{
 
     public Container getComponent(int index){
         return this.components.get(index);
+    }
+    
+    public boolean isVisible() {
+        return this.visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

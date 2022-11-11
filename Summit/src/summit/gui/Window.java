@@ -42,11 +42,10 @@ import summit.util.Controls;
 import summit.util.Time;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.awt.Dimension;
 
 public class Window implements MouseListener, KeyListener{
     
-    public static final Object LOCK = new Object();
-
     private JFrame frame;
     private Canvas canvas;
     private Renderer renderer;
@@ -59,14 +58,14 @@ public class Window implements MouseListener, KeyListener{
 
     //-----------------------
 
-    public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-    public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+    // public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+    // public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 
-    // public static final int SCREEN_WIDTH = 1920;
-    // public static final int SCREEN_HEIGHT = 1080;
+    public static final int SCREEN_WIDTH = 1280;
+    public static final int SCREEN_HEIGHT = 720;
 
     private boolean closed = false;
-    private boolean mouseDown = false;
+    private static boolean mouseDown = false;
 
     private int width;
     private int height;
@@ -91,10 +90,10 @@ public class Window implements MouseListener, KeyListener{
     
     //------------------------------------------
 
-    public Window(String title, int w, int h){
+    public Window(String title){
 
-        width = w;
-        height = h;
+        width = SCREEN_WIDTH;
+        height = SCREEN_HEIGHT;
         
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
@@ -155,7 +154,10 @@ public class Window implements MouseListener, KeyListener{
             frame = new JFrame(title);
             frame.getContentPane().setPreferredSize(new Dimension(width, height));
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.setResizable(true);
+            frame.setResizable(false);
+            frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+            // frame.setMaximumSize(new java.awt.Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+            // frame.revalidate();
 
             frame.addWindowListener(new WindowAdapter() {
                 @Override
@@ -179,6 +181,7 @@ public class Window implements MouseListener, KeyListener{
                 @Override
                 public void componentResized(ComponentEvent e) {
                     super.componentResized(e);
+                    frame.validate();
                     width = canvas.getWidth();
                     height = canvas.getHeight();
                 }
@@ -196,6 +199,9 @@ public class Window implements MouseListener, KeyListener{
             canvas.setPreferredSize(new Dimension(width, height));
             canvas.setSize(width, height);
             canvas.setFocusable(true);
+            // canvas.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+            // canvas.setMaximumSize(new java.awt.Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+            // canvas.revalidate();
 
             canvas.addKeyListener(this);
             canvas.addMouseListener(this);
@@ -208,6 +214,8 @@ public class Window implements MouseListener, KeyListener{
             canvas.createBufferStrategy(2);
             bufferStrategy = canvas.getBufferStrategy();
 
+            frame.revalidate();
+
             frame.setVisible(true);
 
             graphicsThread.start();
@@ -218,17 +226,17 @@ public class Window implements MouseListener, KeyListener{
 
     private void renderFrame(Graphics2D g){
         
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+        PaintEvent pe = new PaintEvent(renderer, lastFrame, null, this);
+
         if(state == WindowState.SELECTIONMENUS){
-            PaintEvent pe = new PaintEvent(renderer, lastFrame, null);
             renderer.renderImage(bg, Renderer.WIDTH/2, Renderer.HEIGHT/2);
             if (!guiContainersHome.isEmpty())
                 guiContainersHome.peek().paint(pe);
         }
         else if(state == WindowState.GAME){
-            //camera is set by gameworld
-            PaintEvent pe = new PaintEvent(renderer, lastFrame, null);
             if(world != null)
                 world.paint(pe);
             
@@ -239,13 +247,9 @@ public class Window implements MouseListener, KeyListener{
         //----------------------------------------------------------------------------------
         renderer.upscaleToImage(finalFrame);
         
-        // Image raw = finalFrame.getScaledInstance(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.SCALE_REPLICATE);
-        // BufferedImage scaled = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
-        // scaled.getGraphics().drawImage(raw, 0, 0, null);
-
         g.drawImage(finalFrame, null, 0, 0);
         
-        renderer.resetFrame();
+        // renderer.resetFrame();
     }
 
 
@@ -334,17 +338,23 @@ public class Window implements MouseListener, KeyListener{
         guiContainersGame.clear();
     }
 
+    public static boolean mouseDown(){
+        return mouseDown;
+    }
+
     public void setFullscreen(boolean full) {
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
                 fullscreen = full;
                 if(fullscreen){
+                    frame.setResizable(true);
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(frame);
                 }
                 else if(!fullscreen){
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
                     frame.setSize(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+                    frame.setResizable(false);
                 }
             }
         });
@@ -384,7 +394,8 @@ public class Window implements MouseListener, KeyListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-        
+        mouseDown = true;
+
         float rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
         float ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
 
@@ -422,7 +433,7 @@ public class Window implements MouseListener, KeyListener{
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        
+        mouseDown = false;
     }
 
     @Override

@@ -15,16 +15,42 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     private float lastX, lastY;
     private boolean moving;
     
+    //just metadata for class name
+    private final String NAME = getClass().getSimpleName();
+
+    private boolean inWater;
+    private boolean destroyed;
+    private float health;
+
     public Entity(float x, float y, float width, float height){
         super(x,y,width,height);
+
+        inWater = false;
+        destroyed = false;
     }
 
     @Override
     public void update(GameUpdateEvent e){
+        System.out.println(getX() + "  " + getY());
+        if(getX() < -0.5 || getY() < -0.5){
+            return;
+        }
+
+        if(getHealth() <= 0){
+            destroyed = true;
+            destroy(e);
+        }
+
         if(lastX != getX() && lastY != getY())
             moving = true;
         lastX = getX();
         lastY = getY();
+
+        // System.out.println(e.getMap().getTileAt(getX(), getY()).peekTile().getName());
+
+        if(e.getMap().getTileAt(getX(), getY()).peekTile().getName().equals("WaterTile")){
+            setInWater(true);
+        } else { setInWater(false); }
     }
 
     abstract public void damage(GameUpdateEvent ge, Entity e);
@@ -53,5 +79,37 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public boolean isMoving() {
         return this.moving;
+    }
+    
+    public String getName(){
+        return this.NAME;
+    }
+    
+    public boolean inWater() {
+        return this.inWater;
+    }
+    
+    public boolean destroyed(){
+        return destroyed;
+    }
+
+    public void setDestroyed(boolean d){
+        this.destroyed = d;
+    }
+
+    public void setInWater(boolean inWater) {
+        this.inWater = inWater;
+    }
+    
+    public float getHealth() {
+        return this.health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
+    public void changeHealth(float c){
+        this.health += c;
     }
 }

@@ -11,7 +11,7 @@ public class StoneTile extends Tile{
 
     public StoneTile(float x, float y) {
         super(x, y);
-        super.setSprite(Sprite.FULL_HEART);
+        super.setSprite(Sprite.STONE_TILE);
         
     }
 

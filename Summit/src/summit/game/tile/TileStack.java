@@ -31,6 +31,10 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
         return tiles.pop();
     }
 
+    public Tile peekTile(){
+        return tiles.peek();
+    }
+
     @Override
     public void gameClick(GameMap map, MouseEvent e){
         tiles.peek().gameClick(map, e);
