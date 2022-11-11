@@ -264,7 +264,7 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.NEWGAME){
-            world = new GameWorld(this, 69);
+            world = new GameWorld(this, 0L);
             world.setGameContainers(guiContainersGame);
             state = WindowState.GAME;
             return;
