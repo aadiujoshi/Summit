@@ -106,7 +106,7 @@ public class Window implements MouseListener, KeyListener{
         // world = new GameWorld(this);
 
         try {
-            bg = ImageIO.read(new File("Summit/Summit/src/summit/deprecated/extra/gradient-background.png"));
+            bg = ImageIO.read(new File("src/summit/deprecated/extra/gradient-background.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
