@@ -12,7 +12,7 @@ public class Main {
         Thread main = new Thread(new Runnable() {
             @Override
             public void run() {
-                BufferedSprites.loadSprites("Summit\\Summit\\src\\summit\\resources");
+                BufferedSprites.loadSprites("src\\summit\\resources");
 
                 java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
