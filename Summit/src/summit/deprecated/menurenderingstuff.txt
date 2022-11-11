@@ -1,0 +1,20 @@
+//for centering on region coordinate
+        // int xOffset = (int)((region.getWidth()%16)/2);
+        // int yOffset = (int)((region.getHeight()%16)/2);
+
+        // int startX = (int)(region.getX()-(region.getWidth()/2)) + xOffset;
+        // int startY = (int)(region.getY()-(region.getHeight()/2)) + yOffset;
+
+        // int endX = (int)(region.getX()+(region.getWidth()/2) - xOffset);
+        // int endY = (int)(region.getY()+(region.getHeight()/2) - yOffset);
+
+        // if((startX-endX)%2 == 1)
+        //     System.out.println("dsfaadsfads");
+        // startX -= (startX-endX)%2 != 0 ? 8 : 0;
+        // startY -= (startY-endY)%2 != 0 ? 8 : 0;
+
+        // endX += (startX-endX)%2 != 0 ? 8 : 0;
+        // endY += (startY-endY)%2 != 0 ? 8 : 0;
+
+        // System.out.println((startX-endX)/16);
+        // System.out.println((startY-endY)/16);

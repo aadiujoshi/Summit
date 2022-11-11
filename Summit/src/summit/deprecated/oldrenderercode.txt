@@ -1,0 +1,39 @@
+//really cool effect i accidentaly created
+        // for(int r = 1; r < newHeight; r+=2) {
+        //     int r1 = Math.round(r/scaleY);
+        //     int r2 = Math.round((r-1)/scaleY);
+
+        //     if(!(r1 < frame.length && r2 < frame.length))
+        //         continue;
+            
+        //     int[] row1 = frame[r1];
+        //     int[] row2 = frame[r2];
+
+        //     for(int c = 0; c < newWidth; c++){
+        //         iterations++;
+
+        //         int cc = Math.round(c/scaleX);
+        //         if(!(cc < frame[0].length))
+        //             continue;
+                
+        //         newFrame.setRGB(c, r, row1[cc]);
+        //         newFrame.setRGB(c, r, row2[cc]);
+        //     }
+        // }
+
+
+
+        
+
+    /**
+     * Camera is left in gamecoordinates
+     */
+    // public static Point2D.Float toTile(float x, float y, Camera cam){
+        
+    //     //inverted equation of topixel
+    //     //REDO IT IS WRONG 
+    //     float nx = (x+cam.getX()-(WIDTH/2))/16F;
+    //     float ny = (y-cam.getY()-(HEIGHT/2))/(-16F);
+
+    //     return new Point2D.Float(nx, ny); 
+    // }
