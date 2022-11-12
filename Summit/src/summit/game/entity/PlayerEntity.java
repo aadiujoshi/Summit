@@ -22,8 +22,8 @@ public class PlayerEntity extends HumanoidEntity{
 
     public PlayerEntity(float x, float y) {
         super(x, y, 1, 1);
-        super.setDx(10f);
-        super.setDy(10f);
+        super.setDx(5f);
+        super.setDy(5f);
         super.setHealth(10f);
         this.hud = new HUD();
         hud.setPlayer(this);
@@ -39,7 +39,7 @@ public class PlayerEntity extends HumanoidEntity{
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                     getX(), getY(), 
                                     ((Time.timeMs()-lastAnimationChange > 250) ? Renderer.FLIP_NONE : Renderer.FLIP_X) | 
-                                    (inWater() ? Renderer.OUTLINE_RED : Renderer.FLIP_NONE), 
+                                    (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.FLIP_NONE),
                                     e.getCamera());
 
         if((Time.timeMs()-lastAnimationChange > 500))
@@ -58,19 +58,19 @@ public class PlayerEntity extends HumanoidEntity{
         float del_x = (  getDx() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();
         float del_y = (  getDy() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();
 
-        if(Controls.W){
+        if(Controls.W && moveTo(e.getMap(), this.getX(), this.getY()+del_y)){
             camera.setY(this.getY()+del_y);
             this.setY(this.getY()+del_y);
         }
-        if(Controls.A){
+        if(Controls.A && moveTo(e.getMap(), this.getX()-del_x, this.getY())){
             camera.setX(getX()-del_x);
             this.setX(this.getX()-del_x);
         }
-        if(Controls.S){
+        if(Controls.S && moveTo(e.getMap(), this.getX(), this.getY()-del_y)){
             camera.setY(getY()-del_y);
             this.setY(this.getY()-del_y);
         }
-        if(Controls.D){
+        if(Controls.D && moveTo(e.getMap(), this.getX()+del_x, this.getY())){
             camera.setX(getX()+del_x);
             this.setX(this.getX()+del_x);
         }

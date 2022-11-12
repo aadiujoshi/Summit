@@ -36,7 +36,6 @@ public class GameMapGenerator {
                 double val = heightMap[i][j];
                 TileStack t = tiles[i][j];
                 if(val < 0){
-                    t.pushTile(new StoneTile(j, i));
                     if(val < -0.5){
                         t.pushTile(new WaterTile(j, i));
                     }

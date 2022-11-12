@@ -1,5 +1,6 @@
 package summit.game.entity;
 
+import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.gfx.PaintEvent;
@@ -32,7 +33,7 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     @Override
     public void update(GameUpdateEvent e){
         // System.out.println(getX() + "  " + getY());
-        if(getX() < -0.5 || getY() < -0.5){
+        if(getX() < -0.5 || getY() < -0.5) {
             return;
         }
 
@@ -46,8 +47,6 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         lastX = getX();
         lastY = getY();
 
-        // System.out.println(e.getMap().getTileAt(getX(), getY()).peekTile().getName());
-
         if(e.getMap().getTileAt(getX(), getY()).peekTile().getName().equals("WaterTile")){
             setInWater(true);
         } else { setInWater(false); }
@@ -56,6 +55,13 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     abstract public void damage(GameUpdateEvent ge, Entity e);
     abstract public void destroy(GameUpdateEvent ge);
     abstract public void collide(Entity e);
+
+    public boolean moveTo(GameMap map, float newX, float newY){
+        if(map.getTileAt(newX, newY).peekTile().isBoundary()){
+            return false;
+        }
+        return true;
+    }
 
     //---------------------------------------------------------
     //getters and setters
