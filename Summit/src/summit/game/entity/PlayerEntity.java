@@ -25,6 +25,8 @@ public class PlayerEntity extends HumanoidEntity{
         super.setDx(10f);
         super.setDy(10f);
         super.setHealth(10f);
+        this.hud = new HUD();
+        hud.setPlayer(this);
         //DO THIS
         // super.setSprites(getName(), getName(), getName(), getName(), getName(), getName());
     }
@@ -32,13 +34,13 @@ public class PlayerEntity extends HumanoidEntity{
     @Override
     public void paint(PaintEvent e) {
         
+        e.renderLater(hud);
+
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                     getX(), getY(), 
                                     ((Time.timeMs()-lastAnimationChange > 250) ? Renderer.FLIP_NONE : Renderer.FLIP_X) | 
                                     (inWater() ? Renderer.OUTLINE_RED : Renderer.FLIP_NONE), 
                                     e.getCamera());
-
-
 
         if((Time.timeMs()-lastAnimationChange > 500))
             lastAnimationChange = Time.timeMs();

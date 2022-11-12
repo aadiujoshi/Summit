@@ -88,14 +88,14 @@ public class GameWorld implements Paintable, Serializable{
 
     @Override
     public void paint(PaintEvent e){
-        PaintEvent pe = new PaintEvent(e.getRenderer(), e.getLastFrame(), camera.clone(), e.getWindow());
+
+        e.setCamera(camera.clone());
 
         if(loadedMap != null){
-            loadedMap.paint(pe);
+            loadedMap.paint(e);
         }
 
-        player.paint(pe);
-
+        player.paint(e);
     }
 
     public GameMap getLoadedMap() {

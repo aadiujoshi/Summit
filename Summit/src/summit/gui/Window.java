@@ -239,8 +239,9 @@ public class Window implements MouseListener, KeyListener{
         else if(state == WindowState.GAME){
             if(world != null)
                 world.paint(pe);
-            
         }
+
+        pe.invokeDelayed();
 
         //----------------------------------------------------------------------------------
         // draw final frame to screen
