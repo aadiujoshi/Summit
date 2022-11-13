@@ -66,7 +66,7 @@ public class SnowAnimation implements Paintable{
         for (int i = 0; i < particles.length; i++) {
             e.getRenderer().fillRect((int)((particles[i] >> 16) & 0xff), 
                                         (int)((particles[i] >> 0) & 0xff), 
-                                        2, 2, Renderer.toIntRGB(230, 230, 230));
+                                        1, 1, Renderer.toIntRGB(230, 230, 230));
         }
     }
 }
