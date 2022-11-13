@@ -32,7 +32,7 @@ public class SnowfallAnimation implements Paintable{
             // System.out.println(particles[i]);
         }
 
-        snowfall = new ScheduledEvent(Time.MS_IN_S/15, ScheduledEvent.FOREVER) {
+        snowfall = new ScheduledEvent(Time.MS_IN_S/100, ScheduledEvent.FOREVER) {
             @Override
             public void run() {
                 for (int i = 0; i < particles.length; i++) {

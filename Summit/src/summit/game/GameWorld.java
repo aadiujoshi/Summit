@@ -43,7 +43,7 @@ public class GameWorld implements Paintable, Serializable{
         SEED = seed;
         maps = new HashMap<>();
 
-        snowAnim = new SnowfallAnimation(1, 3);
+        snowAnim = new SnowfallAnimation(4, 3);
 
         GameMap stage1 = GameMapGenerator.generateStage1(seed);
         GameMap stage2 = GameMapGenerator.generateStage2(seed);
