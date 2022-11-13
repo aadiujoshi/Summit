@@ -87,10 +87,10 @@ public class Renderer {
     }
 
     /**
-     * val is whiteness
+     * val is brightness (make negative to dim frame)
      * @param val
      */
-    public void brightenFrame(int val){
+    public void frameBrightness(int val){
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
 
@@ -102,6 +102,10 @@ public class Renderer {
                 green = ((green+val > 255) ? 255: green+val);
                 blue = ((blue+val > 255) ? 255: blue+val);
                 
+                red = ((red < 0) ? 0: red);
+                green = ((green < 0) ? 0: green);
+                blue = ((blue < 0) ? 0: blue);
+
                 frame[r][c] = (red << 16) | (green << 8) | (blue << 0);
 
             }
