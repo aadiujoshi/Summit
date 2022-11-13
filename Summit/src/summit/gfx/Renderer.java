@@ -3,6 +3,7 @@ package summit.gfx;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.awt.image.RescaleOp;
 
 public class Renderer {
 
@@ -51,31 +52,57 @@ public class Renderer {
         }
     }
 
+
+    public void contrastFrame(float scale){
+        int min = rgbIntensity(frame[0][0]);
+        int max = min;
+        int avg = (max+min)/2;
+
+        for (int r = 0; r < frame.length; r++) {
+            for (int c = 0; c < frame[0].length; c++) {
+                int intensity = rgbIntensity(frame[r][c]);
+
+                max = intensity > max ? intensity : max;
+                min = intensity < min ? intensity : min;
+            }
+        }
+
+        for (int r = 0; r < frame.length; r++) {
+            for (int c = 0; c < frame[0].length; c++) {
+                int ints = rgbIntensity(frame[r][c]);
+
+                int rr = (frame[r][c] >> 16) & 0xff;
+                int gg = (frame[r][c] >> 8) & 0xff;
+                int bb = (frame[r][c] >> 0) & 0xff;
+
+                if(ints < avg){
+                    int negint = (int)((ints-min)*scale);
+                    frame[r][c] = toIntRGB( rr-negint , gg-negint, bb-negint);
+                } else {
+                    int posint = (int)((max-ints)*scale);
+                    frame[r][c] = toIntRGB( r+posint , gg+posint, bb+posint);
+                }
+            }
+        }
+    }
+
     /**
      * val is whiteness
      * @param val
      */
-    public void tintFrame(int val){
+    public void brightenFrame(int val){
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
 
                 int red = ((frame[r][c] >> 16) & 0xff);
                 int green = ((frame[r][c] >> 8) & 0xff);
                 int blue = ((frame[r][c] >> 0) & 0xff);
-
-                // System.out.println(red + "  " + green + "  " + blue);
-
+                
                 red = ((red+val > 255) ? 255: red+val);
                 green = ((green+val > 255) ? 255: green+val);
                 blue = ((blue+val > 255) ? 255: blue+val);
-
-                // System.out.println("\t" + red + "  " + green + "  " + blue);
-
+                
                 frame[r][c] = (red << 16) | (green << 8) | (blue << 0);
-
-                // frame[r][c] = ((byte)(((frame[r][c] >> 16) & 0xff) + val) << 16) |
-                //                 ((byte)(((frame[r][c] >> 8) & 0xff) + val) << 8) |
-                //                 ((byte)(((frame[r][c] >> 0) & 0xff) + val) << 0);
 
             }
         }
@@ -177,11 +204,19 @@ public class Renderer {
     //--------------------------------------------------------------------
 
     public static int toIntRGB(int r, int g, int b){
-        return (r << 16) | (g << 8) | (b);
+        return ((r > 255) ? 255 : r << 16) | 
+                ((g > 255) ? 255 : g << 8) | 
+                ((b > 255) ? 255 : b);
     }
 
     public static boolean validRGB(int rgb){
         return rgb != -1;
+    }
+
+    public static int rgbIntensity(int color){
+        return (((color >> 16) & 0xff) + 
+                ((color >> 8) & 0xff) + 
+                ((color >> 0) & 0xff))/3;
     }
 
     /**
@@ -278,10 +313,6 @@ public class Renderer {
         }
 
         return outlined;
-    }
-
-    public static boolean onScreen(float x, float y, Camera cam){
-        return false;
     }
 
     public static boolean inArrBounds(int r, int c, int rows, int cols){

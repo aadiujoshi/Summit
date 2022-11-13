@@ -5,12 +5,11 @@ import summit.gfx.Paintable;
 import summit.gfx.Renderer;
 import summit.util.Time;
 
-public class SnowAnimation implements Paintable{
+public class SnowFallAnimation implements Paintable{
 
     private int dx; 
     private int dy;
 
-    //updates snow every .25 seconds
     private ScheduledEvent snowfall;
 
     //front 16 bits are x, and last 16 bits are y
@@ -21,7 +20,7 @@ public class SnowAnimation implements Paintable{
      * @param dx
      * @param dy
      */
-    public SnowAnimation(int dx, int dy){
+    public SnowFallAnimation(int dx, int dy){
         this.dx = dx;
         this.dy = dy; 
 
@@ -56,13 +55,6 @@ public class SnowAnimation implements Paintable{
 
     @Override
     public void paint(PaintEvent e) {
-        // for(int i = 0; i < 100; i++){
-        //     e.getRenderer().fillRect((int)(Math.random()*Renderer.WIDTH), 
-        //                                 (int)(Math.random()*Renderer.HEIGHT), 
-        //                                 2, 2, 
-        //                                 Renderer.toIntRGB(100, 0, 0));
-        // }
-
         for (int i = 0; i < particles.length; i++) {
             e.getRenderer().fillRect((int)((particles[i] >> 16) & 0xff), 
                                         (int)((particles[i] >> 0) & 0xff), 
