@@ -10,6 +10,7 @@ import summit.game.animation.SnowfallAnimation;
 import summit.game.entity.PlayerEntity;
 import summit.game.mapgenerator.GameMapGenerator;
 import summit.gfx.Camera;
+import summit.gfx.Light;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gui.Window;
@@ -103,6 +104,8 @@ public class GameWorld implements Paintable, Serializable{
         player.paint(e);
         snowAnim.paint(e);
         e.getRenderer().frameBrightness(-50);
+        Light l = new Light(player.getX(), player.getY(), 5, 100);
+        e.getRenderer().renderLight(l, l.getX(), l.getY(), e.getCamera());
     }
 
     public GameMap getLoadedMap() {

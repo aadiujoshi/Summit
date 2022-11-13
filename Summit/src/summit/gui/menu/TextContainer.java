@@ -27,11 +27,9 @@ public class TextContainer extends Container{
         lines.add("");
 
         for(int i = 0; i < text.length(); i++){
-            System.out.println(text.charAt(i));
             if(text.charAt(i) == ' '){
                 k++;
                 lines.add("");
-                System.out.println(lines.size());
                 continue;
             }
 

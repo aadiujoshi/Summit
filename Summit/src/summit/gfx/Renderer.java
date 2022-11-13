@@ -3,7 +3,6 @@ package summit.gfx;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.awt.image.RescaleOp;
 
 public class Renderer {
 
@@ -86,6 +85,31 @@ public class Renderer {
         }
     }
 
+
+    /**
+     * x and y are game coordinates
+     * @param light
+     * @param x
+     * @param y
+     */
+    public void renderLight(Light light, float x, float y, Camera cam){
+        Point2D.Float center = toPixel(x, y, cam);
+
+        float radius = light.getRadius()*16;
+        int intensity = light.getIntensity();
+
+        for(int xx = (int)(center.x-radius); xx < (int)(center.x+radius); xx++){
+            for (int yy = (int)(center.y-radius); yy < (int)(center.y+radius); yy++) {
+                if(!inArrBounds(yy, xx, frame.length, frame[0].length))
+                    continue;
+                float d = distance(center.x, center.y, xx, yy);
+                if(d <= radius){
+                    frame[yy][xx] = setIntensity(frame[yy][xx], (int)(intensity-((d/radius)*intensity)));
+                }
+            }
+        }
+    }
+
     /**
      * val is brightness (make negative to dim frame)
      * @param val
@@ -93,21 +117,7 @@ public class Renderer {
     public void frameBrightness(int val){
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
-
-                int red = ((frame[r][c] >> 16) & 0xff);
-                int green = ((frame[r][c] >> 8) & 0xff);
-                int blue = ((frame[r][c] >> 0) & 0xff);
-                
-                red = ((red+val > 255) ? 255: red+val);
-                green = ((green+val > 255) ? 255: green+val);
-                blue = ((blue+val > 255) ? 255: blue+val);
-                
-                red = ((red < 0) ? 0: red);
-                green = ((green < 0) ? 0: green);
-                blue = ((blue < 0) ? 0: blue);
-
-                frame[r][c] = (red << 16) | (green << 8) | (blue << 0);
-
+                frame[r][c] = setIntensity(frame[r][c], val);
             }
         }
     }
@@ -217,6 +227,10 @@ public class Renderer {
     // utility methods
     //--------------------------------------------------------------------
 
+    public static float distance(float x1, float y1, float x2, float y2){
+        return (float)Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    }
+
     public static int toIntRGB(int r, int g, int b){
         return ((r > 255) ? 255 : r << 16) | 
                 ((g > 255) ? 255 : g << 8) | 
@@ -225,6 +239,23 @@ public class Renderer {
 
     public static boolean validRGB(int rgb){
         return rgb != -1;
+    }
+
+    public static int setIntensity(int color, int intensity){
+        
+        int red = ((color >> 16) & 0xff);
+        int green = ((color >> 8) & 0xff);
+        int blue = ((color >> 0) & 0xff);
+        
+        red = ((red+intensity > 255) ? 255: red+intensity);
+        green = ((green+intensity > 255) ? 255: green+intensity);
+        blue = ((blue+intensity > 255) ? 255: blue+intensity);
+        
+        red = ((red < 0) ? 0: red);
+        green = ((green < 0) ? 0: green);
+        blue = ((blue < 0) ? 0: blue);
+
+        return (red << 16) | (green << 8) | (blue << 0);
     }
 
     public static int rgbIntensity(int color){
