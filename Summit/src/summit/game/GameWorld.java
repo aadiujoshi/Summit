@@ -102,7 +102,7 @@ public class GameWorld implements Paintable, Serializable{
 
         player.paint(e);
         snowAnim.paint(e);
-        // e.getRenderer().tintFrame(50);
+        e.getRenderer().tintFrame(60);
     }
 
     public GameMap getLoadedMap() {

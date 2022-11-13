@@ -58,9 +58,24 @@ public class Renderer {
     public void tintFrame(int val){
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
-                frame[r][c] = ((byte)(((frame[r][c] >> 16) & 0xff) + val) << 16) |
-                                ((byte)(((frame[r][c] >> 8) & 0xff) + val) << 8) |
-                                ((byte)(((frame[r][c] >> 0) & 0xff) + val) << 0);
+
+                int red = ((frame[r][c] >> 16) & 0xff);
+                int green = ((frame[r][c] >> 8) & 0xff);
+                int blue = ((frame[r][c] >> 0) & 0xff);
+
+                // System.out.println(red + "  " + green + "  " + blue);
+
+                red = ((red+val > 255) ? 255: red+val);
+                green = ((green+val > 255) ? 255: green+val);
+                blue = ((blue+val > 255) ? 255: blue+val);
+
+                // System.out.println("\t" + red + "  " + green + "  " + blue);
+
+                frame[r][c] = (red << 16) | (green << 8) | (blue << 0);
+
+                // frame[r][c] = ((byte)(((frame[r][c] >> 16) & 0xff) + val) << 16) |
+                //                 ((byte)(((frame[r][c] >> 8) & 0xff) + val) << 8) |
+                //                 ((byte)(((frame[r][c] >> 0) & 0xff) + val) << 0);
 
             }
         }
