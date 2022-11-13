@@ -46,13 +46,13 @@ public class PlayerEntity extends HumanoidEntity{
                                         ((Time.timeMs()-lastAnimationChange > 250) ? Renderer.NO_OP : Renderer.FLIP_X) | 
                                         (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.NO_OP),
                                         e.getCamera());
+        
+        } else {
+            e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
+                                        getX(), getY(), 
+                                        (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.NO_OP),
+                                        e.getCamera());
         }
-        // } else {
-        //     e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
-        //                                 getX(), getY(), 
-        //                                 (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.NO_OP),
-        //                                 e.getCamera());
-        // }
 
         if((Time.timeMs()-lastAnimationChange > 500))
             lastAnimationChange = Time.timeMs();
@@ -65,6 +65,7 @@ public class PlayerEntity extends HumanoidEntity{
 
     @Override
     public void update(GameUpdateEvent e) {
+        
         super.update(e);
 
         float del_x = (  getDx() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();

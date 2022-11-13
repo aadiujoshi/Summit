@@ -144,6 +144,16 @@ public class Renderer {
         }
     }
 
+    public void renderText(String text, int x, int y, int operation){
+
+        int offsetX = x-(text.length()*8/2) + 4;
+
+        for(int i = 0; i < text.length(); i++) {
+            if(!(text.charAt(i)+"").equals(" "))
+                render(text.charAt(i)+Sprite.TEXT_APPEND_KEY, offsetX+(i*8), y, operation);
+        }
+    }
+
     /** 
      * USE THIS METHOD FOR RENDERING GAME STUFF (ANYTHING THAT IS POSITIONALLY BASED ON A CAMERA).
      * COORDINATES ARE GAMESPACE COORDINATES.

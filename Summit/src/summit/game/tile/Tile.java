@@ -12,6 +12,7 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     private boolean boundary;
 
     private String sprite;
+    
     //random tile rotation
     private int rotation = (int)(Math.random()*5);
 

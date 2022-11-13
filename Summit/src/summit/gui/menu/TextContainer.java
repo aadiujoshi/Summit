@@ -1,6 +1,10 @@
 package summit.gui.menu;
 
 import summit.gfx.Renderer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import summit.gfx.PaintEvent;
 
 public class TextContainer extends Container{
@@ -15,6 +19,28 @@ public class TextContainer extends Container{
     @Override
     public void paint(PaintEvent e){
         super.paint(e);
+
+        List<String> lines = new ArrayList<>();
+        
+        int k = 0;
+
+        lines.add("");
+
+        for(int i = 0; i < text.length(); i++){
+            System.out.println(text.charAt(i));
+            if(text.charAt(i) == ' '){
+                k++;
+                lines.add("");
+                System.out.println(lines.size());
+                continue;
+            }
+
+            lines.set(k, lines.get(k)+text.charAt(i));
+        }
+
+        for (int i = 0; i < lines.size(); i++) {
+            e.getRenderer().renderText(lines.get(i), getX(), getY()+(i*9)-(lines.size()/2*4), Renderer.NO_OP);
+        }
     }
 
     public String getText() {
