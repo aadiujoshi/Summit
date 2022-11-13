@@ -2,13 +2,15 @@ package summit.game.animation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import summit.util.Time;
 
 public class Scheduler {
 
-    private static List<ScheduledEvent> events = new ArrayList<>();
+    private static List<ScheduledEvent> events = new Vector<>();
 
+    /** Singleton */
     private Scheduler(){}
 
     //called by some thread
@@ -27,5 +29,9 @@ public class Scheduler {
                 i--;
             }
         }
+    }
+
+    public static void registerEvent(ScheduledEvent e){
+        events.add(e);
     }
 }

@@ -31,6 +31,7 @@ import javax.swing.WindowConstants;
 
 import summit.game.GameMap;
 import summit.game.GameWorld;
+import summit.game.animation.Scheduler;
 import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
@@ -46,6 +47,8 @@ import java.awt.Dimension;
 
 public class Window implements MouseListener, KeyListener{
     
+    private String title;
+
     private JFrame frame;
     private Canvas canvas;
     private Renderer renderer;
@@ -69,9 +72,7 @@ public class Window implements MouseListener, KeyListener{
 
     private int width;
     private int height;
-
-    private BufferedImage bg;
-
+    
     private BufferedImage finalFrame = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
     private Stack<Container> guiContainersHome;
@@ -83,7 +84,8 @@ public class Window implements MouseListener, KeyListener{
     private BufferStrategy bufferStrategy;
 
     private Thread graphicsThread;
-    
+    private Thread schedulerThread;
+
     //------------------------------------------
     private MainSelectionMenu mainMenu;
 
@@ -91,6 +93,8 @@ public class Window implements MouseListener, KeyListener{
     //------------------------------------------
 
     public Window(String title){
+
+        this.title = title;
 
         width = SCREEN_WIDTH;
         height = SCREEN_HEIGHT;
@@ -102,14 +106,13 @@ public class Window implements MouseListener, KeyListener{
 
         mainMenu = new MainSelectionMenu();
 
-
-        // world = new GameWorld(this);
-
-        try {
-            bg = ImageIO.read(new File("src/summit/deprecated/extra/gradient-background.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        schedulerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true)
+                    Scheduler.checkEvents();
+            }
+        });
 
         graphicsThread = new Thread(new Runnable() {
 
@@ -136,7 +139,7 @@ public class Window implements MouseListener, KeyListener{
 
                             // System.out.println(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000));
                             if(Time.timeMs()-lastFpsUpdate > 500){
-                                frame.setTitle(Float.toString(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000f)));
+                                frame.setTitle(title + " | FPS: " + (Float.toString(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000f))));
                                 lastFpsUpdate = Time.timeMs();
                             }
                             lastFrame = startFrame;
@@ -151,7 +154,7 @@ public class Window implements MouseListener, KeyListener{
 
         //init window frame, canvas, and buffer strategy
         {
-            frame = new JFrame(title);
+            frame = new JFrame(title + "|");
             frame.getContentPane().setPreferredSize(new Dimension(width, height));
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setResizable(false);
@@ -218,9 +221,11 @@ public class Window implements MouseListener, KeyListener{
 
             frame.setVisible(true);
 
-            graphicsThread.start();
         }
         
+        graphicsThread.start();
+        schedulerThread.start();
+
         this.setState(WindowState.SELECTIONMENUS);
     }
 
@@ -232,7 +237,7 @@ public class Window implements MouseListener, KeyListener{
         PaintEvent pe = new PaintEvent(renderer, lastFrame, null, this);
 
         if(state == WindowState.SELECTIONMENUS){
-            renderer.renderImage(bg, Renderer.WIDTH/2, Renderer.HEIGHT/2);
+            renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.NO_OP);
             if (!guiContainersHome.isEmpty())
                 guiContainersHome.peek().paint(pe);
         }

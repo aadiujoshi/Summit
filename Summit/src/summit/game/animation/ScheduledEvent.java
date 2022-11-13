@@ -4,6 +4,8 @@ import summit.util.Time;
 
 public abstract class ScheduledEvent implements Runnable {
     
+    public final static int FOREVER = -1;
+
     private int repeat;
     private long delay_ms;
     private long lastCall;
@@ -15,12 +17,17 @@ public abstract class ScheduledEvent implements Runnable {
         this.lastCall = INIT_MS;
     }
 
+    /**
+     * Returns if this ScheduledEvent should stop revieving calls
+     * @return boolean
+     */
     public boolean terminate(){
-        return repeat < 1;
+        return repeat < 1 && repeat != FOREVER;
     }
 
     public void shortenLife(){
-        repeat--;
+        if(repeat != FOREVER)
+            repeat--;
     }
     
     public long getDelayMS() {

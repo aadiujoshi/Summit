@@ -11,7 +11,7 @@ public class Renderer {
     public static final int WIDTH = 256;
     public static final int HEIGHT = 144;
 
-    public static final int FLIP_NONE = 0b0;
+    public static final int NO_OP = 0b0;
     public static final int FLIP_X = 0b1;
     public static final int FLIP_Y = 0b10;
     public static final int ROTATE_90 = 0b100;
@@ -36,25 +36,35 @@ public class Renderer {
 
         // BufferedImage newFrame = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
 
-        int[][] upscaled = new int[newHeight][newWidth];
-
         int[] frameBuffer = ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData();
 
         float scaleX = newWidth/WIDTH;
         float scaleY = newHeight/HEIGHT;
         
         // method 1 (working)
-        for(int r = 0; r < upscaled.length; r++) {
-            for(int c = 0; c < upscaled[0].length; c++){
+        for(int r = 0; r < newHeight; r++) {
+            for(int c = 0; c < newWidth; c++){
                 if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
                     frameBuffer[r*newWidth+c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
                 }
             }
         }
-        
-        this.frame = upscaled;
     }
 
+    /**
+     * val is whiteness
+     * @param val
+     */
+    public void tintFrame(int val){
+        for (int r = 0; r < frame.length; r++) {
+            for (int c = 0; c < frame[0].length; c++) {
+                frame[r][c] = ((byte)(((frame[r][c] >> 16) & 0xff) + val) << 16) |
+                                ((byte)(((frame[r][c] >> 8) & 0xff) + val) << 8) |
+                                ((byte)(((frame[r][c] >> 0) & 0xff) + val) << 0);
+
+            }
+        }
+    }
 
     /**
      * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
@@ -66,7 +76,7 @@ public class Renderer {
         int nx = Math.round(x-(sprite[0].length/2));
         int ny = Math.round(y-(sprite.length/2));
 
-        if(operation != FLIP_NONE){
+        if(operation != NO_OP){
             if((operation & ROTATE_90) == ROTATE_90){
                 sprite = rotate(sprite);
             }
@@ -120,6 +130,22 @@ public class Renderer {
         }
     }
 
+    /**
+     * x and y are top left coordinates
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
+    public void fillRect(int x, int y, int width, int height, int color){
+        for(int x1 = x; x1 < x+width; x1++){
+            for(int y1 = y; y1 < y+height; y1++){
+                if(inArrBounds(y1, x1, frame.length, frame[0].length))
+                    frame[y1][x1] = color;
+            }
+        }
+    }
+
     public int[] frameAsArray(){
         int[] reformated = new int[frame.length*frame[0].length];
 
@@ -134,6 +160,10 @@ public class Renderer {
     //--------------------------------------------------------------------
     // utility methods
     //--------------------------------------------------------------------
+
+    public static int toIntRGB(int r, int g, int b){
+        return (r << 16) | (g << 8) | (b);
+    }
 
     public static boolean validRGB(int rgb){
         return rgb != -1;
@@ -210,11 +240,13 @@ public class Renderer {
         for(int r = 0; r < sprite.length; r++){
             for(int c = 0; c < sprite[0].length; c++){
                 if(sprite[r][c] != -1){
-                    if((r-1 > -1 && sprite[r-1][c] == -1) ||
+                    if( //check sides
+                        (r-1 > -1 && sprite[r-1][c] == -1) ||
                         (c-1 > -1 && sprite[r][c-1] == -1) ||
                         (r+1 < sprite.length && sprite[r+1][c] == -1) ||
                         (c+1 < sprite[0].length && sprite[r][c+1] == -1) || 
-
+                        
+                        //check corners
                         (r-1 > -1 && c-1 > -1 && sprite[r-1][c-1] == -1) || 
                         (r-1 > -1 && c+1 < sprite[0].length && sprite[r-1][c+1] == -1) ||
                         (r+1 < sprite.length && c-1 > -1 && sprite[r+1][c-1] == -1) || 

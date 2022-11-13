@@ -87,7 +87,7 @@ public class Menu implements Paintable, Clickable{
                 // System.out.println(px + "  " + py + "\n\n");
                 
                 if(y == startY && x == startX){
-                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_NONE);
+                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.NO_OP);
                     continue;
                 }
                 if(y == startY && x == endX){
@@ -106,7 +106,7 @@ public class Menu implements Paintable, Clickable{
 
                 //check borders
                 if(y == startY){
-                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.FLIP_NONE);
+                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.NO_OP);
                     continue;
                 }
                 if(y == endY){
@@ -124,7 +124,7 @@ public class Menu implements Paintable, Clickable{
                 //------------
 
                 //render inside
-                ren.render(Sprite.MENU_FILL, x, y, Renderer.FLIP_NONE);
+                ren.render(Sprite.MENU_FILL, x, y, Renderer.NO_OP);
             }
         }
 

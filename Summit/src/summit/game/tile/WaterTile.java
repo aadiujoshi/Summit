@@ -15,7 +15,7 @@ public class WaterTile extends Tile{
     public WaterTile(float x, float y) {
         super(x, y);
         super.setSprite(Sprite.WATER_TILE);
-        super.setBoundary(true);
+        super.setBoundary(false);
         
     }
 

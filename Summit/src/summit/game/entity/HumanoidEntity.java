@@ -50,7 +50,7 @@ public abstract class HumanoidEntity extends MobEntity{
                         default -> null;
                     }, 
                     getX(), getY()+4, 
-                    Renderer.FLIP_NONE,
+                    Renderer.NO_OP,
                     c);
 
         // switch(d){

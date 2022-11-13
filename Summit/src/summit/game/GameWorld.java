@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import summit.game.animation.SnowAnimation;
 import summit.game.entity.PlayerEntity;
 import summit.game.mapgenerator.GameMapGenerator;
 import summit.gfx.Camera;
@@ -31,6 +32,8 @@ public class GameWorld implements Paintable, Serializable{
 
     private transient Thread gameUpdateThread;
 
+    private transient SnowAnimation snowAnim;
+
     /**
      * Use this constructor to create a new game
      * @param parentWindow
@@ -39,6 +42,8 @@ public class GameWorld implements Paintable, Serializable{
         this.parentWindow = parentWindow;
         SEED = seed;
         maps = new HashMap<>();
+
+        snowAnim = new SnowAnimation(1, 3);
 
         GameMap stage1 = GameMapGenerator.generateStage1(seed);
         GameMap stage2 = GameMapGenerator.generateStage2(seed);
@@ -96,6 +101,8 @@ public class GameWorld implements Paintable, Serializable{
         }
 
         player.paint(e);
+        snowAnim.paint(e);
+        // e.getRenderer().tintFrame(50);
     }
 
     public GameMap getLoadedMap() {

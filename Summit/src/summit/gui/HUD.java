@@ -27,10 +27,10 @@ public class HUD extends Container{
 
         for(int px = right_x; px >= left_x; px-=10) {
             if(h % 1 != 0){
-                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.FLIP_NONE);
+                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.NO_OP);
                 h-=0.5;
             } else {
-                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.FLIP_NONE);
+                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.NO_OP);
             }
         }
     }

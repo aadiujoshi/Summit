@@ -63,6 +63,8 @@ public class GameMap implements Paintable, GameUpdateReciever{
                     map[j][i].paint(e);
             }
         }
+
+        
     }
 
     //--------------------------------------------------------------------

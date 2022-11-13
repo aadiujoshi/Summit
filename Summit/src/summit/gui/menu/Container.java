@@ -69,7 +69,7 @@ public class Container implements Paintable, GUIClickReciever{
             for (int y = startY; y <= endY; y+=16) {
                 
                 if(y == startY && x == startX){
-                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_NONE);
+                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.NO_OP);
                     continue;
                 }
                 if(y == startY && x == endX){
@@ -88,7 +88,7 @@ public class Container implements Paintable, GUIClickReciever{
 
                 //check borders
                 if(y == startY){
-                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.FLIP_NONE);
+                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.NO_OP);
                     continue;
                 }
                 if(y == endY){
@@ -106,7 +106,7 @@ public class Container implements Paintable, GUIClickReciever{
                 //------------
 
                 //render inside
-                ren.render(Sprite.MENU_FILL, x, y, Renderer.FLIP_NONE);
+                ren.render(Sprite.MENU_FILL, x, y, Renderer.NO_OP);
             }
         }
 
