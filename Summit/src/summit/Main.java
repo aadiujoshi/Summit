@@ -9,7 +9,7 @@ public class Main {
         Thread main = new Thread(new Runnable() {
             @Override
             public void run() {
-                BufferedSprites.loadSprites("/Users/adi/Documents/GitHub/Summit/Summit/src/summit/resources");
+                BufferedSprites.loadSprites("Summit/src/summit/resources");
 
                 java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
