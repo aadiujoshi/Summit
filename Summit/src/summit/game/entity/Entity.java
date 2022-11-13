@@ -42,8 +42,10 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
             destroy(e);
         }
 
-        if(lastX != getX() && lastY != getY())
+        if(lastX != getX() || lastY != getY())
             moving = true;
+        else 
+            moving = false;
         lastX = getX();
         lastY = getY();
 

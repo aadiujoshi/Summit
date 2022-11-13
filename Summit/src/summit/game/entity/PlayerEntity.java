@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
+import summit.game.animation.ScheduledEvent;
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -29,18 +30,29 @@ public class PlayerEntity extends HumanoidEntity{
         hud.setPlayer(this);
         //DO THIS
         // super.setSprites(something, something, something, something, something, something);
+        
     }
 
     @Override
     public void paint(PaintEvent e) {
         
         e.renderLater(hud);
+        
+        // System.out.println(isMoving());
 
-        e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
-                                    getX(), getY(), 
-                                    ((Time.timeMs()-lastAnimationChange > 250) ? Renderer.NO_OP : Renderer.FLIP_X) | 
-                                    (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.NO_OP),
-                                    e.getCamera());
+        if(isMoving()){
+            e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
+                                        getX(), getY(), 
+                                        ((Time.timeMs()-lastAnimationChange > 250) ? Renderer.NO_OP : Renderer.FLIP_X) | 
+                                        (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.NO_OP),
+                                        e.getCamera());
+        }
+        // } else {
+        //     e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
+        //                                 getX(), getY(), 
+        //                                 (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.NO_OP),
+        //                                 e.getCamera());
+        // }
 
         if((Time.timeMs()-lastAnimationChange > 500))
             lastAnimationChange = Time.timeMs();

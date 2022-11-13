@@ -5,7 +5,7 @@ import summit.gfx.Paintable;
 import summit.gfx.Renderer;
 import summit.util.Time;
 
-public class SnowFallAnimation implements Paintable{
+public class SnowfallAnimation implements Paintable{
 
     private int dx; 
     private int dy;
@@ -20,7 +20,7 @@ public class SnowFallAnimation implements Paintable{
      * @param dx
      * @param dy
      */
-    public SnowFallAnimation(int dx, int dy){
+    public SnowfallAnimation(int dx, int dy){
         this.dx = dx;
         this.dy = dy; 
 

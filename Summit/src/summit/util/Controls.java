@@ -77,7 +77,6 @@ public class Controls {
                 RIGHT = false;
                 break;
             case KeyEvent.VK_E:
-            
                 break;
         }
     }
