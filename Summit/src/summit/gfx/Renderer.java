@@ -96,7 +96,10 @@ public class Renderer {
         Point2D.Float center = toPixel(x, y, cam);
 
         float radius = light.getRadius()*16;
-        int intensity = light.getIntensity();
+
+        int r = light.getRed();
+        int b = light.getBlue();
+        int g = light.getGreen();
 
         for(int xx = (int)(center.x-radius); xx < (int)(center.x+radius); xx++){
             for (int yy = (int)(center.y-radius); yy < (int)(center.y+radius); yy++) {
@@ -104,9 +107,9 @@ public class Renderer {
                     continue;
                 float d = distance(center.x, center.y, xx, yy);
                 if(d <= radius){
-                    frame[yy][xx] = filterColor(frame[yy][xx], (int)(intensity-((d/radius)*intensity)),
-                                                                (int)(intensity-((d/radius)*intensity)),
-                                                                (int)(intensity-((d/radius)*intensity)));
+                    frame[yy][xx] = filterColor(frame[yy][xx], (int)(r-((d/radius)*r)),
+                                                                (int)(g-((d/radius)*g)),
+                                                                (int)(b-((d/radius)*b)));
                 }
             }
         }

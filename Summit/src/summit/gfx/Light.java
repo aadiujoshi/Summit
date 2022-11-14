@@ -2,16 +2,21 @@ package summit.gfx;
 
 public class Light implements Paintable{
     private float radius;
-    private int intensity;
 
     private float x;
     private float y;
     
-    public Light(float x, float y, float radius, int intensity){
+    private int red;
+    private int green;
+    private int blue;
+
+    public Light(float x, float y, float radius, int r, int g, int b){
         this.radius = radius;
-        this.intensity = intensity;
         this.x = x;
         this.y = y;
+        this.red = r;
+        this.green = g;
+        this.blue = b;
     }
 
     @Override
@@ -28,15 +33,7 @@ public class Light implements Paintable{
     public void setRadius(float radius) {
         this.radius = radius;
     }
-
-    public int getIntensity() {
-        return this.intensity;
-    }
-
-    public void setIntensity(int intensity) {
-        this.intensity = intensity;
-    }
-
+    
     public float getX() {
         return this.x;
     }
@@ -51,5 +48,29 @@ public class Light implements Paintable{
 
     public void setY(float y) {
         this.y = y;
+    }
+    
+    public int getRed() {
+        return this.red;
+    }
+
+    public void setRed(int red) {
+        this.red = red;
+    }
+
+    public int getGreen() {
+        return this.green;
+    }
+
+    public void setGreen(int green) {
+        this.green = green;
+    }
+
+    public int getBlue() {
+        return this.blue;
+    }
+
+    public void setBlue(int blue) {
+        this.blue = blue;
     }
 }
