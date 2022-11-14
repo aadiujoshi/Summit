@@ -21,6 +21,7 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     private boolean inWater;
     private boolean destroyed;
+    private boolean onFire;
     private float health;
 
     public Entity(float x, float y, float width, float height){
@@ -119,5 +120,13 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public void changeHealth(float c){
         this.health += c;
+    }
+
+    public boolean onFire(){
+        return this.onFire;
+    }
+
+    public void setOnFire(boolean onFire){
+        this.onFire = onFire;
     }
 }
