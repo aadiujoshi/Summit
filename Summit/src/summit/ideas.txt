@@ -5,6 +5,11 @@ finish inventory gui
 
 pause menu ->  graphics option panel
 
+character customization (just recolor character we alr have)
+fix animation to make it smoother
+armor hud
+
+
 game
  - skeletons
  - arrows
@@ -18,5 +23,5 @@ game
  - boss room
  - weapon physics & knockback and projectiles
  - fire animation
- 
+
 
