@@ -104,7 +104,9 @@ public class Renderer {
                     continue;
                 float d = distance(center.x, center.y, xx, yy);
                 if(d <= radius){
-                    frame[yy][xx] = setIntensity(frame[yy][xx], (int)(intensity-((d/radius)*intensity)));
+                    frame[yy][xx] = filterColor(frame[yy][xx], (int)(intensity-((d/radius)*intensity)),
+                                                                (int)(intensity-((d/radius)*intensity)),
+                                                                (int)(intensity-((d/radius)*intensity)));
                 }
             }
         }
@@ -112,12 +114,12 @@ public class Renderer {
 
     /**
      * val is brightness (make negative to dim frame)
-     * @param val
+     * @param color
      */
-    public void frameBrightness(int val){
+    public void filterFrame(int red, int green, int blue){
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
-                frame[r][c] = setIntensity(frame[r][c], val);
+                frame[r][c] = filterColor(frame[r][c], red, green, blue);
             }
         }
     }
@@ -241,15 +243,15 @@ public class Renderer {
         return rgb != -1;
     }
 
-    public static int setIntensity(int color, int intensity){
+    public static int filterColor(int color, int r, int g, int b){
         
         int red = ((color >> 16) & 0xff);
         int green = ((color >> 8) & 0xff);
         int blue = ((color >> 0) & 0xff);
         
-        red = ((red+intensity > 255) ? 255: red+intensity);
-        green = ((green+intensity > 255) ? 255: green+intensity);
-        blue = ((blue+intensity > 255) ? 255: blue+intensity);
+        red = ((red+r > 255) ? 255: red+r);
+        green = ((green+g > 255) ? 255: green+g);
+        blue = ((blue+b > 255) ? 255: blue+b);
         
         red = ((red < 0) ? 0: red);
         green = ((green < 0) ? 0: green);
