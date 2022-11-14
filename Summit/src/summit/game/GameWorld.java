@@ -104,7 +104,9 @@ public class GameWorld implements Paintable, Serializable{
         player.paint(e);
         snowAnim.paint(e);
         e.getRenderer().frameBrightness(-70);
-        Light l = new Light(player.getX(), player.getY(), 5, 100);
+
+        Light l = new Light(player.getX(), player.getY(), 3f, 100);
+
         e.getRenderer().renderLight(l, l.getX(), l.getY(), e.getCamera());
     }
 

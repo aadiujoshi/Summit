@@ -270,7 +270,7 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.NEWGAME){
-            world = new GameWorld(this, 0L);
+            world = new GameWorld(this, 2L);
             world.setGameContainers(guiContainersGame);
             state = WindowState.GAME;
             return;
@@ -359,7 +359,7 @@ public class Window implements MouseListener, KeyListener{
                 }
                 else if(!fullscreen){
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
-                    frame.setSize(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+                    frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
                     frame.setResizable(false);
                 }
             }
