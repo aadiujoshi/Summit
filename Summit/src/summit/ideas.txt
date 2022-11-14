@@ -1,0 +1,22 @@
+finish terrain
+texture outlining
+
+finish inventory gui
+
+pause menu ->  graphics option panel
+
+game
+ - skeletons
+ - arrows
+ - weapons
+ - traders
+ - items
+ - wood
+ - trading system
+ - levels
+ - grace period between stages
+ - boss room
+ - weapon physics & knockback and projectiles
+ - fire animation
+ 
+
