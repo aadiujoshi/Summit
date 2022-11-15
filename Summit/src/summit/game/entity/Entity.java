@@ -46,13 +46,6 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         }
 
         // System.out.println(getX() + "  " + getY() + "  " + lastX + "  " + lastY);
-        if(lastX != getX() || lastY != getY()){
-            moving = true;
-            lastX = getX();
-            lastY = getY();
-        } else {
-            moving = false;
-        }
 
         if(e.getMap().getTileAt(getX(), getY()).peekTile().getName().equals("WaterTile")){
             setInWater(true);
@@ -69,6 +62,16 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
             return false;
         }
         return true;
+    }
+
+    protected void updateIsMoving(){
+        if(lastX != getX() || lastY != getY()){
+            moving = true;
+            lastX = getX();
+            lastY = getY();
+        } else {
+            moving = false;
+        }
     }
 
     //---------------------------------------------------------

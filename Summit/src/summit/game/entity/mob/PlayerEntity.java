@@ -113,6 +113,7 @@ public class PlayerEntity extends HumanoidEntity{
             }
         }
 
+        this.updateIsMoving();
     }
 
     @Override
