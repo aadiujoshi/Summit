@@ -234,10 +234,13 @@ public class Window implements MouseListener, KeyListener{
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+        // System.out.println(state);
+
         PaintEvent pe = new PaintEvent(renderer, lastFrame, null, this);
 
         if(state == WindowState.SELECTIONMENUS){
             renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.NO_OP, null);
+            
             if (!guiContainersHome.isEmpty())
                 guiContainersHome.peek().paint(pe);
         }

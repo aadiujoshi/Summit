@@ -153,7 +153,7 @@ public class Renderer {
         if((operation >> 3) != 0){
             sprite = outline(sprite, operation >> 3);
         }
-
+        
         //write final sprite
         for(int yy = ny; yy < ny+sprite.length; yy++) {
             for(int xx = nx; xx < nx+sprite[0].length; xx++) {

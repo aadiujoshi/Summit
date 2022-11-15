@@ -20,7 +20,7 @@ public class SnowfallAnimation implements Paintable{
      * @param dx
      * @param dy
      */
-    public SnowfallAnimation(int dx, int dy){
+    public SnowFallAnimation(int dx, int dy){
         this.dx = dx;
         this.dy = dy; 
 
