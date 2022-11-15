@@ -17,7 +17,6 @@ public abstract class HumanoidEntity extends MobEntity{
     private String sprite_east_moving;
     private String sprite_east_neutral;
     
-    private long lastAnimationChange = Time.timeMs();
 
     public HumanoidEntity(float x, float y, float width, float height) {
         super(x, y, width, height);

@@ -4,6 +4,7 @@ import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.gfx.ColorFilter;
+import summit.gfx.Light;
 import summit.gfx.Paintable;
 import summit.gui.GameClickReciever;
 import summit.util.Region;
@@ -15,7 +16,8 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     private float lastX, lastY;
     
     private int renderOp;
-    private ColorFilter cFilter;
+    private ColorFilter filter;
+    private Light light;
 
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
@@ -148,10 +150,18 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     }
     
     public ColorFilter getColorFilter() {
-        return this.cFilter;
+        return this.filter;
     }
 
     public void setColorFilter(ColorFilter cFilter) {
-        this.cFilter = cFilter;
+        this.filter = cFilter;
+    }
+    
+    public Light getLight() {
+        return this.light;
+    }
+
+    public void setLight(Light light) {
+        this.light = light;
     }
 }
