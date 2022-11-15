@@ -52,7 +52,8 @@ public class PaintEvent {
 
     public void invokeDelayed(){
         for (Paintable paintable : renderLater) {
-            paintable.paint(this);
+            if(paintable != null)
+                paintable.paint(this);
         }
     }
 }

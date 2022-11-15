@@ -36,7 +36,6 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     @Override
     public void update(GameUpdateEvent e){
-        // System.out.println(getX() + "  " + getY());
         if(getX() < -0.5 || getY() < -0.5) {
             return;
         }
@@ -46,16 +45,19 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
             destroy(e);
         }
 
-        if(lastX != getX() || lastY != getY())
+        // System.out.println(getX() + "  " + getY() + "  " + lastX + "  " + lastY);
+        if(lastX != getX() || lastY != getY()){
             moving = true;
-        else 
+            lastX = getX();
+            lastY = getY();
+        } else {
             moving = false;
-        lastX = getX();
-        lastY = getY();
+        }
 
         if(e.getMap().getTileAt(getX(), getY()).peekTile().getName().equals("WaterTile")){
             setInWater(true);
         } else { setInWater(false); }
+            
     }
 
     abstract public void damage(GameUpdateEvent ge, Entity e);
