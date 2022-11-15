@@ -3,9 +3,7 @@ package summit.game.entity;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
-import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
-import summit.gfx.Renderer;
 import summit.gui.GameClickReciever;
 import summit.util.Region;
 
@@ -14,21 +12,22 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     private float dx, dy;
 
     private float lastX, lastY;
-    private boolean moving;
     
+    private int renderOp;
+
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
+
+    private float maxHealth;
+    private float health;
 
     private boolean inWater;
     private boolean destroyed;
     private boolean onFire;
-    private float health;
+    private boolean moving;
 
     public Entity(float x, float y, float width, float height){
         super(x,y,width,height);
-
-        inWater = false;
-        destroyed = false;
     }
 
     @Override
@@ -37,7 +36,7 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         if(getX() < -0.5 || getY() < -0.5) {
             return;
         }
-
+        
         if(getHealth() <= 0){
             destroyed = true;
             destroy(e);
@@ -128,5 +127,21 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public void setOnFire(boolean onFire){
         this.onFire = onFire;
+    }
+    
+    public int getRenderOp() {
+        return this.renderOp;
+    }
+
+    public void setRenderOp(int renderOp) {
+        this.renderOp = renderOp;
+    }
+    
+    public float getMaxHealth() {
+        return this.maxHealth;
+    }
+
+    public void setMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
     }
 }
