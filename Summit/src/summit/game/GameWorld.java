@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Stack;
 
 import summit.game.animation.SnowfallAnimation;
-import summit.game.entity.PlayerEntity;
+import summit.game.entity.mob.PlayerEntity;
 import summit.game.mapgenerator.GameMapGenerator;
 import summit.gfx.Camera;
+import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
@@ -34,6 +35,8 @@ public class GameWorld implements Paintable, Serializable{
     private transient Thread gameUpdateThread;
 
     private transient SnowfallAnimation snowAnim;
+
+    private ColorFilter filter = new ColorFilter(-70, -50, 0);
 
     /**
      * Use this constructor to create a new game
@@ -101,12 +104,11 @@ public class GameWorld implements Paintable, Serializable{
             loadedMap.paint(e);
         }
 
-
         Light l = new Light(player.getX(), player.getY(), 4f, 70, 70, 70);
         e.getRenderer().renderLight(l, l.getX(), l.getY(), e.getCamera());
         player.paint(e);
         snowAnim.paint(e);
-        e.getRenderer().filterFrame(-70, -50, 0);
+        e.getRenderer().filterFrame(filter);
     }
 
     public GameMap getLoadedMap() {

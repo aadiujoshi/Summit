@@ -1,16 +1,16 @@
-package summit.game.entity;
+package summit.game.entity.projectile;
 
 import java.awt.event.MouseEvent;
 
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
+import summit.game.entity.Entity;
 import summit.gfx.PaintEvent;
 
 public class SnowballProjectile extends Projectile {
 
     public SnowballProjectile(float x, float y, float width, float height) {
-        super(x, y, width, height);
-        //TODO Auto-generated constructor stub
+        super(x, y, 0.5f, 0.5f);
     }
 
     @Override

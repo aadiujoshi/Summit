@@ -1,6 +1,7 @@
 package summit.game.tile;
 
 import summit.game.GameUpdateReciever;
+import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gui.GameClickReciever;
@@ -15,6 +16,7 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     
     //random tile rotation
     private int rotation = (int)(Math.random()*5);
+    private ColorFilter filter;
 
     private boolean destroy = false;
 
@@ -31,7 +33,7 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     @Override
     public void paint(PaintEvent e){
         if(sprite != null)
-            e.getRenderer().renderGame(sprite, getX(), getY(), getRotation(), e.getCamera());
+            e.getRenderer().renderGame(sprite, getX(), getY(), getRotation(), getColorFilter(), e.getCamera());
     } 
 
 
@@ -71,5 +73,13 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     
     public String getName(){
         return this.NAME;
+    }
+    
+    public ColorFilter getColorFilter() {
+        return this.filter;
+    }
+
+    public void setColorFilter(ColorFilter filter) {
+        this.filter = filter;
     }
 }

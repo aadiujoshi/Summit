@@ -107,9 +107,8 @@ public class Renderer {
                     continue;
                 float d = distance(center.x, center.y, xx, yy);
                 if(d <= radius){
-                    frame[yy][xx] = filterColor(frame[yy][xx], (int)(r-((d/radius)*r)),
-                                                                (int)(g-((d/radius)*g)),
-                                                                (int)(b-((d/radius)*b)));
+                    ColorFilter filt = new ColorFilter((int)(r-((d/radius)*r)), (int)(g-((d/radius)*g)), (int)(b-((d/radius)*b)));
+                    frame[yy][xx] = filterColor(frame[yy][xx], filt);
                 }
             }
         }
@@ -119,10 +118,10 @@ public class Renderer {
      * val is brightness (make negative to dim frame)
      * @param color
      */
-    public void filterFrame(int red, int green, int blue){
+    public void filterFrame(ColorFilter filter){
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
-                frame[r][c] = filterColor(frame[r][c], red, green, blue);
+                frame[r][c] = filterColor(frame[r][c], filter);
             }
         }
     }
@@ -130,9 +129,11 @@ public class Renderer {
     /**
      * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
      */
-    public void render(String s, float x, float y, int operation){
+    public void render(String s, float x, float y, int operation, ColorFilter filter){
         
         int[][] sprite = BufferedSprites.getSprite(s);
+
+        if(sprite == null) return;
 
         int nx = Math.round(x-(sprite[0].length/2));
         int ny = Math.round(y-(sprite.length/2));
@@ -156,20 +157,23 @@ public class Renderer {
         //write final sprite
         for(int yy = ny; yy < ny+sprite.length; yy++) {
             for(int xx = nx; xx < nx+sprite[0].length; xx++) {
-                if(inArrBounds(yy-ny, xx-nx, sprite.length, sprite[0].length) && 
-                    inArrBounds(yy, xx, frame.length, frame[0].length) && validRGB(sprite[yy-ny][xx-nx]))
-                    frame[yy][xx] = sprite[yy-ny][xx-nx];
+                if(inArrBounds(yy-ny, xx-nx, sprite.length, sprite[0].length) && inArrBounds(yy, xx, frame.length, frame[0].length) && validRGB(sprite[yy-ny][xx-nx])){
+                    if(filter == null)
+                        frame[yy][xx] = sprite[yy-ny][xx-nx];
+                    else
+                        frame[yy][xx] = Renderer.filterColor(frame[yy][xx], filter);
+                }
             }
         }
     }
 
-    public void renderText(String text, int x, int y, int operation){
+    public void renderText(String text, int x, int y, int operation, ColorFilter filter){
 
         int offsetX = x-(text.length()*8/2) + 4;
 
         for(int i = 0; i < text.length(); i++) {
             if(!(text.charAt(i)+"").equals(" "))
-                render(text.charAt(i)+Sprite.TEXT_APPEND_KEY, offsetX+(i*8), y, operation);
+                render(text.charAt(i)+Sprite.TEXT_APPEND_KEY, offsetX+(i*8), y, operation, filter);
         }
     }
 
@@ -177,11 +181,11 @@ public class Renderer {
      * USE THIS METHOD FOR RENDERING GAME STUFF (ANYTHING THAT IS POSITIONALLY BASED ON A CAMERA).
      * COORDINATES ARE GAMESPACE COORDINATES.
     */
-    public void renderGame(String s, float x, float y, int operation, Camera camera){
+    public void renderGame(String s, float x, float y, int operation, ColorFilter filter, Camera camera){
 
         Point2D.Float spritePos = toPixel(x, y, camera);
         
-        this.render(s, spritePos.x, spritePos.y, operation);
+        this.render(s, spritePos.x, spritePos.y, operation, filter);
     }
 
     /**
@@ -246,15 +250,15 @@ public class Renderer {
         return rgb != -1;
     }
 
-    public static int filterColor(int color, int r, int g, int b){
+    public static int filterColor(int color, ColorFilter filter){
         
         int red = ((color >> 16) & 0xff);
         int green = ((color >> 8) & 0xff);
         int blue = ((color >> 0) & 0xff);
         
-        red = ((red+r > 255) ? 255: red+r);
-        green = ((green+g > 255) ? 255: green+g);
-        blue = ((blue+b > 255) ? 255: blue+b);
+        red = ((red+filter.getRed() > 255) ? 255: red+filter.getRed());
+        green = ((green+filter.getGreen() > 255) ? 255: green+filter.getGreen());
+        blue = ((blue+filter.getBlue() > 255) ? 255: blue+filter.getBlue());
         
         red = ((red < 0) ? 0: red);
         green = ((green < 0) ? 0: green);

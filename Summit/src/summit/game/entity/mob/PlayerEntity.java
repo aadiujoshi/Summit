@@ -1,11 +1,13 @@
-package summit.game.entity;
+package summit.game.entity.mob;
 
 import java.awt.event.MouseEvent;
 
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ScheduledEvent;
+import summit.game.entity.Entity;
 import summit.gfx.Camera;
+import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
@@ -24,7 +26,8 @@ public class PlayerEntity extends HumanoidEntity{
         super.setDx(5f);
         super.setDy(5f);
         super.setHealth(10f);
-        super.setMaxHealth(10);
+        super.setMaxHealth(10f);
+        super.setColorFilter(new ColorFilter(255, 255, 0));
         this.hud = new HUD();
         hud.setPlayer(this);
         //DO THIS
@@ -42,13 +45,13 @@ public class PlayerEntity extends HumanoidEntity{
         if(isMoving()){
             e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                         getX(), getY(), 
-                                        getRenderOp(),
+                                        getRenderOp(), getColorFilter(),
                                         e.getCamera());
         
         } else {
             e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                         getX(), getY(), 
-                                        getRenderOp(),
+                                        getRenderOp(), getColorFilter(),
                                         e.getCamera());
         }
     }

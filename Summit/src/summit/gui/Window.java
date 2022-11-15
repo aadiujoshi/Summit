@@ -237,7 +237,7 @@ public class Window implements MouseListener, KeyListener{
         PaintEvent pe = new PaintEvent(renderer, lastFrame, null, this);
 
         if(state == WindowState.SELECTIONMENUS){
-            renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.NO_OP);
+            renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.NO_OP, null);
             if (!guiContainersHome.isEmpty())
                 guiContainersHome.peek().paint(pe);
         }

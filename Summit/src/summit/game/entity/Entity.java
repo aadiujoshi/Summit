@@ -3,6 +3,7 @@ package summit.game.entity;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.gfx.ColorFilter;
 import summit.gfx.Paintable;
 import summit.gui.GameClickReciever;
 import summit.util.Region;
@@ -14,6 +15,7 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     private float lastX, lastY;
     
     private int renderOp;
+    private ColorFilter cFilter;
 
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
@@ -143,5 +145,13 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public void setMaxHealth(float maxHealth) {
         this.maxHealth = maxHealth;
+    }
+    
+    public ColorFilter getColorFilter() {
+        return this.cFilter;
+    }
+
+    public void setColorFilter(ColorFilter cFilter) {
+        this.cFilter = cFilter;
     }
 }

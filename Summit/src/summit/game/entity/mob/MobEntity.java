@@ -1,5 +1,6 @@
-package summit.game.entity;
+package summit.game.entity.mob;
 
+import summit.game.entity.Entity;
 import summit.util.Direction;
 
 public abstract class MobEntity extends Entity{

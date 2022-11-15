@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import summit.game.entity.Entity;
-import summit.game.entity.PlayerEntity;
+import summit.game.entity.mob.PlayerEntity;
 import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;

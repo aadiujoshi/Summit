@@ -1,7 +1,7 @@
 package summit.gui;
 
 import summit.gfx.Renderer;
-import summit.game.entity.PlayerEntity;
+import summit.game.entity.mob.PlayerEntity;
 import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
 import summit.gui.menu.Container;
@@ -27,10 +27,10 @@ public class HUD extends Container{
 
         for(int px = right_x; px >= left_x; px-=10) {
             if(h % 1 != 0){
-                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.NO_OP);
+                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.NO_OP, null);
                 h-=0.5;
             } else {
-                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.NO_OP);
+                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.NO_OP, null);
             }
         }
     }

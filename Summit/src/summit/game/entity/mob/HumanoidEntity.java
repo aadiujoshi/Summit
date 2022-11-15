@@ -1,4 +1,4 @@
-package summit.game.entity;
+package summit.game.entity.mob;
 
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
@@ -50,7 +50,7 @@ public abstract class HumanoidEntity extends MobEntity{
                         default -> null;
                     }, 
                     getX(), getY()+4, 
-                    Renderer.NO_OP,
+                    Renderer.NO_OP, getColorFilter(),
                     c);
 
         // switch(d){
