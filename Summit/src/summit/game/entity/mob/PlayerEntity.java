@@ -1,10 +1,11 @@
-package summit.game.entity;
+package summit.game.entity.mob;
 
 import java.awt.event.MouseEvent;
 
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ScheduledEvent;
+import summit.game.entity.Entity;
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -19,43 +20,35 @@ public class PlayerEntity extends HumanoidEntity{
 
     private HUD hud;
 
-    private long lastAnimationChange = Time.timeMs();
-
     public PlayerEntity(float x, float y) {
         super(x, y, 1, 1);
         super.setDx(5f);
         super.setDy(5f);
         super.setHealth(10f);
+        super.setMaxHealth(10f);
         this.hud = new HUD();
         hud.setPlayer(this);
         //DO THIS
         // super.setSprites(something, something, something, something, something, something);
-        
     }
 
     @Override
     public void paint(PaintEvent e) {
-        
-        e.renderLater(hud);
         
         // System.out.println(isMoving());
 
         if(isMoving()){
             e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                         getX(), getY(), 
-                                        ((Time.timeMs()-lastAnimationChange > 250) ? Renderer.NO_OP : Renderer.FLIP_X) | 
-                                        (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.NO_OP),
+                                        getRenderOp(), getColorFilter(),
                                         e.getCamera());
         
         } else {
             e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                         getX(), getY(), 
-                                        (inWater() ? Renderer.OUTLINE_RED | Renderer.OUTLINE_BLUE: Renderer.NO_OP),
+                                        getRenderOp(), getColorFilter(),
                                         e.getCamera());
         }
-
-        if((Time.timeMs()-lastAnimationChange > 500))
-            lastAnimationChange = Time.timeMs();
     }
 
     @Override
@@ -105,10 +98,13 @@ public class PlayerEntity extends HumanoidEntity{
         
     }
     
-    //getters and setters
-
+    //-----------------   getters and setters   --------------------------
     
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+    
+    public HUD getHud() {
+        return this.hud;
     }
 }

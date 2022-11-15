@@ -1,4 +1,4 @@
-package summit.game.entity;
+package summit.game.entity.mob;
 
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
@@ -17,23 +17,8 @@ public abstract class HumanoidEntity extends MobEntity{
     private String sprite_east_moving;
     private String sprite_east_neutral;
     
-    private long lastAnimationChange = Time.timeMs();
-
     public HumanoidEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
-    }
-
-    protected void setSprites(String sprite_north_moving, String sprite_north_neutral, 
-                                String sprite_south_moving, String sprite_south_neutral, 
-                                String sprite_east_moving, String sprite_east_neutral){
-        this.sprite_north_moving = sprite_north_moving;
-        this.sprite_north_neutral = sprite_north_neutral;
-
-        this.sprite_south_moving = sprite_south_moving;
-        this.sprite_south_neutral = sprite_south_neutral;
-        
-        this.sprite_east_moving = sprite_east_moving;
-        this.sprite_east_neutral = sprite_east_neutral;
     }
 
     @Override
@@ -50,7 +35,7 @@ public abstract class HumanoidEntity extends MobEntity{
                         default -> null;
                     }, 
                     getX(), getY()+4, 
-                    Renderer.NO_OP,
+                    getRenderOp(), getColorFilter(),
                     c);
 
         // switch(d){
@@ -86,5 +71,18 @@ public abstract class HumanoidEntity extends MobEntity{
         //         }
         //         break;
         // }
+    }
+
+    protected void setSprites(String sprite_north_moving, String sprite_north_neutral, 
+                                String sprite_south_moving, String sprite_south_neutral, 
+                                String sprite_east_moving, String sprite_east_neutral){
+        this.sprite_north_moving = sprite_north_moving;
+        this.sprite_north_neutral = sprite_north_neutral;
+
+        this.sprite_south_moving = sprite_south_moving;
+        this.sprite_south_neutral = sprite_south_neutral;
+        
+        this.sprite_east_moving = sprite_east_moving;
+        this.sprite_east_neutral = sprite_east_neutral;
     }
 }

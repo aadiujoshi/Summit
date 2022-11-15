@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import summit.game.GameMap;
 import summit.gui.Window;
 
 public class PaintEvent {
+
+    private GameMap map;
     private Renderer renderer;
     private long lastFrame;
     private Camera camera;
@@ -14,12 +17,13 @@ public class PaintEvent {
 
     private Stack<Paintable> renderLater;
 
-    public PaintEvent(Renderer renderer, long lastFrame, Camera camera, Window window){
+    public PaintEvent(Renderer renderer, long lastFrame, Camera camera, GameMap cur_map, Window window){
         this.renderer = renderer;
         this.lastFrame = lastFrame;
         this.camera = camera;
         this.window = window;
         this.renderLater = new Stack<>();
+        this.map = cur_map;
     }
 
     public Renderer getRenderer(){
@@ -55,4 +59,17 @@ public class PaintEvent {
             paintable.paint(this);
         }
     }
+    
+    public GameMap getCurrentMap() {
+        return this.map;
+    }
+
+    /**
+     * Only used by GameWorld to set the current map
+     * @param map
+     */
+    public void setCurrentMap(GameMap map) {
+        this.map = map;
+    }
+
 }

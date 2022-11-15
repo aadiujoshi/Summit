@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Stack;
 
 import summit.game.animation.SnowfallAnimation;
-import summit.game.entity.PlayerEntity;
+import summit.game.entity.mob.PlayerEntity;
 import summit.game.mapgenerator.GameMapGenerator;
 import summit.gfx.Camera;
+import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
@@ -60,6 +61,8 @@ public class GameWorld implements Paintable, Serializable{
         camera = new Camera(player.getX(), player.getY());
         player.setCamera(camera);
 
+        // parentWindow.pushGameContainer(player.getHud());
+
         initUpdateThread();
     }
 
@@ -78,7 +81,7 @@ public class GameWorld implements Paintable, Serializable{
                     prevDelay = (int)(Time.timeMs()-startTime);
                 }
             }
-        });
+        }, "gameupdatethread");
 
         gameUpdateThread.start();
     }
@@ -96,6 +99,7 @@ public class GameWorld implements Paintable, Serializable{
     public void paint(PaintEvent e){
 
         e.setCamera(camera.clone());
+        e.setCurrentMap(loadedMap);
 
         if(loadedMap != null){
             loadedMap.paint(e);
@@ -106,7 +110,7 @@ public class GameWorld implements Paintable, Serializable{
         e.getRenderer().renderLight(l, l.getX(), l.getY(), e.getCamera());
         player.paint(e);
         snowAnim.paint(e);
-        e.getRenderer().filterFrame(-70, -50, 0);
+        e.getRenderer().filterFrame(new ColorFilter(-70, -50, 0));
     }
 
     public GameMap getLoadedMap() {

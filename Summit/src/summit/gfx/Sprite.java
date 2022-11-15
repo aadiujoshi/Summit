@@ -14,6 +14,7 @@ public class Sprite {
     public static final String WATER_TILE = "water-tile";
     public static final String HALF_HEART = "heart-half";
     public static final String FULL_HEART = "heart-full";
+    public static final String EMPTY_HEART = "heart-empty";
     public static final String SUMMIT_BACKGROUND = "gradient-background";
     public static final String TEXT_APPEND_KEY = "-text";
 }

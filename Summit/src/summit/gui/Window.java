@@ -150,7 +150,7 @@ public class Window implements MouseListener, KeyListener{
                     } while (bufferStrategy.contentsLost());
                 }
             }
-        });
+        }, "graphicsthread");
 
         //init window frame, canvas, and buffer strategy
         {
@@ -234,10 +234,10 @@ public class Window implements MouseListener, KeyListener{
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        PaintEvent pe = new PaintEvent(renderer, lastFrame, null, this);
+        PaintEvent pe = new PaintEvent(renderer, lastFrame, null ,null, this);
 
         if(state == WindowState.SELECTIONMENUS){
-            renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.NO_OP);
+            renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.NO_OP, null);
             if (!guiContainersHome.isEmpty())
                 guiContainersHome.peek().paint(pe);
         }

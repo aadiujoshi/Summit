@@ -73,4 +73,8 @@ public class Light implements Paintable{
     public void setBlue(int blue) {
         this.blue = blue;
     }
+
+    public ColorFilter getColorFilter(){
+        return new ColorFilter(red, green, blue);
+    }
 }

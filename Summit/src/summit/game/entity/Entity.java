@@ -3,6 +3,8 @@ package summit.game.entity;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.gfx.ColorFilter;
+import summit.gfx.Light;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.Renderer;
@@ -14,21 +16,24 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     private float dx, dy;
 
     private float lastX, lastY;
-    private boolean moving;
-    
+
+    private int renderOp = Renderer.NO_OP;
+    private Light light;
+    private ColorFilter filter;
+
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
 
-    private boolean inWater;
-    private boolean destroyed;
-    private boolean onFire;
-    private float health;
+    private float health = 0;
+    private float maxHealth = 0;
+    
+    private boolean inWater = false;
+    private boolean destroyed = false;
+    private boolean onFire = false;
+    private boolean moving = false;
 
     public Entity(float x, float y, float width, float height){
         super(x,y,width,height);
-
-        inWater = false;
-        destroyed = false;
     }
 
     @Override
@@ -53,6 +58,8 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         if(e.getMap().getTileAt(getX(), getY()).peekTile().getName().equals("WaterTile")){
             setInWater(true);
         } else { setInWater(false); }
+
+
     }
 
     abstract public void damage(GameUpdateEvent ge, Entity e);
@@ -129,4 +136,37 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     public void setOnFire(boolean onFire){
         this.onFire = onFire;
     }
+    
+    public int getRenderOp() {
+        return this.renderOp;
+    }
+
+    public void setRenderOp(int renderOp) {
+        this.renderOp = renderOp;
+    }
+    
+    public Light getLight() {
+        return this.light;
+    }
+
+    public void setLight(Light light) {
+        this.light = light;
+    }
+
+    public ColorFilter getColorFilter(){
+        return this.filter;
+    }
+    
+    public void setColorFilter(ColorFilter filter){
+        this.filter = filter;
+    }
+    
+    public float getMaxHealth() {
+        return this.maxHealth;
+    }
+
+    public void setMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
 }

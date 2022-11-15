@@ -1,4 +1,6 @@
-package summit.game.entity;
+package summit.game.entity.projectile;
+
+import summit.game.entity.Entity;
 
 public abstract class Projectile extends Entity {
 

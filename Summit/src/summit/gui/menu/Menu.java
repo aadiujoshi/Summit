@@ -82,51 +82,51 @@ public class Menu implements Paintable, Clickable{
         // System.out.println((startY-endY)/16);
 
         //traversed in pixel coordinates
-        for (int x = startX; x <= endX; x+=16) {
-            for (int y = startY; y <= endY; y+=16) {
-                // System.out.println(px + "  " + py + "\n\n");
+        // for (int x = startX; x <= endX; x+=16) {
+        //     for (int y = startY; y <= endY; y+=16) {
+        //         // System.out.println(px + "  " + py + "\n\n");
                 
-                if(y == startY && x == startX){
-                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.NO_OP);
-                    continue;
-                }
-                if(y == startY && x == endX){
-                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_X);
-                    continue;
-                }
-                if(y == endY && x == startX){
-                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_Y);
-                    continue;
-                }
-                if(y == endY && x == endX){
-                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_X | Renderer.FLIP_Y);
-                    continue;
-                }
-                //------------
+        //         if(y == startY && x == startX){
+        //             ren.render(Sprite.MENU_CORNER, x, y, Renderer.NO_OP);
+        //             continue;
+        //         }
+        //         if(y == startY && x == endX){
+        //             ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_X);
+        //             continue;
+        //         }
+        //         if(y == endY && x == startX){
+        //             ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_Y);
+        //             continue;
+        //         }
+        //         if(y == endY && x == endX){
+        //             ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_X | Renderer.FLIP_Y);
+        //             continue;
+        //         }
+        //         //------------
 
-                //check borders
-                if(y == startY){
-                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.NO_OP);
-                    continue;
-                }
-                if(y == endY){
-                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.FLIP_Y);
-                    continue;
-                }
-                if(x == startX){
-                    ren.render(Sprite.MENU_BORDER, x, y,  Renderer.ROTATE_90 | Renderer.FLIP_X);
-                    continue;
-                }
-                if(x == endX){
-                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.ROTATE_90);
-                    continue;
-                }
-                //------------
+        //         //check borders
+        //         if(y == startY){
+        //             ren.render(Sprite.MENU_BORDER, x, y, Renderer.NO_OP);
+        //             continue;
+        //         }
+        //         if(y == endY){
+        //             ren.render(Sprite.MENU_BORDER, x, y, Renderer.FLIP_Y);
+        //             continue;
+        //         }
+        //         if(x == startX){
+        //             ren.render(Sprite.MENU_BORDER, x, y,  Renderer.ROTATE_90 | Renderer.FLIP_X);
+        //             continue;
+        //         }
+        //         if(x == endX){
+        //             ren.render(Sprite.MENU_BORDER, x, y, Renderer.ROTATE_90);
+        //             continue;
+        //         }
+        //         //------------
 
-                //render inside
-                ren.render(Sprite.MENU_FILL, x, y, Renderer.NO_OP);
-            }
-        }
+        //         //render inside
+        //         ren.render(Sprite.MENU_FILL, x, y, Renderer.NO_OP);
+        //     }
+        // }
 
         //draw components
 

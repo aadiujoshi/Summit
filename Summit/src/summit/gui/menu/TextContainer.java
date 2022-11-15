@@ -37,7 +37,7 @@ public class TextContainer extends Container{
         }
 
         for (int i = 0; i < lines.size(); i++) {
-            e.getRenderer().renderText(lines.get(i), getX(), getY()+(i*9)-(lines.size()/2*4), Renderer.NO_OP);
+            e.getRenderer().renderText(lines.get(i), getX(), getY()+(i*9)-(lines.size()/2*4), Renderer.NO_OP, null);
         }
     }
 
