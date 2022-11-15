@@ -27,7 +27,7 @@ public class PlayerEntity extends HumanoidEntity{
         super.setDy(5f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
-        super.setColorFilter(new ColorFilter(255, 255, 0));
+        super.setColorFilter(new ColorFilter(100, 0, 0));
         this.hud = new HUD();
         hud.setPlayer(this);
         //DO THIS

@@ -161,7 +161,7 @@ public class Renderer {
                     if(filter == null)
                         frame[yy][xx] = sprite[yy-ny][xx-nx];
                     else
-                        frame[yy][xx] = Renderer.filterColor(frame[yy][xx], filter);
+                        frame[yy][xx] = Renderer.filterColor(sprite[yy-ny][xx-nx], filter);
                 }
             }
         }
