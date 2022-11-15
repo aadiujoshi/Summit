@@ -188,7 +188,6 @@ public class Renderer {
      * COORDINATES ARE GAMESPACE COORDINATES.
     */
     public void renderGame(String s, float x, float y, int operation, ColorFilter filter, Camera camera){
-
         Point2D.Float spritePos = toPixel(x, y, camera);
         this.render(s, spritePos.x, spritePos.y, operation, filter);
     }
