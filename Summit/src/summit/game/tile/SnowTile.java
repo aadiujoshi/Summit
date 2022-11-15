@@ -15,7 +15,7 @@ public class SnowTile extends Tile{
     public SnowTile(float x, float y){
         super(x, y);
         super.setSprite(Sprite.SNOW_TILE);
-        super.setLight(new Light(x, y, 2, 100, 100, 100));
+        super.setLight(new Light(x, y, 3, 100, 100, 100));
     }
     
     @Override
