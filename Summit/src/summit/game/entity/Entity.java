@@ -13,6 +13,9 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     private float dx, dy;
 
+    private int spriteOffsetX;
+    private int spriteOffsetY;
+
     private float lastX, lastY;
     
     private int renderOp;
@@ -168,5 +171,21 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public void setLight(Light light) {
         this.light = light;
+    }
+    
+    public int getSpriteOffsetX() {
+        return this.spriteOffsetX;
+    }
+
+    public void setSpriteOffsetX(int spriteOffsetX) {
+        this.spriteOffsetX = spriteOffsetX;
+    }
+
+    public int getSpriteOffsetY() {
+        return this.spriteOffsetY;
+    }
+
+    public void setSpriteOffsetY(int spriteOffsetY) {
+        this.spriteOffsetY = spriteOffsetY;
     }
 }
