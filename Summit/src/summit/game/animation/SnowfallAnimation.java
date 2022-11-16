@@ -29,7 +29,6 @@ public class SnowfallAnimation implements Paintable{
         for (int i = 0; i < particles.length; i++) {
             particles[i] = (((int)(Math.random()*Renderer.WIDTH)) << 16) | 
                             ((int)(Math.random()*Renderer.HEIGHT) << 0);
-            // System.out.println(particles[i]);
         }
 
         snowfall = new ScheduledEvent(Time.MS_IN_S/100, ScheduledEvent.FOREVER) {
@@ -45,7 +44,6 @@ public class SnowfallAnimation implements Paintable{
                     int ny = (int)((particles[i] >> 0) & 0xff) + dy + cy;
 
                     particles[i] = (nx << 16) | (ny << 0);
-                                    
                 }
             }
         };

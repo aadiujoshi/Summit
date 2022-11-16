@@ -3,6 +3,7 @@ import java.awt.Toolkit;
 
 import summit.gfx.BufferedSprites;
 import summit.gui.Window;
+import summit.gui.WindowState;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +16,9 @@ public class Main {
 
                 System.out.println(screen);
 
-                new Window("Summit");
+                Window summit = new Window("Summit");
+
+                summit.setState(WindowState.NEWGAME);
             }
         });
 

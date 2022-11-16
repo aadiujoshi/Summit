@@ -108,7 +108,7 @@ public class Renderer {
                 float d = distance(center.x, center.y, xx, yy);
                 if(d <= radius){
                     ColorFilter filt = new ColorFilter((int)(r-((d/radius)*r)), (int)(g-((d/radius)*g)), (int)(b-((d/radius)*b)));
-                    frame[yy][xx] = filterColor(frame[yy][xx], filt);
+                    frame[yy][xx] = filt.filterColor(frame[yy][xx]);
                 }
             }
         }
@@ -121,7 +121,7 @@ public class Renderer {
     public void filterFrame(ColorFilter filter){
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
-                frame[r][c] = filterColor(frame[r][c], filter);
+                frame[r][c] = filter.filterColor(frame[r][c]);
             }
         }
     }
@@ -161,7 +161,7 @@ public class Renderer {
                     if(filter == null)
                         frame[yy][xx] = sprite[yy-ny][xx-nx];
                     else
-                        frame[yy][xx] = Renderer.filterColor(sprite[yy-ny][xx-nx], filter);
+                        frame[yy][xx] = filter.filterColor(sprite[yy-ny][xx-nx]); //Renderer.filterColor(sprite[yy-ny][xx-nx], filter);
                 }
             }
         }
@@ -252,23 +252,6 @@ public class Renderer {
         return rgb != -1;
     }
 
-    public static int filterColor(int color, ColorFilter filter){
-        
-        int red = ((color >> 16) & 0xff);
-        int green = ((color >> 8) & 0xff);
-        int blue = ((color >> 0) & 0xff);
-        
-        red = ((red+filter.getRed() > 255) ? 255: red+filter.getRed());
-        green = ((green+filter.getGreen() > 255) ? 255: green+filter.getGreen());
-        blue = ((blue+filter.getBlue() > 255) ? 255: blue+filter.getBlue());
-        
-        red = ((red < 0) ? 0: red);
-        green = ((green < 0) ? 0: green);
-        blue = ((blue < 0) ? 0: blue);
-
-        return (red << 16) | (green << 8) | (blue << 0);
-    }
-
     public static int rgbIntensity(int color){
         return (((color >> 16) & 0xff) + 
                 ((color >> 8) & 0xff) + 
@@ -283,6 +266,24 @@ public class Renderer {
         float ny = (HEIGHT/2)-(y*16F)+(cam.getY()*16F);
 
         return new Point2D.Float(nx, ny);
+    }
+
+    /**
+     * mx and my are mouse coordinates converted to renderer pixel space (256x144)
+     * @param mx
+     * @param my
+     * @param cam
+     * @return
+     */
+    public static Point2D.Float toTile(int mx, int my, Camera cam){
+
+        System.out.println(WIDTH/16);
+        System.out.println(HEIGHT/16);
+
+        float rx = (cam.getX() - ((WIDTH/16f)/2+1)) + (mx/16);
+        float ry = (cam.getY() - ((HEIGHT/16f)/2+1)) + (my/16);
+
+        return new Point2D.Float(rx, ry);
     }
 
     /** 

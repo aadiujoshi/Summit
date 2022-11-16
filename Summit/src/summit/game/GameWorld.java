@@ -60,7 +60,7 @@ public class GameWorld implements Paintable, Serializable{
         
         loadedMap = maps.get("stage1");
         
-        player = new PlayerEntity(loadedMap.getWidth()/2, loadedMap.getHeight()/2);
+        player = new PlayerEntity(0, 0);
         camera = new Camera(player.getX(), player.getY());
         player.setCamera(camera);
 
@@ -106,7 +106,7 @@ public class GameWorld implements Paintable, Serializable{
         }
 
         player.paint(e);
-        snowAnim.paint(e);
+        // snowAnim.paint(e);
         e.getRenderer().filterFrame(filter);
     }
 

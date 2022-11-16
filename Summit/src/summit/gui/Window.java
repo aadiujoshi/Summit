@@ -23,8 +23,10 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import summit.game.GameMap;
 import summit.game.GameWorld;
 import summit.game.animation.Scheduler;
+import summit.game.tile.TileStack;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
@@ -393,25 +395,18 @@ public class Window implements MouseListener, KeyListener{
     public void mousePressed(MouseEvent e) {
         mouseDown = true;
 
-        float rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
-        float ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
+        int rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
+        int ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
 
-        e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(), (int)rx, (int)ry, e.getClickCount(), e.isPopupTrigger(), e.getButton());
+        e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(), rx, ry, e.getClickCount(), e.isPopupTrigger(), e.getButton());
 
         if(state == WindowState.GAME){
-            // if(world != null){
-            //     GameMap loadedmap = world.getLoadedMap();
-            //     if(loadedmap != null){
-            //         TileStack[][] map = loadedmap.getMap();
-            //         for (int i = 0; i < map.length; i++) {
-            //             for (int j = 0; j < map[0].length; j++) {
-            //                 // if(){
-
-            //                 // }
-            //             }
-            //         }
-            //     }
-            // }
+            if(world != null){
+                GameMap loadedmap = world.getLoadedMap();
+                // Renderer.toTile();
+                System.out.println(Renderer.toTile(rx, ry, world.getCamera()));
+                // loadedmap.getTileAt(rx, ry);
+            }
             
             for(Container container : guiContainersGame) {
                 if(container.getRegion().contains(rx, ry)){

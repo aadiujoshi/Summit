@@ -32,6 +32,8 @@ public class PlayerEntity extends HumanoidEntity{
         super.setDy(5f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
+        super.setSpriteOffsetX(0);
+        super.setSpriteOffsetY(8);
         // super.setColorFilter(new ColorFilter(0, 0, 0));
         // super.setLight(new Light(this.getX(), this.getY(), 4f, 170, 0, 0));
         this.hud = new HUD();
@@ -78,11 +80,18 @@ public class PlayerEntity extends HumanoidEntity{
                                             20, 25, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
             }
         });
+        // e.renderLater(new Paintable() {
+        //     public void paint(PaintEvent e) {
+        //         java.awt.geom.Point2D.Float p = Renderer.toPixel(getX(), getY(), camera);
+        //         System.out.println(getX() + "  " + getY());
+        //         e.getRenderer().fillRect(((int)(p.x-getWidth()/2)), ((int)(p.y-getHeight()/2)), Math.round(getWidth()*16), Math.round(getHeight()*16), Renderer.toIntRGB(100,0,0));
+        //     }
+        // });
 
         // System.out.println(isMoving());
 
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
-                                        getX(), getY(), 
+                                        (getX()+(getSpriteOffsetX()/16f)), (getY()+(getSpriteOffsetY()/16f)), 
                                         getRenderOp(), getColorFilter(),
                                         e.getCamera());
     }
