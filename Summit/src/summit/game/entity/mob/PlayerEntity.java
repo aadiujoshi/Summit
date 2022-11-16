@@ -11,6 +11,7 @@ import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.PaintEvent;
+import summit.gfx.Paintable;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
@@ -68,6 +69,16 @@ public class PlayerEntity extends HumanoidEntity{
         
         e.renderLater(hud);
         e.renderLater(getLight());
+        e.renderLater(new Paintable() {
+            public void paint(PaintEvent e) {
+                e.getRenderer().renderText(("x:" + Math.round(getX()*2)/2), 
+                                            20, 15, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
+
+                e.getRenderer().renderText(("y:" + Math.round(getY()*2)/2), 
+                                            20, 25, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
+            }
+        });
+
         // System.out.println(isMoving());
 
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 

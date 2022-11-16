@@ -11,7 +11,7 @@ public class HUD extends Container{
     PlayerEntity player;
     
     public HUD() {
-        super(null, 0.3f, 0.8f, 0.5f, 0.2f);
+        super(null, 0.75f, 0.13f, 0.5f, 0.2f);
     }
     
     @Override

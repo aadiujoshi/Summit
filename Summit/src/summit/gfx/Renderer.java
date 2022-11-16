@@ -169,6 +169,8 @@ public class Renderer {
 
     public void renderText(String text, int x, int y, int operation, ColorFilter filter){
 
+        text = text.toUpperCase();
+
         int offsetX = x-(text.length()*8/2) + 4;
 
         for(int i = 0; i < text.length(); i++) {

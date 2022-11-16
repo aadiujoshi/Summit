@@ -9,9 +9,8 @@ import summit.gfx.PaintEvent;
 
 public class Arrow extends Projectile {
 
-    public Arrow(float x, float y) {
-        super(x, y, 0.5f, 0.25f);
-        //TODO Auto-generated constructor stub
+    public Arrow(float x, float y, float dx, float dy) {
+        super(x, y, dx, dy, 0.5f, 0.25f);
     }
 
     @Override
