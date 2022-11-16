@@ -31,7 +31,7 @@ public class PlayerEntity extends HumanoidEntity{
         super.setDy(5f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
-        // super.setColorFilter(new ColorFilter(-500, -500, -500));
+        // super.setColorFilter(new ColorFilter(0, 0, 0));
         // super.setLight(new Light(this.getX(), this.getY(), 4f, 170, 0, 0));
         this.hud = new HUD();
         hud.setPlayer(this);
@@ -42,7 +42,7 @@ public class PlayerEntity extends HumanoidEntity{
             @Override
             public void run(){
                 int op = getRenderOp();
-
+                
                 if(isMoving()){
                     if(flipped)
                         setRenderOp(op ^ Renderer.FLIP_X);

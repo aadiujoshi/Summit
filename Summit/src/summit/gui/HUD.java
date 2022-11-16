@@ -13,7 +13,6 @@ public class HUD extends Container{
     public HUD() {
         super(null, 0.3f, 0.8f, 0.5f, 0.2f);
     }
-
     
     @Override
     public void paint(PaintEvent e){
@@ -22,15 +21,18 @@ public class HUD extends Container{
         float h = Math.round(player.getHealth()*2)/2;
 
         int py = getY();
-        int right_x = getX()+(getWidth()/2);
-        int left_x = getX()-(getWidth()/2);
-
-        for(int px = right_x; px >= left_x; px-=10) {
-            if(h % 1 != 0){
-                e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.NO_OP, null);
+        int right_x = (int)(getX()+(player.getMaxHealth()*10/2));
+        int left_x = (int)(getX()-(player.getMaxHealth()*10/2));
+        
+        for(int px = left_x; px < right_x; px+=10) {
+            if(h == 0){
+                e.getRenderer().render(Sprite.EMPTY_HEART, px, py, Renderer.NO_OP, null);
+            } else if(h == 0.5){
+                e.getRenderer().render(Sprite.HALF_HEART, px, py, Renderer.NO_OP, null);
                 h-=0.5;
-            } else {
+            } else if(h % 1 == 0){
                 e.getRenderer().render(Sprite.FULL_HEART, px, py, Renderer.NO_OP, null);
+                h-=1;
             }
         }
     }

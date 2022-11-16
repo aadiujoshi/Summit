@@ -16,7 +16,7 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     private float lastX, lastY;
     
     private int renderOp;
-    private ColorFilter filter;
+    private ColorFilter filter = new ColorFilter(0, 0, 0);
     private Light light;
 
     //just metadata for class name

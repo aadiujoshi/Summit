@@ -2,6 +2,9 @@ package summit.gfx;
 
 public class ColorFilter {
     
+    //jvm crashes if this is null for some reason
+    public static final ColorFilter NOFILTER = new ColorFilter(0, 0, 0);
+
     private int red;
     private int green;
     private int blue;

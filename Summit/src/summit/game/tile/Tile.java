@@ -17,7 +17,7 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     
     //random tile rotation
     private int rotation = (int)(Math.random()*5);
-    private ColorFilter filter;
+    private ColorFilter filter = new ColorFilter(0, 0, 0);
     private Light light;
 
     private boolean destroy = false;
