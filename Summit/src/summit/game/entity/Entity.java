@@ -25,6 +25,8 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
 
+    private String onTile;
+
     private float maxHealth;
     private float health;
 
@@ -50,9 +52,13 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
         // System.out.println(getX() + "  " + getY() + "  " + lastX + "  " + lastY);
 
-        if(e.getMap().getTileAt(getX(), getY()).peekTile().getName().equals("WaterTile")){
+        onTile = e.getMap().getTileAt(getX(), getY()).peekTile().getName();
+
+        if(onTile.equals("WaterTile")){
             setInWater(true);
-        } else { setInWater(false); }
+        } else { 
+            setInWater(false); 
+        }
             
     }
 
@@ -187,5 +193,9 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public void setSpriteOffsetY(int spriteOffsetY) {
         this.spriteOffsetY = spriteOffsetY;
+    }
+
+    public String getOnTile(){
+        return this.onTile;
     }
 }
