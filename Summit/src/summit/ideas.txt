@@ -1,0 +1,27 @@
+finish terrain
+texture outlining
+
+finish inventory gui
+
+pause menu ->  graphics option panel
+
+character customization (just recolor character we alr have)
+fix animation to make it smoother
+armor hud
+
+
+game
+ - skeletons
+ - arrows
+ - weapons
+ - traders
+ - items
+ - wood
+ - trading system
+ - levels
+ - grace period between stages
+ - boss room
+ - weapon physics & knockback and projectiles
+ - fire animation
+
+
