@@ -1,5 +1,4 @@
 package summit.gui;
-import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -8,32 +7,24 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
-import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Stack;
-import java.awt.event.KeyAdapter;
-import java.awt.image.DataBufferInt;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import summit.game.GameMap;
 import summit.game.GameWorld;
 import summit.game.animation.Scheduler;
-import summit.game.tile.TileStack;
-import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
@@ -41,9 +32,6 @@ import summit.gui.menu.Container;
 import summit.gui.menu.MainSelectionMenu;
 import summit.util.Controls;
 import summit.util.Time;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.Dimension;
 
 public class Window implements MouseListener, KeyListener{
     
