@@ -1,14 +1,17 @@
 package summit.game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
-import summit.game.animation.SnowfallAnimation;
+// import summit.game.animation.SnowFallAnimation;
 import summit.game.entity.mob.PlayerEntity;
 import summit.game.mapgenerator.GameMapGenerator;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
+import summit.gfx.Light;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gui.Window;
@@ -31,7 +34,7 @@ public class GameWorld implements Paintable, Serializable{
 
     private transient Thread gameUpdateThread;
 
-    private transient SnowfallAnimation snowAnim;
+    // private transient SnowFallAnimation snowAnim;
 
     private ColorFilter filter = new ColorFilter(-70, -50, 0);
 
@@ -44,7 +47,7 @@ public class GameWorld implements Paintable, Serializable{
         SEED = seed;
         maps = new HashMap<>();
 
-        snowAnim = new SnowfallAnimation(4, 3);
+        // snowAnim = new SnowFallAnimation(4, 3);
 
         GameMap stage1 = GameMapGenerator.generateStage1(seed);
         GameMap stage2 = GameMapGenerator.generateStage2(seed);
@@ -60,7 +63,7 @@ public class GameWorld implements Paintable, Serializable{
         camera = new Camera(player.getX(), player.getY());
         player.setCamera(camera);
 
-        initUpdateThread();
+        // initUpdateThread();
     }
 
     public void initUpdateThread(){
@@ -102,7 +105,7 @@ public class GameWorld implements Paintable, Serializable{
         }
 
         player.paint(e);
-        snowAnim.paint(e);
+        // snowAnim.paint(e);
         e.getRenderer().filterFrame(filter);
     }
 
@@ -137,9 +140,4 @@ public class GameWorld implements Paintable, Serializable{
     public void setParentWindow(Window parentWindow) {
         this.parentWindow = parentWindow;
     }
-    
-    public long getSeed(){
-        return this.SEED;
-    }
-
 }

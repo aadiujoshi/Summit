@@ -1,5 +1,7 @@
 package summit.gfx;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import summit.gui.Window;
@@ -9,9 +11,6 @@ public class PaintEvent {
     private long lastFrame;
     private Camera camera;
     private Window window;
-
-    private float mouse_tileX;
-    private float mouse_tileY;
 
     private Stack<Paintable> renderLater;
 
@@ -57,13 +56,4 @@ public class PaintEvent {
                 paintable.paint(this);
         }
     }
-    
-    public float getMouseTileX() {
-        return this.mouse_tileX;
-    }
-
-    public float getMouseTileY() {
-        return this.mouse_tileY;
-    }
-    
 }
