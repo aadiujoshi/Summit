@@ -13,8 +13,10 @@ import summit.game.mapgenerator.GameMapGenerator;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.gui.Window;
 import summit.gui.menu.Container;
 import summit.util.Time;
@@ -60,7 +62,7 @@ public class GameWorld implements Paintable, Serializable{
         
         loadedMap = maps.get("stage1");
         
-        player = new PlayerEntity(0, 0);
+        player = new PlayerEntity(30, 30);
         camera = new Camera(player.getX(), player.getY());
         player.setCamera(camera);
 
@@ -88,7 +90,7 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     private void invokeGameUpdates(int deltaTime){
-        GameUpdateEvent gue = new GameUpdateEvent(loadedMap, deltaTime, false);
+        GameUpdateEvent gue = new GameUpdateEvent(loadedMap, deltaTime, parentWindow.mouseX(), parentWindow.mouseY(), false);
 
         if(loadedMap != null)
             loadedMap.update(gue);
@@ -97,16 +99,21 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     @Override
-    public void paint(PaintEvent e){
+    public void setRenderLayer(OrderPaintEvent ope) {
+        ope.getRenderLayers().addToLayer(RenderLayers.TOP_LAYER, this);
 
-        e.setCamera(camera.clone());
+        ope.setCamera(camera.clone());
 
         if(loadedMap != null){
-            loadedMap.paint(e);
+            loadedMap.setRenderLayer(ope);
         }
 
-        player.paint(e);
-        // snowAnim.paint(e);
+        player.setRenderLayer(ope);
+        snowAnim.setRenderLayer(ope);
+    }
+
+    @Override
+    public void paint(PaintEvent e){
         e.getRenderer().filterFrame(filter);
     }
 

@@ -1,6 +1,8 @@
 package summit.gfx;
 
 public class Light implements Paintable{
+    private int zOrder = RenderLayers.STRUCTURE_ENTITY_LAYER+1; 
+
     private float radius;
 
     private float x;
@@ -20,8 +22,13 @@ public class Light implements Paintable{
     }
 
     @Override
+    public void setRenderLayer(OrderPaintEvent r) {
+        r.getRenderLayers().addToLayer(zOrder, this);
+    }
+
+    @Override
     public void paint(PaintEvent e) {
-        e.getRenderer().renderLight(this, x, y, e.getCamera());
+        e.getRenderer().renderLight(this, e.getCamera());
     }    
 
     //-------------  getters and setters -------------------

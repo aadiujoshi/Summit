@@ -92,8 +92,8 @@ public class Renderer {
      * @param x
      * @param y
      */
-    public void renderLight(Light light, float x, float y, Camera cam){
-        Point2D.Float center = toPixel(x, y, cam);
+    public void renderLight(Light light, Camera cam){
+        Point2D.Float center = toPixel(light.getX(), light.getY(), cam);
 
         float radius = light.getRadius()*16;
 
@@ -277,8 +277,8 @@ public class Renderer {
      */
     public static Point2D.Float toTile(int mx, int my, Camera cam){
 
-        System.out.println(WIDTH/16);
-        System.out.println(HEIGHT/16);
+        // System.out.println(WIDTH/16);
+        // System.out.println(HEIGHT/16);
 
         float rx = (cam.getX() - ((WIDTH/16f)/2+1)) + (mx/16);
         float ry = (cam.getY() - ((HEIGHT/16f)/2+1)) + (my/16);

@@ -1,19 +1,30 @@
 package summit.game;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.locks.StampedLock;
 
 import summit.game.entity.Entity;
 import summit.game.entity.mob.PlayerEntity;
+import summit.game.entity.structure.Structure;
 import summit.game.tile.TileStack;
 import summit.gfx.Camera;
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
+import summit.util.Time;
 
 public class GameMap implements Paintable, GameUpdateReciever{
-    
-    private List<Entity> entities;
+
+    private final Object LOCK = new Exception();
+
+    private ArrayList<Entity> entities;
+    private ArrayList<Structure> structures;
 
     private PlayerEntity player;
 
@@ -29,6 +40,8 @@ public class GameMap implements Paintable, GameUpdateReciever{
     public GameMap(String name, final long seed, final int width, final int height) {
         map = new TileStack[height][width];
         entities = new ArrayList<>();
+        structures = new ArrayList<>();
+        structures.add(new Structure(20, 20));
         this.NAME = name;
         this.SEED = seed;
         this.WIDTH = width;
@@ -42,13 +55,40 @@ public class GameMap implements Paintable, GameUpdateReciever{
                 map[i][j].update(e);
             }
         }
-        for(int i = 0; i < entities.size(); i++) {
-            entities.get(i).update(e);
+
+        for (Entity entity : entities) {
+            entity.update(e);
         }
+        for (Structure h : structures) {
+            h.update(e);
+        }
+
+        //sort entites and structures from least Y pos to greatest Y pos
+        
+        // for(int i = 0; i < entities.size() || i < structures.size(); i++) {
+        //     int smallestInd = i;
+
+        //     for(int j = i; j < entities.size() || j < structures.size(); j++){
+
+        //         float sy = entities.get(smallestInd).getY();
+
+        //         if(j < entities.size() && entities.get(j).getY() < sy){
+
+        //         }
+        //         if(j < structures.size() && structures.get(j).getY() < sy){
+                    
+        //         }
+        //     }
+        //     Collections.swap
+        // }
+
+        // for(int j = 0; j < sorted.size(); j++) {
+        //     sorted.get(j).update(e);
+        // }
     }
 
     @Override
-    public void paint(PaintEvent e) {
+    public void setRenderLayer(OrderPaintEvent e) {
         Camera c = e.getCamera();
         int nx = Math.round(c.getX());
         int ny = Math.round(c.getY());
@@ -60,11 +100,26 @@ public class GameMap implements Paintable, GameUpdateReciever{
         for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < map.length; i++){
             for(int j = ny-rheight/2; j < ny+rheight/2 && j < map[0].length; j++){
                 if(i > -1 && j > -1)
-                    map[j][i].paint(e);
+                    map[j][i].setRenderLayer(e);
             }
         }
 
         
+    }
+
+    @Override
+    public void paint(PaintEvent e) {
+        
+
+        for (Structure vh : structures) {
+            vh.paint(e);
+        }
+
+        // synchronized(sorted){
+        //     for (int i = 0; i < sorted.size(); i++) {
+        //         sorted.get(i).
+        //     }
+        // }
     }
 
     //--------------------------------------------------------------------
@@ -79,7 +134,7 @@ public class GameMap implements Paintable, GameUpdateReciever{
         return map[Math.round(y)][Math.round(x)];
     }
 
-    public TileStack[][] getMap() {
+    public TileStack[][] getTiles() {
         return this.map;
     }
 
@@ -115,4 +170,7 @@ public class GameMap implements Paintable, GameUpdateReciever{
         return this.SEED;
     }
 
+    public void spawn(Entity e){
+        entities.add(e);
+    }
 }

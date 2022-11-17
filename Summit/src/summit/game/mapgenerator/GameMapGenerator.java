@@ -17,7 +17,7 @@ public class GameMapGenerator {
 
         double[][] heightMap = new double[128][128];
 
-        TileStack[][] tiles =  map.getMap();
+        TileStack[][] tiles =  map.getTiles();
 
         //-----------   init map   --------------------------------------------
         for (int x = 0; x < heightMap[0].length; x++) {

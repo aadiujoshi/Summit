@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import summit.game.GameMap;
+import summit.gfx.Camera;
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.GUIClickReciever;
@@ -47,6 +50,11 @@ public class Container implements Paintable, GUIClickReciever{
                 components.get(i).guiClick(e);
             }
         }
+    }
+    
+    @Override
+    public void setRenderLayer(OrderPaintEvent e) {
+        
     }
 
     @Override

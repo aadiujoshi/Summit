@@ -1,7 +1,11 @@
 package summit.game.animation;
 
+import java.util.ArrayList;
+
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.Time;
 
@@ -49,6 +53,12 @@ public class SnowfallAnimation implements Paintable{
         };
 
         Scheduler.registerEvent(snowfall);
+    }
+
+
+    @Override
+    public void setRenderLayer(OrderPaintEvent ope) {
+        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER+2, this);
     }
 
     @Override

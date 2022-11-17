@@ -3,8 +3,10 @@ package summit.game.tile;
 import summit.game.GameUpdateReciever;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.gui.GameClickReciever;
 import summit.util.Region;
 
@@ -16,7 +18,7 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     private String sprite;
     
     //random tile rotation
-    private int rotation = (int)(Math.random()*5);
+    private int renderOp = (int)(Math.random()*5);
     private ColorFilter filter = new ColorFilter(0, 0, 0);
     private Light light;
 
@@ -33,11 +35,16 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     }
     
     @Override
+    public void setRenderLayer(OrderPaintEvent r){
+        r.getRenderLayers().addToLayer(RenderLayers.TILE_LAYER, this);
+        if(light != null)
+            light.setRenderLayer(r);
+    }
+
+    @Override
     public void paint(PaintEvent e){
         if(sprite != null)
-            e.getRenderer().renderGame(sprite, getX(), getY(), getRotation(), getColorFilter(), e.getCamera());
-        if(light != null)
-            e.renderLater(light);
+            e.getRenderer().renderGame(sprite, getX(), getY(), getRenderOp(), getColorFilter(), e.getCamera());
     } 
 
 
@@ -59,13 +66,13 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
         this.boundary = bounded;
     }
 
-    public int getRotation() {
-        return this.rotation;
+    public int getRenderOp() {
+        return this.renderOp;
     }
 
-    public void setRotation(int rotation) {
-		this.rotation = rotation;
-	}
+    public void setRenderOp(int renderOp) {
+		this.renderOp = renderOp;
+    }
 
     public boolean destroyed() {
         return this.destroy;

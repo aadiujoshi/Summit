@@ -10,8 +10,10 @@ import summit.game.entity.Entity;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
@@ -34,7 +36,7 @@ public class PlayerEntity extends HumanoidEntity{
         super.setMaxHealth(10f);
         super.setSpriteOffsetX(0);
         super.setSpriteOffsetY(8);
-        // super.setColorFilter(new ColorFilter(0, 0, 0));
+        super.setColorFilter(new ColorFilter(20, 100, -50));
         // super.setLight(new Light(this.getX(), this.getY(), 4f, 170, 0, 0));
         this.hud = new HUD();
         hud.setPlayer(this);
@@ -66,20 +68,22 @@ public class PlayerEntity extends HumanoidEntity{
         
     }
 
+
+    @Override
+    public void setRenderLayer(OrderPaintEvent ope) {
+        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
+    }
+
     @Override
     public void paint(PaintEvent e) {
         
-        e.renderLater(hud);
-        e.renderLater(getLight());
-        e.renderLater(new Paintable() {
-            public void paint(PaintEvent e) {
-                e.getRenderer().renderText(("x:" + Math.round(getX()*2)/2), 
-                                            20, 15, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
-
-                e.getRenderer().renderText(("y:" + Math.round(getY()*2)/2), 
-                                            20, 25, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
-            }
-        });
+        // e.renderLater(hud);
+        // e.renderLater(getLight());
+        // e.renderLater(new Paintable() {
+        //     public void paint(PaintEvent e) {
+                
+        //     }
+        // });
         // e.renderLater(new Paintable() {
         //     public void paint(PaintEvent e) {
         //         java.awt.geom.Point2D.Float p = Renderer.toPixel(getX(), getY(), camera);
@@ -89,6 +93,11 @@ public class PlayerEntity extends HumanoidEntity{
         // });
 
         // System.out.println(isMoving());
+        e.getRenderer().renderText(("x:" + Math.round(getX()*2)/2), 
+                    20, 15, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
+
+        e.getRenderer().renderText(("y:" + Math.round(getY()*2)/2), 
+                20, 25, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
 
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                         (getX()+(getSpriteOffsetX()/16f)), (getY()+(getSpriteOffsetY()/16f)), 
@@ -110,7 +119,7 @@ public class PlayerEntity extends HumanoidEntity{
 
         float del_x = (  getDx() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();
         float del_y = (  getDy() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();
-
+        
         if(Controls.W && moveTo(e.getMap(), this.getX(), this.getY()+del_y)){
             this.setY(this.getY()+del_y);
         }

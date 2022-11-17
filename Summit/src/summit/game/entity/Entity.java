@@ -5,7 +5,9 @@ import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.gui.GameClickReciever;
 import summit.util.Region;
 
@@ -30,6 +32,7 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     private float maxHealth;
     private float health;
 
+    private boolean invulnerable;
     private boolean inWater;
     private boolean destroyed;
     private boolean onFire;
@@ -37,6 +40,10 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public Entity(float x, float y, float width, float height){
         super(x,y,width,height);
+    }
+
+    public void setRenderLayer(OrderPaintEvent ope){
+        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
     }
 
     @Override
@@ -197,5 +204,13 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public String getOnTile(){
         return this.onTile;
+    }
+    
+    public boolean isInvulnerable() {
+        return this.invulnerable;
+    }
+
+    public void setInvulnerable(boolean invulnerable) {
+        this.invulnerable = invulnerable;
     }
 }

@@ -17,14 +17,13 @@ public class WaterTile extends Tile{
         super(x, y);
         super.setSprite(Sprite.WATER_TILE);
         super.setBoundary(false);
-        super.setLight(new Light(x, y, 1f, 0, 0, 100));
+        // super.setLight(new Light(x, y, 1f, 0, 0, 100));
     }
 
     @Override
     public void paint(PaintEvent e){
-        e.renderLater(getLight());
         if(Time.timeMs() - lastAnimationChange > 300){
-            setRotation((int)(Math.random()*5));
+            setRenderOp((int)(Math.random()*5));
             lastAnimationChange = Time.timeMs();
         }
         super.paint(e);

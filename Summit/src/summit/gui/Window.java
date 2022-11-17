@@ -27,7 +27,9 @@ import summit.game.GameMap;
 import summit.game.GameWorld;
 import summit.game.animation.Scheduler;
 import summit.game.tile.TileStack;
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
+import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.menu.Container;
@@ -227,7 +229,8 @@ public class Window implements MouseListener, KeyListener{
         // System.out.println(state);
 
         PaintEvent pe = new PaintEvent(renderer, lastFrame, null, this);
-
+        OrderPaintEvent ope = new OrderPaintEvent(new RenderLayers(10), null);
+        
         if(state == WindowState.SELECTIONMENUS){
             renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.NO_OP, null);
             
@@ -236,10 +239,10 @@ public class Window implements MouseListener, KeyListener{
         }
         else if(state == WindowState.GAME){
             if(world != null)
-                world.paint(pe);
+                world.setRenderLayer(ope);
+            pe.setCamera(ope.getCamera());
+            ope.getRenderLayers().renderLayers(pe);
         }
-
-        pe.invokeDelayed();
 
         //----------------------------------------------------------------------------------
         // draw final frame to screen
@@ -248,7 +251,7 @@ public class Window implements MouseListener, KeyListener{
         
         g.drawImage(finalFrame, null, 0, 0);
         
-        // renderer.resetFrame();
+        renderer.resetFrame();
     }
 
 
@@ -339,6 +342,16 @@ public class Window implements MouseListener, KeyListener{
 
     public static boolean mouseDown(){
         return mouseDown;
+    }
+
+    public int mouseX(){
+        return (java.awt.MouseInfo.getPointerInfo().getLocation().x-frame.getLocation().x) / 
+                (SCREEN_WIDTH/Renderer.WIDTH);
+    }
+
+    public int mouseY(){
+        return (java.awt.MouseInfo.getPointerInfo().getLocation().y-frame.getLocation().y) / 
+                (SCREEN_HEIGHT/Renderer.HEIGHT);
     }
 
     public void setFullscreen(boolean full) {

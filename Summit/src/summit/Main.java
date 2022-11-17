@@ -18,9 +18,9 @@ public class Main {
 
                 Window summit = new Window("Summit");
 
-                summit.setState(WindowState.NEWGAME);
+                // summit.setState(WindowState.NEWGAME);
             }
-        });
+        }, "mainthread");
 
         main.start();
     }
