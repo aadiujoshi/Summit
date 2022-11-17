@@ -53,7 +53,7 @@ public class Container implements Paintable, GUIClickReciever{
     }
     
     @Override
-    public void setRenderLayer(OrderPaintEvent e) {
+    public void renderLayer(OrderPaintEvent e) {
         
     }
 

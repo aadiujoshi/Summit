@@ -88,7 +88,7 @@ public class GameMap implements Paintable, GameUpdateReciever{
     }
 
     @Override
-    public void setRenderLayer(OrderPaintEvent e) {
+    public void renderLayer(OrderPaintEvent e) {
         Camera c = e.getCamera();
         int nx = Math.round(c.getX());
         int ny = Math.round(c.getY());
@@ -100,15 +100,15 @@ public class GameMap implements Paintable, GameUpdateReciever{
         for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < map.length; i++){
             for(int j = ny-rheight/2; j < ny+rheight/2 && j < map[0].length; j++){
                 if(i > -1 && j > -1)
-                    map[j][i].setRenderLayer(e);
+                    map[j][i].renderLayer(e);
             }
         }
 
         for (Entity entity : entities) {
-            entity.setRenderLayer(e);
+            entity.renderLayer(e);
         }
         for (Structure h : structures) {
-            h.setRenderLayer(e);
+            h.renderLayer(e);
         }
     }
 

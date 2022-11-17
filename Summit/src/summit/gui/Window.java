@@ -239,7 +239,7 @@ public class Window implements MouseListener, KeyListener{
         }
         else if(state == WindowState.GAME){
             if(world != null)
-                world.setRenderLayer(ope);
+                world.renderLayer(ope);
             pe.setCamera(ope.getCamera());
             ope.getRenderLayers().renderLayers(pe);
         }

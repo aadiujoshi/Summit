@@ -46,7 +46,7 @@ public class Arrow extends Projectile {
     }
 
     @Override
-    public void setRenderLayer(OrderPaintEvent ope) {
+    public void renderLayer(OrderPaintEvent ope) {
         // TODO Auto-generated method stub
         
     }

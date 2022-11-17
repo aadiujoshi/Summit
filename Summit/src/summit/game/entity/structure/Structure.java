@@ -27,7 +27,7 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
 
     @Override
-    public void setRenderLayer(OrderPaintEvent ope) {
+    public void renderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER+3, this);
     }
 
@@ -35,12 +35,12 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
     public void paint(PaintEvent e) {
 
         e.getRenderer().renderGame(Sprite.VILLAGE_HOUSE, 
-                                            getX()-0.5f, getY()+0.5f, Renderer.NO_OP, 
+                                            getX()-0.5f, getY()+0.5f, Renderer.NO_OP | Renderer.OUTLINE_RED, 
                                             new ColorFilter(255, 255, 255), 
                                             e.getCamera());
 
         e.getRenderer().renderGame(Sprite.VILLAGE_HOUSE, 
-                                            getX()-0.5f, getY()+0.5f, Renderer.NO_OP, 
+                                            getX()-0.5f, getY()+0.5f, Renderer.NO_OP | Renderer.OUTLINE_RED, 
                                             null, 
                                             e.getCamera());
         
@@ -69,7 +69,10 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
                 // t.setRenderOp(t.getRenderOp() | Renderer.OUTLINE_RED);
                 // t.setColorFilter(new ColorFilter(255, -255, -255));
 
-                t.setLight(new Light(x, y, 1.2f, -70, -70, -70));
+                Light l = new Light(x, y, 1.2f, -70, -70, -70);
+                l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
+
+                t.setLight(l);
             }
         }
     }

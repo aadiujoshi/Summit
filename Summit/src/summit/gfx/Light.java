@@ -1,7 +1,7 @@
 package summit.gfx;
 
 public class Light implements Paintable{
-    private int zOrder = RenderLayers.STRUCTURE_ENTITY_LAYER+1; 
+    private int rLayer = RenderLayers.STRUCTURE_ENTITY_LAYER+1; 
 
     private float radius;
 
@@ -22,8 +22,8 @@ public class Light implements Paintable{
     }
 
     @Override
-    public void setRenderLayer(OrderPaintEvent r) {
-        r.getRenderLayers().addToLayer(zOrder, this);
+    public void renderLayer(OrderPaintEvent r) {
+        r.getRenderLayers().addToLayer(rLayer, this);
     }
 
     @Override
@@ -79,6 +79,10 @@ public class Light implements Paintable{
 
     public void setBlue(int blue) {
         this.blue = blue;
+    }
+    
+    public void setRenderLayer(int layer){
+        this.rLayer = layer;
     }
 
     public ColorFilter getColorFilter(){

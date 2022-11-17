@@ -48,10 +48,10 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
     }
 
     @Override
-    public void setRenderLayer(OrderPaintEvent ope) {
+    public void renderLayer(OrderPaintEvent ope) {
         for(Tile t: tiles){
             if(t != null)
-                t.setRenderLayer(ope);
+                t.renderLayer(ope);
         }
     }
 

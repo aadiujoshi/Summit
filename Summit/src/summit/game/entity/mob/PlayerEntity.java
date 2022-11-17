@@ -70,7 +70,7 @@ public class PlayerEntity extends HumanoidEntity{
 
 
     @Override
-    public void setRenderLayer(OrderPaintEvent ope) {
+    public void renderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
     }
 
@@ -119,7 +119,7 @@ public class PlayerEntity extends HumanoidEntity{
 
         float del_x = (  getDx() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();
         float del_y = (  getDy() / (inWater() ? 2 : 1) /Time.MS_IN_S)*e.getDeltaTime();
-        
+
         if(Controls.W && moveTo(e.getMap(), this.getX(), this.getY()+del_y)){
             this.setY(this.getY()+del_y);
         }

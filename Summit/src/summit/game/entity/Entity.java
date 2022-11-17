@@ -42,7 +42,7 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         super(x,y,width,height);
     }
 
-    public void setRenderLayer(OrderPaintEvent ope){
+    public void renderLayer(OrderPaintEvent ope){
         ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
     }
 
