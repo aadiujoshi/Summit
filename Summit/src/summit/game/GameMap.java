@@ -103,12 +103,16 @@ public class GameMap implements Paintable, GameUpdateReciever{
             }
         }
 
+        ArrayList<Region> sorted = new ArrayList<>();
+
         for (Entity entity : entities) {
-            entity.renderLayer(e);
+            sorted.add(entity);
         }
-        for (Structure h : structures) {
-            h.renderLayer(e);
+        for (Structure s : structures) {
+            sorted.add(s);
         }
+
+        
     }
 
     @Override
