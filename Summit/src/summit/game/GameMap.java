@@ -104,7 +104,12 @@ public class GameMap implements Paintable, GameUpdateReciever{
             }
         }
 
-        
+        for (Entity entity : entities) {
+            entity.setRenderLayer(e);
+        }
+        for (Structure h : structures) {
+            h.setRenderLayer(e);
+        }
     }
 
     @Override
