@@ -21,34 +21,37 @@ import summit.util.Region;
 
 public class Structure extends Region implements Paintable, GameClickReciever, GameUpdateReciever {
 
-    public Structure(float x, float y) {
-        super(x, y, 4, 3);
+    private String sprite;
+    private GameMap innerMap;
+
+    public Structure(float x, float y, float width, float height) {
+        super(x, y, width, height);
     }
 
 
     @Override
     public void renderLayer(OrderPaintEvent ope) {
-        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER+3, this);
+        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
     }
 
     @Override
     public void paint(PaintEvent e) {
 
-        e.getRenderer().renderGame(Sprite.VILLAGE_HOUSE, 
-                                            getX()-0.5f, getY()+0.5f, Renderer.NO_OP | Renderer.OUTLINE_RED, 
-                                            new ColorFilter(255, 255, 255), 
-                                            e.getCamera());
+        e.getRenderer().renderGame(sprite, 
+                                    getX()-0.5f, getY()+0.5f, Renderer.NO_OP | Renderer.OUTLINE_RED, 
+                                    new ColorFilter(255, 255, 255), 
+                                    e.getCamera());
 
-        e.getRenderer().renderGame(Sprite.VILLAGE_HOUSE, 
-                                            getX()-0.5f, getY()+0.5f, Renderer.NO_OP | Renderer.OUTLINE_RED, 
-                                            null, 
-                                            e.getCamera());
+        e.getRenderer().renderGame(sprite, 
+                                    getX()-0.5f, getY()+0.5f, Renderer.NO_OP | Renderer.OUTLINE_RED, 
+                                    null, 
+                                    e.getCamera());
         
         // e.renderLater(new Light(getX(), getY(), 2.3f, 100, 100, 0));
     }
 
     @Override
-    public void gameClick(GameMap map, MouseEvent e) {
+    public void gameClick(GameClickEvent e) {
         
     }
 
@@ -75,5 +78,17 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
                 t.setLight(l);
             }
         }
+    }
+
+    public void setSprite(String sprite){
+        this.sprite = sprite;
+    }
+
+     public void setInnerMap(GameMap map){
+        this.innerMap = map;
+    }
+
+    public GameMap getInnerMap(){
+        return this.innerMap;
     }
 }

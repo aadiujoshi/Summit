@@ -5,11 +5,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.locks.StampedLock;
 
 import summit.game.entity.Entity;
 import summit.game.entity.mob.PlayerEntity;
-import summit.game.entity.structure.Structure;
+import summit.game.structure.Structure;
 import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.OrderPaintEvent;
@@ -115,16 +114,6 @@ public class GameMap implements Paintable, GameUpdateReciever{
     @Override
     public void paint(PaintEvent e) {
         
-
-        for (Structure vh : structures) {
-            vh.paint(e);
-        }
-
-        // synchronized(sorted){
-        //     for (int i = 0; i < sorted.size(); i++) {
-        //         sorted.get(i).
-        //     }
-        // }
     }
 
     //--------------------------------------------------------------------
