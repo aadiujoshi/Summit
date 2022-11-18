@@ -12,10 +12,11 @@ public class GameUpdateEvent{
 
     private boolean validUpdate;
 
-    public GameUpdateEvent(GameMap map, int deltaTime, 
+    public GameUpdateEvent(GameWorld world, GameMap map, int deltaTime, 
                                 int mouseX_pix, int mouseY_pix, 
-                                boolean tickInstance, boolean validUpdate){
+                                boolean tickInstance){
         this.map = map;
+        this.world = world;
         this.deltaTime = deltaTime;
         
         this.mouseX_pix = mouseX_pix;
@@ -26,7 +27,7 @@ public class GameUpdateEvent{
         this.validUpdate = map != null;
     }
     
-    public void validUpdate(){
+    public boolean validUpdate(){
         return validUpdate;
     }
 

@@ -94,7 +94,7 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     private void invokeGameUpdates(int deltaTime){
-        GameUpdateEvent gue = new GameUpdateEvent(loadedMap, deltaTime, parentWindow.mouseX(), parentWindow.mouseY(), false);
+        GameUpdateEvent gue = new GameUpdateEvent(this, loadedMap, deltaTime, parentWindow.mouseX(), parentWindow.mouseY(), false);
         if(!gue.validUpdate())
             return;
 

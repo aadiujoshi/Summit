@@ -39,7 +39,8 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
     public Structure(float x, float y, float width, float height, GameMap map) {
         super(x, y, width, height);
-        this.innerMap = innerMap;
+        this.innerMap = map;
+        System.out.println(map);
     }
 
     @Override
@@ -62,10 +63,12 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
         System.out.println("you have clicked on a structure congratulations");
 
+        System.out.println(innerMap);
+
         PlayerEntity p = e.getMap().getPlayer();
 
-        if(e. getY()-getHeight()/2 > p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2){
-            e.getWorld().setLoadedMap(innerMap);
+        if(getY()-getHeight()/2 > p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2){
+            e.setLoadedMap(innerMap);
         }
     }
 

@@ -419,7 +419,7 @@ public class Window implements MouseListener, KeyListener{
                 java.awt.geom.Point2D.Float m_tile = Renderer.toTile(rx, ry, world.getCamera());
         
                 GameMap loadedmap = world.getLoadedMap();
-                loadedmap.gameClick(new GameClickEvent(world, loadedmap, m_tile.x, m_tile.y));
+                loadedmap.gameClick(new GameClickEvent(world, loadedmap, e));
             }
             
             for(Container container : guiContainersGame) {

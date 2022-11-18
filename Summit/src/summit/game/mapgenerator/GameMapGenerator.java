@@ -59,7 +59,7 @@ public class GameMapGenerator {
                 tiles[i][j].pushTile(new WoodPlank(j, i));
             }
         }
-
+        
         return map;
     }
 
