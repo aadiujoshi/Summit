@@ -36,10 +36,4 @@ public class WaterTile extends Tile{
         
     }
     
-    @Override
-    public void update(GameUpdateEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }

@@ -20,9 +20,4 @@ public class SnowTile extends Tile{
         
         this.setDestroy(true);
     }
-
-    @Override
-    public void update(GameUpdateEvent e) {
-        
-    }
 }

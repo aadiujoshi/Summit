@@ -1,5 +1,6 @@
 package summit.game.entity;
 
+import summit.game.GameClickReciever;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
@@ -8,7 +9,6 @@ import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
-import summit.gui.GameClickReciever;
 import summit.util.Region;
 
 public abstract class Entity extends Region implements Paintable, GameClickReciever, GameUpdateReciever{

@@ -1,5 +1,7 @@
 package summit.game.tile;
 
+import summit.game.GameClickReciever;
+import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
@@ -7,7 +9,7 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
-import summit.gui.GameClickReciever;
+import summit.gfx.Renderer;
 import summit.util.Region;
 
 public abstract class Tile extends Region implements GameClickReciever, Paintable, GameUpdateReciever {
@@ -35,6 +37,19 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     }
     
     @Override
+    public void update(GameUpdateEvent e){
+        java.awt.geom.Point2D.Float mt = Renderer.toTile(e.getMouseXpixel(), e.getMouseYpixel(), e.getMap().getPlayer().getCamera());
+
+        // System.out.println(mt);
+
+        if(this.contains(mt.x, mt.y)){
+            setRenderOp(getRenderOp() | Renderer.OUTLINE_RED);
+        } else {
+            setRenderOp(getRenderOp() & ~Renderer.OUTLINE_RED);
+        }
+    }
+
+    @Override
     public void renderLayer(OrderPaintEvent r){
         r.getRenderLayers().addToLayer(RenderLayers.TILE_LAYER, this);
         if(light != null)
@@ -43,8 +58,12 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
 
     @Override
     public void paint(PaintEvent e){
+        
+        // if((renderOp & Renderer.OUTLINE_RED) == Renderer.OUTLINE_RED)
+        //     System.out.println(Integer.toBinaryString(renderOp));
+        
         if(sprite != null)
-            e.getRenderer().renderGame(sprite, getX(), getY(), getRenderOp(), getColorFilter(), e.getCamera());
+            e.getRenderer().renderGame(sprite, getX(), getY(), renderOp, filter, e.getCamera());
     } 
 
 

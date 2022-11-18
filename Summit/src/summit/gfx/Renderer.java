@@ -135,7 +135,7 @@ public class Renderer {
 
         if(sprite == null) return;
 
-        int nx = Math.round(x-(sprite[0].length/2));
+        int nx = Math.round(x-(sprite[0].length/2))+1;
         int ny = Math.round(y-(sprite.length/2));
 
         if(operation != NO_OP){
@@ -347,7 +347,14 @@ public class Renderer {
         for(int r = 0; r < sprite.length; r++){
             for(int c = 0; c < sprite[0].length; c++){
                 if(sprite[r][c] != -1){
-                    if( //check sides
+                    if( //check if on edge of sprite and is valid rgb 
+                        
+                        (r == 0 && sprite[r][c] != -1) ||
+                        (r == sprite.length-1 && sprite[r][c] != -1) ||
+                        (c == 0 && sprite[r][c] != -1) ||
+                        (c == sprite[0].length-1 && sprite[r][c] != -1) ||
+
+                        //check sides
                         (r-1 > -1 && sprite[r-1][c] == -1) ||
                         (c-1 > -1 && sprite[r][c-1] == -1) ||
                         (r+1 < sprite.length && sprite[r+1][c] == -1) ||
@@ -357,7 +364,7 @@ public class Renderer {
                         (r-1 > -1 && c-1 > -1 && sprite[r-1][c-1] == -1) || 
                         (r-1 > -1 && c+1 < sprite[0].length && sprite[r-1][c+1] == -1) ||
                         (r+1 < sprite.length && c-1 > -1 && sprite[r+1][c-1] == -1) || 
-                        (r+1 < sprite.length && c+1 < sprite[0].length) && sprite[r+1][c+1] == -1){
+                        (r+1 < sprite.length && c+1 < sprite[0].length && sprite[r+1][c+1] == -1)){
                         
                         outlined[r][c] = color;
                     } else {

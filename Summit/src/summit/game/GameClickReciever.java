@@ -1,8 +1,4 @@
-package summit.gui;
-
-import summit.game.GameClickEvent;
-import summit.game.GameMap;
-import java.awt.event.MouseEvent;
+package summit.game;
 
 public interface GameClickReciever{
     public void gameClick(GameClickEvent e);

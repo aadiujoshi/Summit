@@ -1,6 +1,7 @@
 package summit.game.tile;
 
 import summit.game.GameClickEvent;
+import summit.game.GameClickReciever;
 import summit.game.GameMap;
 import summit.game.GameUpdateReciever;
 import summit.game.GameUpdateEvent;
@@ -10,7 +11,6 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gui.GUIClickReciever;
-import summit.gui.GameClickReciever;
 
 import java.awt.event.MouseEvent;
 import java.util.Stack;

@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 import summit.game.GameClickEvent;
+import summit.game.GameClickReciever;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
@@ -19,7 +20,6 @@ import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
-import summit.gui.GameClickReciever;
 import summit.util.Region;
 
 public class Structure extends Region implements Paintable, GameClickReciever, GameUpdateReciever {
@@ -85,7 +85,7 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
                 Light l = new Light(x, y, 1f, shadow);
 
                 l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
-
+                t.setRenderOp(t.getRenderOp() | Renderer.OUTLINE_BLUE);
                 t.setLight(l);
             }
         }

@@ -21,11 +21,4 @@ public class GrassTile extends Tile{
         // TODO Auto-generated method stub
         
     }
-    
-    @Override
-    public void update(GameUpdateEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }
