@@ -51,6 +51,9 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     @Override
     public void update(GameUpdateEvent e){
+        if(!e.validUpdate())
+            return;
+
         if(getX() < -0.5 || getY() < -0.5) {
             return;
         }
