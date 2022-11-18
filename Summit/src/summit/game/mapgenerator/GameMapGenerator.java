@@ -21,7 +21,12 @@ public class GameMapGenerator {
 
         TileStack[][] tiles =  map.getTiles();
 
-        
+        for(int i = 0; i < tiles.length; i++){
+            for(int j = 0; j < tiles[0].length; j++){
+                tiles[i][j].pushTile(new StoneTile(j, i));
+                heightMap[i][j] = gen.eval(j/10.0, i/10.0);
+            }
+        }
 
         map.addStructure(new TraderHouse(19.5f, 19f));
 
