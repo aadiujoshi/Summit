@@ -94,7 +94,7 @@ public class Renderer {
      */
     public void renderLight(Light light, Camera cam){
         Point2D.Float center = toPixel(light.getX(), light.getY(), cam);
-
+        
         float radius = light.getRadius()*16;
 
         int r = light.getRed();
@@ -118,9 +118,9 @@ public class Renderer {
      * val is brightness (make negative to dim frame)
      * @param color
      */
-    public void filterFrame(ColorFilter filter){
-        for (int r = 0; r < frame.length; r++) {
-            for (int c = 0; c < frame[0].length; c++) {
+    public void filterRect(int x, int y, int width, int height, ColorFilter filter){
+        for (int r = y; r < frame.length && r < y+height; r++) {
+            for (int c = x; c < frame[0].length && c < x+width; c++) {
                 frame[r][c] = filter.filterColor(frame[r][c]);
             }
         }
@@ -269,19 +269,15 @@ public class Renderer {
     }
 
     /**
-     * mx and my are mouse coordinates converted to renderer pixel space (256x144)
+     * mx and my are mouse coordinates pre-converted to renderer pixel space (256x144)
      * @param mx
      * @param my
      * @param cam
      * @return
      */
     public static Point2D.Float toTile(int mx, int my, Camera cam){
-
-        // System.out.println(WIDTH/16);
-        // System.out.println(HEIGHT/16);
-
-        float rx = (cam.getX() - ((WIDTH/16f)/2+1)) + (mx/16);
-        float ry = (cam.getY() - ((HEIGHT/16f)/2+1)) + (my/16);
+        float rx = (cam.getX() - ((WIDTH/16f)/2)) + (mx/16f) - 0.1f;
+        float ry = (cam.getY() + ((HEIGHT/16f)/2)) - (my/16f) + 0.25f;
 
         return new Point2D.Float(rx, ry);
     }

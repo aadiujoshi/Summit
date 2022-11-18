@@ -243,7 +243,7 @@ public class Window implements MouseListener, KeyListener{
             pe.setCamera(ope.getCamera());
             ope.getRenderLayers().renderLayers(pe);
         }
-
+        
         //----------------------------------------------------------------------------------
         // draw final frame to screen
         //----------------------------------------------------------------------------------
@@ -251,7 +251,7 @@ public class Window implements MouseListener, KeyListener{
         
         g.drawImage(finalFrame, null, 0, 0);
         
-        renderer.resetFrame();
+        // renderer.resetFrame();
     }
 
 

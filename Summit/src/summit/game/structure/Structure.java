@@ -26,6 +26,9 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
     private String sprite;
 
+    private float spriteOffsetX;
+    private float spriteOffsetY;
+
     private int renderOp;
     private ColorFilter filter = ColorFilter.NOFILTER;
     private ColorFilter shadow = new ColorFilter(-100, -100, -100);
@@ -44,13 +47,18 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
     @Override
     public void paint(PaintEvent e) {
 
-        e.getRenderer().renderGame(sprite, 
-                                    getX()-0.5f, getY()+0.5f, renderOp,
-                                    new ColorFilter(255, 255, 255), 
-                                    e.getCamera());
+        java.awt.geom.Point2D.Float p = Renderer.toPixel(getX(), getY(), e.getCamera());
+
+        //debug square
+        // e.getRenderer().fillRect((int)(1+p.x-getWidth()/2*16), (int)(p.y-getHeight()/2*16), (int)(getWidth()*16), (int)(getHeight()*16), Renderer.toIntRGB(0, 255, 0));
+
+        // e.getRenderer().renderGame(sprite, 
+        //                             getX()+spriteOffsetX, getY()+spriteOffsetY, renderOp,
+        //                             new ColorFilter(255, 255, 255), 
+        //                             e.getCamera());
 
         e.getRenderer().renderGame(sprite, 
-                                    getX()-0.5f, getY()+0.5f, renderOp,
+                                    getX()+spriteOffsetX, getY()+spriteOffsetY, renderOp,
                                     filter,
                                     e.getCamera());
     }
@@ -62,7 +70,13 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
     @Override
     public void update(GameUpdateEvent e) {
-        Point2D.Float mt = Renderer.toTile(e.getMouseXpixel(), e.getMouseYpixel(), e.getMap().getPlayer().getCamera());
+        Point2D.Float mt = Renderer.toTile(e.mouseX(), e.mouseY(), e.getMap().getPlayer().getCamera());
+
+        // mt.setLocation(Math.round(mt.x), Math.round(mt.y));
+
+        // System.out.println(mt + "  |  " + this + "  |  " + contains(mt.x, mt.y));
+
+        // System.out.println(mt);
 
         if(this.contains(mt.x, mt.y))
             setRenderOp(getRenderOp() | Renderer.OUTLINE_BLUE | Renderer.OUTLINE_GREEN | Renderer.OUTLINE_RED);
@@ -85,7 +99,7 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
                 Light l = new Light(x, y, 1f, shadow);
 
                 l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
-                t.setRenderOp(t.getRenderOp() | Renderer.OUTLINE_BLUE);
+                // t.setRenderOp(t.getRenderOp() | Renderer.OUTLINE_BLUE);
                 t.setLight(l);
             }
         }
@@ -121,5 +135,21 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
     public void setShadow(ColorFilter shadow){
         this.shadow = shadow;
+    }
+
+    public float getSpriteOffsetX() {
+        return this.spriteOffsetX;
+    }
+
+    public void setSpriteOffsetX(float spriteOffsetX) {
+        this.spriteOffsetX = spriteOffsetX;
+    }
+
+    public float getSpriteOffsetY() {
+        return this.spriteOffsetY;
+    }
+
+    public void setSpriteOffsetY(float spriteOffsetY) {
+        this.spriteOffsetY = spriteOffsetY;
     }
 }

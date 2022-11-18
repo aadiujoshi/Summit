@@ -17,6 +17,7 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
+import summit.gfx.Renderer;
 import summit.gui.Window;
 import summit.gui.menu.Container;
 import summit.util.Time;
@@ -116,7 +117,7 @@ public class GameWorld implements Paintable, Serializable{
 
     @Override
     public void paint(PaintEvent e){
-        e.getRenderer().filterFrame(filter);
+        e.getRenderer().filterRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT, filter);
     }
 
     public GameMap getLoadedMap() {

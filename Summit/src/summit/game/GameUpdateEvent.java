@@ -34,11 +34,11 @@ public class GameUpdateEvent{
         return this.tickInstance;
     }
 
-    public int getMouseXpixel() {
+    public int mouseX() {
         return this.mouseX_pix;
     }
     
-    public int getMouseYpixel() {
+    public int mouseY() {
         return this.mouseY_pix;
     }
     

@@ -42,7 +42,7 @@ public class GameMap implements Paintable, GameUpdateReciever{
         map = new TileStack[height][width];
         entities = new ArrayList<>();
         structures = new ArrayList<>();
-        structures.add(new TraderHouse(20, 20));
+        structures.add(new TraderHouse(19.5f, 19f));
         this.NAME = name;
         this.SEED = seed;
         this.WIDTH = width;

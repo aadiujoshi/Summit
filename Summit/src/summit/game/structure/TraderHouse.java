@@ -9,6 +9,7 @@ public class TraderHouse extends Structure{
         super(x, y, 4, 3);
         super.setSprite(Sprite.VILLAGE_HOUSE);
         super.setColorFilter(new ColorFilter(50, 50, 0));
+        super.setSpriteOffsetY(0.5f);
         super.setShadow(new ColorFilter(-80, -80, -80));
         super.setInnerMap(null);
     }
