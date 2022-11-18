@@ -57,11 +57,14 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
     @Override
     public void gameClick(GameClickEvent e) {
+        if(!e.validUpdate())
+            return;
+
         System.out.println("you have clicked on a structure congratulations");
 
         PlayerEntity p = e.getMap().getPlayer();
 
-        if(getY()-getHeight()/2 > p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2){
+        if(e. getY()-getHeight()/2 > p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2){
             e.getWorld().setLoadedMap(innerMap);
         }
     }

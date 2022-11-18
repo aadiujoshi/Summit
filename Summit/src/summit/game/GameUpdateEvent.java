@@ -10,9 +10,11 @@ public class GameUpdateEvent{
     private int mouseX_pix;
     private int mouseY_pix;
 
+    private boolean validUpdate;
+
     public GameUpdateEvent(GameMap map, int deltaTime, 
                                 int mouseX_pix, int mouseY_pix, 
-                                boolean tickInstance){
+                                boolean tickInstance, boolean validUpdate){
         this.map = map;
         this.deltaTime = deltaTime;
         
@@ -20,8 +22,19 @@ public class GameUpdateEvent{
         this.mouseY_pix = mouseY_pix;
 
         this.tickInstance = tickInstance;
+
+        this.validUpdate = map != null;
     }
     
+    public void validUpdate(){
+        return validUpdate;
+    }
+
+    public void setLoadedMap(GameMap map){
+        validUpdate = false;
+        world.setLoadedMap(map);
+    }
+
     public GameMap getMap() {
         return this.map;
     }
