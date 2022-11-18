@@ -2,6 +2,7 @@ package summit.game.tile;
 
 import summit.game.GameClickEvent;
 import summit.gfx.Light;
+import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Sprite;
 
@@ -14,7 +15,7 @@ public class SnowTile extends Tile{
         l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
         super.setLight(l);
     }
-    
+
     @Override
     public void gameClick(GameClickEvent e){
         

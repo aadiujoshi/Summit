@@ -21,7 +21,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     private PlayerEntity player;
 
-    private TileStack[][] map;
+    private TileStack[][] tiles;
     private final int WIDTH;
     private final int HEIGHT;
     private final String NAME;
@@ -31,10 +31,16 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     private boolean loaded;
 
     public GameMap(String name, final long seed, final int width, final int height) {
-        map = new TileStack[height][width];
+        tiles = new TileStack[height][width];
+        //-----------   init map   --------------------------------------------
+        for (int x = 0; x < tiles[0].length; x++) {
+            for (int y = 0; y < tiles.length; y++) {
+                tiles[y][x] = new TileStack(x, y);
+            }
+        }
+        //---------------------------------------------------------------------
         entities = new ArrayList<>();
         structures = new ArrayList<>();
-        structures.add(new TraderHouse(19.5f, 19f));
         this.NAME = name;
         this.SEED = seed;
         this.WIDTH = width;
@@ -62,9 +68,9 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     @Override
     public void update(GameUpdateEvent e) {
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[0].length; j++) {
-                map[i][j].update(e);
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                tiles[i][j].update(e);
             }
         }
 
@@ -86,10 +92,10 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         int rwidth = (Renderer.WIDTH/16)+3;
         int rheight = (Renderer.HEIGHT/16)+3;
 
-        for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < map.length; i++){
-            for(int j = ny-rheight/2; j < ny+rheight/2 && j < map[0].length; j++){
+        for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < tiles.length; i++){
+            for(int j = ny-rheight/2; j < ny+rheight/2 && j < tiles[0].length; j++){
                 if(i > -1 && j > -1)
-                    map[j][i].setRenderLayer(e);
+                    tiles[j][i].setRenderLayer(e);
             }
         }
 
@@ -132,16 +138,24 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     // getters and setters
     //--------------------------------------------------------------------
     
+    public void addStructure(Structure s){
+        this.structures.add(s);
+    }
+
+    public void removeStructure(Structure s){
+        this.structures.remove(s);
+    }
+
     public TileStack getTileAt(float x, float y){
         //out of bounds
-        if(Math.round(y) < 0 || Math.round(y) >= map.length ||
-            Math.round(x) < 0 || Math.round(x) > map[0].length)
+        if(Math.round(y) < 0 || Math.round(y) >= tiles.length ||
+            Math.round(x) < 0 || Math.round(x) > tiles[0].length)
             return null;
-        return map[Math.round(y)][Math.round(x)];
+        return tiles[Math.round(y)][Math.round(x)];
     }
 
     public TileStack[][] getTiles() {
-        return this.map;
+        return this.tiles;
     }
 
     public boolean isLoaded() {

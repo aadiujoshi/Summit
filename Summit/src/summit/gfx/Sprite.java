@@ -18,4 +18,5 @@ public class Sprite {
     public static final String TEXT_APPEND_KEY = "-text";
     public static final String EMPTY_HEART = "heart-empty";
     public static final String SNOWBALL = "snowball";
+    public static final String WOOD_PLANK = "wood-plank";
 }

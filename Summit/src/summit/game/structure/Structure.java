@@ -11,6 +11,7 @@ import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.PlayerEntity;
+import summit.game.mapgenerator.GameMapGenerator;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
@@ -36,8 +37,9 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
     private GameMap innerMap;
 
-    public Structure(float x, float y, float width, float height) {
+    public Structure(float x, float y, float width, float height, GameMap map) {
         super(x, y, width, height);
+        this.innerMap = innerMap;
     }
 
     @Override
@@ -59,8 +61,9 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
         PlayerEntity p = e.getMap().getPlayer();
 
-        if(getY()-getHeight()/2 > p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2)
+        if(getY()-getHeight()/2 > p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2){
             e.getWorld().setLoadedMap(innerMap);
+        }
     }
 
     @Override

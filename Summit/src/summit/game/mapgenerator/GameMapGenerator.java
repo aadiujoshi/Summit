@@ -1,11 +1,13 @@
 package summit.game.mapgenerator;
 
 import summit.game.GameMap;
+import summit.game.structure.TraderHouse;
 import summit.game.tile.GrassTile;
 import summit.game.tile.SnowTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.game.tile.WaterTile;
+import summit.game.tile.WoodPlank;
 
 public class GameMapGenerator {
     
@@ -19,17 +21,9 @@ public class GameMapGenerator {
 
         TileStack[][] tiles =  map.getTiles();
 
-        //-----------   init map   --------------------------------------------
-        for (int x = 0; x < heightMap[0].length; x++) {
-            for (int y = 0; y < heightMap.length; y++) {
-                heightMap[y][x] = gen.eval((double)x/10, (double)y/10);
-                tiles[y][x] = new TileStack(x, y);
-                tiles[y][x].pushTile(new StoneTile(x, y));
-            }
-        }
-        //---------------------------------------------------------------------
         
 
+        map.addStructure(new TraderHouse(19.5f, 19f));
 
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
@@ -44,6 +38,20 @@ public class GameMapGenerator {
                     t.pushTile(new GrassTile(j, i));
                     t.pushTile(new SnowTile(j, i));
                 }
+            }
+        }
+
+        return map;
+    }
+
+    public static GameMap generateTraderHouse(){
+        GameMap map = new GameMap("traderhouse", -1, 10, 10);
+
+        TileStack[][] tiles = map.getTiles();
+
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                tiles[i][j].pushTile(new WoodPlank(j, i));
             }
         }
 
