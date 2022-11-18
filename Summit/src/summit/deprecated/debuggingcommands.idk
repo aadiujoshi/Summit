@@ -1,0 +1,16 @@
+//debugging tile postions
+        // e.getRenderer().renderText((int)getX()+"", (int)p.x, (int)p.y-4, Renderer.NO_OP, filter);
+        // e.getRenderer().renderText((int)getY()+"", (int)p.x, (int)p.y+4, Renderer.NO_OP, filter);
+
+
+//debug square  
+        java.awt.geom.Point2D.Float p = Renderer.toPixel(getX(), getY(), e.getCamera());
+
+        // e.getRenderer().fillRect((int)(1+p.x-getWidth()/2*16), (int)(p.y-getHeight()/2*16), (int)(getWidth()*16), (int)(getHeight()*16), Renderer.toIntRGB(0, 255, 0));
+
+
+        // mt.setLocation(Math.round(mt.x), Math.round(mt.y));
+
+        // System.out.println(mt + "  |  " + this + "  |  " + contains(mt.x, mt.y));
+
+        // System.out.println(mt);

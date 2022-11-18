@@ -1,10 +1,6 @@
 package summit.game.tile;
 
-import java.awt.event.MouseEvent;
-
 import summit.game.GameClickEvent;
-import summit.game.GameMap;
-import summit.game.GameUpdateEvent;
 import summit.gfx.Sprite;
 
 public class SnowTile extends Tile{
@@ -18,6 +14,8 @@ public class SnowTile extends Tile{
     @Override
     public void gameClick(GameClickEvent e){
         
+        System.out.println(getX() + "  " + getY());
+
         this.setDestroy(true);
     }
 }

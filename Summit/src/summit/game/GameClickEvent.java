@@ -1,20 +1,25 @@
 package summit.game;
 
-import java.awt.event.MouseEvent;
-
 public class GameClickEvent{
     private GameWorld world;
     private GameMap map;
-    private MouseEvent me;
+    
+    private float gameX;
+    private float gameY;
 
-    public GameClickEvent(GameWorld world, GameMap map, MouseEvent e){
+    public GameClickEvent(GameWorld world, GameMap map, float gx, float gy){
         this.world = world;
         this.map = map;
-        this.me = e;
+        this.gameX = gx;
+        this.gameY = gy;
     }
 
-    public MouseEvent mouseInfo(){
-        return me;
+    public float gameX(){
+        return gameX;
+    }
+
+    public float gameY(){
+        return gameY;
     }
 
     public GameWorld getWorld(){

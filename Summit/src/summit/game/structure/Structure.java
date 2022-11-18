@@ -40,23 +40,12 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
     }
 
     @Override
-    public void renderLayer(OrderPaintEvent ope) {
+    public void setRenderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
     }
 
     @Override
     public void paint(PaintEvent e) {
-
-        java.awt.geom.Point2D.Float p = Renderer.toPixel(getX(), getY(), e.getCamera());
-
-        //debug square
-        // e.getRenderer().fillRect((int)(1+p.x-getWidth()/2*16), (int)(p.y-getHeight()/2*16), (int)(getWidth()*16), (int)(getHeight()*16), Renderer.toIntRGB(0, 255, 0));
-
-        // e.getRenderer().renderGame(sprite, 
-        //                             getX()+spriteOffsetX, getY()+spriteOffsetY, renderOp,
-        //                             new ColorFilter(255, 255, 255), 
-        //                             e.getCamera());
-
         e.getRenderer().renderGame(sprite, 
                                     getX()+spriteOffsetX, getY()+spriteOffsetY, renderOp,
                                     filter,
@@ -65,18 +54,12 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
     @Override
     public void gameClick(GameClickEvent e) {
-        
+        System.out.println("you have clicked on a structure congratulations");
     }
 
     @Override
     public void update(GameUpdateEvent e) {
         Point2D.Float mt = Renderer.toTile(e.mouseX(), e.mouseY(), e.getMap().getPlayer().getCamera());
-
-        // mt.setLocation(Math.round(mt.x), Math.round(mt.y));
-
-        // System.out.println(mt + "  |  " + this + "  |  " + contains(mt.x, mt.y));
-
-        // System.out.println(mt);
 
         if(this.contains(mt.x, mt.y))
             setRenderOp(getRenderOp() | Renderer.OUTLINE_BLUE | Renderer.OUTLINE_GREEN | Renderer.OUTLINE_RED);

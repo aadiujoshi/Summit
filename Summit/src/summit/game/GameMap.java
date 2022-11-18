@@ -1,10 +1,6 @@
 package summit.game;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
 
 import summit.game.entity.Entity;
 import summit.game.entity.mob.PlayerEntity;
@@ -15,14 +11,10 @@ import summit.gfx.Camera;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
-import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.Region;
-import summit.util.Time;
 
-public class GameMap implements Paintable, GameUpdateReciever{
-
-    private final Object LOCK = new Exception();
+public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever{
 
     private ArrayList<Entity> entities;
     private ArrayList<Structure> structures;
@@ -50,6 +42,25 @@ public class GameMap implements Paintable, GameUpdateReciever{
     }
 
     @Override
+    public void gameClick(GameClickEvent e) {
+        for(Structure r_struct : structures) {
+            if(r_struct.contains(e.gameX(), e.gameY())){
+                r_struct.gameClick(e);
+                return;
+            }
+        }
+        for(Entity entity : entities) {
+            if(entity.contains(e.gameX(), e.gameY())){
+                entity.gameClick(e);
+                return;
+            }
+        }
+
+        getTileAt(e.gameX(), e.gameY()).gameClick(e);
+
+    }
+
+    @Override
     public void update(GameUpdateEvent e) {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
@@ -66,7 +77,7 @@ public class GameMap implements Paintable, GameUpdateReciever{
     }
 
     @Override
-    public void renderLayer(OrderPaintEvent e) {
+    public void setRenderLayer(OrderPaintEvent e) {
         Camera c = e.getCamera();
         int nx = Math.round(c.getX());
         int ny = Math.round(c.getY());
@@ -78,7 +89,7 @@ public class GameMap implements Paintable, GameUpdateReciever{
         for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < map.length; i++){
             for(int j = ny-rheight/2; j < ny+rheight/2 && j < map[0].length; j++){
                 if(i > -1 && j > -1)
-                    map[j][i].renderLayer(e);
+                    map[j][i].setRenderLayer(e);
             }
         }
 
@@ -108,7 +119,7 @@ public class GameMap implements Paintable, GameUpdateReciever{
         }
 
         for (Region r: sorted) {
-            ((Paintable)r).renderLayer(e);
+            ((Paintable)r).setRenderLayer(e);
         }
     }
 

@@ -103,16 +103,16 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     @Override
-    public void renderLayer(OrderPaintEvent ope) {
+    public void setRenderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.TOP_LAYER, this);
 
         ope.setCamera(camera.clone());
 
         if(loadedMap != null){
-            loadedMap.renderLayer(ope);
+            loadedMap.setRenderLayer(ope);
         }
 
-        snowAnim.renderLayer(ope);
+        snowAnim.setRenderLayer(ope);
     }
 
     @Override

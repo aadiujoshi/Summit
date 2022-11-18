@@ -1,19 +1,14 @@
 package summit.game.tile;
 
+import java.util.Stack;
+
 import summit.game.GameClickEvent;
 import summit.game.GameClickReciever;
-import summit.game.GameMap;
-import summit.game.GameUpdateReciever;
 import summit.game.GameUpdateEvent;
-import summit.game.tile.Tile;
+import summit.game.GameUpdateReciever;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
-import summit.gfx.RenderLayers;
-import summit.gui.GUIClickReciever;
-
-import java.awt.event.MouseEvent;
-import java.util.Stack;
 
 public class TileStack implements GameClickReciever, Paintable, GameUpdateReciever {
 
@@ -49,10 +44,10 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
     }
 
     @Override
-    public void renderLayer(OrderPaintEvent ope) {
+    public void setRenderLayer(OrderPaintEvent ope) {
         for(Tile t: tiles){
             if(t != null)
-                t.renderLayer(ope);
+                t.setRenderLayer(ope);
         }
     }
 

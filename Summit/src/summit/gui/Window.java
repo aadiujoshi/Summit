@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import summit.game.GameClickEvent;
 import summit.game.GameMap;
 import summit.game.GameWorld;
 import summit.game.animation.Scheduler;
@@ -239,7 +240,7 @@ public class Window implements MouseListener, KeyListener{
         }
         else if(state == WindowState.GAME){
             if(world != null)
-                world.renderLayer(ope);
+                world.setRenderLayer(ope);
             pe.setCamera(ope.getCamera());
             ope.getRenderLayers().renderLayers(pe);
         }
@@ -412,13 +413,13 @@ public class Window implements MouseListener, KeyListener{
         int ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
 
         e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(), rx, ry, e.getClickCount(), e.isPopupTrigger(), e.getButton());
-
+        
         if(state == WindowState.GAME){
             if(world != null){
+                java.awt.geom.Point2D.Float m_tile = Renderer.toTile(rx, ry, world.getCamera());
+        
                 GameMap loadedmap = world.getLoadedMap();
-                // Renderer.toTile();
-                System.out.println(Renderer.toTile(rx, ry, world.getCamera()));
-                // loadedmap.getTileAt(rx, ry);
+                loadedmap.gameClick(new GameClickEvent(world, loadedmap, m_tile.x, m_tile.y));
             }
             
             for(Container container : guiContainersGame) {

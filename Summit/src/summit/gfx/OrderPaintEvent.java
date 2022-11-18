@@ -10,6 +10,10 @@ public class OrderPaintEvent {
         this.cam = camera;
     }
 
+    public void addToLayer(int layer, Paintable p){
+        rl.addToLayer(layer, p);
+    }
+
     public RenderLayers getRenderLayers() {
         return this.rl;
     }

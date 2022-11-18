@@ -28,7 +28,7 @@ public class Light implements Paintable{
     }
 
     @Override
-    public void renderLayer(OrderPaintEvent r) {
+    public void setRenderLayer(OrderPaintEvent r) {
         r.getRenderLayers().addToLayer(rLayer, this);
     }
 

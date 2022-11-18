@@ -66,7 +66,7 @@ public class PlayerEntity extends HumanoidEntity{
 
 
     @Override
-    public void renderLayer(OrderPaintEvent ope) {
+    public void setRenderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
     }
 
