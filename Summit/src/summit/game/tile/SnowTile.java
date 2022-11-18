@@ -1,6 +1,8 @@
 package summit.game.tile;
 
 import summit.game.GameClickEvent;
+import summit.gfx.Light;
+import summit.gfx.RenderLayers;
 import summit.gfx.Sprite;
 
 public class SnowTile extends Tile{
@@ -8,7 +10,9 @@ public class SnowTile extends Tile{
     public SnowTile(float x, float y){
         super(x, y);
         super.setSprite(Sprite.SNOW_TILE);
-        // super.setLight(new Light(x, y, 1f, 100, 100, 100));
+        Light l = new Light(x, y, 1f, 100, 100, 100);
+        l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
+        super.setLight(l);
     }
     
     @Override

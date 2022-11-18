@@ -79,7 +79,7 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
                 Tile t = tiles[y][x].peekTile();
                 t.setBoundary(true);
 
-                Light l = new Light(x, y, 1f, shadow);
+                Light l = new Light(x, y, 1.2f, shadow);
 
                 l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
                 // t.setRenderOp(t.getRenderOp() | Renderer.OUTLINE_BLUE);
