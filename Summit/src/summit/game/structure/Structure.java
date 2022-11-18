@@ -10,6 +10,7 @@ import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.entity.Entity;
+import summit.game.entity.mob.PlayerEntity;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
@@ -55,6 +56,11 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
     @Override
     public void gameClick(GameClickEvent e) {
         System.out.println("you have clicked on a structure congratulations");
+
+        PlayerEntity p = e.getMap().getPlayer();
+
+        if(getY()-getHeight()/2 > p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2)
+            e.getWorld().setLoadedMap(innerMap);
     }
 
     @Override
