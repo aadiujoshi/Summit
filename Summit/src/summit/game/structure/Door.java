@@ -17,7 +17,7 @@ public class Door extends Building{
     public Door(float x, float y, GameMap exMap, GameMap parentMap) {
         super(x, y, 1, 2, exMap, parentMap);
         super.setSprite(Sprite.DOOR);
-        super.setShadow(new ColorFilter(-30, -30, -30));
+        super.setShadow(new ColorFilter(-50, -50, -50));
         super.setEnterOrientation(Direction.NORTH);
         super.situate(parentMap);
     }

@@ -3,15 +3,13 @@ package summit.gfx;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
 public class BufferedSprites{
 
-    /**'Object' will wrap a 2d int array, ordered by alphabetic file name*/
-    private static HashMap<String, Object> sprites = new HashMap<>();
+    private static HashMap<String, int[][]> sprites = new HashMap<>();
 
     public final static char[] charRefs = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
                                                 '!', '/', '<', '>', ':', '+', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '&', '=', '(', ')', '.', '?'};

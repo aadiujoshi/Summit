@@ -4,6 +4,8 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import summit.util.Region;
+
 public class Renderer {
 
     private int[][] frame;
@@ -113,7 +115,7 @@ public class Renderer {
             for (int yy = (int)(center.y-radius); yy < (int)(center.y+radius); yy++) {
                 if(!inArrBounds(yy, xx, frame.length, frame[0].length))
                     continue;
-                float d = distance(center.x, center.y, xx, yy);
+                float d = Region.distance(center.x, center.y, xx, yy);
 
                 if(shape == Light.Shape.CIRCLE && d <= radius){
                     ColorFilter filt = new ColorFilter((int)(r-((d/radius)*r)), (int)(g-((d/radius)*g)), (int)(b-((d/radius)*b)));
@@ -252,10 +254,6 @@ public class Renderer {
     //--------------------------------------------------------------------
     // utility methods
     //--------------------------------------------------------------------
-
-    public static float distance(float x1, float y1, float x2, float y2){
-        return (float)Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-    }
 
     public static int toIntRGB(int r, int g, int b){
         return ((r > 255) ? 255 : r << 16) | 

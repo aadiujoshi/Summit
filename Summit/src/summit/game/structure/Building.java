@@ -26,7 +26,6 @@ public class Building extends Structure{
             (enterOrientation == Direction.NORTH && 
                 getY()-getHeight()/2 < p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2)){
 
-            // System.out.println(exMap.getWidth()/2 + "  " + (exMap.getHeight()/2));
             e.setLoadedMap(exMap);
         }
     }

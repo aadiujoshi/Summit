@@ -226,7 +226,7 @@ public class Window implements MouseListener, KeyListener{
 
         // System.out.println(state);
 
-        PaintEvent pe = new PaintEvent(renderer, lastFrame, null, this);
+        PaintEvent pe = new PaintEvent(world, this, renderer, lastFrame, mouseX(), mouseY());
         OrderPaintEvent ope = new OrderPaintEvent(new RenderLayers(10), null);
         
         if(state == WindowState.SELECTIONMENUS){
@@ -238,7 +238,7 @@ public class Window implements MouseListener, KeyListener{
         else if(state == WindowState.GAME){
             if(world != null)
                 world.setRenderLayer(ope);
-            pe.setCamera(ope.getCamera());
+                
             ope.getRenderLayers().renderLayers(pe);
 
             for (Container c : guiContainersGame) {
@@ -249,6 +249,7 @@ public class Window implements MouseListener, KeyListener{
         //----------------------------------------------------------------------------------
         // draw final frame to screen
         //----------------------------------------------------------------------------------
+        
         renderer.upscaleToImage(finalFrame);
         
         g.drawImage(finalFrame, null, 0, 0);

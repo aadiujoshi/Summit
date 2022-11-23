@@ -11,6 +11,7 @@ import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.game.tile.WaterTile;
 import summit.game.tile.WoodPlank;
+import summit.gfx.Camera;
 
 public class GameMapGenerator {
     
@@ -62,8 +63,8 @@ public class GameMapGenerator {
             }
         }
         
-        map.addStructure(new Door(7f, 0.5f-0.125f, parentMap, map));
-
+        map.addStructure(new Door(7f, 0, parentMap, map));
+        map.setCamera(new Camera(7f, 1));
         return map;
     }
 

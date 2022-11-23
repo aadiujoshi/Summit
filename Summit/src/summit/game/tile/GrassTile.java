@@ -1,11 +1,6 @@
 package summit.game.tile;
 
-import java.awt.event.MouseEvent;
-
 import summit.game.GameUpdateEvent;
-import summit.game.GameMap;
-import summit.game.GameUpdateEvent;
-import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
 
 public class GrassTile extends Tile{
@@ -18,7 +13,6 @@ public class GrassTile extends Tile{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        // TODO Auto-generated method stub
         
     }
 }

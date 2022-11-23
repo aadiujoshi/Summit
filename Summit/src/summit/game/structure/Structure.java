@@ -15,17 +15,11 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
+import summit.util.GameRegion;
 import summit.util.Region;
 
-public abstract class Structure extends Region implements Paintable, GameClickReciever, GameUpdateReciever {
+public abstract class Structure extends GameRegion implements GameUpdateReciever {
 
-    private String sprite;
-
-    private float spriteOffsetX;
-    private float spriteOffsetY;
-
-    private int renderOp;
-    private ColorFilter filter = ColorFilter.NOFILTER;
     private ColorFilter shadow = new ColorFilter(-100, -100, -100);
 
     private ArrayList<Light> shadows;
@@ -37,27 +31,14 @@ public abstract class Structure extends Region implements Paintable, GameClickRe
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
-        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
+        ope.addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
         for (Light light : shadows) {
             light.setRenderLayer(ope);
         }
     }
 
     @Override
-    public void paint(PaintEvent e) {
-        e.getRenderer().renderGame(sprite, 
-                                    getX()+spriteOffsetX, getY()+spriteOffsetY, renderOp,
-                                    filter,
-                                    e.getCamera());
-    }
-
-    @Override
     public void update(GameUpdateEvent e) {
-        
-        if(this.contains(e.gameX(), e.gameY()))
-            setRenderOp(getRenderOp() | Renderer.OUTLINE_BLUE | Renderer.OUTLINE_GREEN | Renderer.OUTLINE_RED);
-        else
-            setRenderOp(getRenderOp() & ~Renderer.OUTLINE_BLUE & ~Renderer.OUTLINE_GREEN & ~Renderer.OUTLINE_RED);
     }
 
     public void situate(GameMap map){
@@ -87,43 +68,7 @@ public abstract class Structure extends Region implements Paintable, GameClickRe
         }
     }
 
-    public void setSprite(String sprite){
-        this.sprite = sprite;
-    }
-
-    public void setRenderOp(int r){
-        renderOp = r;
-    }
-
-    public int getRenderOp(){
-        return renderOp;
-    }
-
-    public void setColorFilter(ColorFilter cf){
-        this.filter = cf;
-    }
-
-    public ColorFilter getColorFilter(){
-        return this.filter;
-    }
-
     public void setShadow(ColorFilter shadow){
         this.shadow = shadow;
-    }
-
-    public float getSpriteOffsetX() {
-        return this.spriteOffsetX;
-    }
-
-    public void setSpriteOffsetX(float spriteOffsetX) {
-        this.spriteOffsetX = spriteOffsetX;
-    }
-
-    public float getSpriteOffsetY() {
-        return this.spriteOffsetY;
-    }
-
-    public void setSpriteOffsetY(float spriteOffsetY) {
-        this.spriteOffsetY = spriteOffsetY;
     }
 }

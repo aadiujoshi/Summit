@@ -7,7 +7,7 @@ public class Region {
 
     private float x;
     private float y;
-
+    
     public Region(float x, float y, float width, float height){
         this.x = x;
         this.y = y;
@@ -26,6 +26,10 @@ public class Region {
             }
         }
         return false;
+    }
+
+    public static float distance(float x1, float y1, float x2, float y2){
+        return (float)Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }
 
     @Override
