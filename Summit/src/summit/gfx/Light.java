@@ -1,7 +1,14 @@
 package summit.gfx;
 
 public class Light implements Paintable{
-    private int rLayer = RenderLayers.STRUCTURE_ENTITY_LAYER+1; 
+
+    public static enum Shape{
+        CIRCLE, SQUARE
+    }
+
+    private Light.Shape shape = Light.Shape.CIRCLE;
+
+    private int rLayer = RenderLayers.STRUCTURE_ENTITY_LAYER-1; 
 
     public static final Light NO_LIGHT = new Light(0, 0, 0, 0, 0, 0);
 
@@ -29,7 +36,7 @@ public class Light implements Paintable{
 
     @Override
     public void setRenderLayer(OrderPaintEvent r) {
-        r.getRenderLayers().addToLayer(rLayer, this);
+        r.addToLayer(rLayer, this);
     }
 
     @Override
@@ -39,6 +46,14 @@ public class Light implements Paintable{
 
     //-------------  getters and setters -------------------
     
+    public void setShape(Light.Shape s){
+        this.shape = s;
+    }
+
+    public Light.Shape getShape(){
+        return this.shape;
+    }
+
     public float getRadius() {
         return this.radius;
     }

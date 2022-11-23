@@ -7,6 +7,7 @@ import summit.game.GameUpdateReciever;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
+import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.util.Region;
@@ -41,12 +42,25 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     public Entity(float x, float y, float width, float height){
         super(x,y,width,height);
-        this.shadow = new Light(x, y, 0.25f, -50, -50, -50);
+
+        Light sdw = new Light(x, y, 1f, -30, -30, -30);
+        sdw.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
+        this.shadow = sdw;
+
         this.light = Light.NO_LIGHT;
     }
 
+    @Override
     public void setRenderLayer(OrderPaintEvent ope){
-        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
+        ope.addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
+        light.setRenderLayer(ope);
+        shadow.setRenderLayer(ope);
+    }
+
+    @Override
+    public void paint(PaintEvent e){
+        e.getRenderer().renderLight(light, e.getCamera());
+        e.getRenderer().renderLight(shadow, e.getCamera());
     }
 
     @Override
@@ -105,7 +119,9 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         if(light != null){
             light.setX(x);
         }
-        
+        if(shadow != null){
+            shadow.setX(x);
+        }
     }
 
     @Override 
@@ -113,6 +129,9 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         super.setY(y);
         if(light != null){
             light.setY(y);
+        }
+        if(shadow != null){
+            shadow.setY(y);
         }
     }  
 

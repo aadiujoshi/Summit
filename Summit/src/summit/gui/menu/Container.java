@@ -54,7 +54,7 @@ public class Container implements Paintable, GUIClickReciever{
     
     @Override
     public void setRenderLayer(OrderPaintEvent e) {
-        
+        e.addToLayer(RenderLayers.TOP_LAYER, this);
     }
 
     @Override

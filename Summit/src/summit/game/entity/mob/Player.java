@@ -7,6 +7,7 @@ import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
+import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
@@ -33,7 +34,10 @@ public class Player extends HumanoidEntity{
         super.setSpriteOffsetX(0);
         super.setSpriteOffsetY(8);
         // super.setColorFilter(new ColorFilter(20, 100, -50));
-        // super.setLight(new Light(this.getX(), this.getY(), 4f, 170, 0, 0));
+        // var l = new Light(this.getX(), this.getY(), 1f, 170, 0, 0);
+        // l.setShape(Light.Shape.SQUARE);
+        // super.setLight(l);
+
         this.hud = new HUD();
         hud.setPlayer(this);
         this.walkAnimation = new ScheduledEvent(250, ScheduledEvent.FOREVER){
@@ -50,7 +54,7 @@ public class Player extends HumanoidEntity{
                     else
                         setRenderOp(op | Renderer.FLIP_X);
                 } else{
-                    setRenderOp(op & 0b11111111111111111111111111111110);
+                    setRenderOp(op & ~Renderer.FLIP_X);
                 }
 
                 flipped = !flipped;
@@ -67,11 +71,13 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
-        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
+        super.setRenderLayer(ope);
+        hud.setRenderLayer(ope);
     }
 
     @Override
     public void paint(PaintEvent e) {
+        // super.paint(e);
         e.getRenderer().renderText(("x:" + Math.round(getX()*2)/2), 
                     20, 15, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
 
@@ -86,7 +92,7 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void gameClick(GameClickEvent e) {
-        
+        System.out.println("clicked on player");
     }
 
     @Override
@@ -147,6 +153,10 @@ public class Player extends HumanoidEntity{
         this.camera = camera;
     }
 
+    /**
+     * DO NOT USE THIS METHOD FOR RENDERING
+     * @return This players camera
+     */
     public Camera getCamera(){
         return this.camera;
     }

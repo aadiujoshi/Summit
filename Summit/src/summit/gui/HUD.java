@@ -2,21 +2,21 @@ package summit.gui;
 
 import summit.gfx.Renderer;
 import summit.game.entity.mob.Player;
+import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
 import summit.gui.menu.Container;
 
 public class HUD extends Container{
 
-    Player player;
+    private Player player;
     
     public HUD() {
         super(null, 0.75f, 0.13f, 0.5f, 0.2f);
     }
-    
+
     @Override
     public void paint(PaintEvent e){
-        
         //round to nearest 0.5
         float h = Math.round(player.getHealth()*2)/2;
 

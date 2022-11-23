@@ -37,6 +37,8 @@ public abstract class HumanoidEntity extends MobEntity{
 
     @Override
     public void paint(PaintEvent e){
+        super.paint(e);
+
         Direction d = getFacing();
         Camera c = e.getCamera();
         Renderer r = e.getRenderer();

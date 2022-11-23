@@ -69,6 +69,7 @@ public class GameWorld implements Paintable, Serializable{
 
         stage1.setPlayer(player);
         stage1.setAnimation(new SnowfallAnimation(4, 3));
+        stage1.setFilter(new ColorFilter(-60, -50, 0));
         initUpdateThread();
     }
 

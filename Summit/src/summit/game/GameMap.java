@@ -68,7 +68,6 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         }
 
         getTileAt(e.gameX(), e.gameY()).gameClick(e);
-
     }
 
     @Override

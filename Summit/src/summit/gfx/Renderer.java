@@ -93,9 +93,17 @@ public class Renderer {
      * @param y
      */
     public void renderLight(Light light, Camera cam){
+        if(light == null || cam == null)
+            return;
+
         Point2D.Float center = toPixel(light.getX(), light.getY(), cam);
         
+        Light.Shape shape = light.getShape();
+
         float radius = light.getRadius()*16;
+
+        //for square lights
+        float sqrVertexDist = light.getRadius()*16*1.41421356f;
 
         int r = light.getRed();
         int b = light.getBlue();
@@ -106,8 +114,12 @@ public class Renderer {
                 if(!inArrBounds(yy, xx, frame.length, frame[0].length))
                     continue;
                 float d = distance(center.x, center.y, xx, yy);
-                if(d <= radius){
+
+                if(shape == Light.Shape.CIRCLE && d <= radius){
                     ColorFilter filt = new ColorFilter((int)(r-((d/radius)*r)), (int)(g-((d/radius)*g)), (int)(b-((d/radius)*b)));
+                    frame[yy][xx] = filt.filterColor(frame[yy][xx]);
+                } else if(shape == Light.Shape.SQUARE){
+                    ColorFilter filt = new ColorFilter((int)(r-((d/sqrVertexDist)*r)), (int)(g-((d/sqrVertexDist)*g)), (int)(b-((d/sqrVertexDist)*b)));
                     frame[yy][xx] = filt.filterColor(frame[yy][xx]);
                 }
             }

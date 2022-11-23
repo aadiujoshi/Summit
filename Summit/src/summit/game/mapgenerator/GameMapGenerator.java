@@ -4,6 +4,7 @@ import summit.game.GameMap;
 import summit.game.entity.mob.Player;
 import summit.game.structure.TraderHouse;
 import summit.game.tile.GrassTile;
+import summit.game.tile.LavaTile;
 import summit.game.tile.SnowTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;

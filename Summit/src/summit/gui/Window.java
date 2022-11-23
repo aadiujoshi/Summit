@@ -51,7 +51,6 @@ public class Window implements MouseListener, KeyListener{
     //-----------------------
     public float fps;
     private long lastFrame;
-
     //-----------------------
 
     // public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
