@@ -1,17 +1,11 @@
 package summit.game.structure;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
-import summit.game.GameUpdateEvent;
 import summit.game.GameClickReciever;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
-import summit.game.entity.Entity;
-import summit.game.entity.mob.Player;
-import summit.game.mapgenerator.GameMapGenerator;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
@@ -21,7 +15,6 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
-import summit.gfx.Sprite;
 import summit.util.Region;
 
 public abstract class Structure extends Region implements Paintable, GameClickReciever, GameUpdateReciever {
@@ -35,13 +28,19 @@ public abstract class Structure extends Region implements Paintable, GameClickRe
     private ColorFilter filter = ColorFilter.NOFILTER;
     private ColorFilter shadow = new ColorFilter(-100, -100, -100);
 
+    private ArrayList<Light> shadows;
+
     public Structure(float x, float y, float width, float height, GameMap parentMap) {
         super(x, y, width, height);
+        this.situate(parentMap);
     }
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
+        for (Light light : shadows) {
+            light.setRenderLayer(ope);
+        }
     }
 
     @Override
@@ -54,30 +53,36 @@ public abstract class Structure extends Region implements Paintable, GameClickRe
 
     @Override
     public void update(GameUpdateEvent e) {
-        Point2D.Float mt = Renderer.toTile(e.mouseX(), e.mouseY(), e.getMap().getPlayer().getCamera());
-
-        if(this.contains(mt.x, mt.y))
+        
+        if(this.contains(e.gameX(), e.gameY()))
             setRenderOp(getRenderOp() | Renderer.OUTLINE_BLUE | Renderer.OUTLINE_GREEN | Renderer.OUTLINE_RED);
         else
             setRenderOp(getRenderOp() & ~Renderer.OUTLINE_BLUE & ~Renderer.OUTLINE_GREEN & ~Renderer.OUTLINE_RED);
+    }
 
-        TileStack[][] tiles = e.getMap().getTiles();
-        
+    public void situate(GameMap map){
+        shadows = new ArrayList<>();
+
+        TileStack[][] tiles = map.getTiles();
+
         int startX = Math.round(getX()-getWidth()/2);
-        int startY = Math.round(getX()-getHeight()/2);
+        int startY = Math.round(getY()-getHeight()/2);
 
         int endX = Math.round(getX()+getWidth()/2);
-        int endY = Math.round(getX()+getHeight()/2);
+        int endY = Math.round(getY()+getHeight()/2);
 
-        for (int x = startX; x < endX; x++) {
-            for (int y = startY; y < endY; y++) {
-                Tile t = tiles[y][x].peekTile();
+        for (int x1 = startX; x1 < endX; x1++) {
+            for (int y1 = startY; y1 < endY; y1++) {
+                if(x1 < 0 || x1 > map.getWidth() || y1 < 0 || y1 > map.getHeight())
+                    continue;
+
+                Tile t = tiles[y1][x1].peekTile();
                 t.setBoundary(true);
 
-                Light l = new Light(x, y, 1.2f, shadow);
-
+                Light l = new Light(x1, y1, 1.2f, shadow);
                 l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
-                t.setLight(l);
+
+                shadows.add(l);
             }
         }
     }

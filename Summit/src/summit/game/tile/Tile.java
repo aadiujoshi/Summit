@@ -48,6 +48,7 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     @Override
     public void setRenderLayer(OrderPaintEvent r){
         r.getRenderLayers().addToLayer(RenderLayers.TILE_LAYER, this);
+
         if(light != null)
             light.setRenderLayer(r);
     }
@@ -115,6 +116,8 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     }
 
     public void setLight(Light light) {
+        light.setX(this.getX());
+        light.setY(this.getY());
         this.light = light;
     }
 }

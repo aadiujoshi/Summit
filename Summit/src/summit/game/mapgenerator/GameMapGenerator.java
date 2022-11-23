@@ -39,7 +39,6 @@ public class GameMapGenerator {
                     if(val < -0.5){
                         t.pushTile(new WaterTile(j, i));
                     }
-
                 } else if(val > 0){
                     t.pushTile(new GrassTile(j, i));
                     t.pushTile(new SnowTile(j, i));
@@ -48,7 +47,6 @@ public class GameMapGenerator {
         }
 
         map.addStructure(new TraderHouse(19.5f, 19f, map));
-
 
         return map;
     }
@@ -64,7 +62,7 @@ public class GameMapGenerator {
             }
         }
         
-        map.addStructure(new Door(4.5f, 0.5f, parentMap, map));
+        map.addStructure(new Door(7f, 0.5f-0.125f, parentMap, map));
 
         return map;
     }

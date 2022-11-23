@@ -1,7 +1,6 @@
-package summit.gui.menu;
+package summit.gui;
 
 import summit.gfx.Renderer;
-import summit.gui.Container;
 
 import java.util.ArrayList;
 import java.util.List;

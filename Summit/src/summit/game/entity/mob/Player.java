@@ -1,7 +1,6 @@
 package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
-import summit.game.GameUpdateEvent;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
@@ -24,15 +23,16 @@ public class Player extends HumanoidEntity{
     private ScheduledEvent walkAnimation;
 
     private HUD hud;
-    
+    // private Inventory inventory;
+
     public Player(float x, float y) {
-        super(x, y, 1, 1);
+        super(x, y, 1, 2);
         super.setDx(6f);
         super.setDy(6f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
-        super.setSpriteOffsetX(0);
-        super.setSpriteOffsetY(8);
+        // super.setSpriteOffsetX(0);
+        // super.setSpriteOffsetY(8);
         // super.setColorFilter(new ColorFilter(20, 100, -50));
         // var l = new Light(this.getX(), this.getY(), 1f, 170, 0, 0);
         // l.setShape(Light.Shape.SQUARE);
@@ -72,7 +72,6 @@ public class Player extends HumanoidEntity{
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
         super.setRenderLayer(ope);
-        hud.setRenderLayer(ope);
     }
 
     @Override
@@ -88,11 +87,12 @@ public class Player extends HumanoidEntity{
                                         (getX()+(getSpriteOffsetX()/16f)), (getY()+(getSpriteOffsetY()/16f)), 
                                         getRenderOp(), getColorFilter(),
                                         e.getCamera());
-    }
+    } 
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        System.out.println("clicked on player");
+        // if(!hud.isPushed())
+        //     e.getWindow().pushGameContainer(hud);
     }
 
     @Override
@@ -147,6 +147,10 @@ public class Player extends HumanoidEntity{
     public void setY(float y){
         super.setY(y);
         camera.setY(y);
+    }
+    
+    public HUD getHud() {
+        return this.hud;
     }
 
     public void setCamera(Camera camera) {

@@ -1,9 +1,6 @@
-package summit.gui.menu;
+package summit.gui;
 
 import summit.gfx.PaintEvent;
-import summit.gui.Container;
-import summit.gui.Window;
-import summit.gui.WindowState;
 
 import java.awt.event.MouseEvent;
 

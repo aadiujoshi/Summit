@@ -67,6 +67,8 @@ public class GameWorld implements Paintable, Serializable{
 
         player.setCamera(stage1.getCamera());
 
+        parentWindow.pushGameContainer(player.getHud());
+
         initUpdateThread();
     }
 
@@ -111,7 +113,7 @@ public class GameWorld implements Paintable, Serializable{
     public void setRenderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.TOP_LAYER, this);
 
-        ope.setCamera(player.getCamera().clone());
+        ope.setCamera(loadedMap.getCamera().clone());
 
         if(loadedMap != null){
             loadedMap.setRenderLayer(ope);

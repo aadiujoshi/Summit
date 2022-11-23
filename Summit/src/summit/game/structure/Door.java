@@ -1,6 +1,7 @@
 package summit.game.structure;
 
 import summit.game.GameMap;
+import summit.gfx.ColorFilter;
 import summit.gfx.Sprite;
 import summit.util.Direction;
 
@@ -16,6 +17,8 @@ public class Door extends Building{
     public Door(float x, float y, GameMap exMap, GameMap parentMap) {
         super(x, y, 1, 2, exMap, parentMap);
         super.setSprite(Sprite.DOOR);
+        super.setShadow(new ColorFilter(-30, -30, -30));
         super.setEnterOrientation(Direction.NORTH);
+        super.situate(parentMap);
     }
 }

@@ -33,7 +33,6 @@ import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
-import summit.gui.menu.MainSelectionMenu;
 import summit.util.Controls;
 import summit.util.Time;
 
@@ -241,6 +240,10 @@ public class Window implements MouseListener, KeyListener{
                 world.setRenderLayer(ope);
             pe.setCamera(ope.getCamera());
             ope.getRenderLayers().renderLayers(pe);
+
+            for (Container c : guiContainersGame) {
+                c.paint(pe);
+            }
         }
         
         //----------------------------------------------------------------------------------
@@ -314,6 +317,8 @@ public class Window implements MouseListener, KeyListener{
     }
 
     public void pushHomeContainer(Container cont){
+        if(cont.isPushed())
+            return;
         guiContainersHome.push(cont);
         cont.setPushed(true);
         cont.setParentWindow(this);
@@ -324,10 +329,15 @@ public class Window implements MouseListener, KeyListener{
     }
 
     public void clearHomeContainers(){
+        for (Container container : guiContainersHome) {
+            container.setPushed(false);
+        }
         guiContainersHome.clear();
     }
 
     public void pushGameContainer(Container cont){
+        if(cont.isPushed())
+            return;
         guiContainersGame.push(cont);
         cont.setPushed(true);
         cont.setParentWindow(this);
@@ -338,6 +348,9 @@ public class Window implements MouseListener, KeyListener{
     }
 
     public void clearGameContainers(){
+        for(Container container : guiContainersHome) {
+            container.setPushed(false);
+        }
         guiContainersGame.clear();
     }
 
