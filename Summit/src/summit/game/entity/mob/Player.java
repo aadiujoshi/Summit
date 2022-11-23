@@ -16,7 +16,7 @@ import summit.gui.HUD;
 import summit.util.Controls;
 import summit.util.Time;
 
-public class PlayerEntity extends HumanoidEntity{
+public class Player extends HumanoidEntity{
 
     private Camera camera;
 
@@ -24,15 +24,15 @@ public class PlayerEntity extends HumanoidEntity{
 
     private HUD hud;
     
-    public PlayerEntity(float x, float y) {
+    public Player(float x, float y) {
         super(x, y, 1, 1);
-        super.setDx(3f);
-        super.setDy(3f);
+        super.setDx(6f);
+        super.setDy(6f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
         super.setSpriteOffsetX(0);
         super.setSpriteOffsetY(8);
-//        super.setColorFilter(new ColorFilter(20, 100, -50));
+        // super.setColorFilter(new ColorFilter(20, 100, -50));
         // super.setLight(new Light(this.getX(), this.getY(), 4f, 170, 0, 0));
         this.hud = new HUD();
         hud.setPlayer(this);
@@ -109,16 +109,7 @@ public class PlayerEntity extends HumanoidEntity{
         if(Controls.D && moveTo(e.getMap(), this.getX()+del_x, this.getY())){
             this.setX(this.getX()+del_x);
         }
-
-        {
-            camera.setX(this.getX());
-            camera.setY(this.getY());
-            if(getLight() != null){
-                getLight().setX(this.getX());
-                getLight().setY(this.getY());
-            }
-        }
-
+        
         this.updateIsMoving();
     }
 
@@ -138,9 +129,20 @@ public class PlayerEntity extends HumanoidEntity{
         
     }
     
-    //getters and setters
+    //---------------- getters and setters --------------------------
 
-    
+    @Override 
+    public void setX(float x){
+        super.setX(x);
+        camera.setX(x);
+    }
+
+    @Override
+    public void setY(float y){
+        super.setY(y);
+        camera.setY(y);
+    }
+
     public void setCamera(Camera camera) {
         this.camera = camera;
     }

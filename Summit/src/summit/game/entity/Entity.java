@@ -51,9 +51,6 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
 
     @Override
     public void update(GameUpdateEvent e){
-        if(!e.validUpdate())
-            return;
-
         if(getX() < -0.5 || getY() < -0.5) {
             return;
         }
@@ -80,7 +77,9 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     abstract public void collide(Entity e);
 
     public boolean moveTo(GameMap map, float newX, float newY){
-        if(map.getTileAt(newX, newY).peekTile().isBoundary()){
+        if(map.getTileAt(newX, newY).peekTile().isBoundary() || 
+            newX <= -0.5 || newX > map.getWidth() || 
+            newY <= -0.5 || newY > map.getHeight()){
             return false;
         }
         return true;
@@ -99,6 +98,23 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     //---------------------------------------------------------
     //getters and setters
     //---------------------------------------------------------
+
+    @Override 
+    public void setX(float x){
+        super.setX(x);
+        if(light != null){
+            light.setX(x);
+        }
+        
+    }
+
+    @Override 
+    public void setY(float y){
+        super.setY(y);
+        if(light != null){
+            light.setY(y);
+        }
+    }  
 
     public float getDx() {
         return this.dx;

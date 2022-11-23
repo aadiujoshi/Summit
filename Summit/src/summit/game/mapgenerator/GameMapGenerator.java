@@ -1,6 +1,7 @@
 package summit.game.mapgenerator;
 
 import summit.game.GameMap;
+import summit.game.entity.mob.Player;
 import summit.game.structure.TraderHouse;
 import summit.game.tile.GrassTile;
 import summit.game.tile.SnowTile;
@@ -51,7 +52,7 @@ public class GameMapGenerator {
 
     public static GameMap generateTraderHouse(){
         GameMap map = new GameMap("traderhouse", -1, 10, 10);
-
+        
         TileStack[][] tiles = map.getTiles();
 
         for (int i = 0; i < tiles.length; i++) {

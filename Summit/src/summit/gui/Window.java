@@ -252,7 +252,7 @@ public class Window implements MouseListener, KeyListener{
         
         g.drawImage(finalFrame, null, 0, 0);
         
-        // renderer.resetFrame();
+        renderer.resetFrame();
     }
 
 
@@ -416,10 +416,8 @@ public class Window implements MouseListener, KeyListener{
         
         if(state == WindowState.GAME){
             if(world != null){
-                java.awt.geom.Point2D.Float m_tile = Renderer.toTile(rx, ry, world.getCamera());
-        
                 GameMap loadedmap = world.getLoadedMap();
-                loadedmap.gameClick(new GameClickEvent(world, loadedmap, e));
+                loadedmap.gameClick(new GameClickEvent(world, e));
             }
             
             for(Container container : guiContainersGame) {

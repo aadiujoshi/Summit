@@ -10,7 +10,7 @@ import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.entity.Entity;
-import summit.game.entity.mob.PlayerEntity;
+import summit.game.entity.mob.Player;
 import summit.game.mapgenerator.GameMapGenerator;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
@@ -40,7 +40,6 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
     public Structure(float x, float y, float width, float height, GameMap map) {
         super(x, y, width, height);
         this.innerMap = map;
-        System.out.println(map);
     }
 
     @Override
@@ -58,16 +57,16 @@ public class Structure extends Region implements Paintable, GameClickReciever, G
 
     @Override
     public void gameClick(GameClickEvent e) {
-        if(!e.validUpdate())
-            return;
+        // System.out.println("you have clicked on a structure congratulations");
 
-        System.out.println("you have clicked on a structure congratulations");
+        // System.out.println(innerMap);
 
-        System.out.println(innerMap);
-
-        PlayerEntity p = e.getMap().getPlayer();
+        Player p = e.getMap().getPlayer();
 
         if(getY()-getHeight()/2 > p.getY() && p.getX() < getX()+getWidth()/2 && p.getX() > getX()-getWidth()/2){
+            innerMap.setPlayer(p);
+            p.setX(0);
+            p.setY(0);
             e.setLoadedMap(innerMap);
         }
     }

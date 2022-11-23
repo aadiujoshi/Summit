@@ -11,6 +11,5 @@ public class TraderHouse extends Structure{
         // super.setColorFilter(new ColorFilter(50, 50, 0));
         super.setSpriteOffsetY(0.5f);
         super.setShadow(new ColorFilter(-100, -100, -100));
-        super.setInnerMap(null);
     }
 }

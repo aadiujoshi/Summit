@@ -3,14 +3,16 @@ package summit.game;
 import java.util.ArrayList;
 
 import summit.game.entity.Entity;
-import summit.game.entity.mob.PlayerEntity;
+import summit.game.entity.mob.Player;
 import summit.game.structure.Structure;
 import summit.game.structure.TraderHouse;
 import summit.game.tile.TileStack;
 import summit.gfx.Camera;
+import summit.gfx.ColorFilter;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.Region;
 
@@ -19,7 +21,10 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     private ArrayList<Entity> entities;
     private ArrayList<Structure> structures;
 
-    private PlayerEntity player;
+    private Player player;
+
+    private ColorFilter filter;
+    private Paintable animation;
 
     private TileStack[][] tiles;
     private final int WIDTH;
@@ -84,6 +89,11 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     @Override
     public void setRenderLayer(OrderPaintEvent e) {
+        if(animation != null)
+            animation.setRenderLayer(e);
+            
+        e.addToLayer(RenderLayers.TOP_LAYER, this);
+
         Camera c = e.getCamera();
         int nx = Math.round(c.getX());
         int ny = Math.round(c.getY());
@@ -131,7 +141,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     @Override
     public void paint(PaintEvent e) {
-        
+        e.getRenderer().filterRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT, filter);
     }
 
     //--------------------------------------------------------------------
@@ -166,11 +176,11 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         this.loaded = loaded;
     }
 
-    public PlayerEntity getPlayer() {
+    public Player getPlayer() {
         return this.player;
     }
 
-    public void setPlayer(PlayerEntity player) {
+    public void setPlayer(Player player) {
         this.player = player;
         entities.add(player);
     }
@@ -191,7 +201,27 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         return this.SEED;
     }
 
+    public void remove(Entity e){
+        entities.remove(e);
+    }
+
     public void spawn(Entity e){
         entities.add(e);
+    }
+    
+    public ColorFilter getFilter() {
+        return this.filter;
+    }
+
+    public void setFilter(ColorFilter filter) {
+        this.filter = filter;
+    }
+
+    public Paintable getAnimation() {
+        return this.animation;
+    }
+
+    public void setAnimation(Paintable animation) {
+        this.animation = animation;
     }
 }

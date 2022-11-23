@@ -1,11 +1,13 @@
 package summit.game.entity.mob;
 
+import summit.game.ai.EntityAI;
 import summit.game.entity.Entity;
 import summit.util.Direction;
 
 public abstract class MobEntity extends Entity{
 
     private Direction facing;
+    private EntityAI ai;
 
     public MobEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -22,4 +24,11 @@ public abstract class MobEntity extends Entity{
         this.facing = facing;
     }
 
+    public EntityAI getAI() {
+        return this.ai;
+    }
+
+    public void setAI(EntityAI ai) {
+        this.ai = ai;
+    }
 }

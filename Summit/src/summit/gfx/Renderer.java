@@ -119,6 +119,9 @@ public class Renderer {
      * @param color
      */
     public void filterRect(int x, int y, int width, int height, ColorFilter filter){
+        if(filter == null)
+            return;
+        
         for (int r = y; r < frame.length && r < y+height; r++) {
             for (int c = x; c < frame[0].length && c < x+width; c++) {
                 frame[r][c] = filter.filterColor(frame[r][c]);

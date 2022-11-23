@@ -19,4 +19,5 @@ public class Sprite {
     public static final String EMPTY_HEART = "heart-empty";
     public static final String SNOWBALL = "snowball";
     public static final String WOOD_PLANK = "wood-plank";
+    public static final String LAVA_TILE = "lava-tile";
 }

@@ -1,14 +1,14 @@
 package summit.gui;
 
 import summit.gfx.Renderer;
-import summit.game.entity.mob.PlayerEntity;
+import summit.game.entity.mob.Player;
 import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
 import summit.gui.menu.Container;
 
 public class HUD extends Container{
 
-    PlayerEntity player;
+    Player player;
     
     public HUD() {
         super(null, 0.75f, 0.13f, 0.5f, 0.2f);
@@ -37,7 +37,7 @@ public class HUD extends Container{
         }
     }
 
-    public void setPlayer(PlayerEntity player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 }

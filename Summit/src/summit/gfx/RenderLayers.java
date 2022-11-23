@@ -1,6 +1,6 @@
 package summit.gfx;
 
-import summit.game.entity.mob.PlayerEntity;
+import summit.game.entity.mob.Player;
 import summit.game.structure.Structure;
 
 import java.util.ArrayList;
