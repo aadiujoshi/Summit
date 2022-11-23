@@ -1,25 +1,20 @@
 package summit.game;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Stack;
 
 import summit.game.animation.SnowfallAnimation;
-// import summit.game.animation.SnowFallAnimation;
 import summit.game.entity.mob.Player;
 import summit.game.mapgenerator.GameMapGenerator;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
-import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
-import summit.gfx.Renderer;
+import summit.gui.Container;
 import summit.gui.Window;
-import summit.gui.menu.Container;
 import summit.util.Time;
 
 public class GameWorld implements Paintable, Serializable{

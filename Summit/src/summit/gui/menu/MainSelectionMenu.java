@@ -1,6 +1,7 @@
 package summit.gui.menu;
 
 import summit.gfx.PaintEvent;
+import summit.gui.Container;
 import summit.gui.Window;
 import summit.gui.WindowState;
 

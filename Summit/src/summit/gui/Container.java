@@ -1,4 +1,4 @@
-package summit.gui.menu;
+package summit.gui;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -12,8 +12,6 @@ import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
-import summit.gui.GUIClickReciever;
-import summit.gui.Window;
 import summit.util.Region;
 
 //should extend Region class!!!!!!!!!

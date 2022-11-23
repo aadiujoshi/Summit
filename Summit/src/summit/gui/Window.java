@@ -33,7 +33,6 @@ import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
-import summit.gui.menu.Container;
 import summit.gui.menu.MainSelectionMenu;
 import summit.util.Controls;
 import summit.util.Time;

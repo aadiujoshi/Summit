@@ -5,7 +5,6 @@ import summit.game.entity.mob.Player;
 import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
-import summit.gui.menu.Container;
 
 public class HUD extends Container{
 
