@@ -2,7 +2,7 @@ package summit.game.tile;
 
 import java.util.Stack;
 
-import summit.game.GameClickEvent;
+import summit.game.GameUpdateEvent;
 import summit.game.GameClickReciever;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
@@ -34,7 +34,7 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
     }
 
     @Override
-    public void gameClick(GameClickEvent e){
+    public void gameClick(GameUpdateEvent e){
         tiles.peek().gameClick(e);
     }
 

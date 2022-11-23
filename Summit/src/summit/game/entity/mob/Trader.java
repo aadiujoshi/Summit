@@ -1,6 +1,6 @@
 package summit.game.entity.mob;
 
-import summit.game.GameClickEvent;
+import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 
@@ -11,7 +11,7 @@ public class Trader extends HumanoidEntity{
     }
     
     @Override
-    public void gameClick(GameClickEvent e) {
+    public void gameClick(GameUpdateEvent e) {
         // TODO Auto-generated method stub
         
     }

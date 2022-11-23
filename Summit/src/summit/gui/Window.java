@@ -23,7 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import summit.game.GameClickEvent;
+import summit.game.GameUpdateEvent;
 import summit.game.GameMap;
 import summit.game.GameWorld;
 import summit.game.animation.Scheduler;
@@ -315,11 +315,12 @@ public class Window implements MouseListener, KeyListener{
 
     public void pushHomeContainer(Container cont){
         guiContainersHome.push(cont);
+        cont.setPushed(true);
         cont.setParentWindow(this);
     }
 
     public void popHomeContainer(){
-        guiContainersHome.pop();
+        guiContainersHome.pop().setPushed(false);
     }
 
     public void clearHomeContainers(){
@@ -328,11 +329,12 @@ public class Window implements MouseListener, KeyListener{
 
     public void pushGameContainer(Container cont){
         guiContainersGame.push(cont);
+        cont.setPushed(true);
         cont.setParentWindow(this);
     }
 
     public void popGameContainer(){
-        guiContainersGame.pop();
+        guiContainersGame.pop().setPushed(false);
     }
 
     public void clearGameContainers(){
@@ -385,6 +387,13 @@ public class Window implements MouseListener, KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_F11){
             setFullscreen(!fullscreen);
         }
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+            if(state == WindowState.GAME){
+                this.popGameContainer();
+            } else {
+                this.setState(WindowState.BACK);
+            }
+        }
 
         Controls.setPress(e);
     }
@@ -415,7 +424,7 @@ public class Window implements MouseListener, KeyListener{
         if(state == WindowState.GAME){
             if(world != null){
                 GameMap loadedmap = world.getLoadedMap();
-                loadedmap.gameClick(new GameClickEvent(world, e));
+                loadedmap.gameClick(new GameUpdateEvent(world, 0, rx, ry, false));
             }
             
             for(Container container : guiContainersGame) {

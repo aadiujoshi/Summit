@@ -2,6 +2,7 @@ package summit.game.mapgenerator;
 
 import summit.game.GameMap;
 import summit.game.entity.mob.Player;
+import summit.game.structure.Door;
 import summit.game.structure.TraderHouse;
 import summit.game.tile.GrassTile;
 import summit.game.tile.LavaTile;
@@ -30,8 +31,6 @@ public class GameMapGenerator {
             }
         }
 
-        map.addStructure(new TraderHouse(19.5f, 19f));
-
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
                 double val = heightMap[i][j];
@@ -48,10 +47,13 @@ public class GameMapGenerator {
             }
         }
 
+        map.addStructure(new TraderHouse(19.5f, 19f, map));
+
+
         return map;
     }
 
-    public static GameMap generateTraderHouse(){
+    public static GameMap generateTraderHouse(GameMap parentMap){
         GameMap map = new GameMap("traderhouse", -1, 10, 10);
         
         TileStack[][] tiles = map.getTiles();
@@ -62,6 +64,8 @@ public class GameMapGenerator {
             }
         }
         
+        map.addStructure(new Door(4.5f, 0.5f, parentMap, map));
+
         return map;
     }
 

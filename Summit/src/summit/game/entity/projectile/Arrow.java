@@ -2,7 +2,7 @@ package summit.game.entity.projectile;
 
 import java.awt.event.MouseEvent;
 
-import summit.game.GameClickEvent;
+import summit.game.GameUpdateEvent;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
@@ -23,7 +23,7 @@ public class Arrow extends Projectile {
     }
 
     @Override
-    public void gameClick(GameClickEvent e) {
+    public void gameClick(GameUpdateEvent e) {
         // TODO Auto-generated method stub
         
     }

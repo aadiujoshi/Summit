@@ -14,7 +14,7 @@ public class Controls {
     public static volatile boolean DOWN;
     public static volatile boolean LEFT;
     public static volatile boolean RIGHT;
-
+    
     //toggleable not press and release
     public static volatile boolean E;
 

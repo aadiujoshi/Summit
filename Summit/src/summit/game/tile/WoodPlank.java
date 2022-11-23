@@ -1,6 +1,6 @@
 package summit.game.tile;
 
-import summit.game.GameClickEvent;
+import summit.game.GameUpdateEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 
@@ -13,7 +13,7 @@ public class WoodPlank extends Tile{
     }
 
     @Override
-    public void gameClick(GameClickEvent e) {
+    public void gameClick(GameUpdateEvent e) {
         // TODO Auto-generated method stub
         
     }

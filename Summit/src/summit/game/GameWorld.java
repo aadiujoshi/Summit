@@ -28,7 +28,7 @@ public class GameWorld implements Paintable, Serializable{
 
     private final long SEED;
 
-    private Camera camera;
+    // private Camera camera;
 
     //Same object shared by all GameMaps 
     private Player player;
@@ -59,12 +59,14 @@ public class GameWorld implements Paintable, Serializable{
         loadedMap = maps.get("stage1");
         
         player = new Player(30, 30);
-        camera = new Camera(player.getX(), player.getY());
-        player.setCamera(camera);
 
         stage1.setPlayer(player);
         stage1.setAnimation(new SnowfallAnimation(4, 3));
         stage1.setFilter(new ColorFilter(-60, -50, 0));
+        stage1.setCamera(new Camera(30, 30));
+
+        player.setCamera(stage1.getCamera());
+
         initUpdateThread();
     }
 
@@ -98,6 +100,8 @@ public class GameWorld implements Paintable, Serializable{
         if(bufferedNewMap != null){
             this.loadedMap.setLoaded(false);
             this.bufferedNewMap.setLoaded(true);
+            this.bufferedNewMap.setPlayer(player);
+            player.setCamera(bufferedNewMap.getCamera());
             this.loadedMap = bufferedNewMap;
             this.bufferedNewMap = null;
         }
@@ -107,7 +111,7 @@ public class GameWorld implements Paintable, Serializable{
     public void setRenderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.TOP_LAYER, this);
 
-        ope.setCamera(camera.clone());
+        ope.setCamera(player.getCamera().clone());
 
         if(loadedMap != null){
             loadedMap.setRenderLayer(ope);
@@ -132,11 +136,7 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     public Camera getCamera() {
-        return this.camera;
-    }
-
-    public void setCamera(Camera camera) {
-        this.camera = camera;
+        return this.loadedMap.getCamera();
     }
 
     public Stack<Container> getGameContainers() {

@@ -22,6 +22,8 @@ public class Container implements Paintable, GUIClickReciever{
     private Container parent;
     private Window window;
 
+    private boolean pushed;
+
     private boolean visible = true;
 
     public Container(Container parent, float relX, float relY, float relWidth, float relHeight){
@@ -183,4 +185,13 @@ public class Container implements Paintable, GUIClickReciever{
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
+    
+    public boolean isPushed() {
+        return this.pushed;
+    }
+
+    public void setPushed(boolean pushed) {
+        this.pushed = pushed;
+    }
+
 }

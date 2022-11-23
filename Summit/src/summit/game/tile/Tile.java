@@ -39,9 +39,7 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
     
     @Override
     public void update(GameUpdateEvent e){
-        java.awt.geom.Point2D.Float mt = Renderer.toTile(e.mouseX(), e.mouseY(), e.getMap().getPlayer().getCamera());
-
-        if(this.contains(mt.x, mt.y))
+        if(this.contains(e.gameX(), e.gameY()))
             setRenderOp(getRenderOp() | Renderer.OUTLINE_BLUE | Renderer.OUTLINE_GREEN | Renderer.OUTLINE_RED);
         else
             setRenderOp(getRenderOp() & ~Renderer.OUTLINE_BLUE & ~Renderer.OUTLINE_GREEN & ~Renderer.OUTLINE_RED);

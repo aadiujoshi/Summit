@@ -23,6 +23,9 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     private Player player;
 
+    //stores the most recent of the player; used for when transitioning GameMaps
+    private Camera camera = new Camera(0, 0);
+
     private ColorFilter filter;
     private Paintable animation;
 
@@ -53,7 +56,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     }
 
     @Override
-    public void gameClick(GameClickEvent e) {
+    public void gameClick(GameUpdateEvent e) {
         for(Structure r_struct : structures) {
             if(r_struct.contains(e.gameX(), e.gameY())){
                 r_struct.gameClick(e);
@@ -77,7 +80,6 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
                 tiles[i][j].update(e);
             }
         }
-
         for (Entity entity : entities) {
             entity.update(e);
         }
@@ -180,8 +182,11 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     }
 
     public void setPlayer(Player player) {
+        player.setCamera(this.camera);
+        if(this.player == null)
+            entities.add(player);
         this.player = player;
-        entities.add(player);
+
     }
     
     public String getName(){
@@ -205,6 +210,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     }
 
     public void spawn(Entity e){
+        if(!entities.contains(e))
         entities.add(e);
     }
     
@@ -222,5 +228,13 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     public void setAnimation(Paintable animation) {
         this.animation = animation;
+    }
+
+    public Camera getCamera() {
+        return this.camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
     }
 }

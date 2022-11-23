@@ -1,6 +1,6 @@
 package summit.game.tile;
 
-import summit.game.GameClickEvent;
+import summit.game.GameUpdateEvent;
 import summit.gfx.Light;
 import summit.gfx.RenderLayers;
 import summit.gfx.Sprite;
@@ -17,7 +17,7 @@ public class LavaTile extends Tile{
     }
 
     @Override
-    public void gameClick(GameClickEvent e) {
+    public void gameClick(GameUpdateEvent e) {
         
     }
 }

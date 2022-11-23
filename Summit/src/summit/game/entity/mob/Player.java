@@ -1,6 +1,6 @@
 package summit.game.entity.mob;
 
-import summit.game.GameClickEvent;
+import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
@@ -91,7 +91,7 @@ public class Player extends HumanoidEntity{
     }
 
     @Override
-    public void gameClick(GameClickEvent e) {
+    public void gameClick(GameUpdateEvent e) {
         System.out.println("clicked on player");
     }
 
@@ -151,6 +151,7 @@ public class Player extends HumanoidEntity{
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+        setPos(camera.getX(), camera.getY());
     }
 
     /**
