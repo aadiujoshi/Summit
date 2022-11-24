@@ -13,6 +13,8 @@ import summit.util.GameRegion;
 public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private float dx, dy;
+    private float kx, ky;
+
     private float lastX, lastY;
     
     private Light shadow;
@@ -74,9 +76,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     abstract public void collide(Entity e);
 
     public boolean moveTo(GameMap map, float newX, float newY){
-        if(map.getTileAt(newX, newY).isBoundary() || 
-            newX <= -0.5 || newX > map.getWidth() || 
-            newY <= -0.5 || newY > map.getHeight()){
+        if(map.getTileAt(newX, newY) == null || 
+            map.getTileAt(newX, newY).isBoundary()){
             return false;
         }
         return true;
@@ -200,4 +201,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         this.hitDamage = hitDamage;
     }
 
+    public void setKnockback(float kx, float ky){
+        this.kx = kx;
+        this.ky = ky;
+    }
 }

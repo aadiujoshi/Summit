@@ -17,6 +17,4 @@ public class GrassTile extends Tile{
         // TODO Auto-generated method stub
         
     }
-
-    
 }

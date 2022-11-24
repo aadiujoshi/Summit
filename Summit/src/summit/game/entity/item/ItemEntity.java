@@ -1,7 +1,6 @@
 package summit.game.entity.item;
 
 import summit.game.GameUpdateEvent;
-import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 
 public class ItemEntity extends Entity{
