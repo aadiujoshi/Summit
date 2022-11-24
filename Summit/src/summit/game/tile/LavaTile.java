@@ -4,6 +4,8 @@ import summit.game.GameUpdateEvent;
 import summit.gfx.Light;
 import summit.gfx.RenderLayers;
 import summit.gfx.Sprite;
+import summit.util.GameRegion;
+import summit.game.entity.Entity;
 
 public class LavaTile extends Tile{
 
@@ -17,7 +19,14 @@ public class LavaTile extends Tile{
     }
 
     @Override
-    public void gameClick(GameUpdateEvent e) {
+    public void update(GameUpdateEvent e) {
+        // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    public void collide(Entity e) {
+        super.collide(e);
+        e.setOnFire(true);
     }
 }

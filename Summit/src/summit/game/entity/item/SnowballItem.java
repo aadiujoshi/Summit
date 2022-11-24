@@ -4,7 +4,7 @@ import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 
-public class SnowballItem extends Entity{
+public class SnowballItem extends ItemEntity{
 
     public SnowballItem(float x, float y) {
         super(x, y, 0.5f, 0.5f);
@@ -18,7 +18,7 @@ public class SnowballItem extends Entity{
     }
 
     @Override
-    public void damage(GameUpdateEvent ge, Entity e) {
+    public void damage(float damage, Entity e) {
         // TODO Auto-generated method stub
         
     }
@@ -29,9 +29,5 @@ public class SnowballItem extends Entity{
         
     }
 
-    @Override
-    public void collide(Entity e) {
-        // TODO Auto-generated method stub
-        
-    }
+    
 }

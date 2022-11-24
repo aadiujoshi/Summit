@@ -3,7 +3,7 @@ package summit.gfx;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-
+import java.awt.Point;
 import summit.util.Region;
 
 public class Renderer {
@@ -98,7 +98,7 @@ public class Renderer {
         if(light == null || cam == null)
             return;
 
-        Point2D.Float center = toPixel(light.getX(), light.getY(), cam);
+        Point center = toPixel(light.getX(), light.getY(), cam);
         
         Light.Shape shape = light.getShape();
 
@@ -138,7 +138,8 @@ public class Renderer {
         
         for (int r = y; r < frame.length && r < y+height; r++) {
             for (int c = x; c < frame[0].length && c < x+width; c++) {
-                frame[r][c] = filter.filterColor(frame[r][c]);
+                if(inArrBounds(r, c, frame.length, frame[0].length))
+                    frame[r][c] = filter.filterColor(frame[r][c]);
             }
         }
     }
@@ -202,7 +203,7 @@ public class Renderer {
     */
     public void renderGame(String s, float x, float y, int operation, ColorFilter filter, Camera camera){
 
-        Point2D.Float spritePos = toPixel(x, y, camera);
+        Point spritePos = toPixel(x, y, camera);
         
         this.render(s, spritePos.x, spritePos.y, operation, filter);
     }
@@ -274,11 +275,11 @@ public class Renderer {
     /**
      * Camera is left in gamecoordinates
      */
-    public static Point2D.Float toPixel(float x, float y, Camera cam){
+    public static java.awt.Point toPixel(float x, float y, Camera cam){
         float nx = (WIDTH/2)+(x*16F)-(cam.getX()*16F);
         float ny = (HEIGHT/2)-(y*16F)+(cam.getY()*16F);
 
-        return new Point2D.Float(nx, ny);
+        return new java.awt.Point(Math.round(nx), Math.round(ny));
     }
 
     /**

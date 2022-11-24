@@ -58,7 +58,7 @@ public class SnowfallAnimation implements Paintable{
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
-        ope.getRenderLayers().addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER+2, this);
+        ope.getRenderLayers().addToLayer(RenderLayers.TOP_LAYER, this);
     }
 
     @Override

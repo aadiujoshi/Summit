@@ -227,6 +227,7 @@ public class Window implements MouseListener, KeyListener{
         // System.out.println(state);
 
         PaintEvent pe = new PaintEvent(world, this, renderer, lastFrame, mouseX(), mouseY());
+        
         OrderPaintEvent ope = new OrderPaintEvent(new RenderLayers(10), null);
         
         if(state == WindowState.SELECTIONMENUS){

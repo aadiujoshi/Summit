@@ -42,8 +42,8 @@ public class Region {
     //--------------------------------------------------------------------
 
     public void setPos(float x, float y){
-        this.x = x;
-        this.y = y;
+        setX(x);
+        setY(y);
     }
 
     public float getWidth() {

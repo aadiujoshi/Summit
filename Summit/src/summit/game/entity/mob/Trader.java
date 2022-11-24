@@ -17,7 +17,7 @@ public class Trader extends HumanoidEntity{
     }
 
     @Override
-    public void damage(GameUpdateEvent ge, Entity e) {
+    public void damage(float damage, Entity e) {
         // TODO Auto-generated method stub
         
     }
@@ -33,5 +33,7 @@ public class Trader extends HumanoidEntity{
         // TODO Auto-generated method stub
         
     }
+
+    
     
 }

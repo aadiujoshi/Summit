@@ -38,8 +38,8 @@ public class Player extends HumanoidEntity{
         // l.setShape(Light.Shape.SQUARE);
         // super.setLight(l);
 
-        this.hud = new HUD();
-        hud.setPlayer(this);
+        this.hud = new HUD(this);
+        
         this.walkAnimation = new ScheduledEvent(250, ScheduledEvent.FOREVER){
 
             boolean flipped = false;
@@ -68,20 +68,20 @@ public class Player extends HumanoidEntity{
         
     }
 
-
     @Override
-    public void setRenderLayer(OrderPaintEvent ope) {
-        super.setRenderLayer(ope);
-    }
+    public void collide(Entity e){
 
+    }
+    
     @Override
     public void paint(PaintEvent e) {
         // super.paint(e);
+        
         e.getRenderer().renderText(("x:" + Math.round(getX()*2)/2), 
-                    20, 15, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
+                    20, 15, Renderer.NO_OP, new ColorFilter(255, -255, -255));
 
         e.getRenderer().renderText(("y:" + Math.round(getY()*2)/2), 
-                20, 25, Renderer.NO_OP, new ColorFilter(-255, -255, -255));
+                20, 25, Renderer.NO_OP, new ColorFilter(255, -255, -255));
 
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                         (getX()+(getSpriteOffsetX()/16f)), (getY()+(getSpriteOffsetY()/16f)), 
@@ -115,23 +115,20 @@ public class Player extends HumanoidEntity{
         if(Controls.D && moveTo(e.getMap(), this.getX()+del_x, this.getY())){
             this.setX(this.getX()+del_x);
         }
+
+        camera.setX(getX());
+        camera.setY(getY());
         
         this.updateIsMoving();
     }
 
     @Override
-    public void damage(GameUpdateEvent ge, Entity e) {
+    public void damage(float damage, Entity e) {
         
     }
 
     @Override
     public void destroy(GameUpdateEvent ge) {
-        
-    }
-
-    @Override
-    public void collide(Entity e) {
-        // TODO Auto-generated method stub
         
     }
     

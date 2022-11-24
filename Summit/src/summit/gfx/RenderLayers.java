@@ -27,10 +27,12 @@ public class RenderLayers{
     }
 
     public void renderLayers(PaintEvent e){
-        for (ArrayList<Paintable> arrayList : layers) {
-            for (Paintable p : arrayList) {
+        for (ArrayList<Paintable> layer : layers) {
+            for (Paintable p : layer) {
                 p.paint(e);
             }
+            // System.out.println("[" + layer.size() + "]");
         }
+        // System.out.println("-----------------------------------------------");
     }
 }

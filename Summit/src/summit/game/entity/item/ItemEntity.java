@@ -17,7 +17,7 @@ public class ItemEntity extends Entity{
     }
 
     @Override
-    public void damage(GameUpdateEvent ge, Entity e) {
+    public void damage(float damage, Entity e) {
         // TODO Auto-generated method stub
         
     }
@@ -33,5 +33,4 @@ public class ItemEntity extends Entity{
         // TODO Auto-generated method stub
         
     }
-    
 }

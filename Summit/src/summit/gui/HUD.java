@@ -10,8 +10,9 @@ public class HUD extends Container{
 
     private Player player;
     
-    public HUD() {
+    public HUD(Player player) {
         super(null, 0.75f, 0.13f, 0.5f, 0.2f);
+        this.player = player;
     }
 
     @Override
@@ -34,9 +35,5 @@ public class HUD extends Container{
                 h-=1;
             }
         }
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 }

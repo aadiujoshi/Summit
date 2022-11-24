@@ -3,6 +3,8 @@ package summit.game.tile;
 import summit.game.GameUpdateEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
+import summit.util.GameRegion;
+import summit.game.entity.Entity;
 
 public class WoodPlank extends Tile{
 
@@ -17,5 +19,13 @@ public class WoodPlank extends Tile{
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    public void update(GameUpdateEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    
     
 }

@@ -35,10 +35,10 @@ public abstract class HumanoidEntity extends MobEntity{
         this.sprite_east_neutral = sprite_east_neutral;
     }
 
-    @Override
-    public void paint(PaintEvent e){
+    // @Override
+    public void paintNOTDONE(PaintEvent e){
         super.paint(e);
-
+        
         Direction d = getFacing();
         Camera c = e.getCamera();
         Renderer r = e.getRenderer();

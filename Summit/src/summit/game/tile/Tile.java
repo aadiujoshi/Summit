@@ -1,8 +1,10 @@
 package summit.game.tile;
 
 import summit.game.GameClickReciever;
+import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.game.entity.Entity;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -10,71 +12,77 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
+import summit.util.GameRegion;
 import summit.util.Region;
+
+import java.awt.Point;
 import java.awt.geom.Point2D.Float;
 
-public abstract class Tile extends Region implements GameClickReciever, Paintable, GameUpdateReciever {
+public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
-    //if true -> entitys cannot pass through this tile
+    //if true -> entities cannot pass through this tile
     private boolean boundary;
+    private boolean breakable = false;
+    private boolean destroyed = false;
 
-    private String sprite;
-    
-    //random tile rotation
-    private int renderOp = (int)(Math.random()*5);
-    private ColorFilter filter = new ColorFilter(0, 0, 0);
-    private Light light;
-
-    private boolean destroy = false;
+    //Rendering hint, nothing to do with gameplay
+    private boolean raisedTile = true;
 
     private final String NAME = getClass().getSimpleName();
 
     public Tile(float x, float y, float width, float height){
         super(x, y, width, height);
+        super.setRLayer(RenderLayers.TILE_LAYER);
     }
 
     public Tile(float x, float y){
         this(x, y, 1, 1);
-    }
-    
-    @Override
-    public void update(GameUpdateEvent e){
-        if(this.contains(e.gameX(), e.gameY()))
-            setRenderOp(getRenderOp() | Renderer.OUTLINE_BLUE | Renderer.OUTLINE_GREEN | Renderer.OUTLINE_RED);
-        else
-            setRenderOp(getRenderOp() & ~Renderer.OUTLINE_BLUE & ~Renderer.OUTLINE_GREEN & ~Renderer.OUTLINE_RED);
-    }
-
-    @Override
-    public void setRenderLayer(OrderPaintEvent r){
-        r.getRenderLayers().addToLayer(RenderLayers.TILE_LAYER, this);
-
-        if(light != null)
-            light.setRenderLayer(r);
-    }
+    }    
 
     @Override
     public void paint(PaintEvent e){
-        
-        // if((renderOp & Renderer.OUTLINE_RED) == Renderer.OUTLINE_RED)
-        //     System.out.println(Integer.toBinaryString(renderOp));
-        
-        if(sprite != null)
-            e.getRenderer().renderGame(sprite, getX(), getY(), renderOp, filter, e.getCamera());
-        java.awt.geom.Point2D.Float p = Renderer.toPixel(getX(), getY(), e.getCamera());
-    } 
+        super.paint(e);
 
+        if(false){
+            GameMap map = e.getLoadedMap();
+
+            String u = map.getTileAt(getX(), getY()+1).getName();
+            String d = map.getTileAt(getX(), getY()-1).getName();
+            String l = map.getTileAt(getX()-1, getY()).getName();
+            String r = map.getTileAt(getX(), getY()+1).getName();
+
+            Point p = Renderer.toPixel(getX(), getY(), e.getCamera());
+
+            if(!u.equals("SnowTile")){
+                e.getRenderer().filterRect(p.x-7, p.y-5, 16, 3, new ColorFilter(-30, -30, -30));
+            } 
+            if(!d.equals("SnowTile")){
+                e.getRenderer().filterRect(p.x-8, p.y-5, 16, 3, new ColorFilter(-30, -30, -30));
+            }
+            if(!l.equals("SnowTile")){
+                e.getRenderer().filterRect(p.x-7, p.y-8, 3, 16, new ColorFilter(-30, -30, -30));
+            }
+            if(!r.equals("SnowTile")){
+                e.getRenderer().filterRect(p.x+8, p.y+5, 3, 16, new ColorFilter(-30, -30, -30));
+            }
+        }
+    }
+
+    @Override
+    public void collide(Entity e) {
+        e.setInWater(false);
+        e.setOnFire(false);
+    }
+
+    @Override
+    public void gameClick(GameUpdateEvent e){
+        if(breakable){
+            this.setDestroy(true);
+            System.out.println(getX() + "  " + getY());
+        }
+    }
 
     //-------------  getters and setters  ----------------------------------------------------------
-
-    public String getSprite() {
-        return this.sprite;
-    }
-
-    public void setSprite(String sprite) {
-        this.sprite = sprite;
-    }
-
     public boolean isBoundary() {
         return this.boundary;
     }
@@ -83,41 +91,38 @@ public abstract class Tile extends Region implements GameClickReciever, Paintabl
         this.boundary = bounded;
     }
 
-    public int getRenderOp() {
-        return this.renderOp;
-    }
-
-    public void setRenderOp(int renderOp) {
-		this.renderOp = renderOp;
-    }
-
     public boolean destroyed() {
-        return this.destroy;
+        return this.destroyed;
     }
 
     public void setDestroy(boolean destroy) {
-		this.destroy = destroy;
+		this.destroyed = destroy;
 	}
     
     public String getName(){
         return this.NAME;
     }
-    
-    public ColorFilter getColorFilter() {
-        return this.filter;
-    }
 
-    public void setColorFilter(ColorFilter filter) {
-        this.filter = filter;
-    }
-
-    public Light getLight() {
-        return this.light;
-    }
-
+    @Override
     public void setLight(Light light) {
         light.setX(this.getX());
         light.setY(this.getY());
-        this.light = light;
+        super.setLight(light);
     }
+
+    public boolean isBreakable() {
+        return this.breakable;
+    }
+
+    public void setBreakable(boolean breakable) {
+		this.breakable = breakable;
+	}
+
+    public boolean isRaisedTile() {
+        return this.raisedTile;
+    }
+
+    public void setRaisedTile(boolean raisedTile) {
+		this.raisedTile = raisedTile;
+	}
 }

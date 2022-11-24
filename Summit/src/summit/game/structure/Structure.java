@@ -2,21 +2,17 @@ package summit.game.structure;
 
 import java.util.ArrayList;
 
-import summit.game.GameClickReciever;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.game.entity.Entity;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
-import summit.gfx.PaintEvent;
-import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
-import summit.gfx.Renderer;
 import summit.util.GameRegion;
-import summit.util.Region;
 
 public abstract class Structure extends GameRegion implements GameUpdateReciever {
 
@@ -26,19 +22,24 @@ public abstract class Structure extends GameRegion implements GameUpdateReciever
 
     public Structure(float x, float y, float width, float height, GameMap parentMap) {
         super(x, y, width, height);
+        super.setRLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
         this.situate(parentMap);
     }
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
         ope.addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
-        for (Light light : shadows) {
-            light.setRenderLayer(ope);
+        for (Light s : shadows) {
+            s.setRenderLayer(ope);
         }
     }
 
     @Override
     public void update(GameUpdateEvent e) {
+    }
+
+    @Override
+    public void collide(Entity e){
     }
 
     public void situate(GameMap map){

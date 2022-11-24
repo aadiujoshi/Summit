@@ -6,7 +6,9 @@ import summit.game.GameUpdateEvent;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.gfx.PaintEvent;
+import summit.game.entity.Entity;
 import summit.gfx.Sprite;
+import summit.util.GameRegion;
 
 public class StoneTile extends Tile{
 
@@ -17,8 +19,10 @@ public class StoneTile extends Tile{
     }
 
     @Override
-    public void gameClick(GameUpdateEvent e) {
+    public void update(GameUpdateEvent e) {
         // TODO Auto-generated method stub
         
     }
+
+    
 }

@@ -6,6 +6,7 @@ import summit.game.entity.Entity;
 import summit.game.entity.mob.Player;
 import summit.game.structure.Structure;
 import summit.game.structure.TraderHouse;
+import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
@@ -70,7 +71,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
             }
         }
 
-        getTileAt(e.gameX(), e.gameY()).gameClick(e);
+        getTileStackAt(e.gameX(), e.gameY()).gameClick(e);
     }
 
     @Override
@@ -157,7 +158,15 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         this.structures.remove(s);
     }
 
-    public TileStack getTileAt(float x, float y){
+    public Tile getTileAt(float x, float y){
+        //out of bounds
+        if(Math.round(y) < 0 || Math.round(y) >= tiles.length ||
+            Math.round(x) < 0 || Math.round(x) > tiles[0].length)
+            return null;
+        return tiles[Math.round(y)][Math.round(x)].peekTile();
+    }
+
+    public TileStack getTileStackAt(float x, float y){
         //out of bounds
         if(Math.round(y) < 0 || Math.round(y) >= tiles.length ||
             Math.round(x) < 0 || Math.round(x) > tiles[0].length)

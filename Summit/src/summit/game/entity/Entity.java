@@ -1,66 +1,56 @@
 package summit.game.entity;
 
-import summit.game.GameClickReciever;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
-import summit.gfx.ColorFilter;
+import summit.game.tile.Tile;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
-import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
-import summit.util.Region;
+import summit.util.GameRegion;
 
-public abstract class Entity extends Region implements Paintable, GameClickReciever, GameUpdateReciever{
+public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private float dx, dy;
-
-    private int spriteOffsetX;
-    private int spriteOffsetY;
-
     private float lastX, lastY;
     
-    private int renderOp;
-    private ColorFilter filter = new ColorFilter(0, 0, 0);
     private Light shadow;
-    private Light light;
+
+    private float hitDamage;
 
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
 
-    private String onTile;
+    private Tile onTile;
 
     private float maxHealth;
     private float health;
+    private boolean destroyed;
 
     private boolean invulnerable;
     private boolean inWater;
-    private boolean destroyed;
     private boolean onFire;
     private boolean moving;
 
     public Entity(float x, float y, float width, float height){
         super(x,y,width,height);
+        super.setRLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
 
         Light sdw = new Light(x, y, 1f, -30, -30, -30);
         sdw.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
         this.shadow = sdw;
-
-        this.light = Light.NO_LIGHT;
     }
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope){
-        ope.addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
-        light.setRenderLayer(ope);
+        super.setRenderLayer(ope);
         shadow.setRenderLayer(ope);
     }
 
     @Override
     public void paint(PaintEvent e){
-        e.getRenderer().renderLight(light, e.getCamera());
-        e.getRenderer().renderLight(shadow, e.getCamera());
+        super.paint(e);
     }
 
     @Override
@@ -73,25 +63,18 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
             destroyed = true;
             destroy(e);
         }
-
         // System.out.println(getX() + "  " + getY() + "  " + lastX + "  " + lastY);
 
-        onTile = e.getMap().getTileAt(getX(), getY()).peekTile().getName();
-
-        if(onTile.equals("WaterTile")){
-            setInWater(true);
-        } else { 
-            setInWater(false); 
-        }
-            
+        onTile = e.getMap().getTileAt(getX(), getY());
+        onTile.collide(this);
     }
 
-    abstract public void damage(GameUpdateEvent ge, Entity e);
+    abstract public void damage(float damage, Entity e);
     abstract public void destroy(GameUpdateEvent ge);
     abstract public void collide(Entity e);
 
     public boolean moveTo(GameMap map, float newX, float newY){
-        if(map.getTileAt(newX, newY).peekTile().isBoundary() || 
+        if(map.getTileAt(newX, newY).isBoundary() || 
             newX <= -0.5 || newX > map.getWidth() || 
             newY <= -0.5 || newY > map.getHeight()){
             return false;
@@ -116,9 +99,6 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     @Override 
     public void setX(float x){
         super.setX(x);
-        if(light != null){
-            light.setX(x);
-        }
         if(shadow != null){
             shadow.setX(x);
         }
@@ -127,9 +107,6 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     @Override 
     public void setY(float y){
         super.setY(y);
-        if(light != null){
-            light.setY(y);
-        }
         if(shadow != null){
             shadow.setY(y);
         }
@@ -195,14 +172,6 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         this.onFire = onFire;
     }
     
-    public int getRenderOp() {
-        return this.renderOp;
-    }
-
-    public void setRenderOp(int renderOp) {
-        this.renderOp = renderOp;
-    }
-    
     public float getMaxHealth() {
         return this.maxHealth;
     }
@@ -211,39 +180,7 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
         this.maxHealth = maxHealth;
     }
     
-    public ColorFilter getColorFilter() {
-        return this.filter;
-    }
-
-    public void setColorFilter(ColorFilter cFilter) {
-        this.filter = cFilter;
-    }
-    
-    public Light getLight() {
-        return this.light;
-    }
-
-    public void setLight(Light light) {
-        this.light = light;
-    }
-    
-    public int getSpriteOffsetX() {
-        return this.spriteOffsetX;
-    }
-
-    public void setSpriteOffsetX(int spriteOffsetX) {
-        this.spriteOffsetX = spriteOffsetX;
-    }
-
-    public int getSpriteOffsetY() {
-        return this.spriteOffsetY;
-    }
-
-    public void setSpriteOffsetY(int spriteOffsetY) {
-        this.spriteOffsetY = spriteOffsetY;
-    }
-
-    public String getOnTile(){
+    public Tile getOnTile(){
         return this.onTile;
     }
     
@@ -254,4 +191,13 @@ public abstract class Entity extends Region implements Paintable, GameClickRecie
     public void setInvulnerable(boolean invulnerable) {
         this.invulnerable = invulnerable;
     }
+
+    public float getHitDamage() {
+        return this.hitDamage;
+    }
+
+    public void setHitDamage(float hitDamage) {
+        this.hitDamage = hitDamage;
+    }
+
 }

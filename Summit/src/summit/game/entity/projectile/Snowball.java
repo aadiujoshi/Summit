@@ -33,7 +33,7 @@ public class Snowball extends Projectile {
     }
 
     @Override
-    public void damage(GameUpdateEvent ge, Entity e) {
+    public void damage(float damage, Entity e) {
         // TODO Auto-generated method stub
         
     }
@@ -43,15 +43,9 @@ public class Snowball extends Projectile {
         // TODO Auto-generated method stub
         
     }
-
+    
     @Override
     public void collide(Entity e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void setRenderLayer(OrderPaintEvent ope) {
         // TODO Auto-generated method stub
         
     }
