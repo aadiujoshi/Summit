@@ -6,9 +6,7 @@ finish inventory gui
 pause menu ->  graphics option panel
 
 character customization (just recolor character we alr have)
-fix animation to make it smoother
 armor hud
-
 
 game
  - skeletons

@@ -9,11 +9,12 @@ public abstract class ScheduledEvent implements Runnable {
     private int repeat;
     private long delay_ms;
     private long lastCall;
-    private final long INIT_MS = Time.timeMs();
+    private final long INIT_MS;
 
     public ScheduledEvent(long delay_ms, int n_repeat){
         this.delay_ms = delay_ms;
         this.repeat = n_repeat;
+        this.INIT_MS = Time.timeMs();
         this.lastCall = INIT_MS;
     }
 

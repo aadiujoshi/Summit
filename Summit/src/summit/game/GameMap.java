@@ -161,7 +161,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     public Tile getTileAt(float x, float y){
         //out of bounds
         if(Math.round(y) < 0 || Math.round(y) >= tiles.length ||
-            Math.round(x) < 0 || Math.round(x) > tiles[0].length)
+            Math.round(x) < 0 || Math.round(x) >= tiles[0].length)
             return null;
         return tiles[Math.round(y)][Math.round(x)].peekTile();
     }

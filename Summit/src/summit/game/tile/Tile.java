@@ -4,7 +4,9 @@ import summit.game.GameClickReciever;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.game.animation.ParticleAnimation;
 import summit.game.animation.ScheduledEvent;
+import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
@@ -28,7 +30,13 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
     //Rendering hint, nothing to do with gameplay
     private boolean raisedTile = true;
-    private ScheduledEvent animation;
+
+    private ScheduledEvent rotateAnim;
+
+    //shut up its necessary
+    private boolean animateParticles = true;
+    private ParticleAnimation particleAnim;
+    private int particleColor = Renderer.toIntRGB(170, 214, 230);
 
     private final String NAME = getClass().getSimpleName();
 
@@ -42,38 +50,29 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     }    
 
     @Override
+    public void setRenderLayer(OrderPaintEvent e){
+        super.setRenderLayer(e); 
+
+        if(particleAnim != null)
+            particleAnim.setRenderLayer(e);
+
+        if(particleAnim != null && particleAnim.terminate())
+            particleAnim = null;
+    }
+
+    @Override
     public void paint(PaintEvent e){
         super.paint(e);
-
-        if(false){
-            GameMap map = e.getLoadedMap();
-
-            String u = map.getTileAt(getX(), getY()+1).getName();
-            String d = map.getTileAt(getX(), getY()-1).getName();
-            String l = map.getTileAt(getX()-1, getY()).getName();
-            String r = map.getTileAt(getX(), getY()+1).getName();
-
-            Point p = Renderer.toPixel(getX(), getY(), e.getCamera());
-
-            if(!u.equals("SnowTile")){
-                e.getRenderer().filterRect(p.x-7, p.y-5, 16, 3, new ColorFilter(-30, -30, -30));
-            } 
-            if(!d.equals("SnowTile")){
-                e.getRenderer().filterRect(p.x-8, p.y-5, 16, 3, new ColorFilter(-30, -30, -30));
-            }
-            if(!l.equals("SnowTile")){
-                e.getRenderer().filterRect(p.x-7, p.y-8, 3, 16, new ColorFilter(-30, -30, -30));
-            }
-            if(!r.equals("SnowTile")){
-                e.getRenderer().filterRect(p.x+8, p.y+5, 3, 16, new ColorFilter(-30, -30, -30));
-            }
-        }
     }
 
     @Override
     public void collide(Entity e) {
         e.setInWater(false);
         e.setOnFire(false);
+
+        if(e.isMoving() && animateParticles && particleAnim == null){
+            particleAnim = new ParticleAnimation(e.getX(), e.getY(), 500, 15, particleColor);
+        }
     }
 
     @Override
@@ -128,16 +127,29 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 		this.raisedTile = raisedTile;
 	}
 
-    public void animate(boolean a){
+    public void particleAnimation(boolean a){
+        this.animateParticles = a;
+    }
+    
+    public void rotateAnimation(boolean a){
         if(a){
-            animation = new ScheduledEvent(300, ScheduledEvent.FOREVER) {
+            rotateAnim = new ScheduledEvent(300, ScheduledEvent.FOREVER) {
                 @Override
                 public void run() {
                     setRenderOp((int)(Math.random()*5));
                 }
             };
+            Scheduler.registerEvent(rotateAnim);
         } else {
-            animation = null;
+            rotateAnim = null;
         }
+    }
+    
+    public int getParticleColor() {
+        return this.particleColor;
+    }
+
+    public void setParticleColor(int particleColor) {
+        this.particleColor = particleColor;
     }
 }

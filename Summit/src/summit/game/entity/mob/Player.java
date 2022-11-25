@@ -1,6 +1,9 @@
 package summit.game.entity.mob;
 
+import java.awt.Point;
+
 import summit.game.GameUpdateEvent;
+import summit.game.animation.ParticleAnimation;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
@@ -27,22 +30,20 @@ public class Player extends HumanoidEntity{
     private Inventory inventory;
     private InventoryGUI invGui;
 
-    public Player(float x, float y) {
+    private ParticleAnimation testanim;
+
+    public Player(float x, float y, Camera mapCam) {
         super(x, y, 1, 2);
         super.setDx(6f);
         super.setDy(6f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
-        // super.setSpriteOffsetX(0);
-        // super.setSpriteOffsetY(8);
-        // super.setColorFilter(new ColorFilter(20, 100, -50));
-        // var l = new Light(this.getX(), this.getY(), 1f, 170, 0, 0);
-        // l.setShape(Light.Shape.SQUARE);
-        // super.setLight(l);
 
         this.hud = new HUD(this);
         this.inventory = new Inventory(9, 6);
         this.invGui = new InventoryGUI(inventory);
+        
+        this.camera = mapCam;
 
         this.walkAnimation = new ScheduledEvent(250, ScheduledEvent.FOREVER){
 
@@ -66,7 +67,6 @@ public class Player extends HumanoidEntity{
         };
 
         Scheduler.registerEvent(walkAnimation);
-
         //DO THIS
         // super.setSprites(something, something, something, something, something, something);
         
@@ -85,7 +85,7 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void paint(PaintEvent e) {
-        // super.paint(e);
+        super.paint(e);
         
         e.getRenderer().renderText(("x:" + Math.round(getX()*2)/2), 
                     20, 15, Renderer.NO_OP, new ColorFilter(255, -255, -255));
@@ -101,8 +101,11 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        if(!invGui.isPushed())
+        
+        if(!invGui.isPushed()){
             e.getWindow().pushGameContainer(invGui);
+            Controls.E = true;
+        }
     }
 
     @Override
@@ -112,9 +115,8 @@ public class Player extends HumanoidEntity{
         if(Controls.E){
             if(!invGui.isPushed())
                 e.getWindow().pushGameContainer(invGui);
-            
             return;
-        } else if(invGui.isPushed()){
+        } else if(!Controls.E){
             e.getWindow().popGameContainer();
         }
 
@@ -143,7 +145,7 @@ public class Player extends HumanoidEntity{
     }
 
     @Override
-    public void destroy(GameUpdateEvent ge) {
+    public void destroy(GameUpdateEvent e) {
         
     }
     

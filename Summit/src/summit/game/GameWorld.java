@@ -58,12 +58,13 @@ public class GameWorld implements Paintable, Serializable{
         
         loadedMap = maps.get("stage1"); 
         
-        player = new Player(30, 30);
+        stage1.setCamera(new Camera(30, 30));
+
+        player = new Player(30, 30, stage1.getCamera());
 
         stage1.setPlayer(player);
         stage1.setAnimation(new SnowfallAnimation(4, 3));
         stage1.setFilter(new ColorFilter(-60, -50, 0));
-        stage1.setCamera(new Camera(30, 30));
 
         player.setCamera(stage1.getCamera());
         

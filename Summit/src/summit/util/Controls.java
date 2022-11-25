@@ -47,6 +47,9 @@ public class Controls {
             case KeyEvent.VK_E:
                 E = !E;
                 break;
+            case KeyEvent.VK_ESCAPE:
+                E = false;
+                break;
         }
     }
 

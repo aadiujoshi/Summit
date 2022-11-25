@@ -242,8 +242,10 @@ public class Window implements MouseListener, KeyListener{
                 
             ope.getRenderLayers().renderLayers(pe);
 
-            for (Container c : guiContainersGame) {
-                c.paint(pe);
+            synchronized(guiContainersGame){
+                for (Container c : guiContainersGame) {
+                    c.paint(pe);
+                }
             }
         }
         
@@ -346,7 +348,8 @@ public class Window implements MouseListener, KeyListener{
     }
 
     public void popGameContainer(){
-        guiContainersGame.pop().setPushed(false);
+        if(!guiContainersGame.isEmpty())
+            guiContainersGame.pop().setPushed(false);
     }
 
     public void clearGameContainers(){

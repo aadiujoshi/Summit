@@ -19,6 +19,12 @@ public class Scheduler {
 
         for(int i = 0; i < events.size(); i++) {
             ScheduledEvent e = events.get(i);
+
+            if(e == null){
+                events.remove(e);
+                i--;
+                continue;
+            }
             if(now - e.getLastCall() >= e.getDelayMS()){
                 e.run();
                 e.shortenLife();
