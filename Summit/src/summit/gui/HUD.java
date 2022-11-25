@@ -3,7 +3,9 @@ package summit.gui;
 import summit.gfx.Renderer;
 import summit.game.entity.mob.Player;
 import summit.gfx.ColorFilter;
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
+import summit.gfx.RenderLayers;
 import summit.gfx.Sprite;
 
 public class HUD extends Container{
@@ -11,8 +13,15 @@ public class HUD extends Container{
     private Player player;
     
     public HUD(Player player) {
-        super(null, 0.75f, 0.13f, 0.5f, 0.2f);
+        super(null, 0.75f, 0.13f, 0f, 0f);
         this.player = player;
+    }
+
+    @Override
+    public void setRenderLayer(OrderPaintEvent e){
+        super.setRenderLayer(e);
+        
+        e.addToLayer(RenderLayers.TOP_LAYER, this);
     }
 
     @Override

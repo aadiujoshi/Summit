@@ -13,6 +13,7 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
+import summit.gui.InventoryGUI;
 import summit.util.Controls;
 import summit.util.Time;
 
@@ -23,7 +24,8 @@ public class Player extends HumanoidEntity{
     private ScheduledEvent walkAnimation;
 
     private HUD hud;
-    // private Inventory inventory;
+    private Inventory inventory;
+    private InventoryGUI invGui;
 
     public Player(float x, float y) {
         super(x, y, 1, 2);
@@ -39,7 +41,9 @@ public class Player extends HumanoidEntity{
         // super.setLight(l);
 
         this.hud = new HUD(this);
-        
+        this.inventory = new Inventory(9, 6);
+        this.invGui = new InventoryGUI(inventory);
+
         this.walkAnimation = new ScheduledEvent(250, ScheduledEvent.FOREVER){
 
             boolean flipped = false;
@@ -74,6 +78,12 @@ public class Player extends HumanoidEntity{
     }
     
     @Override
+    public void setRenderLayer(OrderPaintEvent e){
+        super.setRenderLayer(e);
+        hud.setRenderLayer(e);
+    }
+
+    @Override
     public void paint(PaintEvent e) {
         // super.paint(e);
         
@@ -91,14 +101,22 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        // if(!hud.isPushed())
-        //     e.getWindow().pushGameContainer(hud);
+        if(!invGui.isPushed())
+            e.getWindow().pushGameContainer(invGui);
     }
 
     @Override
     public void update(GameUpdateEvent e) {
-        
         super.update(e);
+
+        if(Controls.E){
+            if(!invGui.isPushed())
+                e.getWindow().pushGameContainer(invGui);
+            
+            return;
+        } else if(invGui.isPushed()){
+            e.getWindow().popGameContainer();
+        }
 
         float del_x = (  getDx() / (inWater() ? 2 : 1) /Time.NS_IN_S)*e.getDeltaTimeNS();
         float del_y = (  getDy() / (inWater() ? 2 : 1) /Time.NS_IN_S)*e.getDeltaTimeNS();
@@ -115,9 +133,6 @@ public class Player extends HumanoidEntity{
         if(Controls.D && moveTo(e.getMap(), this.getX()+del_x, this.getY())){
             this.setX(this.getX()+del_x);
         }
-
-        camera.setX(getX());
-        camera.setY(getY());
         
         this.updateIsMoving();
     }
@@ -161,5 +176,21 @@ public class Player extends HumanoidEntity{
      */
     public Camera getCamera(){
         return this.camera;
+    }
+
+    public Inventory getInventory() {
+        return this.inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public InventoryGUI getInventoryGui() {
+        return this.invGui;
+    }
+
+    public void setInventoryGui(InventoryGUI invGui) {
+        this.invGui = invGui;
     }
 }

@@ -4,6 +4,7 @@ import summit.game.GameClickReciever;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.game.animation.ScheduledEvent;
 import summit.game.entity.Entity;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
@@ -27,6 +28,7 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
     //Rendering hint, nothing to do with gameplay
     private boolean raisedTile = true;
+    private ScheduledEvent animation;
 
     private final String NAME = getClass().getSimpleName();
 
@@ -125,4 +127,17 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     public void setRaisedTile(boolean raisedTile) {
 		this.raisedTile = raisedTile;
 	}
+
+    public void animate(boolean a){
+        if(a){
+            animation = new ScheduledEvent(300, ScheduledEvent.FOREVER) {
+                @Override
+                public void run() {
+                    setRenderOp((int)(Math.random()*5));
+                }
+            };
+        } else {
+            animation = null;
+        }
+    }
 }

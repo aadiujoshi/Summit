@@ -56,7 +56,7 @@ public class GameWorld implements Paintable, Serializable{
         maps.put(null, stage2);
         maps.put(null, stage3);
         
-        loadedMap = maps.get("stage1");
+        loadedMap = maps.get("stage1"); 
         
         player = new Player(30, 30);
 
@@ -66,9 +66,7 @@ public class GameWorld implements Paintable, Serializable{
         stage1.setCamera(new Camera(30, 30));
 
         player.setCamera(stage1.getCamera());
-
-        parentWindow.pushGameContainer(player.getHud());
-
+        
         initUpdateThread();
     }
 

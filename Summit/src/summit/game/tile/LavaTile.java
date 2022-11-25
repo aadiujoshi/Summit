@@ -2,6 +2,7 @@ package summit.game.tile;
 
 import summit.game.GameUpdateEvent;
 import summit.gfx.Light;
+import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Sprite;
 import summit.util.GameRegion;
@@ -17,11 +18,9 @@ public class LavaTile extends Tile{
         // glow.setShape(Light.Shape.SQUARE);
         super.setLight(glow);
     }
-
+    
     @Override
     public void update(GameUpdateEvent e) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override

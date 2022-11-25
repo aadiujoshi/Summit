@@ -7,24 +7,12 @@ import summit.game.entity.Entity;
 import summit.gfx.Sprite;
 
 public class WaterTile extends Tile{
-
-    //refactor to use scheduler
-    private ScheduledEvent waterAnimation;
-
+    
     public WaterTile(float x, float y) {
         super(x, y);
         super.setSprite(Sprite.WATER_TILE);
         super.setBoundary(false);
         // super.setLight(new Light(x, y, 1f, 0, 0, 100));
-
-        this.waterAnimation = new ScheduledEvent(300, ScheduledEvent.FOREVER) {
-            @Override
-            public void run() {
-                setRenderOp((int)(Math.random()*5));
-            }
-        };
-
-        Scheduler.registerEvent(waterAnimation);
     }
 
     @Override

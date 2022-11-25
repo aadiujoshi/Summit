@@ -1,4 +1,4 @@
-package summit.game.entity.item;
+package summit.game.entity.item_entity;
 
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateEvent;
@@ -7,8 +7,7 @@ import summit.game.entity.Entity;
 public class SnowballItem extends ItemEntity{
 
     public SnowballItem(float x, float y) {
-        super(x, y, 0.5f, 0.5f);
-        //TODO Auto-generated constructor stub
+        super(x, y);
     }
 
     @Override

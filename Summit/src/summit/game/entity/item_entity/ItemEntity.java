@@ -1,34 +1,30 @@
-package summit.game.entity.item;
+package summit.game.entity.item_entity;
 
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 
 public class ItemEntity extends Entity{
 
-    public ItemEntity(float x, float y, float width, float height) {
-        super(x, y, width, height);
+    public ItemEntity(float x, float y) {
+        super(x, y, 0.25f, 0.25f);
     }
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        // TODO Auto-generated method stub
-        
+        //do nothing
     }
 
     @Override
     public void damage(float damage, Entity e) {
-        // TODO Auto-generated method stub
-        
+        setDestroyed(true);
     }
 
     @Override
     public void destroy(GameUpdateEvent ge) {
-        // TODO Auto-generated method stub
-        
     }
-
+    
     @Override
-    public void collide(Entity e) {
+    public void collide(Entity g) {
         // TODO Auto-generated method stub
         
     }

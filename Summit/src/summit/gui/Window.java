@@ -404,7 +404,8 @@ public class Window implements MouseListener, KeyListener{
         }
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
             if(state == WindowState.GAME){
-                this.popGameContainer();
+                if(!this.guiContainersGame.isEmpty())
+                    this.popGameContainer();
             } else {
                 this.setState(WindowState.BACK);
             }

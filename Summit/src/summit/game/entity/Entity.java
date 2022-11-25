@@ -63,7 +63,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         
         if(getHealth() <= 0){
             destroyed = true;
-            destroy(e);
         }
         // System.out.println(getX() + "  " + getY() + "  " + lastX + "  " + lastY);
 
@@ -72,8 +71,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }
 
     abstract public void damage(float damage, Entity e);
+    //called by parent object when set to destroy
     abstract public void destroy(GameUpdateEvent ge);
-    abstract public void collide(Entity e);
 
     public boolean moveTo(GameMap map, float newX, float newY){
         if(map.getTileAt(newX, newY) == null || 
