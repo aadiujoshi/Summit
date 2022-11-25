@@ -63,10 +63,7 @@ public class ParticleAnimation extends ScheduledEvent implements Paintable{
 
         for (int i = 0; i < pCount; i++) {
             Point p = Renderer.toPixel(px[i], py[i], e.getCamera());
-
             e.getRenderer().fillRect(p.x, p.y, 1, 1, color);
-
-            // System.out.println(px[i] + "  " + py[i]);
         }
     }
 
@@ -87,7 +84,6 @@ public class ParticleAnimation extends ScheduledEvent implements Paintable{
 
             px[i] = nx;
             py[i] = ny;
-            // System.out.println(nx + "  "+ ny);
         }
     }
 }

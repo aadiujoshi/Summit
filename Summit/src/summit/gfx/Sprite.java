@@ -22,4 +22,6 @@ public class Sprite {
     public static final String LAVA_TILE = "lava-tile";
     public static final String DOOR = "door";
     public static final String INVENTORY = "inventory";
+    public static final String SKELETON_FACE_BACK = "skeleton-face_back";
+    public static final String BOW = "bow";
 }

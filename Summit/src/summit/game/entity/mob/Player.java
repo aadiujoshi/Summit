@@ -7,6 +7,7 @@ import summit.game.animation.ParticleAnimation;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
+import summit.game.item.itemtable.Inventory;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
@@ -40,7 +41,7 @@ public class Player extends HumanoidEntity{
         super.setMaxHealth(10f);
 
         this.hud = new HUD(this);
-        this.inventory = new Inventory(9, 6);
+        this.inventory = new Inventory(this, 9, 5);
         this.invGui = new InventoryGUI(inventory);
         
         this.camera = mapCam;
@@ -74,7 +75,15 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void collide(Entity e){
+        // super.collide(e);
 
+        // if(e instanceof Item){
+        //     Item ie = (Item) e;
+        //     ie.setDestroyed(true);
+
+            // if(inventory.valid(ie))
+            //     inventory.add(ie);
+        // }
     }
     
     @Override
@@ -97,10 +106,13 @@ public class Player extends HumanoidEntity{
                                         (getX()+(getSpriteOffsetX()/16f)), (getY()+(getSpriteOffsetY()/16f)), 
                                         getRenderOp(), getColorFilter(),
                                         e.getCamera());
+                                    
     } 
 
     @Override
     public void gameClick(GameUpdateEvent e) {
+        
+        // setHealth(getHealth()-1);
         
         if(!invGui.isPushed()){
             e.getWindow().pushGameContainer(invGui);
@@ -135,8 +147,6 @@ public class Player extends HumanoidEntity{
         if(Controls.D && moveTo(e.getMap(), this.getX()+del_x, this.getY())){
             this.setX(this.getX()+del_x);
         }
-        
-        this.updateIsMoving();
     }
 
     @Override

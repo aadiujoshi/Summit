@@ -1,6 +1,6 @@
 package summit.gui;
 
-import summit.game.entity.mob.Inventory;
+import summit.game.item.itemtable.Inventory;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;

@@ -14,18 +14,19 @@ public class LavaTile extends Tile{
         super(x, y);
         super.setSprite(Sprite.LAVA_TILE);
         Light glow = new Light(x, y, 1f, 255, 163, 0);
-        glow.setRenderLayer(RenderLayers.TILE_LAYER+1);
-        // glow.setShape(Light.Shape.SQUARE);
-        super.setLight(glow);
+        super.setLight(glow); Math.random();
+
     }
     
     @Override
     public void update(GameUpdateEvent e) {
+
     }
 
     @Override
     public void collide(Entity e) {
         super.collide(e);
         e.setOnFire(true);
+        
     }
 }

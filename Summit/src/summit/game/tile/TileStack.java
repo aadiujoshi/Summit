@@ -57,6 +57,7 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
             Tile t = tiles.get(i);
             t.update(e);
             if(t.destroyed()){
+                t.destroy(e);
                 tiles.remove(i);
                 i--;
             }

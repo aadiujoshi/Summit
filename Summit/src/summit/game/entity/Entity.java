@@ -3,34 +3,42 @@ package summit.game.entity;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.game.item.Item;
+import summit.game.item.itemtable.ItemTable;
 import summit.game.tile.Tile;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.util.GameRegion;
+import summit.util.Time;
 
 public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private float dx, dy;
+    //knockback lasts for 2 seconds
     private float kx, ky;
 
-    private float lastX, lastY;
-    
-    private Light shadow;
+    private float lx, ly;
 
-    private float hitDamage;
+    private Light shadow;
 
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
 
+    private ItemTable items;
+
     private Tile onTile;
+
+    private float hitDamage;
+    private float damageResistance;
 
     private float maxHealth;
     private float health;
     private boolean destroyed;
 
     private boolean invulnerable;
+    private boolean fireResistant;
     private boolean inWater;
     private boolean onFire;
     private boolean moving;
@@ -39,7 +47,15 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         super(x,y,width,height);
         super.setRLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
 
-        Light sdw = new Light(x, y, 1f, -30, -30, -30);
+        this.maxHealth = 1;
+        this.health = maxHealth;
+        this.hitDamage = 0;
+        this.damageResistance = 0;
+
+        this.lx = x;
+        this.ly = y;
+        
+        Light sdw = new Light(x, y, 1f, -50, -50, -50);
         sdw.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
         this.shadow = sdw;
     }
@@ -57,41 +73,56 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     @Override
     public void update(GameUpdateEvent e){
-        if(getX() < -0.5 || getY() < -0.5) {
-            return;
+        Entity contact = e.getMap().entityAt(getX(), getY());
+        if(contact != null){
+            if(contact instanceof Item){
+                pickup((Item)contact);
+            }
         }
-        
-        if(getHealth() <= 0){
-            destroyed = true;
-        }
-        // System.out.println(getX() + "  " + getY() + "  " + lastX + "  " + lastY);
 
         onTile = e.getMap().getTileAt(getX(), getY());
         onTile.collide(this);
+        
+        updateMoving();
     }
 
-    abstract public void damage(float damage, Entity e);
+    public void pickup(Item contact) {
+        contact.setStashed(true);
+        items.addItem(contact);
+    }
+
+    public void damage(float damage, Entity e){
+        health -= damage;
+
+        if(health <= 0)
+            destroyed = true;
+    }
+
     //called by parent object when set to destroy
     abstract public void destroy(GameUpdateEvent ge);
 
     public boolean moveTo(GameMap map, float newX, float newY){
         if(map.getTileAt(newX, newY) == null || 
             map.getTileAt(newX, newY).isBoundary()){
+
+            moving = false;
             return false;
         }
+
+        moving = true;
         return true;
     }
 
-    protected void updateIsMoving(){
-        if(lastX != getX() || lastY != getY()){
+    private void updateMoving(){
+        if(lx != getX() || ly != getY()){
             moving = true;
-            lastX = getX();
-            lastY = getY();
+            lx = getX();
+            ly = getY();
         } else {
             moving = false;
         }
     }
-
+    
     //---------------------------------------------------------
     //getters and setters
     //---------------------------------------------------------
@@ -102,6 +133,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         if(shadow != null){
             shadow.setX(x);
         }
+        updateMoving();
     }
 
     @Override 
@@ -110,6 +142,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         if(shadow != null){
             shadow.setY(y);
         }
+        updateMoving();
     }  
 
     public float getDx() {
@@ -159,7 +192,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     public void setHealth(float health) {
         this.health = health;
     }
-
+    
     public void changeHealth(float c){
         this.health += c;
     }
@@ -204,4 +237,29 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         this.kx = kx;
         this.ky = ky;
     }
+    
+    public ItemTable getItems() {
+        return this.items;
+    }
+
+    public void setItems(ItemTable items) {
+        this.items = items;
+    }
+    
+    public float getDamageResistance() {
+        return this.damageResistance;
+    }
+
+    public void setDamageResistance(float damageResistance) {
+        this.damageResistance = damageResistance;
+    }    
+
+    public boolean isFireResistant() {
+        return this.fireResistant;
+    }
+
+    public void setFireResistant(boolean fireResistant) {
+        this.fireResistant = fireResistant;
+    }
+
 }

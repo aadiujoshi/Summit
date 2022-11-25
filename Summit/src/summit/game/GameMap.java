@@ -2,6 +2,7 @@ package summit.game;
 
 import java.util.ArrayList;
 
+import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.Player;
 import summit.game.structure.Structure;
@@ -21,6 +22,10 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     private ArrayList<Entity> entities;
     private ArrayList<Structure> structures;
+
+    //handles broken block animations
+    //assumes they are already registered 
+    private ArrayList<ParticleAnimation> particleAnimations;
 
     private Player player;
 
@@ -81,8 +86,14 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
                 tiles[i][j].update(e);
             }
         }
-        for (Entity entity : entities) {
-            entity.update(e);
+        for (int i = 0; i < entities.size(); i++) {
+            Entity et = entities.get(i);
+            et.update(e);
+            if(entities.get(i).destroyed()){
+                et.destroy(e);
+                entities.remove(i);
+                i--;
+            }
         }
         for (Structure h : structures) {
             h.update(e);
@@ -159,11 +170,8 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     }
 
     public Tile getTileAt(float x, float y){
-        //out of bounds
-        if(Math.round(y) < 0 || Math.round(y) >= tiles.length ||
-            Math.round(x) < 0 || Math.round(x) >= tiles[0].length)
-            return null;
-        return tiles[Math.round(y)][Math.round(x)].peekTile();
+        TileStack ts = getTileStackAt(x, y);
+        return (ts == null) ? null : ts.peekTile();
     }
 
     public TileStack getTileStackAt(float x, float y){
@@ -214,6 +222,10 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         return this.SEED;
     }
 
+    public void addParticleAnimation(ParticleAnimation pa){
+        particleAnimations.add(pa);
+    }
+
     public void remove(Entity e){
         entities.remove(e);
     }
@@ -245,5 +257,13 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public Entity entityAt(float x, float y) {
+        for (Entity entity : entities) {
+            if(entity.contains(x, y));
+                return entity;
+        }
+        return null;
     }
 }

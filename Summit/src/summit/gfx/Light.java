@@ -8,9 +8,9 @@ public class Light implements Paintable{
 
     private Light.Shape shape = Light.Shape.CIRCLE;
 
-    private int rLayer = RenderLayers.STRUCTURE_ENTITY_LAYER-1; 
+    private int rLayer = RenderLayers.TILE_LAYER-1; 
 
-    public static final Light NO_LIGHT = new Light(0, 0, 0, 0, 0, 0);
+    public static final Light NO_LIGHT = new Light(0, 0,0, 0, 0, 0);
 
     private float radius;
 

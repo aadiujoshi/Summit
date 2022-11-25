@@ -446,9 +446,11 @@ public class Window implements MouseListener, KeyListener{
                 loadedmap.gameClick(new GameUpdateEvent(world, 0, rx, ry, false));
             }
             
-            for(Container container : guiContainersGame) {
-                if(container.getRegion().contains(rx, ry)){
-                    container.guiClick(e);
+            synchronized(guiContainersGame){
+                for(Container container : guiContainersGame) {
+                    if(container.getRegion().contains(rx, ry)){
+                        container.guiClick(e);
+                    }
                 }
             }
         }

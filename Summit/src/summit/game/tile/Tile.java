@@ -1,25 +1,17 @@
 package summit.game.tile;
 
-import summit.game.GameClickReciever;
-import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.animation.ParticleAnimation;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
-import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
-import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.GameRegion;
-import summit.util.Region;
-
-import java.awt.Point;
-import java.awt.geom.Point2D.Float;
 
 public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
@@ -34,7 +26,7 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     private ScheduledEvent rotateAnim;
 
     //shut up its necessary
-    private boolean animateParticles = true;
+    private boolean animateParticles = false;
     private ParticleAnimation particleAnim;
     private int particleColor = Renderer.toIntRGB(170, 214, 230);
 
@@ -58,6 +50,11 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
         if(particleAnim != null && particleAnim.terminate())
             particleAnim = null;
+    }
+
+    //make breaking particle animation
+    public void destroy(GameUpdateEvent e){
+        e.getMap();
     }
 
     @Override
