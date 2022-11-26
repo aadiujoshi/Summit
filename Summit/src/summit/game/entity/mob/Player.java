@@ -105,8 +105,8 @@ public class Player extends HumanoidEntity{
             e.getWindow().popGameContainer();
         }
 
-        float del_x = (  getDx() / (inWater() ? 2 : 1) /Time.NS_IN_S)*e.getDeltaTimeNS();
-        float del_y = (  getDy() / (inWater() ? 2 : 1) /Time.NS_IN_S)*e.getDeltaTimeNS();
+        float del_x = getDx()/Time.NS_IN_S *e.getDeltaTimeNS();
+        float del_y = getDy()/Time.NS_IN_S *e.getDeltaTimeNS();
 
         if(Controls.W && moveTo(e.getMap(), this.getX(), this.getY()+del_y)){
             this.setY(this.getY()+del_y);

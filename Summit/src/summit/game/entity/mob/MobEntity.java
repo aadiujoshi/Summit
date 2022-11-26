@@ -13,8 +13,8 @@ public abstract class MobEntity extends Entity{
     public MobEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
         facing = Direction.SOUTH;
-        super.setDx(4);
-        super.setDy(4);
+        super.setDx(3);
+        super.setDy(3);
     }
 
     @Override

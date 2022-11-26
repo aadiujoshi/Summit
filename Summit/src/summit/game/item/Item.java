@@ -26,6 +26,10 @@ public abstract class Item extends Entity{
     }
 
     @Override
+    public void pickup(Item e){
+    }
+
+    @Override
     public void gameClick(GameUpdateEvent e) {
         floating = true;
     }

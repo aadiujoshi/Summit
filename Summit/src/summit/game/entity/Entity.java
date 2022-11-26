@@ -19,8 +19,9 @@ import summit.util.Time;
 public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private float dx, dy;
+
     //knockback lasts for 2 seconds
-    private float kx, ky;
+    private Knockback kb;
 
     private float lx, ly;
 
@@ -77,14 +78,23 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     @Override
     public void update(GameUpdateEvent e){
-        Entity contact = e.getMap().entityAt(getX(), getY());
+        GameMap map = e.getMap();
+
+        if(kb != null){
+            kb.move(e);
+            if(kb.finished())
+                this.kb = null;
+        }
+
+        Entity contact = map.entityAt(getX(), getY());
+
         if(contact != null){
             if(contact instanceof Item){
                 pickup((Item)contact);
             }
         }
 
-        onTile = e.getMap().getTileAt(getX(), getY());
+        onTile = map.getTileAt(getX(), getY());
         onTile.collide(this);
         
         updateMoving();
@@ -100,7 +110,10 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
             return;
 
         health -= damage;
+        
+        this.setKnockback(20, 500, hitBy);
 
+        //flash animation-----------------------------------------
         Scheduler.registerEvent(new ScheduledEvent(125,8) {
             private boolean flash = false;
             @Override
@@ -114,6 +127,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
                 }
             }
         });
+        //---------------------------------------------------------
 
         hitBy.setHitCooldown(true);
 
@@ -128,11 +142,11 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         if(map.getTileAt(newX, newY) == null || 
             map.getTileAt(newX, newY).isBoundary()){
 
-            moving = false;
+            // moving = false;
             return false;
         }
 
-        moving = true;
+        // moving = true;
         return true;
     }
 
@@ -169,7 +183,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }  
 
     public float getDx() {
-        return this.dx;
+        return this.dx / (inWater() ? 2 : 1);
     }
 
     public void setDx(float dx) {
@@ -177,7 +191,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }
 
     public float getDy() {
-        return this.dy;
+        return this.dy / (inWater() ? 2 : 1);
     }
 
     public void setDy(float dy) {
@@ -258,9 +272,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         this.hitDamage = hitDamage;
     }
 
-    public void setKnockback(float kx, float ky){
-        this.kx = kx;
-        this.ky = ky;
+    private void setKnockback(float k, int durationMS, Entity hitBy){
+        this.kb = new Knockback(k, this, hitBy, durationMS);
     }
     
     public ItemTable getItems() {

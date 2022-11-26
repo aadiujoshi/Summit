@@ -6,7 +6,6 @@ import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.util.Direction;
-import summit.util.Time;
 
 public abstract class HumanoidEntity extends MobEntity{
 

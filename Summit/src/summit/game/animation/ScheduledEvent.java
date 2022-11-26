@@ -6,14 +6,14 @@ public abstract class ScheduledEvent implements Runnable {
     
     public final static int FOREVER = -1;
 
-    private int repeat;
+    private int n_calls;
     private long delay_ms;
     private long lastCall;
     private final long INIT_MS;
 
-    public ScheduledEvent(long delay_ms, int n_repeat){
+    public ScheduledEvent(long delay_ms, int n_calls){
         this.delay_ms = delay_ms;
-        this.repeat = n_repeat;
+        this.n_calls = n_calls;
         this.INIT_MS = Time.timeMs();
         this.lastCall = INIT_MS;
     }
@@ -23,12 +23,12 @@ public abstract class ScheduledEvent implements Runnable {
      * @return boolean
      */
     public boolean terminate(){
-        return repeat < 1 && repeat != FOREVER;
+        return n_calls < 1 && n_calls != FOREVER;
     }
 
     public void shortenLife(){
-        if(repeat != FOREVER)
-            repeat--;
+        if(n_calls != FOREVER)
+            n_calls--;
     }
     
     public long getDelayMS() {
