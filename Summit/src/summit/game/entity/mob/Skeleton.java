@@ -14,7 +14,7 @@ public class Skeleton extends HumanoidEntity{
         super(x, y, 1, 2);
         super.setSprite(Sprite.SKELETON_FACE_BACK);
         super.setAI(new HostileMobAI(this));
-        super.setMaxHealth(1);
+        super.setMaxHealth(7);
         super.setHealth(getMaxHealth());
         super.setHitDamage(1);
         // super.setColor(0x301934);
