@@ -21,7 +21,7 @@ public class Main {
 
                 Time.nanoDelay(Time.NS_IN_S/4*3);
 
-                summit.setState(WindowState.NEWGAME);
+                // summit.setState(WindowState.NEWGAME);
             }
         }, "mainthread");
 

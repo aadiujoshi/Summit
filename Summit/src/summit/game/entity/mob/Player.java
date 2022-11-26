@@ -24,50 +24,24 @@ import summit.util.Time;
 public class Player extends HumanoidEntity{
 
     private Camera camera;
-
-    private ScheduledEvent walkAnimation;
-
+    
     private HUD hud;
     private Inventory inventory;
     private InventoryGUI invGui;
-
-    private ParticleAnimation testanim;
-
+    
     public Player(float x, float y, Camera mapCam) {
         super(x, y, 1, 2);
         super.setDx(6f);
         super.setDy(6f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
+        super.setAI(null);
 
         this.hud = new HUD(this);
         this.inventory = new Inventory(this, 9, 5);
         this.invGui = new InventoryGUI(inventory);
         
         this.camera = mapCam;
-
-        this.walkAnimation = new ScheduledEvent(250, ScheduledEvent.FOREVER){
-
-            boolean flipped = false;
-
-            @Override
-            public void run(){
-                int op = getRenderOp();
-                
-                if(isMoving()){
-                    if(flipped)
-                        setRenderOp(op ^ Renderer.FLIP_X);
-                    else
-                        setRenderOp(op | Renderer.FLIP_X);
-                } else{
-                    setRenderOp(op & ~Renderer.FLIP_X);
-                }
-
-                flipped = !flipped;
-            }
-        };
-
-        Scheduler.registerEvent(walkAnimation);
         //DO THIS
         // super.setSprites(something, something, something, something, something, something);
         
@@ -111,8 +85,7 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        
-        // setHealth(getHealth()-1);
+        // super.damage(1, null);
         
         if(!invGui.isPushed()){
             e.getWindow().pushGameContainer(invGui);

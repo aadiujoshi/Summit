@@ -2,6 +2,7 @@ package summit.game.mapgenerator;
 
 import summit.game.GameMap;
 import summit.game.entity.mob.Player;
+import summit.game.entity.mob.Skeleton;
 import summit.game.structure.Door;
 import summit.game.structure.TraderHouse;
 import summit.game.tile.GrassTile;
@@ -48,6 +49,8 @@ public class GameMapGenerator {
         }
 
         map.addStructure(new TraderHouse(19.5f, 19f, map));
+
+        map.spawn(new Skeleton(35, 35));
 
         return map;
     }

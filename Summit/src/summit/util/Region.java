@@ -1,5 +1,7 @@
 package summit.util;
 
+import javax.swing.SwingUtilities;
+
 public class Region {
 
     private float width;
@@ -16,7 +18,19 @@ public class Region {
     }
 
     public boolean overlap(Region other){
-        return false;
+
+        float bWidth = other.getWidth();
+        float bHeight = other.getHeight();
+        float aWidth = getWidth();
+        float aHeight = getHeight();
+
+        float bx = other.getX()-bWidth/2;
+        float by = other.getY()-bHeight/2;
+        float ax = getX()-aWidth/2;
+        float ay = getY()-aHeight/2;
+
+        return bx >= ax && (bx + bWidth) <= (ax + aWidth) &&
+                by >= ay && (by + bHeight) <= (ay + aHeight);
     }
 
     public boolean contains(float ox, float oy){

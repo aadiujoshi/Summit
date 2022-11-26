@@ -232,6 +232,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     public void spawn(Entity e){
         if(!entities.contains(e))
+        
         entities.add(e);
     }
     

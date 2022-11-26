@@ -1,5 +1,8 @@
 package summit.gui;
 
+import java.util.ArrayList;
+
+import summit.game.item.Item;
 import summit.game.item.itemtable.Inventory;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -18,5 +21,9 @@ public class InventoryGUI extends Container{
     @Override
     public void paint(PaintEvent e){
         e.getRenderer().render(Sprite.INVENTORY, getX(), getY(), Renderer.NO_OP, null);
+
+        for(Item item : inventory.getItems()){
+            item.paint(e);
+        }
     }
 }

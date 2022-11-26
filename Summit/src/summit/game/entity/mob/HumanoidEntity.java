@@ -1,5 +1,7 @@
 package summit.game.entity.mob;
 
+import summit.game.animation.ScheduledEvent;
+import summit.game.animation.Scheduler;
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -17,9 +19,33 @@ public abstract class HumanoidEntity extends MobEntity{
     private String sprite_east_moving;
     private String sprite_east_neutral;
     
+    private ScheduledEvent walkAnimation;
 
     public HumanoidEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
+
+        this.walkAnimation = new ScheduledEvent(250, ScheduledEvent.FOREVER){
+
+            boolean flipped = false;
+
+            @Override
+            public void run(){
+                int op = getRenderOp();
+                
+                if(isMoving()){
+                    if(flipped)
+                        setRenderOp(op ^ Renderer.FLIP_X);
+                    else
+                        setRenderOp(op | Renderer.FLIP_X);
+                } else{
+                    setRenderOp(op & ~Renderer.FLIP_X);
+                }
+
+                flipped = !flipped;
+            }
+        };
+
+        Scheduler.registerEvent(walkAnimation);
     }
 
     protected void setSprites(String sprite_north_moving, String sprite_north_neutral, 

@@ -1,7 +1,8 @@
 package summit.game.ai;
 
-import summit.game.GameMap;
+import summit.game.GameUpdateEvent;
+import summit.game.entity.Entity;
 
 public interface EntityAI {
-    public void next(GameMap map, float x, float y);
+    public void next(GameUpdateEvent e, Entity ent);
 }

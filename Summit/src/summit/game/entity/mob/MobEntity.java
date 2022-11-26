@@ -1,8 +1,8 @@
 package summit.game.entity.mob;
 
+import summit.game.GameUpdateEvent;
 import summit.game.ai.EntityAI;
 import summit.game.entity.Entity;
-import summit.game.item.itemtable.Inventory;
 import summit.util.Direction;
 
 public abstract class MobEntity extends Entity{
@@ -13,6 +13,16 @@ public abstract class MobEntity extends Entity{
     public MobEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
         facing = Direction.SOUTH;
+        super.setDx(4);
+        super.setDy(4);
+    }
+
+    @Override
+    public void update(GameUpdateEvent e){
+        super.update(e);
+        
+        if(ai != null)
+            ai.next(e, this);
     }
 
     //------  getters and setters -------------------------------------------

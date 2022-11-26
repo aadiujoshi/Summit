@@ -20,6 +20,10 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
 
     private float spriteOffsetX;
     private float spriteOffsetY;
+
+    // +x is right -x is left +y is up -y is down
+    private float xOffset;
+    private float yOffset;
     
     private int rLayer = RenderLayers.TILE_LAYER;
 
@@ -65,9 +69,9 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
 
     @Override
     public void setX(float x){
-        super.setX(x);
+        super.setX(x + xOffset);
         if(light != null){
-            light.setX(x);
+            light.setX(x + yOffset);
         }
     }
 
@@ -131,4 +135,19 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
         this.rLayer = rLayer;
     }
 
+    public float getXOffset() {
+        return this.xOffset;
+    }
+
+    public void setXOffset(float xOffset) {
+        this.xOffset = xOffset;
+    }
+
+    public float getYOffset() {
+        return this.yOffset;
+    }
+
+    public void setYOffset(float yOffset) {
+        this.yOffset = yOffset;
+    }
 }

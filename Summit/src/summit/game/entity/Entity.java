@@ -131,7 +131,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     public void setX(float x){
         super.setX(x);
         if(shadow != null){
-            shadow.setX(x);
+            shadow.setX(x + getXOffset());
         }
         updateMoving();
     }
@@ -140,7 +140,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     public void setY(float y){
         super.setY(y);
         if(shadow != null){
-            shadow.setY(y);
+            shadow.setY(y + getYOffset());
         }
         updateMoving();
     }  
@@ -191,6 +191,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     public void setHealth(float health) {
         this.health = health;
+        if(health <= 0)
+            setDestroyed(true);
     }
     
     public void changeHealth(float c){
