@@ -50,7 +50,11 @@ public class GameMapGenerator {
 
         map.addStructure(new TraderHouse(19.5f, 19f, map));
 
+        map.spawn(new Skeleton(40, 35));
+        map.spawn(new Skeleton(35, 40));
+        map.spawn(new Skeleton(40, 40));
         map.spawn(new Skeleton(35, 35));
+        map.spawn(new Skeleton(30, 30));
 
         return map;
     }
