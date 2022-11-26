@@ -8,6 +8,7 @@ import summit.game.animation.Scheduler;
 import summit.game.item.Item;
 import summit.game.item.itemtable.ItemTable;
 import summit.game.tile.Tile;
+import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
@@ -99,6 +100,20 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
             return;
 
         health -= damage;
+
+        Scheduler.registerEvent(new ScheduledEvent(125,8) {
+            private boolean flash = false;
+            @Override
+            public void run() {
+                if(!flash){
+                    setColorFilter(new ColorFilter(150, 0, 0));
+                    flash = true;
+                } else{
+                    setColorFilter(ColorFilter.NOFILTER);
+                    flash = false;
+                }
+            }
+        });
 
         hitBy.setHitCooldown(true);
 
