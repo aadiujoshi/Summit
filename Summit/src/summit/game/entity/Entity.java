@@ -3,6 +3,8 @@ package summit.game.entity;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.game.animation.ScheduledEvent;
+import summit.game.animation.Scheduler;
 import summit.game.item.Item;
 import summit.game.item.itemtable.ItemTable;
 import summit.game.tile.Tile;
@@ -32,6 +34,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private float hitDamage;
     private float damageResistance;
+    private boolean hitCooldown;
 
     private float maxHealth;
     private float health;
@@ -91,8 +94,13 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         items.addItem(contact);
     }
 
-    public void damage(float damage, Entity e){
+    public void damage(float damage, Entity hitBy){
+        if(hitBy.hitCooldown())
+            return;
+
         health -= damage;
+
+        hitBy.setHitCooldown(true);
 
         if(health <= 0)
             destroyed = true;
@@ -263,5 +271,21 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     public void setFireResistant(boolean fireResistant) {
         this.fireResistant = fireResistant;
     }
+    
+    public boolean hitCooldown() {
+        return this.hitCooldown;
+    }
 
+    public void setHitCooldown(boolean hitCooldown) {
+        this.hitCooldown = hitCooldown;
+
+        if(hitCooldown){
+            Scheduler.registerEvent(new ScheduledEvent(500,1) {
+                @Override
+                public void run() {
+                    setHitCooldown(false);
+                }
+            });
+        }
+    }
 }

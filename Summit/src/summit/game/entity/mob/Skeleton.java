@@ -15,6 +15,7 @@ public class Skeleton extends HumanoidEntity{
         super.setAI(new HostileMobAI());
         super.setMaxHealth(10);
         super.setHealth(getMaxHealth());
+        super.setHitDamage(1);
     }
 
     @Override
@@ -44,6 +45,6 @@ public class Skeleton extends HumanoidEntity{
 
     @Override
     public void collide(Entity g) {
-        
+
     }
 }

@@ -123,11 +123,6 @@ public class Player extends HumanoidEntity{
     }
 
     @Override
-    public void damage(float damage, Entity e) {
-        
-    }
-
-    @Override
     public void destroy(GameUpdateEvent e) {
         
     }
