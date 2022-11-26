@@ -177,7 +177,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     public TileStack getTileStackAt(float x, float y){
         //out of bounds
         if(Math.round(y) < 0 || Math.round(y) >= tiles.length ||
-            Math.round(x) < 0 || Math.round(x) > tiles[0].length)
+            Math.round(x) < 0 || Math.round(x) >= tiles[0].length)
             return null;
         return tiles[Math.round(y)][Math.round(x)];
     }
@@ -232,7 +232,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     public void spawn(Entity e){
         if(!entities.contains(e))
-        
+
         entities.add(e);
     }
     

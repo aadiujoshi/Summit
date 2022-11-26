@@ -16,9 +16,10 @@ public class HostileMobAI implements EntityAI{
         delta_x *= (dest_x < ent.getX()) ? -1 : 1;
         delta_y *= (dest_y < ent.getY()) ? -1 : 1; 
 
-        if(Math.abs(ent.getX() - dest_x) >= 0.5f)
+        if(Math.abs(ent.getX() - dest_x) >= 0.5f && ent.moveTo(e.getMap(), ent.getX() + delta_x, ent.getY()))
             ent.setX(ent.getX() + delta_x);
-        if(Math.abs(ent.getY() - dest_y) >= 0.5f)
+        if(Math.abs(ent.getY() - dest_y) >= 0.5f && ent.moveTo(e.getMap(), ent.getX(), ent.getY() + delta_y))
             ent.setY(ent.getY() + delta_y);
+        
     }
 }
