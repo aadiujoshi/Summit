@@ -35,6 +35,7 @@ public class Player extends HumanoidEntity{
         super.setDy(6f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
+        super.setHitDamage(1);
         super.setAI(null);
 
         this.hud = new HUD(this);
@@ -120,11 +121,6 @@ public class Player extends HumanoidEntity{
         if(Controls.D && moveTo(e.getMap(), this.getX()+del_x, this.getY())){
             this.setX(this.getX()+del_x);
         }
-    }
-
-    @Override
-    public void destroy(GameUpdateEvent e) {
-        
     }
     
     //---------------- getters and setters --------------------------

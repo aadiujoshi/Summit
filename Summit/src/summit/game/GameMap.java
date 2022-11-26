@@ -3,6 +3,7 @@ package summit.game;
 import java.util.ArrayList;
 
 import summit.game.animation.ParticleAnimation;
+import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.Player;
 import summit.game.structure.Structure;
@@ -24,7 +25,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     private ArrayList<Structure> structures;
 
     //handles broken block animations
-    //assumes they are already registered 
+    //assumes NOT registered into scheduler
     private ArrayList<ParticleAnimation> particleAnimations;
 
     private Player player;
@@ -59,6 +60,8 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         this.SEED = seed;
         this.WIDTH = width;
         this.HEIGHT = height;
+
+        this.particleAnimations = new ArrayList<>();
     }
 
     @Override
@@ -104,7 +107,17 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     public void setRenderLayer(OrderPaintEvent e) {
         if(animation != null)
             animation.setRenderLayer(e);
+        
+        for (int i = 0; i < particleAnimations.size(); i++) {
+            particleAnimations.get(i).setRenderLayer(e);
             
+            if(particleAnimations.get(i).terminate()){
+                particleAnimations.remove(i);
+                i--;
+                continue;
+            }
+        }
+
         e.addToLayer(RenderLayers.TOP_LAYER, this);
 
         Camera c = e.getCamera();
@@ -223,6 +236,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     }
 
     public void addParticleAnimation(ParticleAnimation pa){
+        Scheduler.registerEvent(pa);
         particleAnimations.add(pa);
     }
 

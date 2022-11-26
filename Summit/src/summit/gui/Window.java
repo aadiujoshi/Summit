@@ -242,10 +242,8 @@ public class Window implements MouseListener, KeyListener{
                 
             ope.getRenderLayers().renderLayers(pe);
 
-            synchronized(guiContainersGame){
-                for (Container c : guiContainersGame) {
-                    c.paint(pe);
-                }
+            for (int i = 0; i < guiContainersGame.size(); i++) {
+                guiContainersGame.get(i).paint(pe);
             }
         }
         

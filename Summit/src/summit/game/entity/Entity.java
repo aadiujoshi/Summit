@@ -14,7 +14,6 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.util.GameRegion;
-import summit.util.Time;
 
 public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
@@ -136,17 +135,16 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }
 
     //called by parent object when set to destroy
-    abstract public void destroy(GameUpdateEvent ge);
+    public void destroy(GameUpdateEvent ge){
+
+    }
 
     public boolean moveTo(GameMap map, float newX, float newY){
         if(map.getTileAt(newX, newY) == null || 
             map.getTileAt(newX, newY).isBoundary()){
-
-            // moving = false;
             return false;
         }
 
-        // moving = true;
         return true;
     }
 

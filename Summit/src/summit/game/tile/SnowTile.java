@@ -17,7 +17,7 @@ public class SnowTile extends Tile{
         l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
         
         super.particleAnimation(true);
-        super.setParticleColor(Renderer.toIntRGB(170, 214, 230));
+        super.setColor(Renderer.toIntRGB(170, 214, 230));
     }
     
     @Override

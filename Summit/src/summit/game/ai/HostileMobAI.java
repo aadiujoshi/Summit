@@ -2,38 +2,44 @@ package summit.game.ai;
 
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
+import summit.game.entity.mob.MobEntity;
 import summit.game.entity.mob.Player;
 import summit.util.Time;
 
-public class HostileMobAI implements EntityAI{
+public class HostileMobAI extends EntityAI{
+
+    public HostileMobAI(MobEntity e){
+        super(e);
+    }
+
     @Override
-    public void next(GameUpdateEvent e, Entity ent) {
+    public void next(GameUpdateEvent e) {
 
         Player p = e.getMap().getPlayer();
 
         float dest_x = p.getX();
         float dest_y = p.getY();
 
-        float delta_x = ent.getDx()/Time.NS_IN_S * e.getDeltaTimeNS();
-        float delta_y = ent.getDy()/Time.NS_IN_S * e.getDeltaTimeNS();
+        float delta_x = entity.getDx()/Time.NS_IN_S * e.getDeltaTimeNS();
+        float delta_y = entity.getDy()/Time.NS_IN_S * e.getDeltaTimeNS();
 
-        delta_x *= (dest_x < ent.getX()) ? -1 : 1;
-        delta_y *= (dest_y < ent.getY()) ? -1 : 1; 
+        delta_x *= (dest_x < entity.getX()) ? -1 : 1; 
+        delta_y *= (dest_y < entity.getY()) ? -1 : 1; 
 
         int reached = 0;
 
-        if(Math.abs(ent.getX() - dest_x) >= 0.5f && ent.moveTo(e.getMap(), ent.getX() + delta_x, ent.getY()))
-            ent.setX(ent.getX() + delta_x);
-        else    
+        if(Math.abs(entity.getX() - dest_x) >= 0.5f && entity.moveTo(e.getMap(), entity.getX() + delta_x, entity.getY()))
+            entity.setX(entity.getX() + delta_x);
+        else if(Math.abs(entity.getX() - dest_x) <= 0.5f)
             reached++;
         
-        if(Math.abs(ent.getY() - dest_y) >= 0.5f && ent.moveTo(e.getMap(), ent.getX(), ent.getY() + delta_y))
-            ent.setY(ent.getY() + delta_y);
-        else
+        if(Math.abs(entity.getY() - dest_y) >= 0.5f && entity.moveTo(e.getMap(), entity.getX(), entity.getY() + delta_y))
+            entity.setY(entity.getY() + delta_y);
+        else if(Math.abs(entity.getY() - dest_y) <= 0.5f)
             reached++;
 
         if(reached == 2){
-            p.damage(ent.getHitDamage(), ent);
+            p.damage(entity.getHitDamage(), entity);
         }
     }
 }

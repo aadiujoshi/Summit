@@ -31,6 +31,9 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
     private ColorFilter filter = ColorFilter.NOFILTER;
     private Light light = Light.NO_LIGHT;
 
+    //the general color for the region
+    private int color = Renderer.toIntRGB(170, 214, 230);
+
     public GameRegion(float x, float y, float width, float height) {
         super(x, y, width, height);
     }
@@ -149,5 +152,13 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
 
     public void setYOffset(float yOffset) {
         this.yOffset = yOffset;
+    }
+
+    public int getColor() {
+        return this.color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

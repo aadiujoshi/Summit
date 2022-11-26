@@ -28,7 +28,6 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     //shut up its necessary
     private boolean animateParticles = false;
     private ParticleAnimation particleAnim;
-    private int particleColor = Renderer.toIntRGB(170, 214, 230);
 
     private final String NAME = getClass().getSimpleName();
 
@@ -68,7 +67,7 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
         e.setOnFire(false);
 
         if(e.isMoving() && animateParticles && particleAnim == null){
-            particleAnim = new ParticleAnimation(e.getX(), e.getY(), 500, 15, particleColor);
+            particleAnim = new ParticleAnimation(e.getX(), e.getY(), 500, 15, getColor());
         }
     }
 
@@ -140,13 +139,5 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
         } else {
             rotateAnim = null;
         }
-    }
-    
-    public int getParticleColor() {
-        return this.particleColor;
-    }
-
-    public void setParticleColor(int particleColor) {
-        this.particleColor = particleColor;
     }
 }

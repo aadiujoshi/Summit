@@ -2,6 +2,7 @@ package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
 import summit.game.ai.HostileMobAI;
+import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -12,10 +13,11 @@ public class Skeleton extends HumanoidEntity{
     public Skeleton(float x, float y) {
         super(x, y, 1, 2);
         super.setSprite(Sprite.SKELETON_FACE_BACK);
-        super.setAI(new HostileMobAI());
-        super.setMaxHealth(10);
+        super.setAI(new HostileMobAI(this));
+        super.setMaxHealth(1);
         super.setHealth(getMaxHealth());
         super.setHitDamage(1);
+        // super.setColor(0x301934);
     }
 
     @Override
@@ -30,19 +32,9 @@ public class Skeleton extends HumanoidEntity{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        
+        damage(e.getMap().getPlayer().getHitDamage() , e.getMap().getPlayer());
     }
-
-    @Override
-    public void damage(float damage, Entity e) {
-        
-    }
-
-    @Override
-    public void destroy(GameUpdateEvent ge) {
-        
-    }
-
+    
     @Override
     public void collide(Entity g) {
 

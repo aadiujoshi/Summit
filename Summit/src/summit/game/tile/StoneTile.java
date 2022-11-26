@@ -10,7 +10,7 @@ public class StoneTile extends Tile{
         super(x, y);
         super.setSprite(Sprite.STONE_TILE);
         super.particleAnimation(true);
-        super.setParticleColor(Renderer.toIntRGB(100, 100, 100));
+        super.setColor(Renderer.toIntRGB(100, 100, 100));
     }
 
     @Override

@@ -2,7 +2,9 @@ package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
 import summit.game.ai.EntityAI;
+import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
+import summit.gfx.Renderer;
 import summit.util.Direction;
 
 public abstract class MobEntity extends Entity{
@@ -15,6 +17,7 @@ public abstract class MobEntity extends Entity{
         facing = Direction.SOUTH;
         super.setDx(3);
         super.setDy(3);
+        super.setColor(Renderer.toIntRGB(200, 0, 0));
     }
 
     @Override
@@ -22,7 +25,15 @@ public abstract class MobEntity extends Entity{
         super.update(e);
         
         if(ai != null)
-            ai.next(e, this);
+            ai.next(e);
+    }
+
+    @Override
+    public void destroy(GameUpdateEvent e){
+        super.destroy(e);
+
+        e.getMap().addParticleAnimation(new ParticleAnimation(getX(), getY(), 
+                                        1000, 60, getColor()));
     }
 
     //------  getters and setters -------------------------------------------
