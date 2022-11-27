@@ -3,13 +3,25 @@ package summit.gfx;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.awt.Point;
 import summit.util.Region;
+import summit.util.Time;
 
 public class Renderer {
 
     private int[][] frame;
-    
+
+    //used by final frame writer threads
+    private final Thread[] writers;
+    private AtomicBoolean[] upscaleFinished;
+    private int[] finalFrame;
+    private final int finalHeight;
+    private final int finalWidth;
+    private boolean processUpscale;
+
     public static final int WIDTH = 256;
     public static final int HEIGHT = 144;
 
@@ -24,8 +36,58 @@ public class Renderer {
     public static final int OUTLINE_BLUE = 0b100000;
     
 
-    public Renderer(){
+    public Renderer(int t, int fWidth, int fHeight){
         frame = new int[HEIGHT][WIDTH];
+        this.finalWidth = fWidth;
+        this.finalHeight = fHeight;
+
+        this.writers = new Thread[Renderer.getClosestFactor(t, finalHeight)];
+        this.upscaleFinished = new AtomicBoolean[writers.length];
+
+        //--------------------------------------------------------------------------
+        //concurrent rendering 
+        //--------------------------------------------------------------------------
+
+        for (int i = 0; i < upscaleFinished.length; i++) {
+            upscaleFinished[i] = new AtomicBoolean(false);
+        }
+
+        for (int i = 0; i < writers.length; i++) {
+            final int _i = i;
+            final int start = i*(finalHeight/t);
+            final int end = (i+1)*(finalHeight/t);
+
+            // System.out.println(start + "  " + end);
+
+            writers[i] = new Thread(("writer"+i)){
+                final private int n = _i;
+
+                @Override
+                public void run(){
+                    while(true){
+                        Time.nanoDelay(Time.NS_IN_MS/2);
+                        if(processUpscale && !upscaleFinished[n].get()){
+                            float scaleX = finalWidth/WIDTH;
+                            float scaleY = finalHeight/HEIGHT;
+
+                            for(int r = start; r < end; r++) {
+                                for(int c = 0; c < finalWidth; c++){
+                                    if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
+                                        finalFrame[r*finalWidth+c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
+                                    }
+                                }
+                            }
+                            upscaleFinished[n].set(true);
+                        }
+                    }
+                }
+            };
+        }
+
+        for (Thread wr : writers) {
+            wr.start();
+        }
+        //---------------------------------------------------------------------------------------
     }
 
     public void resetFrame(){
@@ -34,23 +96,24 @@ public class Renderer {
 
     //parallelize this process for TWICE the framerate 🤑🤑🤑🤑
     public void upscaleToImage(BufferedImage newFrame){
-        int newWidth = newFrame.getWidth();
-        int newHeight = newFrame.getHeight();
+        finalFrame = ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData();
+    
+        this.processUpscale = true;
 
-        // BufferedImage newFrame = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-
-        int[] frameBuffer = ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData();
-
-        float scaleX = newWidth/WIDTH;
-        float scaleY = newHeight/HEIGHT;
-        
-        for(int r = 0; r < newHeight; r++) {
-            for(int c = 0; c < newWidth; c++){
-                if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
-                    frameBuffer[r*newWidth+c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
-                }
-            }
+        //wait till all finished
+        for (int i = 0; i < upscaleFinished.length; i++) {
+            if(upscaleFinished[i].get() == false)
+                i = 0;
         }
+
+        for (int i = 0; i < upscaleFinished.length; i++) {
+            upscaleFinished[i].set(false);
+        }
+
+        this.processUpscale = false;
+
+
+        // System.out.println("HELLO");
     }
 
 
@@ -255,6 +318,18 @@ public class Renderer {
     //--------------------------------------------------------------------
     // utility methods
     //--------------------------------------------------------------------
+
+    //just for thread
+    private static int getClosestFactor(int target, int number) {
+        for (int i = 0; i < number; i++) {
+            if (number % (target + i) == 0) {
+                return target + i;
+            } else if (number % (target - i) == 0) {
+                return target - i;
+            }
+        }
+        return number;
+    }
 
     public static int toIntRGB(int r, int g, int b){
         return ((r > 255) ? 255 : r << 16) | 

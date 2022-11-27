@@ -57,7 +57,7 @@ public class GameMapGenerator {
                 double val = heightMap[i][j];
                 // TileStack t = tiles[i][j];
                 if(val > 0.8){
-                    map.spawn(new Tree(j, i));
+                    // map.spawn(new Tree(j, i));
                 }
             }
         }
@@ -66,11 +66,11 @@ public class GameMapGenerator {
 
         map.addStructure(new TraderHouse(19.5f, 19f, map));
 
-        map.spawn(new Skeleton(40, 35));
-        map.spawn(new Skeleton(35, 40));
-        map.spawn(new Skeleton(40, 40));
-        map.spawn(new Skeleton(35, 35));
-        map.spawn(new Skeleton(37, 37));
+        // map.spawn(new Skeleton(40, 35));
+        // map.spawn(new Skeleton(35, 40));
+        // map.spawn(new Skeleton(40, 40));
+        // map.spawn(new Skeleton(35, 35));
+        // map.spawn(new Skeleton(37, 37));
 
         return map;
     }
