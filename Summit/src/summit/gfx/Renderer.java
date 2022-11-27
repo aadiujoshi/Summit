@@ -32,6 +32,7 @@ public class Renderer {
         frame = new int[HEIGHT][WIDTH]; 
     }
 
+    //parallelize this process for TWICE the framerate 🤑🤑🤑🤑
     public void upscaleToImage(BufferedImage newFrame){
         int newWidth = newFrame.getWidth();
         int newHeight = newFrame.getHeight();
@@ -43,7 +44,6 @@ public class Renderer {
         float scaleX = newWidth/WIDTH;
         float scaleY = newHeight/HEIGHT;
         
-        // method 1 (working)
         for(int r = 0; r < newHeight; r++) {
             for(int c = 0; c < newWidth; c++){
                 if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){

@@ -1,7 +1,6 @@
 package summit.game.tile;
 
 import summit.game.GameUpdateEvent;
-import summit.game.entity.Entity;
 import summit.gfx.Sprite;
 
 public class GrassTile extends Tile{

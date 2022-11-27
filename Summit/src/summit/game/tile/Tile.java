@@ -21,15 +21,15 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
     //if true -> entities cannot pass through this tile
     private boolean boundary;
-    private boolean breakable = false;
-    private boolean destroyed = false;
+    private boolean breakable;
+    private boolean destroyed;
 
     //managed by TileStack;
     //If not null, the tile is pushed to the top of the tile stack
     private Tile reqPushTile;
 
     //Rendering hint, nothing to do with gameplay
-    private boolean raisedTile = true;
+    private int depth;
 
     private ScheduledEvent rotateAnim;
 
@@ -113,13 +113,14 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 		this.breakable = breakable;
 	}
 
-    public boolean isRaisedTile() {
-        return this.raisedTile;
+    public int getDepth() {
+        return this.depth;
     }
 
-    public void setRaisedTile(boolean raisedTile) {
-		this.raisedTile = raisedTile;
-	}
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
 
     public void particleAnimation(boolean a){
         this.animateParticles = a;

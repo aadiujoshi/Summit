@@ -22,6 +22,7 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
     }
 
     public void pushTile(Tile tile){
+        tile.setDepth(tiles.size());
         tiles.push(tile);
     }
 
@@ -63,6 +64,7 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
                 continue;
             }
         }
+        
         if(peekTile().getReqPushTile() != null){
             pushTile(peekTile().getReqPushTile());
             peekTile().setReqPushTile(null);
