@@ -27,13 +27,7 @@ public class Arrow extends Projectile {
         // TODO Auto-generated method stub
         
     }
-
-    @Override
-    public void damage(float damage, Entity e) {
-        // TODO Auto-generated method stub
-        
-    }
-
+    
     @Override
     public void destroy(GameUpdateEvent ge) {
         // TODO Auto-generated method stub

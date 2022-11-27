@@ -16,7 +16,7 @@ import summit.util.GameRegion;
 
 public abstract class Structure extends GameRegion implements GameUpdateReciever {
 
-    private ColorFilter shadow = new ColorFilter(-100, -100, -100);
+    private ColorFilter shadow = new ColorFilter(-70, -70, -70);
 
     private ArrayList<Light> shadows;
 

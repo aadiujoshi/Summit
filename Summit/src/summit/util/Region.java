@@ -34,8 +34,8 @@ public class Region {
     }
 
     public boolean contains(float ox, float oy){
-        if(ox < x+(width/2) && ox > x-(width/2)){
-            if(oy < y+(height/2) && oy > y-(height/2)){
+        if(ox < x+(width/2f) && ox > x-(width/2f)){
+            if(oy < y+(height/2f) && oy > y-(height/2f)){
                 return true;
             }
         }

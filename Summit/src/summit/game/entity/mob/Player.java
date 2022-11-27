@@ -70,7 +70,6 @@ public class Player extends HumanoidEntity{
     @Override
     public void paint(PaintEvent e) {
         super.paint(e);
-        
         e.getRenderer().renderText(("x:" + Math.round(getX()*2)/2), 
                     20, 15, Renderer.NO_OP, new ColorFilter(255, -255, -255));
 
@@ -80,14 +79,11 @@ public class Player extends HumanoidEntity{
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
                                         (getX()+(getSpriteOffsetX()/16f)), (getY()+(getSpriteOffsetY()/16f)), 
                                         getRenderOp(), getColorFilter(),
-                                        e.getCamera());
-                                    
+                                        e.getCamera());                 
     } 
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        // super.damage(1, null);
-        
         if(!invGui.isPushed()){
             e.getWindow().pushGameContainer(invGui);
             Controls.E = true;
@@ -122,7 +118,7 @@ public class Player extends HumanoidEntity{
             this.setX(this.getX()+del_x);
         }
     }
-    
+
     //---------------- getters and setters --------------------------
 
     @Override 

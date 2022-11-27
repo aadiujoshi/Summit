@@ -39,7 +39,7 @@ public class HostileMobAI extends EntityAI{
             reached++;
 
         if(reached == 2){
-            p.damage(entity.getHitDamage(), entity);
+            p.damage(entity);
         }
     }
 }

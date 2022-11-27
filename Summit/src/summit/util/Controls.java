@@ -14,7 +14,8 @@ public class Controls {
     public static volatile boolean DOWN;
     public static volatile boolean LEFT;
     public static volatile boolean RIGHT;
-    
+    public static volatile boolean SHIFT;
+
     //toggleable not press and release
     public static volatile boolean E;
 
@@ -44,6 +45,12 @@ public class Controls {
             case KeyEvent.VK_RIGHT:
                 RIGHT = true;
                 break;
+            case KeyEvent.VK_SHIFT:
+                SHIFT = true;
+                break;
+            
+            //---------- togglable -----------------
+
             case KeyEvent.VK_E:
                 E = !E;
                 break;
@@ -79,6 +86,12 @@ public class Controls {
             case KeyEvent.VK_RIGHT:
                 RIGHT = false;
                 break;
+            case KeyEvent.VK_SHIFT:
+                SHIFT = false;
+                break;
+
+            //--------- toggleable --------------------------
+
             case KeyEvent.VK_E:
                 break;
         }

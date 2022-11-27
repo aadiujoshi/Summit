@@ -60,7 +60,12 @@ public class TileStack implements GameClickReciever, Paintable, GameUpdateReciev
                 t.destroy(e);
                 tiles.remove(i);
                 i--;
+                continue;
             }
+        }
+        if(peekTile().getReqPushTile() != null){
+            pushTile(peekTile().getReqPushTile());
+            peekTile().setReqPushTile(null);
         }
     }
 }

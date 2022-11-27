@@ -21,7 +21,10 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
     private float spriteOffsetX;
     private float spriteOffsetY;
 
+    private boolean outline = true;
+
     // +x is right -x is left +y is up -y is down
+    //DO NOT USE
     private float xOffset;
     private float yOffset;
     
@@ -30,6 +33,8 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
     private int renderOp;
     private ColorFilter filter = ColorFilter.NOFILTER;
     private Light light = Light.NO_LIGHT;
+
+    private final String NAME = getClass().getSimpleName();
 
     //the general color for the region
     private int color = Renderer.toIntRGB(170, 214, 230);
@@ -50,7 +55,8 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
 
     @Override
     public void paint(PaintEvent e) {
-        this.outline(e);
+        if(outline())
+            this.outline(e);
         e.getRenderer().renderGame(sprite, 
                                     getX()+spriteOffsetX, getY()+spriteOffsetY, renderOp,
                                     filter,
@@ -160,5 +166,17 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
 
     public void setColor(int color) {
         this.color = color;
+    }
+    
+    public boolean outline() {
+        return this.outline;
+    }
+
+    public void setOutline(boolean outline) {
+        this.outline = outline;
+    }
+    
+    public String getName(){
+        return this.NAME;
     }
 }

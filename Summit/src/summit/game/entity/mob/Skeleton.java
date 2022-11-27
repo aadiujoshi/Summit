@@ -32,7 +32,7 @@ public class Skeleton extends HumanoidEntity{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        damage(e.getMap().getPlayer().getHitDamage() , e.getMap().getPlayer());
+        damage(e.getMap().getPlayer());
     }
     
     @Override

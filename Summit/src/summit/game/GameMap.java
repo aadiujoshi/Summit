@@ -10,6 +10,7 @@ import summit.game.structure.Structure;
 import summit.game.structure.TraderHouse;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
+import summit.gfx.AmbientOcclusion;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
 import summit.gfx.OrderPaintEvent;
@@ -35,6 +36,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     private ColorFilter filter;
     private Paintable animation;
+    private Paintable ambientOcclusion;
 
     private TileStack[][] tiles;
     private final int WIDTH;
@@ -62,10 +64,15 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         this.HEIGHT = height;
 
         this.particleAnimations = new ArrayList<>();
+        this.ambientOcclusion = new AmbientOcclusion(3);
     }
 
     @Override
     public void gameClick(GameUpdateEvent e) {
+        if(e.gameX() > getWidth() || e.gameX() < 0 ||
+            e.gameY() > getHeight() || e.gameY() < 0)
+                return;
+
         for(Structure r_struct : structures) {
             if(r_struct.contains(e.gameX(), e.gameY())){
                 r_struct.gameClick(e);
@@ -78,7 +85,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
                 return;
             }
         }
-
+        
         getTileStackAt(e.gameX(), e.gameY()).gameClick(e);
     }
 
@@ -110,7 +117,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         
         for (int i = 0; i < particleAnimations.size(); i++) {
             particleAnimations.get(i).setRenderLayer(e);
-            
+
             if(particleAnimations.get(i).terminate()){
                 particleAnimations.remove(i);
                 i--;
@@ -120,20 +127,16 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
         e.addToLayer(RenderLayers.TOP_LAYER, this);
 
-        Camera c = e.getCamera();
-        int nx = Math.round(c.getX());
-        int ny = Math.round(c.getY());
+        TileStack[][] rdTiles = this.tilesInRD(e.getCamera());
 
-        //range of tiles to display
-        int rwidth = (Renderer.WIDTH/16)+3;
-        int rheight = (Renderer.HEIGHT/16)+3;
-
-        for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < tiles.length; i++){
-            for(int j = ny-rheight/2; j < ny+rheight/2 && j < tiles[0].length; j++){
-                if(i > -1 && j > -1)
-                    tiles[j][i].setRenderLayer(e);
+        for (int i = 0; i < rdTiles.length; i++) {
+            for (int j = 0; j < rdTiles[0].length; j++) {
+                if(rdTiles[i][j] != null)
+                    rdTiles[i][j].setRenderLayer(e);
             }
         }
+
+        ambientOcclusion.setRenderLayer(e);
 
         ArrayList<Region> sorted = new ArrayList<>();
 
@@ -174,6 +177,26 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     // getters and setters
     //--------------------------------------------------------------------
     
+    public TileStack[][] tilesInRD(Camera c){
+        int nx = Math.round(c.getX());
+        int ny = Math.round(c.getY());
+
+        //range of tiles to display
+        int rwidth = (Renderer.WIDTH/16)+3;
+        int rheight = (Renderer.HEIGHT/16)+3;
+
+        TileStack[][] rdTiles = new TileStack[rheight][rwidth];
+
+        for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < tiles.length; i++){
+            for(int j = ny-rheight/2; j < ny+rheight/2 && j < tiles[0].length; j++){
+                if(i > -1 && j > -1)
+                    rdTiles[j-(ny-rheight/2)][i-(nx-rwidth/2)] = tiles[j][i];
+            }
+        }
+
+        return rdTiles;
+    }
+
     public void addStructure(Structure s){
         this.structures.add(s);
     }

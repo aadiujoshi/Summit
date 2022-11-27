@@ -33,6 +33,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private Tile onTile;
 
+    private boolean pickupItems;
+
     private float hitDamage;
     private float damageResistance;
     private boolean hitCooldown;
@@ -79,6 +81,11 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     public void update(GameUpdateEvent e){
         GameMap map = e.getMap();
 
+        if(health <= 0){
+            destroyed = true;
+            return;
+        }
+
         if(kb != null){
             kb.move(e);
             if(kb.finished())
@@ -104,11 +111,11 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         items.addItem(contact);
     }
 
-    public void damage(float damage, Entity hitBy){
+    public void damage(Entity hitBy){
         if(hitBy.hitCooldown())
             return;
 
-        health -= damage;
+        health -= hitBy.getHitDamage();
         
         this.setKnockback(20, 500, hitBy);
 
@@ -136,7 +143,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     //called by parent object when set to destroy
     public void destroy(GameUpdateEvent ge){
-
+        //code to drop item table
     }
 
     public boolean moveTo(GameMap map, float newX, float newY){
@@ -300,6 +307,14 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     
     public boolean hitCooldown() {
         return this.hitCooldown;
+    }
+    
+    public boolean canPickupItems() {
+        return this.pickupItems;
+    }
+
+    public void setPickupItems(boolean canPickupItems) {
+        this.pickupItems = canPickupItems;
     }
 
     public void setHitCooldown(boolean hitCooldown) {

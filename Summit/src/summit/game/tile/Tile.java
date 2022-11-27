@@ -1,11 +1,15 @@
 package summit.game.tile;
 
+import java.awt.Point;
+
+import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.animation.ParticleAnimation;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
+import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
@@ -20,6 +24,10 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     private boolean breakable = false;
     private boolean destroyed = false;
 
+    //managed by TileStack;
+    //If not null, the tile is pushed to the top of the tile stack
+    private Tile reqPushTile;
+
     //Rendering hint, nothing to do with gameplay
     private boolean raisedTile = true;
 
@@ -27,13 +35,12 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
     //shut up its necessary
     private boolean animateParticles = false;
-    private ParticleAnimation particleAnim;
-
-    private final String NAME = getClass().getSimpleName();
+    private ParticleAnimation particleAnimation;
 
     public Tile(float x, float y, float width, float height){
         super(x, y, width, height);
         super.setRLayer(RenderLayers.TILE_LAYER);
+        super.setOutline(true);
     }
 
     public Tile(float x, float y){
@@ -44,21 +51,16 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     public void setRenderLayer(OrderPaintEvent e){
         super.setRenderLayer(e); 
 
-        if(particleAnim != null)
-            particleAnim.setRenderLayer(e);
+        if(particleAnimation != null)
+            particleAnimation.setRenderLayer(e);
 
-        if(particleAnim != null && particleAnim.terminate())
-            particleAnim = null;
+        if(particleAnimation != null && particleAnimation.terminate())
+            particleAnimation = null;
     }
 
     //make breaking particle animation
     public void destroy(GameUpdateEvent e){
-        e.getMap();
-    }
-
-    @Override
-    public void paint(PaintEvent e){
-        super.paint(e);
+        e.getMap().addParticleAnimation(new ParticleAnimation(getX(), getY(), 500, 15, getColor()));
     }
 
     @Override
@@ -66,8 +68,8 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
         e.setInWater(false);
         e.setOnFire(false);
 
-        if(e.isMoving() && animateParticles && particleAnim == null){
-            particleAnim = new ParticleAnimation(e.getX(), e.getY(), 500, 15, getColor());
+        if(e.isMoving() && animateParticles && particleAnimation == null){
+            particleAnimation = new ParticleAnimation(e.getX(), e.getY(), 500, 15, getColor());
         }
     }
 
@@ -95,10 +97,6 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     public void setDestroy(boolean destroy) {
 		this.destroyed = destroy;
 	}
-    
-    public String getName(){
-        return this.NAME;
-    }
 
     @Override
     public void setLight(Light light) {
@@ -139,5 +137,13 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
         } else {
             rotateAnim = null;
         }
+    }
+    
+    public Tile getReqPushTile() {
+        return this.reqPushTile;
+    }
+
+    public void setReqPushTile(Tile reqPushTile) {
+        this.reqPushTile = reqPushTile;
     }
 }

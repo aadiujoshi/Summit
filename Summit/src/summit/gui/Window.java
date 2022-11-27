@@ -440,6 +440,7 @@ public class Window implements MouseListener, KeyListener{
         
         if(state == WindowState.GAME){
             if(world != null){
+                
                 GameMap loadedmap = world.getLoadedMap();
                 loadedmap.gameClick(new GameUpdateEvent(world, 0, rx, ry, false));
             }

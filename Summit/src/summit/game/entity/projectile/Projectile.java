@@ -15,7 +15,7 @@ public abstract class Projectile extends Entity {
 
     @Override
     public void collide(Entity e) {
-        e.damage(getHitDamage(), e);
-        
+        e.damage(this);
+        this.setDestroyed(true);
     }
 }

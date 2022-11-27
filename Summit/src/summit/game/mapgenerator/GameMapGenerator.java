@@ -5,6 +5,7 @@ import summit.game.entity.mob.Player;
 import summit.game.entity.mob.Skeleton;
 import summit.game.structure.Door;
 import summit.game.structure.TraderHouse;
+import summit.game.structure.Tree;
 import summit.game.tile.GrassTile;
 import summit.game.tile.LavaTile;
 import summit.game.tile.SnowTile;
@@ -33,6 +34,7 @@ public class GameMapGenerator {
             }
         }
 
+        //base tiles
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
                 double val = heightMap[i][j];
@@ -43,18 +45,32 @@ public class GameMapGenerator {
                     }
                 } else if(val > 0){
                     t.pushTile(new GrassTile(j, i));
-                    t.pushTile(new SnowTile(j, i));
+                    if(val > 0.3)
+                        t.pushTile(new SnowTile(j, i));
                 }
             }
         }
 
+        //trees!!!
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                double val = heightMap[i][j];
+                TileStack t = tiles[i][j];
+                if(val > 0.8){
+                    // map.spawn(new Tree(j, i));
+                }
+            }
+        }
+
+        map.spawn(new Tree(40, 40));
+
         map.addStructure(new TraderHouse(19.5f, 19f, map));
 
-        map.spawn(new Skeleton(40, 35));
-        map.spawn(new Skeleton(35, 40));
-        map.spawn(new Skeleton(40, 40));
-        map.spawn(new Skeleton(35, 35));
-        map.spawn(new Skeleton(30, 30));
+        // map.spawn(new Skeleton(40, 35));
+        // map.spawn(new Skeleton(35, 40));
+        // map.spawn(new Skeleton(40, 40));
+        // map.spawn(new Skeleton(35, 35));
+        // map.spawn(new Skeleton(30, 30));
 
         return map;
     }
