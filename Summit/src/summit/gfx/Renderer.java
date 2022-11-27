@@ -96,7 +96,7 @@ public class Renderer {
         frame = new int[HEIGHT][WIDTH]; 
     }
 
-    //parallelize this process for TWICE the framerate 🤑🤑🤑🤑
+    //parallelize this process for more frames 🤑🤑🤑🤑
     public void upscaleToImage(BufferedImage newFrame){
         finalFrame = ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData();
     

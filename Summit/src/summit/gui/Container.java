@@ -40,7 +40,6 @@ public class Container implements Paintable, GUIClickReciever{
             
             region = new Region(x+(parent.getX()-(parent.getWidth()/2)), y+(parent.getY()-(parent.getHeight()/2)), w, h);
         }
-        System.out.println(region);
     }
 
     @Override

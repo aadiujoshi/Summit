@@ -64,7 +64,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         this.HEIGHT = height;
 
         this.particleAnimations = new ArrayList<>();
-        this.ambientOcclusion = new AmbientOcclusion(20);
+        this.ambientOcclusion = new AmbientOcclusion(30);
     }
 
     @Override

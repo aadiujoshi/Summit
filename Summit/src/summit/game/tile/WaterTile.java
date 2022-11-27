@@ -12,6 +12,7 @@ public class WaterTile extends Tile{
         super(x, y);
         super.setSprite(Sprite.WATER_TILE);
         super.setBoundary(false);
+        super.rotateAnimation(true);
         // super.setLight(new Light(x, y, 1f, 0, 0, 100));
     }
 

@@ -82,34 +82,51 @@ public class AmbientOcclusion implements Paintable{
      */
     private void ambientShadow(Direction d, int gx, int gy, PaintEvent e){
         Point p = Renderer.toPixel(gx, gy, e.getCamera());
-
-        int spread = 7;
+        GameMap map = e.getLoadedMap();
+        float spread = 10;
 
         Renderer r = e.getRenderer();
 
         if(d == Direction.WEST){
-            int s = p.x-spread-8;
+            int s = (int)(p.x-spread-8);
             for (int x = s; x < p.x-7; x++) {
 
-                int val = (int)(-intensity*((x-s)/5f));
+                int val = (int)(-intensity*((x-s)/spread));
 
                 r.filterRect(x, p.y-8, 1, 16, new ColorFilter(val, val, val));
             }
         }
         if(d == Direction.EAST){
-            int s = p.x+spread+8;
+            int s = (int)(p.x+spread+8);
 
             for (int x = s; x > p.x+8; x--) {
-                int val = (int)(-intensity*((s-x)/5f));
+                int val = (int)(-intensity*((s-x)/spread));
 
                 r.filterRect(x, p.y-8, 1, 16, new ColorFilter(val, val, val));
             }
         }
         if(d == Direction.NORTH){
+            int s = (int)(p.y-spread-8);
 
+            for (int y = s; y < p.y-8; y++) {
+                int val = (int)(-intensity*((y-s)/spread));
+
+                r.filterRect(p.x-7, y, 16, 1, new ColorFilter(val, val, val));
+            }
         }
         if(d == Direction.SOUTH){
+            int s = (int)(p.y+spread+8);
 
+            for (int y = s; y > p.y+7; y--) {
+                int val = (int)(-intensity*((s-y)/spread));
+
+                r.filterRect(p.x-7, y, 16, 1, new ColorFilter(val, val, val));
+            }
         }
+
+        // if(d == Direction.NW){
+        //     //check if enclosed
+        //     if(map.getTileAt(gx, gy))
+        // }
     }
 }

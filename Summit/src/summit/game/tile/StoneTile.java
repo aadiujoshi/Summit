@@ -18,6 +18,4 @@ public class StoneTile extends Tile{
         // TODO Auto-generated method stub
         
     }
-
-    
 }
