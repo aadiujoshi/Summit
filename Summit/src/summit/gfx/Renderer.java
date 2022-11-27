@@ -1,12 +1,11 @@
 package summit.gfx;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.awt.Point;
+
 import summit.util.Region;
 import summit.util.Time;
 
@@ -20,7 +19,7 @@ public class Renderer {
     private int[] finalFrame;
     private final int finalHeight;
     private final int finalWidth;
-    private boolean processUpscale;
+    private AtomicBoolean processUpscale;
 
     public static final int WIDTH = 256;
     public static final int HEIGHT = 144;
@@ -41,32 +40,34 @@ public class Renderer {
         this.finalWidth = fWidth;
         this.finalHeight = fHeight;
 
-        this.writers = new Thread[Renderer.getClosestFactor(t, finalHeight)];
-        this.upscaleFinished = new AtomicBoolean[writers.length];
-
         //--------------------------------------------------------------------------
         //concurrent rendering 
         //--------------------------------------------------------------------------
+
+        this.writers = new Thread[Renderer.getClosestFactor(t, finalHeight)];
+        this.upscaleFinished = new AtomicBoolean[writers.length];
+        this.processUpscale = new AtomicBoolean(false);
 
         for (int i = 0; i < upscaleFinished.length; i++) {
             upscaleFinished[i] = new AtomicBoolean(false);
         }
 
+        float inv_delay = 5f;
+
         for (int i = 0; i < writers.length; i++) {
             final int _i = i;
             final int start = i*(finalHeight/t);
             final int end = (i+1)*(finalHeight/t);
-
-            // System.out.println(start + "  " + end);
-
+            
             writers[i] = new Thread(("writer"+i)){
-                final private int n = _i;
 
+                final int n = _i;
+                
                 @Override
                 public void run(){
                     while(true){
-                        Time.nanoDelay(Time.NS_IN_MS/2);
-                        if(processUpscale && !upscaleFinished[n].get()){
+                        Time.nanoDelay((long)(Time.NS_IN_MS/inv_delay));
+                        if(processUpscale.get() && !upscaleFinished[n].get()){
                             float scaleX = finalWidth/WIDTH;
                             float scaleY = finalHeight/HEIGHT;
 
@@ -78,6 +79,7 @@ public class Renderer {
                                 }
                             }
                             upscaleFinished[n].set(true);
+                            // Time.nanoDelay((long)(Time.NS_IN_MS/inv_delay));
                         }
                     }
                 }
@@ -98,7 +100,7 @@ public class Renderer {
     public void upscaleToImage(BufferedImage newFrame){
         finalFrame = ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData();
     
-        this.processUpscale = true;
+        processUpscale.set(true);
 
         //wait till all finished
         for (int i = 0; i < upscaleFinished.length; i++) {
@@ -106,14 +108,14 @@ public class Renderer {
                 i = 0;
         }
 
+        this.processUpscale.set(false);
+
         for (int i = 0; i < upscaleFinished.length; i++) {
             upscaleFinished[i].set(false);
         }
 
-        this.processUpscale = false;
-
-
-        // System.out.println("HELLO");
+        // Time.nanoDelay(Time.NS_IN_MS/((int)(Math.random()*3+1)));
+        // Time.nanoDelay(Time.NS_IN_MS);
     }
 
 

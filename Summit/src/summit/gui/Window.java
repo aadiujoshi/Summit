@@ -92,7 +92,7 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(10, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(8, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 
@@ -215,6 +215,8 @@ public class Window implements MouseListener, KeyListener{
         
         graphicsThread.start();
         schedulerThread.start();
+
+        System.out.println("Threads in use: " + (Thread.activeCount()+1));
 
         this.setState(WindowState.SELECTIONMENUS);
     }

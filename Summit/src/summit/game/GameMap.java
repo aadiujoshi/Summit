@@ -136,7 +136,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
             }
         }
 
-        // ambientOcclusion.setRenderLayer(e);
+        ambientOcclusion.setRenderLayer(e);
 
         ArrayList<Region> sorted = new ArrayList<>();
 

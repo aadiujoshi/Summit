@@ -1,5 +1,7 @@
 package summit.game.mapgenerator;
 
+import java.util.Random;
+
 import summit.game.GameMap;
 import summit.game.entity.mob.Player;
 import summit.game.entity.mob.Skeleton;
@@ -20,7 +22,8 @@ public class GameMapGenerator {
     private GameMapGenerator(){}
 
     public static GameMap generateStage1(final long seed){
-        OpenSimplexNoise gen = new OpenSimplexNoise(seed);        
+        OpenSimplexNoise gen = new OpenSimplexNoise(seed);  
+        Random random = new Random(seed);
         GameMap map = new GameMap("stage1", seed, 128, 128);
 
         double[][] heightMap = new double[128][128];
@@ -56,8 +59,9 @@ public class GameMapGenerator {
             for (int j = 0; j < tiles[0].length; j++) {
                 double val = heightMap[i][j];
                 // TileStack t = tiles[i][j];
-                if(val > 0.8){
-                    // map.spawn(new Tree(j, i));
+                if(val > 0.6){
+                    if(random.nextInt(4) == 0)
+                        map.spawn(new Tree(j, i));
                 }
             }
         }
@@ -98,5 +102,4 @@ public class GameMapGenerator {
     public static GameMap generateStage3(final long seed){
         return null;
     }
-
 }
