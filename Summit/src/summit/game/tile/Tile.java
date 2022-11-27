@@ -77,7 +77,6 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     public void gameClick(GameUpdateEvent e){
         if(breakable){
             this.setDestroy(true);
-            System.out.println(getX() + "  " + getY());
         }
     }
 

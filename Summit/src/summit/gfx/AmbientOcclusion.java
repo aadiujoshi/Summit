@@ -71,22 +71,6 @@ public class AmbientOcclusion implements Paintable{
                         }
                     }
                 }
-                
-                // if(r+1 < tiles.length && tiles[r+1][c] != null)
-                //     if(!type.equals(tiles[r+1][c].peekTile().getName()) && !tiles[r+1][c].peekTile().isRaisedTile())
-                //         ambientShadow(Direction.NORTH, (int)t.getX(), (int)t.getY(), e);
-
-                // if(r-1 > -1 && tiles[r-1][c] != null)
-                //     if(!type.equals(tiles[r-1][c].peekTile().getName()) && !tiles[r-1][c].peekTile().isRaisedTile())
-                //         ambientShadow(Direction.SOUTH, (int)t.getX(), (int)t.getY(), e);
-
-                // if(c-1 > -1 && tiles[r][c-1] != null)
-                //     if(!type.equals(tiles[r][c-1].peekTile().getName()) && !tiles[r][c-1].peekTile().isRaisedTile())
-                //         ambientShadow(Direction.WEST, (int)t.getX(), (int)t.getY(), e);
-
-                // if(c+1 < tiles[0].length && tiles[r][c+1] != null)
-                //     if(!type.equals(tiles[r][c+1].peekTile().getName()) && !tiles[r][c+1].peekTile().isRaisedTile())
-                //         ambientShadow(Direction.EAST, (int)t.getX(), (int)t.getY(), e);
             }   
         }
     }
