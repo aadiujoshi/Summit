@@ -30,7 +30,7 @@ public class AmbientOcclusion implements Paintable{
     @Override
     public void paint(PaintEvent e) {
         //NOT READY YET
-        if(true) return;
+        // if(true) return;
 
         TileStack[][] tiles = e.getLoadedMap().tilesInRD(e.getCamera());
 
@@ -177,6 +177,8 @@ public class AmbientOcclusion implements Paintable{
      * 
      */
     private boolean validCorner(Direction d, Tile rel, GameMap map){
+        if(true) return false;
+        
         int rx = (int)rel.getX();
         int ry = (int)rel.getY();
 
