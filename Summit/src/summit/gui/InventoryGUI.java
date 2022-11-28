@@ -22,7 +22,11 @@ public class InventoryGUI extends Container{
     public void paint(PaintEvent e){
         e.getRenderer().render(Sprite.INVENTORY, getX(), getY(), Renderer.NO_OP, null);
 
+        int x0 = getX()-getWidth()/2;
+        int y0 = getY()-getHeight()/2;
+
         for(Item item : inventory.getItems()){
+            
             item.paint(e);
         }
     }

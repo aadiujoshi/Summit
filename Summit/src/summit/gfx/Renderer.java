@@ -45,15 +45,23 @@ public class Renderer {
         //concurrent rendering 
         //--------------------------------------------------------------------------
 
+        if(t == 1){
+            this.writers = null;
+            return;
+        }
+
         this.writers = new Thread[Renderer.getClosestFactor(t, finalHeight)];
         this.upscaleFinished = new AtomicBoolean[writers.length];
         this.processUpscale = new AtomicBoolean(false);
+
+        // if(true)
+        // return;
 
         for (int i = 0; i < upscaleFinished.length; i++) {
             upscaleFinished[i] = new AtomicBoolean(false);
         }
 
-        float inv_delay = 250f;
+        float inv_delay = 1000f;
 
         for (int i = 0; i < writers.length; i++) {
             final int _i = i;
@@ -97,29 +105,47 @@ public class Renderer {
         frame = new int[HEIGHT][WIDTH]; 
     }
 
+
+    
+
     //parallelize this process for more frames 🤑🤑🤑🤑
     public void upscaleToImage(BufferedImage newFrame){
         finalFrame = ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData();
     
-        processUpscale.set(true);
-
-        //wait till all finished
-        for (int i = 0; i < upscaleFinished.length; i++) {
-            if(upscaleFinished[i].get() == false)
-                i = 0;
+        float scaleX = finalWidth/WIDTH;
+        float scaleY = finalHeight/HEIGHT;
+        
+        for(int r = 0; r < finalHeight; r++) {
+            for(int c = 0; c < finalWidth; c++){
+                if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
+                    finalFrame[r*finalWidth+c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
+                }
+            }
         }
 
-        this.processUpscale.set(false);
+        if(writers != null){
+            processUpscale.set(true);
 
-        for (int i = 0; i < upscaleFinished.length; i++) {
-            upscaleFinished[i].set(false);
+            //wait till all finished
+            for (int i = 0; i < upscaleFinished.length; i++) {
+                if(upscaleFinished[i].get() == false)
+                    i = 0;
+            }
+
+            this.processUpscale.set(false);
+
+            for (int i = 0; i < upscaleFinished.length; i++) {
+                upscaleFinished[i].set(false);
+            }
         }
-
-        // Time.nanoDelay(Time.NS_IN_MS/((int)(Math.random()*3+1)));
-        // Time.nanoDelay(Time.NS_IN_MS);
     }
 
 
+    @Deprecated
+    /**
+     * does not work
+     * @param scale
+     */
     public void contrastFrame(float scale){
         int min = rgbIntensity(frame[0][0]);
         int max = min;

@@ -5,6 +5,7 @@ import java.util.Random;
 import summit.game.GameMap;
 import summit.game.entity.mob.Player;
 import summit.game.entity.mob.Skeleton;
+import summit.game.entity.mob.Zombie;
 import summit.game.structure.Door;
 import summit.game.structure.TraderHouse;
 import summit.game.structure.Tree;
@@ -70,17 +71,11 @@ public class GameMapGenerator {
 
         map.addStructure(new TraderHouse(19.5f, 19f, map));
 
-        // for (int i = 30; i < 60; i++) {
-        //     for (int j = 30; j < 60; j++) {
-        //         map.spawn(new Skeleton(j, i));
+        // for (int i = 30; i < 31; i++) {
+        //     for (int j = 30; j < 31; j++) {
+        //         map.spawn(new Zombie(j, i));
         //     }
         // }
-
-        // map.spawn(new Skeleton(40, 35));
-        // map.spawn(new Skeleton(35, 40));
-        // map.spawn(new Skeleton(40, 40));
-        // map.spawn(new Skeleton(35, 35));
-        // map.spawn(new Skeleton(37, 37));
 
         return map;
     }
@@ -95,6 +90,12 @@ public class GameMapGenerator {
                 tiles[i][j].pushTile(new WoodPlank(j, i));
             }
         }
+
+        tiles[2][2].pushTile(new GrassTile(2, 2));
+        tiles[3][2].pushTile(new GrassTile(3, 2));
+        tiles[2][3].pushTile(new GrassTile(2, 3));
+        tiles[3][3].pushTile(new GrassTile(3, 3));
+        tiles[3][3].pushTile(new GrassTile(3, 3));
         
         map.addStructure(new Door(7f, 0, parentMap, map));
         map.setCamera(new Camera(7f, 1));

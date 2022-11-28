@@ -35,9 +35,10 @@ public class Inventory extends ItemTable{
 
     @Override
     public void addItem(Item e){
-        if(vacantSpace(e)){
-            super.addItem(e);
-        }
+        // if(vacantSpace(e)){
+        //     super.addItem(e);
+        // }
+        super.addItem(e);
     }
 
     public int getWidth(){

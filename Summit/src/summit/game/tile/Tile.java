@@ -48,6 +48,16 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
     }    
 
     @Override
+    public void paint(PaintEvent e){
+        super.paint(e);
+
+        // Point p = Renderer.toPixel(getX(), getY(), e.getCamera());
+
+        // e.getRenderer().renderText((int)getX()+"", (int)p.x, (int)p.y-4, Renderer.NO_OP, null);
+        // e.getRenderer().renderText((int)getY()+"", (int)p.x, (int)p.y+4, Renderer.NO_OP, null);
+    }
+
+    @Override
     public void setRenderLayer(OrderPaintEvent e){
         super.setRenderLayer(e); 
 
@@ -75,9 +85,15 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
     @Override
     public void gameClick(GameUpdateEvent e){
+        System.out.println(this);
         if(breakable){
             this.setDestroy(true);
         }
+    }
+
+    @Override
+    public String toString(){
+        return getName() + "  " + getX() + "  " + getY() + "  " + getColorFilter().toString(); 
     }
 
     //-------------  getters and setters  ----------------------------------------------------------

@@ -30,10 +30,6 @@ public class Skeleton extends HumanoidEntity{
         //                             e.getCamera());
     }
 
-    @Override
-    public void gameClick(GameUpdateEvent e) {
-        damage(e.getMap().getPlayer());
-    }
     
     @Override
     public void collide(Entity g) {

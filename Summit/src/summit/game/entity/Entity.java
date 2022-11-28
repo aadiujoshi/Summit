@@ -16,7 +16,6 @@ import summit.gfx.RenderLayers;
 import summit.util.GameRegion;
 
 public abstract class Entity extends GameRegion implements GameUpdateReciever{
-
     private float dx, dy;
 
     //knockback lasts for 2 seconds

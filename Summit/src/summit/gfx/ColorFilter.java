@@ -40,6 +40,11 @@ public class ColorFilter {
 
     //------- getters and setters ----------------------------
 
+    @Override
+    public String toString(){
+        return "[" + red + "  " + green + "  " + blue + "]";
+    }
+
     public int getRed() {
         return this.red;
     }

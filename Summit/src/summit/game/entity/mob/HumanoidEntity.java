@@ -1,5 +1,6 @@
 package summit.game.entity.mob;
 
+import summit.game.GameUpdateEvent;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
 import summit.gfx.Camera;
@@ -58,6 +59,12 @@ public abstract class HumanoidEntity extends MobEntity{
         
         this.sprite_east_moving = sprite_east_moving;
         this.sprite_east_neutral = sprite_east_neutral;
+    }
+
+
+    @Override
+    public void gameClick(GameUpdateEvent e) {
+        damage(e.getMap().getPlayer());
     }
 
     // @Override

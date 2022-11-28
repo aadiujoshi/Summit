@@ -13,12 +13,6 @@ public class WoodPlank extends Tile{
     }
 
     @Override
-    public void gameClick(GameUpdateEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void update(GameUpdateEvent e) {
         // TODO Auto-generated method stub
         

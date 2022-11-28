@@ -7,6 +7,7 @@ import summit.game.animation.ParticleAnimation;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
+import summit.game.item.SnowballItem;
 import summit.game.item.itemtable.Inventory;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
@@ -36,16 +37,16 @@ public class Player extends HumanoidEntity{
         super.setHealth(10f);
         super.setMaxHealth(10f);
         super.setHitDamage(1);
+        super.setItems(new Inventory(this, 9, 5));
+        super.pickup(new SnowballItem(x, y));
         super.setAI(null);
 
         this.hud = new HUD(this);
-        this.inventory = new Inventory(this, 9, 5);
         this.invGui = new InventoryGUI(inventory);
         
         this.camera = mapCam;
         //DO THIS
         // super.setSprites(something, something, something, something, something, something);
-        
     }
 
     @Override

@@ -149,17 +149,17 @@ public class AmbientOcclusion implements Paintable{
         }
         if(d == Direction.NE){
             if(validCorner(d, t, map)){
-                drawQuadrant(d, p.x+8, p.y-9, frame);
+                drawQuadrant(d, p.x+9, p.y-9, frame);
             }
         }
         if(d == Direction.SW){
             if(validCorner(d, t, map)){
-                drawQuadrant(d, p.x-8, p.y+9, frame);
+                drawQuadrant(d, p.x-8, p.y+8, frame);
             }
         }
         if(d == Direction.SE){
             if(validCorner(d, t, map)){
-                drawQuadrant(d, p.x+8, p.y+9, frame);
+                drawQuadrant(d, p.x+9, p.y+8, frame);
             }
         }
     }
@@ -178,7 +178,7 @@ public class AmbientOcclusion implements Paintable{
      */
     private boolean validCorner(Direction d, Tile rel, GameMap map){
         if(true) return false;
-        
+
         int rx = (int)rel.getX();
         int ry = (int)rel.getY();
 
