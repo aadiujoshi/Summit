@@ -13,13 +13,14 @@ public class Renderer {
 
     private int[][] frame;
 
-    //used by final frame writer threads
+    //--  used by final frame writer threads  --
     private final Thread[] writers;
     private AtomicBoolean[] upscaleFinished;
     private int[] finalFrame;
     private final int finalHeight;
     private final int finalWidth;
     private AtomicBoolean processUpscale;
+    //------------------------------------------
 
     public static final int WIDTH = 256;
     public static final int HEIGHT = 144;
@@ -52,7 +53,7 @@ public class Renderer {
             upscaleFinished[i] = new AtomicBoolean(false);
         }
 
-        float inv_delay = 5f;
+        float inv_delay = 250f;
 
         for (int i = 0; i < writers.length; i++) {
             final int _i = i;
@@ -79,7 +80,6 @@ public class Renderer {
                                 }
                             }
                             upscaleFinished[n].set(true);
-                            // Time.nanoDelay((long)(Time.NS_IN_MS/inv_delay));
                         }
                     }
                 }
@@ -87,6 +87,7 @@ public class Renderer {
         }
 
         for (Thread wr : writers) {
+            wr.setPriority(Thread.NORM_PRIORITY);
             wr.start();
         }
         //---------------------------------------------------------------------------------------

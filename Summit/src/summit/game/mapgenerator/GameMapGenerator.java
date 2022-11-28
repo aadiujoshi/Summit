@@ -70,6 +70,12 @@ public class GameMapGenerator {
 
         map.addStructure(new TraderHouse(19.5f, 19f, map));
 
+        // for (int i = 30; i < 60; i++) {
+        //     for (int j = 30; j < 60; j++) {
+        //         map.spawn(new Skeleton(j, i));
+        //     }
+        // }
+
         // map.spawn(new Skeleton(40, 35));
         // map.spawn(new Skeleton(35, 40));
         // map.spawn(new Skeleton(40, 40));
