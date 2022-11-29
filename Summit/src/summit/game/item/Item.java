@@ -9,24 +9,35 @@ import summit.util.Region;
 
 public abstract class Item extends Entity{
 
-    private boolean stackable = true;
-
-    //picked up by the mouse
-    private boolean floating = false;
-
     //if in inventory or not
     //true -> in an inventory or lootTable
     //false -> on the floor in the game
     private boolean stashed;
 
+    //picked up by the mouse
+    private boolean floating = false;
+
+    //can stack on other of the same items
+    private boolean stackable = true;
+
+    //the space the item takes in the item table
     private Region tableRegion;
 
-    //position and space it takes in the inventory
-    public Item(float x, float y, float width, float height) {
-        super(x, y, width, height);
-        //yes
+    //itemtable it belongs to
+    private ItemTable itemTable;
+
+    //space it takes in the inventory
+    public Item(float width, float height) {
+        super(0, 0, width, height);
+        
         super.setItems(null);
-        this.tableRegion = new Region(x, y, width, height);
+
+        this.tableRegion = new Region(0, 0, width, height);
+    }
+
+    //place on the map
+    public Item(float x, float y, float width, float height){
+        super(x, y, width, height);
     }
 
     @Override
@@ -35,7 +46,7 @@ public abstract class Item extends Entity{
 
     @Override
     public void paint(PaintEvent e){
-
+        
     }
 
     @Override
@@ -114,8 +125,12 @@ public abstract class Item extends Entity{
     }
 
     public void setItemTable(ItemTable table){
-        this.stashed = true;
+        if(!table.addItem(this)){
+            return;
+        }
 
+        this.itemTable = table;
+        this.stashed = true;
     }
 
     public boolean isStashed() {
@@ -124,5 +139,6 @@ public abstract class Item extends Entity{
 
     public void setStashed(boolean stashed) {
         this.stashed = stashed;
+        this.floating = false;
     }
 }

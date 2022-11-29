@@ -16,15 +16,15 @@ public class ItemTable{
         items = new ArrayList<>();
     }
 
-    public void addItem(Item e){
+    public boolean addItem(Item e){
         items.add(e);
+        return true;
     }
 
     public void drop(GameMap map){
         for(int i = 0; i < items.size(); i++){
             Item it = items.get(i);
             it.setStashed(false);
-            
             it.setPos(location.getX(), location.getY());
             map.spawn(items.get(i));
         }

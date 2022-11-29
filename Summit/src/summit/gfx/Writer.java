@@ -46,14 +46,14 @@ public class Writer extends Thread{
     public void startProcess(int[] finalFrame, int[][] frame){
         this.finalFrame = finalFrame;
         this.frame = frame;
-        synchronized(process){
+        // synchronized(process){
             process = true;
-        }
+        // }
     }
 
     public void endProcess(){
-        synchronized(process){
+        // synchronized(process){
             process = false;
-        }
+        // }
     }
 }

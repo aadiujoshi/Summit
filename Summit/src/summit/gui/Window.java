@@ -92,7 +92,7 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(2, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(5, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 
@@ -107,8 +107,8 @@ public class Window implements MouseListener, KeyListener{
         graphicsThread = new Thread(new Runnable() {
 
             long lastFpsUpdate = Time.timeMs();
-            long fCount = 1;
-            float avg = 200;
+            // long fCount = 1;
+            // float avg = 200;
 
             @Override
             public void run(){
@@ -133,9 +133,9 @@ public class Window implements MouseListener, KeyListener{
                             if(Time.timeMs()-lastFpsUpdate > 500){
                                 float fps_ = (Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000f));
 
-                                frame.setTitle(title + " | FPS: " + (avg+(fps_*fCount))/fCount);
+                                frame.setTitle(title + " | FPS: " + fps_);
 
-                                fCount++;
+                                // fCount++;
                                 lastFpsUpdate = Time.timeMs();
                             }
                             lastFrame = startFrame;

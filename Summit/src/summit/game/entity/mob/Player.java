@@ -27,7 +27,6 @@ public class Player extends HumanoidEntity{
     private Camera camera;
     
     private HUD hud;
-    private Inventory inventory;
     private InventoryGUI invGui;
     
     public Player(float x, float y, Camera mapCam) {
@@ -40,9 +39,10 @@ public class Player extends HumanoidEntity{
         super.setItems(new Inventory(this, 9, 5));
         super.pickup(new SnowballItem(x, y));
         super.setAI(null);
+        super.setLight(new Light(x, y, 3, 110, 110, 0));
 
         this.hud = new HUD(this);
-        this.invGui = new InventoryGUI(inventory);
+        this.invGui = new InventoryGUI((Inventory)super.getItems());
         
         this.camera = mapCam;
         //DO THIS
@@ -149,14 +149,6 @@ public class Player extends HumanoidEntity{
      */
     public Camera getCamera(){
         return this.camera;
-    }
-
-    public Inventory getInventory() {
-        return this.inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 
     public InventoryGUI getInventoryGui() {

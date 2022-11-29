@@ -112,9 +112,11 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     @Override
     public void setRenderLayer(OrderPaintEvent e) {
+        //general animation (snowfall)
         if(animation != null)
             animation.setRenderLayer(e);
         
+        //
         for (int i = 0; i < particleAnimations.size(); i++) {
             particleAnimations.get(i).setRenderLayer(e);
 
@@ -125,8 +127,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
             }
         }
 
-        e.addToLayer(RenderLayers.TOP_LAYER, this);
-
+        //tiles in render distance (from cameraa position)
         TileStack[][] rdTiles = this.tilesInRD(e.getCamera());
 
         for (int i = 0; i < rdTiles.length; i++) {
@@ -136,8 +137,10 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
             }
         }
 
+        //tile ambient occlusion
         ambientOcclusion.setRenderLayer(e);
 
+        //sort GameRegions (entities and structures) from bottom to up 
         ArrayList<Region> sorted = new ArrayList<>();
 
         for (Entity entity : entities) {
@@ -163,9 +166,13 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
             sorted.set(lowestInd, temp);
         }
 
+        //sorted GameRegions
         for (Region r: sorted) {
             ((Paintable)r).setRenderLayer(e);
         }
+        
+        //map filter
+        e.addToLayer(RenderLayers.TOP_LAYER, this);
     }
 
     @Override

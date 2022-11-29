@@ -8,11 +8,12 @@ import summit.util.Time;
 
 public class Main {
     public static void main(String[] args) {
-        BufferedSprites.loadSprites("Summit/src/summit/resources");
+        BufferedSprites.loadSprites();
 
         java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
         System.out.println(screen);
+        System.out.println(System.getProperty("user.dir"));
 
         Window summit = new Window("Summit");
 

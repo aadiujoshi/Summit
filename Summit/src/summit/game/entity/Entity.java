@@ -61,7 +61,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         this.ly = y;
         
         Light sdw = new Light(x, y, 1f, -50, -50, -50);
-        sdw.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
         this.shadow = sdw;
     }
 
@@ -290,6 +289,15 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     
     public float getDamageResistance() {
         return this.damageResistance;
+    }
+    
+    public Light getShadow() {
+        return this.shadow;
+    }
+
+    public void setShadow(Light shadow) {
+        shadow.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
+        this.shadow = shadow;
     }
 
     public void setDamageResistance(float damageResistance) {
