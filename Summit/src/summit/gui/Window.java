@@ -54,8 +54,8 @@ public class Window implements MouseListener, KeyListener{
     // public static final int SCREEN_WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     // public static final int SCREEN_HEIGHT = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
-    public static final int SCREEN_WIDTH = 800;
-    public static final int SCREEN_HEIGHT = 450;
+    public static final int SCREEN_WIDTH = 1280;
+    public static final int SCREEN_HEIGHT = 720;
 
     private boolean closed = false;
     private static boolean mouseDown = false;
@@ -92,7 +92,7 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(1, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(2, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 
@@ -107,6 +107,8 @@ public class Window implements MouseListener, KeyListener{
         graphicsThread = new Thread(new Runnable() {
 
             long lastFpsUpdate = Time.timeMs();
+            long fCount = 1;
+            float avg = 200;
 
             @Override
             public void run(){
@@ -129,7 +131,11 @@ public class Window implements MouseListener, KeyListener{
 
                             // System.out.println(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000));
                             if(Time.timeMs()-lastFpsUpdate > 500){
-                                frame.setTitle(title + " | FPS: " + (Float.toString(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000f))));
+                                float fps_ = (Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000f));
+
+                                frame.setTitle(title + " | FPS: " + (avg+(fps_*fCount))/fCount);
+
+                                fCount++;
                                 lastFpsUpdate = Time.timeMs();
                             }
                             lastFrame = startFrame;

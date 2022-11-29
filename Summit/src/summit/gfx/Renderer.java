@@ -4,22 +4,18 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import summit.util.Region;
-import summit.util.Time;
 
 public class Renderer {
 
     private int[][] frame;
 
     //--  used by final frame writer threads  --
-    private final Thread[] writers;
-    private AtomicBoolean[] upscaleFinished;
+    private final Writer[] writers;
     private int[] finalFrame;
     private final int finalHeight;
     private final int finalWidth;
-    private AtomicBoolean processUpscale;
     //------------------------------------------
 
     public static final int WIDTH = 256;
@@ -50,48 +46,14 @@ public class Renderer {
             return;
         }
 
-        this.writers = new Thread[Renderer.getClosestFactor(t, finalHeight)];
-        this.upscaleFinished = new AtomicBoolean[writers.length];
-        this.processUpscale = new AtomicBoolean(false);
-
-        // if(true)
-        // return;
-
-        for (int i = 0; i < upscaleFinished.length; i++) {
-            upscaleFinished[i] = new AtomicBoolean(false);
-        }
-
-        float inv_delay = 1000f;
-
+        this.writers = new Writer[Renderer.getClosestFactor(t, fHeight)];
+        
         for (int i = 0; i < writers.length; i++) {
-            final int _i = i;
-            final int start = i*(finalHeight/t);
-            final int end = (i+1)*(finalHeight/t);
+            final int start = i*(fHeight/t);
+            final int end = (i+1)*(fHeight/t);
             
-            writers[i] = new Thread(("writer"+i)){
-
-                final int n = _i;
-                
-                @Override
-                public void run(){
-                    while(true){
-                        Time.nanoDelay((long)(Time.NS_IN_MS/inv_delay));
-                        if(processUpscale.get() && !upscaleFinished[n].get()){
-                            float scaleX = finalWidth/WIDTH;
-                            float scaleY = finalHeight/HEIGHT;
-
-                            for(int r = start; r < end; r++) {
-                                for(int c = 0; c < finalWidth; c++){
-                                    if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
-                                        finalFrame[r*finalWidth+c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
-                                    }
-                                }
-                            }
-                            upscaleFinished[n].set(true);
-                        }
-                    }
-                }
-            };
+            writers[i] = new Writer(start, end, fWidth, fHeight);
+            
         }
 
         for (Thread wr : writers) {
@@ -105,37 +67,35 @@ public class Renderer {
         frame = new int[HEIGHT][WIDTH]; 
     }
 
-
-    
-
     //parallelize this process for more frames 🤑🤑🤑🤑
     public void upscaleToImage(BufferedImage newFrame){
+
         finalFrame = ((DataBufferInt)newFrame.getRaster().getDataBuffer()).getData();
-    
-        float scaleX = finalWidth/WIDTH;
-        float scaleY = finalHeight/HEIGHT;
         
-        for(int r = 0; r < finalHeight; r++) {
-            for(int c = 0; c < finalWidth; c++){
-                if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
-                    finalFrame[r*finalWidth+c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
+        //if set to write with just one thread
+        if(writers == null){
+            float scaleX = finalWidth/WIDTH;
+            float scaleY = finalHeight/HEIGHT;
+            
+            for(int r = 0; r < finalHeight; r++) {
+                for(int c = 0; c < finalWidth; c++){
+                    if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length){
+                        finalFrame[r*finalWidth+c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
+                    }
                 }
             }
         }
 
         if(writers != null){
-            processUpscale.set(true);
-
-            //wait till all finished
-            for (int i = 0; i < upscaleFinished.length; i++) {
-                if(upscaleFinished[i].get() == false)
-                    i = 0;
+            //signal threads to start upscaling and writing to final frame array
+            for (int i = 0; i < writers.length; i++) {
+                writers[i].startProcess(finalFrame, frame);
             }
 
-            this.processUpscale.set(false);
-
-            for (int i = 0; i < upscaleFinished.length; i++) {
-                upscaleFinished[i].set(false);
+            //wait till all finished
+            for (int i = 0; i < writers.length; i++) {
+                if(!writers[i].finished())
+                    i = 0;
             }
         }
     }

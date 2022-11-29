@@ -8,23 +8,16 @@ import summit.util.Time;
 
 public class Main {
     public static void main(String[] args) {
-        Thread main = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                BufferedSprites.loadSprites("src/summit/resources");
+        BufferedSprites.loadSprites("Summit/src/summit/resources");
 
-                java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-                System.out.println(screen);
+        System.out.println(screen);
 
-                Window summit = new Window("Summit");
+        Window summit = new Window("Summit");
 
-                Time.nanoDelay(Time.NS_IN_S/4*3);
+        Time.nanoDelay(Time.NS_IN_S/4*3);
 
-                // summit.setState(WindowState.NEWGAME);
-            }
-        }, "mainthread");
-
-        main.start();
+        // summit.setState(WindowState.NEWGAME);
     }
 }
