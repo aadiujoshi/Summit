@@ -37,7 +37,7 @@ public class Player extends HumanoidEntity{
         super.setMaxHealth(10f);
         super.setHitDamage(1);
         super.setItems(new Inventory(this, 9, 5));
-        super.pickup(new SnowballItem(x, y));
+        super.collide(new SnowballItem(x, y));
         super.setAI(null);
         super.setLight(new Light(x, y, 3, 110, 110, 0));
 
@@ -51,7 +51,7 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void collide(Entity e){
-        // super.collide(e);
+        super.collide(e);
 
         // if(e instanceof Item){
         //     Item ie = (Item) e;

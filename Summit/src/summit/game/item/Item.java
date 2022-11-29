@@ -30,18 +30,12 @@ public abstract class Item extends Entity{
     public Item(float width, float height) {
         super(0, 0, width, height);
         
-        super.setItems(null);
-
         this.tableRegion = new Region(0, 0, width, height);
     }
 
     //place on the map
     public Item(float x, float y, float width, float height){
         super(x, y, width, height);
-    }
-
-    @Override
-    public void pickup(Item e){
     }
 
     @Override
@@ -103,17 +97,7 @@ public abstract class Item extends Entity{
     public float getTHeight(){
         return this.tableRegion.getWidth();
     }
-
-    @Override
-    public ItemTable getItems(){
-        return null;
-    }
-
-    @Override
-    public void setItems(ItemTable items){
-        super.setItems(null);
-        throw new Error("items in items in items...");
-    }
+    
 
     public boolean isStackable() {
         return this.stackable;

@@ -23,10 +23,4 @@ public class Zombie extends HumanoidEntity{
         super.paint(e);
     }
     
-    @Override
-    public void collide(Entity g) {
-        // TODO Auto-generated method stub
-        
-    }
-    
 }

@@ -42,8 +42,8 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
     public GameRegion(float x, float y, float width, float height) {
         super(x, y, width, height);
     }
-    
-    public abstract void collide(Entity g);
+
+    public abstract void collide(Entity e);
 
     @Override
     public void setRenderLayer(OrderPaintEvent e){

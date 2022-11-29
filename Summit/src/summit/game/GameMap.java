@@ -74,19 +74,21 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
                 return;
 
         for(Structure r_struct : structures) {
-            if(r_struct.contains(e.gameX(), e.gameY())){
+            if(r_struct.contains(e.gameX(), e.gameY()) && 
+                Region.distance(r_struct.getX(), r_struct.getY(), player.getX(), player.getY()) <= 3.5){
                 r_struct.gameClick(e);
                 return;
             }
         }
         for(Entity entity : entities) {
-            if(entity.contains(e.gameX(), e.gameY())){
+            if(entity.contains(e.gameX(), e.gameY()) && 
+                Region.distance(entity.getX(), entity.getY(), player.getX(), player.getY()) <= 3.5){
                 entity.gameClick(e);
                 return;
             }
         }
-        
-        getTileStackAt(e.gameX(), e.gameY()).gameClick(e);
+        if(Region.distance(player.getX(), player.getY(), e.gameX(), e.gameY()) <= 3.5)
+            getTileStackAt(e.gameX(), e.gameY()).gameClick(e);
     }
 
     @Override

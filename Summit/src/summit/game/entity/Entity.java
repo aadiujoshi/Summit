@@ -28,9 +28,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
 
-    private ItemTable items;
-
     private Tile onTile;
+    private Entity contact;
 
     private boolean pickupItems;
 
@@ -90,12 +89,10 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
                 this.kb = null;
         }
 
-        Entity contact = map.entityAt(getX(), getY());
+        contact = map.entityAt(getX(), getY());
 
-        if(contact != null){
-            if(contact instanceof Item){
-                pickup((Item)contact);
-            }
+        if(this.contact != null){
+            this.collide(contact);
         }
 
         onTile = map.getTileAt(getX(), getY());
@@ -104,9 +101,9 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         updateMoving();
     }
 
-    public void pickup(Item contact) {
-        contact.setStashed(true);
-        items.addItem(contact);
+    @Override
+    public void collide(Entity e){
+        
     }
 
     public void damage(Entity hitBy){
@@ -277,14 +274,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private void setKnockback(float k, int durationMS, Entity hitBy){
         this.kb = new Knockback(k, this, hitBy, durationMS);
-    }
-    
-    public ItemTable getItems() {
-        return this.items;
-    }
-
-    public void setItems(ItemTable items) {
-        this.items = items;
     }
     
     public float getDamageResistance() {

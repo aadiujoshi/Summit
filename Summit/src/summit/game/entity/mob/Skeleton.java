@@ -17,6 +17,7 @@ public class Skeleton extends HumanoidEntity{
         super.setMaxHealth(7);
         super.setHealth(getMaxHealth());
         super.setHitDamage(1);
+
         // super.setColor(0x301934);
     }
 
@@ -28,11 +29,5 @@ public class Skeleton extends HumanoidEntity{
         //                             getRenderOp() | Renderer.ROTATE_90 & ~Renderer.FLIP_X, 
         //                             getColorFilter(), 
         //                             e.getCamera());
-    }
-
-    
-    @Override
-    public void collide(Entity g) {
-
     }
 }

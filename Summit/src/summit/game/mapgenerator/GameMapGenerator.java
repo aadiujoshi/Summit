@@ -59,7 +59,7 @@ public class GameMapGenerator {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
                 double val = heightMap[i][j];
-                // TileStack t = tiles[i][j];
+                
                 if(val > 0.6){
                     if(random.nextInt(4) == 0)
                         map.spawn(new Tree(j, i));
@@ -71,11 +71,11 @@ public class GameMapGenerator {
 
         map.addStructure(new TraderHouse(19.5f, 19f, map));
 
-        // for (int i = 30; i < 31; i++) {
-        //     for (int j = 30; j < 31; j++) {
-        //         map.spawn(new Zombie(j, i));
-        //     }
-        // }
+        for (int i = 30; i < 31; i++) {
+            for (int j = 30; j < 31; j++) {
+                map.spawn(new Zombie(j, i));
+            }
+        }
 
         return map;
     }

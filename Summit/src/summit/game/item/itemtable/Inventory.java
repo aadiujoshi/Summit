@@ -10,6 +10,7 @@ public class Inventory extends ItemTable{
 
     private int width, height;
 
+    //location is the owner of the itemtable
     public Inventory(GameRegion location, int width, int height){
         super(location);
         
@@ -21,6 +22,8 @@ public class Inventory extends ItemTable{
      * Uses the Items position to determine if it can be added to the inventory, 
      * or if it is stackable and can be added to a stack
      * </p> 
+     * 
+     * DOES NOT WORK
      * 
      * @param Item to be inserted
      * @return If the item can be added
@@ -35,6 +38,7 @@ public class Inventory extends ItemTable{
 
     @Override
     public boolean addItem(Item e){
+        e.setTablePos(1, 1);
         super.addItem(e);
         return true;
     }
