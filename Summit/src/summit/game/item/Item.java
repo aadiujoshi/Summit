@@ -97,7 +97,6 @@ public abstract class Item extends Entity{
     public float getTHeight(){
         return this.tableRegion.getWidth();
     }
-    
 
     public boolean isStackable() {
         return this.stackable;

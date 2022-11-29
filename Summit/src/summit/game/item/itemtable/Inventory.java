@@ -38,7 +38,7 @@ public class Inventory extends ItemTable{
 
     @Override
     public boolean addItem(Item e){
-        e.setTablePos(1, 1);
+        // e.setTablePos(1, 1);
         super.addItem(e);
         return true;
     }
