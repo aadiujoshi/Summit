@@ -1,5 +1,7 @@
 package summit.game.structure;
 
+import javax.swing.SpinnerDateModel;
+
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.mob.Player;
@@ -18,6 +20,8 @@ public class Building extends Structure{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
+        // System.out.println(e.gameX() + " " + e.gameY());
+    //  System.out.println(getX() + " " + getY());
         Player p = e.getMap().getPlayer();
 
         if((enterOrientation == Direction.SOUTH &&
@@ -28,6 +32,10 @@ public class Building extends Structure{
 
             e.setLoadedMap(exMap);
         }
+    }
+
+    public Direction getEnterOrientation(){
+        return enterOrientation;
     }
 
     public void setExMap(GameMap map){
