@@ -1,6 +1,8 @@
 package summit.game.structure;
 
 import summit.game.GameMap;
+import summit.game.GameUpdateEvent;
+import summit.game.entity.mob.Player;
 import summit.gfx.ColorFilter;
 import summit.gfx.Sprite;
 import summit.util.Direction;
@@ -21,4 +23,5 @@ public class Door extends Building{
         super.setEnterOrientation(Direction.NORTH);
         super.situate(parentMap);
     }
+
 }
