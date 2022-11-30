@@ -25,4 +25,6 @@ public class Sprite {
     public static final String SKELETON_FACE_BACK = "skeleton-face_back";
     public static final String BOW = "bow";
     public static final String ARROW_PROJ = "arrow-left";
+    public static final String WOOD_SWORD = "wood-sword";
+    public static final String STONE_SWORD = "stone-sword";
 }
