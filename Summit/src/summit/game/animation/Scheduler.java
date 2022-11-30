@@ -8,7 +8,7 @@ import summit.util.Time;
 
 public class Scheduler {
 
-    private static List<ScheduledEvent> events = new Vector<>();
+    private static ArrayList<ScheduledEvent> events = new ArrayList<>();
 
     /** Singleton */
     private Scheduler(){}
