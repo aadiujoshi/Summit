@@ -179,4 +179,8 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
     public String getName(){
         return this.NAME;
     }
+
+    public String getSprite(){
+        return this.sprite;
+    }
 }

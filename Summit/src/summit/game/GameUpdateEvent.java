@@ -21,7 +21,6 @@ public class GameUpdateEvent{
     public GameUpdateEvent(GameWorld world, int deltaTime, 
                                 int mouseX_pix, int mouseY_pix, 
                                 boolean tickInstance){
-                                
         this.map = world.getLoadedMap();
         this.world = world;
         this.window = world.getParentWindow();

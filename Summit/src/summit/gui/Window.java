@@ -92,14 +92,15 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(5, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(3, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 
         schedulerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true){
+                while(true){       
+                    Time.nanoDelay(Time.NS_IN_MS/10);
                     Scheduler.checkEvents();
                 }
             }
@@ -219,11 +220,15 @@ public class Window implements MouseListener, KeyListener{
             frame.setVisible(true);
 
         }
+
+        // Time.nanoDelay(Time.NS_IN_S);     
         
         graphicsThread.start();
         schedulerThread.start();
 
         System.out.println("Threads in use: " + (Thread.activeCount()+1));
+
+        Time.nanoDelay(Time.NS_IN_MS*100);
 
         this.setState(WindowState.SELECTIONMENUS);
     }

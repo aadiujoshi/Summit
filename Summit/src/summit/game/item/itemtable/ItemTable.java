@@ -16,9 +16,16 @@ public class ItemTable{
         items = new ArrayList<>();
     }
 
-    public boolean addItem(Item e){
-        items.add(e);
+    public boolean canAdd(Item e){
         return true;
+    }
+
+    public boolean addItem(Item e){
+        if(canAdd(e)){
+            items.add(e);
+            return true;
+        }
+        return false;
     }
 
     public void drop(GameMap map){

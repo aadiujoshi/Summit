@@ -1,6 +1,7 @@
 package summit.game;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import summit.game.animation.ParticleAnimation;
 import summit.game.animation.Scheduler;
@@ -27,7 +28,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     //handles broken block animations
     //assumes NOT registered into scheduler
-    private ArrayList<ParticleAnimation> particleAnimations;
+    private Vector<ParticleAnimation> particleAnimations;
 
     private Player player;
 
@@ -63,7 +64,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         this.WIDTH = width;
         this.HEIGHT = height;
 
-        this.particleAnimations = new ArrayList<>();
+        this.particleAnimations = new Vector<>();
         this.ambientOcclusion = new AmbientOcclusion(25);
     }
 
@@ -118,7 +119,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         if(animation != null)
             animation.setRenderLayer(e);
         
-        //
+        //e
         for (int i = 0; i < particleAnimations.size(); i++) {
             particleAnimations.get(i).setRenderLayer(e);
 

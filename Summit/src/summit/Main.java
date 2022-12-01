@@ -18,7 +18,7 @@ public class Main {
 
         Window summit = new Window("Summit");
 
-        // Time.nanoDelay(Time.NS_IN_S/4*3);
+        Time.nanoDelay(Time.NS_IN_S/4*3);
 
         // summit.setState(WindowState.NEWGAME);
     }

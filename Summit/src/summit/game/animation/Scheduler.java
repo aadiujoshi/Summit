@@ -1,5 +1,8 @@
 package summit.game.animation;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -7,7 +10,7 @@ import java.util.Vector;
 import summit.util.Time;
 
 public class Scheduler {
-
+    
     private static ArrayList<ScheduledEvent> events = new ArrayList<>();
 
     /** Singleton */
@@ -16,10 +19,9 @@ public class Scheduler {
     //called by some thread
     public static void checkEvents(){
         long now = Time.timeMs();
-
         for(int i = 0; i < events.size(); i++) {
             ScheduledEvent e = events.get(i);
-
+            
             if(e == null){
                 events.remove(e);
                 i--;

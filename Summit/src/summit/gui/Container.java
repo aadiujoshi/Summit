@@ -53,6 +53,7 @@ public class Container implements Paintable, GUIClickReciever{
     
     @Override
     public void setRenderLayer(OrderPaintEvent e) {
+        //conainers are always rendered on the top layer, in order
     }
 
     @Override

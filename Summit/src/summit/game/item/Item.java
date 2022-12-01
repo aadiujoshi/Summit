@@ -2,9 +2,7 @@ package summit.game.item;
 
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
-import summit.game.item.itemtable.ItemTable;
 import summit.gfx.PaintEvent;
-import summit.util.GameRegion;
 import summit.util.Region;
 
 public abstract class Item extends Entity{
@@ -24,23 +22,42 @@ public abstract class Item extends Entity{
     private Region tableRegion;
 
     //itemtable it belongs to
-    private ItemTable itemTable;
+    // private ItemGUI paintRegion;
+
+    //sprite thats rendered in the inventory/gui
+    private String itemSprite;
 
     //space it takes in the inventory
+    //x and y are set by inventory
     public Item(float width, float height) {
         super(0, 0, width, height);
         
         this.tableRegion = new Region(0, 0, width, height);
     }
 
-    //place on the map
+    //physical map region
     public Item(float x, float y, float width, float height){
         super(x, y, width, height);
     }
 
     @Override
     public void paint(PaintEvent e){
-        
+        if(!stashed){
+            super.paint(e);
+        } else if(stashed){
+            e.getRenderer().render(getSprite(), getTX(), getTY(), getRenderOp(), getColorFilter());
+        }
+    }
+
+    @Override
+    public void update(GameUpdateEvent e){
+        super.update(e);
+
+        if(stashed){
+            if(floating){
+                setTablePos(e.mouseX(), e.mouseY());
+            }
+        }
     }
 
     @Override
@@ -104,17 +121,16 @@ public abstract class Item extends Entity{
 
     public void unstash(){
         this.stashed = false;
-        setItemTable(null);
     }
 
-    public void setItemTable(ItemTable table){
-        if(!table.addItem(this)){
-            return;
-        }
+    // public void setItemTable(ItemTable table){
+    //     if(!table.addItem(this)){
+    //         return;
+    //     }
 
-        this.itemTable = table;
-        this.stashed = true;
-    }
+    //     this.paintRegion = table;
+    //     this.stashed = true;
+    // }
 
     public boolean isStashed() {
         return this.stashed;
@@ -123,5 +139,13 @@ public abstract class Item extends Entity{
     public void setStashed(boolean stashed) {
         this.stashed = stashed;
         this.floating = false;
+    }
+    
+    public String getItemSprite() {
+        return this.itemSprite;
+    }
+
+    public void setItemSprite(String itemSprite) {
+        this.itemSprite = itemSprite;
     }
 }

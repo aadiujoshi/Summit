@@ -1,11 +1,13 @@
 package summit.gfx;
 
+import summit.util.Time;
+
 public class Writer extends Thread{
 
     private volatile Object process = false;
 
-    private int[] finalFrame;
-    private int[][] frame;
+    private volatile int[] finalFrame;
+    private volatile int[][] frame;
     private final int finalHeight;
     private final int finalWidth;
 
@@ -22,7 +24,8 @@ public class Writer extends Thread{
     @Override
     public void run(){
         while(true){
-            if((boolean)process){
+            // Time.nanoDelay(10000);
+            if(finalFrame != null && frame != null){
                 float scaleX = finalWidth/Renderer.WIDTH;
                 float scaleY = finalHeight/Renderer.HEIGHT;
 
@@ -34,11 +37,12 @@ public class Writer extends Thread{
                     }
                 }
 
-                endProcess();
+                // endProcess();
             }
         }
     }
 
+    @Deprecated
     public boolean finished(){
         return !((boolean)process);
     }
@@ -46,14 +50,11 @@ public class Writer extends Thread{
     public void startProcess(int[] finalFrame, int[][] frame){
         this.finalFrame = finalFrame;
         this.frame = frame;
-        // synchronized(process){
-            process = true;
-        // }
+        process = true;
     }
 
+    @Deprecated
     public void endProcess(){
-        // synchronized(process){
-            process = false;
-        // }
+        process = false;
     }
 }

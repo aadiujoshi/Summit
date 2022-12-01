@@ -18,7 +18,7 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
-import summit.gui.InventoryGUI;
+import summit.gui.ItemGUI;
 import summit.util.Controls;
 import summit.util.Time;
 
@@ -27,7 +27,7 @@ public class Player extends HumanoidEntity{
     private Camera camera;
     
     private HUD hud;
-    private InventoryGUI invGui;
+    private ItemGUI invGui;
     
     public Player(float x, float y, Camera mapCam) {
         super(x, y, 1, 2);
@@ -42,7 +42,7 @@ public class Player extends HumanoidEntity{
         super.setLight(new Light(x, y, 3, 110, 110, 0));
 
         this.hud = new HUD(this);
-        this.invGui = new InventoryGUI((Inventory)super.getItems());
+        this.invGui = new ItemGUI((Inventory)super.getItems());
         
         this.camera = mapCam;
         //DO THIS
@@ -94,7 +94,7 @@ public class Player extends HumanoidEntity{
     @Override
     public void update(GameUpdateEvent e) {
         super.update(e);
-
+        
         if(Controls.E){
             if(!invGui.isPushed())
                 e.getWindow().pushGameContainer(invGui);
@@ -151,11 +151,11 @@ public class Player extends HumanoidEntity{
         return this.camera;
     }
 
-    public InventoryGUI getInventoryGui() {
+    public ItemGUI getInventoryGui() {
         return this.invGui;
     }
 
-    public void setInventoryGui(InventoryGUI invGui) {
+    public void setInventoryGui(ItemGUI invGui) {
         this.invGui = invGui;
     }
 }

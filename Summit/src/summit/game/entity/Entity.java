@@ -300,6 +300,11 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     public void setFireResistant(boolean fireResistant) {
         this.fireResistant = fireResistant;
     }
+
+    //special use method
+    protected void setMoving(boolean moving){
+        this.moving = moving;
+    }
     
     public boolean hitCooldown() {
         return this.hitCooldown;

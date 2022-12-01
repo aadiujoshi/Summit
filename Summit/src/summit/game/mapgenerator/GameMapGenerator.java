@@ -71,8 +71,8 @@ public class GameMapGenerator {
 
         map.addStructure(new TraderHouse(19.5f, 19f, map));
 
-        for (int i = 30; i < 31; i++) {
-            for (int j = 30; j < 31; j++) {
+        for (int i = 40; i < 41; i++) {
+            for (int j = 40; j < 41; j++) {
                 map.spawn(new Zombie(j, i));
             }
         }

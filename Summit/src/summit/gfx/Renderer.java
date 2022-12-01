@@ -92,11 +92,11 @@ public class Renderer {
                 writers[i].startProcess(finalFrame, frame);
             }
 
-            //wait till all finished
-            for (int i = 0; i < writers.length; i++) {
-                if(!writers[i].finished())
-                    i = 0;
-            }
+            // wait till all finished
+            // for (int i = 0; i < writers.length; i++) {
+            //     if(!writers[i].finished())
+            //         i = 0;
+            // }
         }
     }
 
