@@ -20,7 +20,9 @@ public class Zombie extends HumanoidEntity{
 
     @Override
     public void paint(PaintEvent e){
-        setColorFilter(new ColorFilter(0, 100, 0));
+        if(!damageCooldown()){
+            setColorFilter(new ColorFilter(0, 100, 0));
+        }
         super.paint(e);
         e.getRenderer().renderGame(Sprite.WOOD_SWORD, getX()+0.25f, getY()-0.25f, Renderer.NO_OP, ColorFilter.NOFILTER, e.getCamera());
     }

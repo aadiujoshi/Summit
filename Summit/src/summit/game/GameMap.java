@@ -147,10 +147,12 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         ArrayList<Region> sorted = new ArrayList<>();
 
         for (Entity entity : entities) {
-            sorted.add(entity);
+            if(Region.distance(entity.getX(), entity.getY(), camera.getX(), camera.getY()) <= 20)
+                sorted.add(entity);
         }
         for (Structure s : structures) {
-            sorted.add(s);
+            if(Region.distance(s.getX(), s.getY(), camera.getX(), camera.getY()) <= 20)
+                sorted.add(s);
         }
 
         for (int i = 0; i < sorted.size(); i++) {

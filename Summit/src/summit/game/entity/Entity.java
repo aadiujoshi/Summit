@@ -5,6 +5,7 @@ import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
+import summit.game.entity.mob.Zombie;
 import summit.game.item.Item;
 import summit.game.item.itemtable.ItemTable;
 import summit.game.tile.Tile;
@@ -13,6 +14,7 @@ import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
+import summit.util.Direction;
 import summit.util.GameRegion;
 
 public abstract class Entity extends GameRegion implements GameUpdateReciever{
@@ -21,7 +23,9 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     //knockback lasts for 2 seconds
     private Knockback kb;
 
+    //last x and last y; used to check if entity is moving
     private float lx, ly;
+    private Direction facing;
 
     private Light shadow;
 
@@ -31,11 +35,14 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     private Tile onTile;
     private Entity contact;
 
-    private boolean pickupItems;
+    //set to true for 500 milliseconds after attacking another entity
+    private boolean hitCooldown;
+
+    //set to true for 500 milliseconds after being attacked by another entity
+    private boolean damageCooldown;
 
     private float hitDamage;
     private float damageResistance;
-    private boolean hitCooldown;
 
     private float maxHealth;
     private float health;
@@ -64,7 +71,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }
 
     @Override
-    public void setRenderLayer(OrderPaintEvent ope){
+    public void setRenderLayer(OrderPaintEvent ope){ 
         super.setRenderLayer(ope);
         shadow.setRenderLayer(ope);
     }
@@ -131,7 +138,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         //---------------------------------------------------------
 
         hitBy.setHitCooldown(true);
-
+        this.setDamageCooldown(true);
+        
         if(health <= 0)
             destroyed = true;
     }
@@ -309,14 +317,32 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     public boolean hitCooldown() {
         return this.hitCooldown;
     }
-    
-    public boolean canPickupItems() {
-        return this.pickupItems;
+
+    public Direction getFacing() {
+        return this.facing;
     }
 
-    public void setPickupItems(boolean canPickupItems) {
-        this.pickupItems = canPickupItems;
+    public void setFacing(Direction facing) {
+        this.facing = facing;
     }
+
+    public boolean damageCooldown() {
+        return this.damageCooldown;
+    }
+
+    public void setDamageCooldown(boolean damageCooldown) {
+        this.damageCooldown = damageCooldown;
+
+        if(damageCooldown){
+            Scheduler.registerEvent(new ScheduledEvent(500,1) {
+                @Override
+                public void run() {
+                    setDamageCooldown(false);
+                }
+            });
+        }
+    }
+
 
     public void setHitCooldown(boolean hitCooldown) {
         this.hitCooldown = hitCooldown;

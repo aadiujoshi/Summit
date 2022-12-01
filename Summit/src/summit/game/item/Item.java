@@ -13,31 +13,28 @@ public abstract class Item extends Entity{
     private boolean stashed;
 
     //picked up by the mouse
-    private boolean floating = false;
+    private boolean selected = false;
 
     //can stack on other of the same items
     private boolean stackable = true;
 
     //the space the item takes in the item table
     private Region tableRegion;
-
+    
     //itemtable it belongs to
     // private ItemGUI paintRegion;
 
     //sprite thats rendered in the inventory/gui
     private String itemSprite;
 
+    //physical map region
+    
     //space it takes in the inventory
     //x and y are set by inventory
-    public Item(float width, float height) {
-        super(0, 0, width, height);
+    public Item(Region gameRegion, Region tableRegion) {
+        super(gameRegion.getX(), gameRegion.getY(), gameRegion.getWidth(), gameRegion.getHeight());
         
-        this.tableRegion = new Region(0, 0, width, height);
-    }
-
-    //physical map region
-    public Item(float x, float y, float width, float height){
-        super(x, y, width, height);
+        this.tableRegion = tableRegion;
     }
 
     @Override
@@ -54,7 +51,7 @@ public abstract class Item extends Entity{
         super.update(e);
 
         if(stashed){
-            if(floating){
+            if(selected){
                 setTablePos(e.mouseX(), e.mouseY());
             }
         }
@@ -63,7 +60,7 @@ public abstract class Item extends Entity{
     @Override
     public void gameClick(GameUpdateEvent e) {
         if(stashed){
-            floating = !floating;
+            selected = !selected;
         }
     }
 
@@ -79,40 +76,40 @@ public abstract class Item extends Entity{
     
     //---------------  getters and setters -------------------------
 
-    public void setTablePos(float x, float y){
+    public void setTablePos(int x, int y){
         this.tableRegion.setPos(x, y);
     }
 
-    public float getTX(){
-        return this.tableRegion.getX();
+    public int getTX(){
+        return (int)this.tableRegion.getX();
     }
 
-    public void setTX(float x){
+    public void setTX(int x){
         this.tableRegion.setX(x);
     }
 
-    public float getTY(){
-        return this.tableRegion.getY();
+    public int getTY(){
+        return (int)this.tableRegion.getY();
     }
 
-    public void setTY(float y){
+    public void setTY(int y){
         this.tableRegion.setY(y);
     }
 
-    public void setTWidth(float width){
+    public void setTWidth(int width){
         this.tableRegion.setWidth(width);
     }
 
-    public float getTWidth(){
-        return this.tableRegion.getWidth();
+    public int getTWidth(){
+        return (int)this.tableRegion.getWidth();
     }
     
-    public void setTHeight(float height){
+    public void setTHeight(int height){
         this.tableRegion.setHeight(height);
     }
 
-    public float getTHeight(){
-        return this.tableRegion.getWidth();
+    public int getTHeight(){
+        return (int)this.tableRegion.getWidth();
     }
 
     public boolean isStackable() {
@@ -138,7 +135,7 @@ public abstract class Item extends Entity{
 
     public void setStashed(boolean stashed) {
         this.stashed = stashed;
-        this.floating = false;
+        this.selected = false;
     }
     
     public String getItemSprite() {

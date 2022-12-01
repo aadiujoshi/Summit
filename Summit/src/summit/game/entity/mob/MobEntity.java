@@ -14,6 +14,8 @@ public abstract class MobEntity extends Entity{
     private Direction facing;
     private EntityAI ai;
     private ItemTable items;
+    private boolean pickupItems;
+
     
     public MobEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -44,8 +46,10 @@ public abstract class MobEntity extends Entity{
         super.collide(contact);
         if(contact instanceof Item){
             Item c = (Item)contact;
-            c.setStashed(true);
-            getItems().addItem(c);
+            if(canPickupItems()){
+                c.setStashed(true);
+                getItems().addItem(c);
+            }
         }
     }
 
@@ -73,5 +77,13 @@ public abstract class MobEntity extends Entity{
 
     public void setItems(ItemTable items) {
         this.items = items;
+    }
+
+    public boolean canPickupItems() {
+        return this.pickupItems;
+    }
+
+    public void setPickupItems(boolean canPickupItems) {
+        this.pickupItems = canPickupItems;
     }
 }

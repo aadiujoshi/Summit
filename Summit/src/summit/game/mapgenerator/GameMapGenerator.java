@@ -25,9 +25,13 @@ public class GameMapGenerator {
     public static GameMap generateStage1(final long seed){
         OpenSimplexNoise gen = new OpenSimplexNoise(seed);  
         Random random = new Random(seed);
-        GameMap map = new GameMap("stage1", seed, 128, 128);
 
-        double[][] heightMap = new double[128][128];
+        int width_ = 256;
+        int height_ = 256;
+
+        GameMap map = new GameMap("stage1", seed, width_, height_);
+
+        double[][] heightMap = new double[width_][height_];
 
         TileStack[][] tiles =  map.getTiles();
 
