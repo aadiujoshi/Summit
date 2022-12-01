@@ -26,6 +26,7 @@ public class Writer extends Thread{
         while(true){
             // Time.nanoDelay(10000);
             if(finalFrame != null && frame != null){
+            // if((boolean)process){
                 float scaleX = finalWidth/Renderer.WIDTH;
                 float scaleY = finalHeight/Renderer.HEIGHT;
 

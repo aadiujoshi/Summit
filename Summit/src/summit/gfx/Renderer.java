@@ -4,10 +4,11 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.io.Serializable;
 
 import summit.util.Region;
 
-public class Renderer {
+public class Renderer implements Serializable{
 
     private int[][] frame;
 
@@ -56,10 +57,10 @@ public class Renderer {
             
         }
 
-        for (Thread wr : writers) {
-            wr.setPriority(Thread.NORM_PRIORITY);
-            wr.start();
-        }
+        // for (Thread wr : writers) {
+        //     wr.setPriority(Thread.NORM_PRIORITY);
+        //     wr.start();
+        // }
         //---------------------------------------------------------------------------------------
     }
 
@@ -93,10 +94,10 @@ public class Renderer {
             }
 
             // wait till all finished
-            // for (int i = 0; i < writers.length; i++) {
-            //     if(!writers[i].finished())
-            //         i = 0;
-            // }
+            for (int i = 0; i < writers.length; i++) {
+                if(!writers[i].finished())
+                    i = 0;
+            }
         }
     }
 

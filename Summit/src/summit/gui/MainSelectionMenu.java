@@ -18,6 +18,7 @@ public class MainSelectionMenu extends Container{
         addComponent(new TextContainer("SAVED GAMES", this, 0.5f, 0.5f, 0.2f, 0.4f){
             @Override
             public void guiClick(MouseEvent e){
+                getParentWindow().setState(WindowState.SAVEDGAME);
                 System.out.println("not ready yet :)");
             }
         });

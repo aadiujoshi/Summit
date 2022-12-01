@@ -1,6 +1,7 @@
 package summit.gfx;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import summit.game.GameMap;
 import summit.game.tile.Tile;
@@ -11,7 +12,7 @@ import summit.util.Region;
 /**
  * Expensive operation for shading raised tiles
  */
-public class AmbientOcclusion implements Paintable{
+public class AmbientOcclusion implements Serializable, Paintable{
 
     private int intensity;
     private int spread;

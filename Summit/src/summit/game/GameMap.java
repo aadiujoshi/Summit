@@ -1,5 +1,6 @@
 package summit.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -21,7 +22,7 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.Region;
 
-public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever{
+public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
 
     private ArrayList<Entity> entities;
     private ArrayList<Structure> structures;
@@ -30,8 +31,10 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
     //assumes NOT registered into scheduler
     private Vector<ParticleAnimation> particleAnimations;
 
+    //player
     private Player player;
 
+    //render distance for entitys and structures
     private int rd_x = 20;
     private int rd_y = 20;
 
@@ -40,7 +43,7 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     private ColorFilter filter;
     private Paintable animation;
-    private Paintable ambientOcclusion;
+    private AmbientOcclusion ambientOcclusion;
 
     private TileStack[][] tiles;
     private final int WIDTH;

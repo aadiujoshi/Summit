@@ -11,15 +11,15 @@ import summit.util.Direction;
 
 public abstract class MobEntity extends Entity{
 
-    private Direction facing;
     private EntityAI ai;
     private ItemTable items;
     private boolean pickupItems;
 
+    private Direction facing;
     
     public MobEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
-        facing = Direction.SOUTH;
+        super.setFacing(Direction.SOUTH);
         super.setDx(3);
         super.setDy(3);
         super.setColor(Renderer.toIntRGB(200, 0, 0));
@@ -28,7 +28,7 @@ public abstract class MobEntity extends Entity{
     @Override
     public void update(GameUpdateEvent e){
         super.update(e);
-        
+
         if(ai != null)
             ai.next(e);
     }
@@ -55,14 +55,6 @@ public abstract class MobEntity extends Entity{
 
     //------  getters and setters -------------------------------------------
     
-    public Direction getFacing() {
-        return this.facing;
-    }
-
-    public void setFacing(Direction facing) {
-        this.facing = facing;
-    }
-
     public EntityAI getAI() {
         return this.ai;
     }

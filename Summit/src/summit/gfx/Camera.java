@@ -1,6 +1,8 @@
 package summit.gfx;
 
-public class Camera implements Cloneable{
+import java.io.Serializable;
+
+public class Camera implements Serializable, Cloneable{
 
     private float x;
     private float y;

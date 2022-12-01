@@ -1,8 +1,10 @@
 package summit.game.animation;
 
+import java.io.Serializable;
+
 import summit.util.Time;
 
-public abstract class ScheduledEvent implements Runnable {
+public abstract class ScheduledEvent implements Serializable, Runnable {
     
     public final static int FOREVER = -1;
 

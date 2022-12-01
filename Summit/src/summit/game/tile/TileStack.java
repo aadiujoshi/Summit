@@ -1,5 +1,6 @@
 package summit.game.tile;
 
+import java.io.Serializable;
 import java.util.Stack;
 
 import summit.game.GameUpdateEvent;
@@ -10,7 +11,7 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 
-public class TileStack implements GameClickReciever, Paintable, GameUpdateReciever {
+public class TileStack implements Serializable, GameClickReciever, Paintable, GameUpdateReciever {
 
     private Stack<Tile> tiles;
     private float x, y;

@@ -1,5 +1,7 @@
 package summit.util;
 
+import java.io.Serializable;
+
 import summit.game.GameClickReciever;
 import summit.game.entity.Entity;
 import summit.gfx.ColorFilter;

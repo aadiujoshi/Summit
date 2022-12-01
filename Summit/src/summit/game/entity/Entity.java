@@ -25,6 +25,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     //last x and last y; used to check if entity is moving
     private float lx, ly;
+
+    //facing of the entity
     private Direction facing;
 
     private Light shadow;
@@ -42,6 +44,8 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     private boolean damageCooldown;
 
     private float hitDamage;
+
+    //coefficient
     private float damageResistance;
 
     private float maxHealth;
@@ -159,6 +163,15 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }
 
     private void updateMoving(){
+        if(ly != getY()){
+            
+        }
+        if(getX() > lx){
+            facing =  Direction.EAST;
+            moving = true;
+            lx = getX();
+        }
+
         if(lx != getX() || ly != getY()){
             moving = true;
             lx = getX();
@@ -318,6 +331,10 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         return this.hitCooldown;
     }
 
+    public boolean damageCooldown() {
+        return this.damageCooldown;
+    }
+
     public Direction getFacing() {
         return this.facing;
     }
@@ -326,9 +343,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         this.facing = facing;
     }
 
-    public boolean damageCooldown() {
-        return this.damageCooldown;
-    }
 
     public void setDamageCooldown(boolean damageCooldown) {
         this.damageCooldown = damageCooldown;

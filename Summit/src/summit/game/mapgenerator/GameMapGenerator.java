@@ -26,8 +26,8 @@ public class GameMapGenerator {
         OpenSimplexNoise gen = new OpenSimplexNoise(seed);  
         Random random = new Random(seed);
 
-        int width_ = 256;
-        int height_ = 256;
+        int width_ = 128;
+        int height_ = 128;
 
         GameMap map = new GameMap("stage1", seed, width_, height_);
 
@@ -94,12 +94,6 @@ public class GameMapGenerator {
                 tiles[i][j].pushTile(new WoodPlank(j, i));
             }
         }
-
-        // tiles[2][2].pushTile(new GrassTile(2, 2));
-        // tiles[3][2].pushTile(new GrassTile(3, 2));
-        // tiles[2][3].pushTile(new GrassTile(2, 3));
-        // tiles[3][3].pushTile(new GrassTile(3, 3));
-        // tiles[3][3].pushTile(new GrassTile(3, 3));
         
         map.addStructure(new Door(7f, 0, parentMap, map));
         map.setCamera(new Camera(7f, 1));

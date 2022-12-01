@@ -1,5 +1,6 @@
 package summit.game.entity.projectile;
 
+import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 import summit.gfx.Light;
 
@@ -11,6 +12,11 @@ public abstract class Projectile extends Entity {
         super.setDy(dy);
         super.setLight(new Light(x, y, 0.25f, -50, -50, -50));
         super.setHealth(1);
+    }
+
+    @Override
+    public void update(GameUpdateEvent e){
+
     }
 
     @Override

@@ -1,6 +1,8 @@
 package summit.gfx;
 
-public class Light implements Paintable{
+import java.io.Serializable;
+
+public class Light implements Serializable, Paintable{
 
     public static enum Shape{
         CIRCLE, SQUARE

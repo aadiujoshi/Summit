@@ -1,12 +1,13 @@
 package summit.game.item.itemtable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import summit.game.GameMap;
 import summit.game.item.Item;
 import summit.util.GameRegion;
 
-public class ItemTable{
+public class ItemTable implements Serializable{
 
     private ArrayList<Item> items;
 

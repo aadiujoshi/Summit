@@ -16,6 +16,7 @@ public class Zombie extends HumanoidEntity{
         super.setHealth(5);
         super.setSprite(Sprite.PLAYER_FACE_BACK_1);
         super.setMaxHealth(5);
+        super.setHitDamage(1);
     }
 
     @Override

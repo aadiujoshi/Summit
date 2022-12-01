@@ -1,9 +1,11 @@
 package summit.game.ai;
 
+import java.io.Serializable;
+
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 
-public abstract class EntityAI {
+public abstract class EntityAI implements Serializable{
 
     protected Entity entity;
 

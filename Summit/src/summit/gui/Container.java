@@ -1,6 +1,7 @@
 package summit.gui;
 
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import summit.gfx.Sprite;
 import summit.util.Region;
 
 //should extend Region class!!!!!!!!!
-public class Container implements Paintable, GUIClickReciever{
+public class Container implements Serializable, Paintable, GUIClickReciever{
 
     private List<Container> components;
     private Region region;

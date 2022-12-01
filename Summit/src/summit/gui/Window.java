@@ -34,6 +34,7 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.Controls;
+import summit.util.GameLoader;
 import summit.util.Time;
 
 public class Window implements MouseListener, KeyListener{
@@ -54,8 +55,8 @@ public class Window implements MouseListener, KeyListener{
     // public static final int SCREEN_WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     // public static final int SCREEN_HEIGHT = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
-    public static final int SCREEN_WIDTH = 1280;
-    public static final int SCREEN_HEIGHT = 720;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 450;
 
     private boolean closed = false;
     private static boolean mouseDown = false;
@@ -92,7 +93,7 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(2, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(1, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 
@@ -100,7 +101,7 @@ public class Window implements MouseListener, KeyListener{
             @Override
             public void run() {
                 while(true){       
-                    Time.nanoDelay(Time.NS_IN_MS/10);
+                    Time.nanoDelay(Time.NS_IN_MS/5);
                     Scheduler.checkEvents();
                 }
             }
@@ -163,8 +164,11 @@ public class Window implements MouseListener, KeyListener{
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    closed = true;
                     super.windowClosing(e);
+
+                    closed = true;
+                    if(world != null)
+                        GameLoader.saveWorld(world, "/Users/adi/Documents/GitHub/Summit/Summit/src/summit/gamesaves/testsave1.txt");
                 }
 
                 @Override
@@ -291,7 +295,9 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.SAVEDGAME){
-            //idk yet
+            world = GameLoader.loadWorld("/Users/adi/Documents/GitHub/Summit/Summit/src/summit/gamesaves/testsave1.txt");
+            world.setGameContainers(guiContainersGame);
+            state = WindowState.GAME;
             return;
         }
 

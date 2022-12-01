@@ -33,11 +33,11 @@ public class GameWorld implements Paintable, Serializable{
     //Same object shared by all GameMaps 
     private Player player;
 
-    private transient Window parentWindow;
+    private Window parentWindow;
 
-    private transient Stack<Container> gameContainers;
+    private Stack<Container> gameContainers;
 
-    private transient Thread gameUpdateThread;
+    private Thread gameUpdateThread;
 
     /**
      * Use this constructor to create a new game

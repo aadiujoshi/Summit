@@ -1,6 +1,8 @@
 package summit.gfx;
 
-public class ColorFilter {
+import java.io.Serializable;
+
+public class ColorFilter implements Serializable{
     
     //jvm crashes if colorfilter is null for some reason
     public static final ColorFilter NOFILTER = new ColorFilter(0, 0, 0);

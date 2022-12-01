@@ -1,5 +1,6 @@
 package summit.game.animation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import summit.gfx.OrderPaintEvent;
@@ -9,7 +10,7 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.Time;
 
-public class SnowfallAnimation implements Paintable{
+public class SnowfallAnimation implements Serializable, Paintable{
 
     private int dx; 
     private int dy;

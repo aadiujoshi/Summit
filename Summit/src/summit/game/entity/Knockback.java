@@ -1,10 +1,12 @@
 package summit.game.entity;
 
+import java.io.Serializable;
+
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.util.Time;
 
-public class Knockback {
+public class Knockback implements Serializable {
 
     private float sx;
     private float sy;
