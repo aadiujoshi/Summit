@@ -92,15 +92,16 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(1, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(5, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 
         schedulerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true)
+                while(true){
                     Scheduler.checkEvents();
+                }
             }
         });
 

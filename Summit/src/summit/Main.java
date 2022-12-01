@@ -14,10 +14,11 @@ public class Main {
 
         System.out.println(screen);
         System.out.println(System.getProperty("user.dir"));
+        System.out.println(System.getProperty("os.name"));
 
         Window summit = new Window("Summit");
 
-        Time.nanoDelay(Time.NS_IN_S/4*3);
+        // Time.nanoDelay(Time.NS_IN_S/4*3);
 
         // summit.setState(WindowState.NEWGAME);
     }

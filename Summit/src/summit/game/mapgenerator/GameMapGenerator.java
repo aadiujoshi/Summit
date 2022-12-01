@@ -91,11 +91,11 @@ public class GameMapGenerator {
             }
         }
 
-        tiles[2][2].pushTile(new GrassTile(2, 2));
-        tiles[3][2].pushTile(new GrassTile(3, 2));
-        tiles[2][3].pushTile(new GrassTile(2, 3));
-        tiles[3][3].pushTile(new GrassTile(3, 3));
-        tiles[3][3].pushTile(new GrassTile(3, 3));
+        // tiles[2][2].pushTile(new GrassTile(2, 2));
+        // tiles[3][2].pushTile(new GrassTile(3, 2));
+        // tiles[2][3].pushTile(new GrassTile(2, 3));
+        // tiles[3][3].pushTile(new GrassTile(3, 3));
+        // tiles[3][3].pushTile(new GrassTile(3, 3));
         
         map.addStructure(new Door(7f, 0, parentMap, map));
         map.setCamera(new Camera(7f, 1));
