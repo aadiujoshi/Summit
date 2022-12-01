@@ -32,6 +32,9 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
 
     private Player player;
 
+    private int rd_x = 20;
+    private int rd_y = 20;
+
     //stores the most recent of the player; used for when transitioning GameMaps
     private Camera camera = new Camera(0, 0);
 
@@ -147,11 +150,11 @@ public class GameMap implements Paintable, GameUpdateReciever, GameClickReciever
         ArrayList<Region> sorted = new ArrayList<>();
 
         for (Entity entity : entities) {
-            if(Region.distance(entity.getX(), entity.getY(), camera.getX(), camera.getY()) <= 20)
+            if(Region.distance(entity.getX(), entity.getY(), camera.getX(), camera.getY()) <= rd_x/2f)
                 sorted.add(entity);
         }
         for (Structure s : structures) {
-            if(Region.distance(s.getX(), s.getY(), camera.getX(), camera.getY()) <= 20)
+            if(Region.distance(s.getX(), s.getY(), camera.getX(), camera.getY()) <= rd_y/2f)
                 sorted.add(s);
         }
 
