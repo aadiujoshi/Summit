@@ -35,21 +35,21 @@ public class GameLoader {
         return null;
     }
 
-    public static boolean saveWorld(GameWorld world, String filename){
-        try{
-            FileOutputStream file = new FileOutputStream(filename);
-            ObjectOutputStream out = new ObjectOutputStream(file);
-              
-            out.writeObject(world);
-              
-            out.close();
-            file.close();
-
-            //serialized properly
-            return true;
-        } catch(ClassCastException | IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public static void saveWorld(GameWorld world, String filename){
+        Runnable r = () -> {
+            try{
+                FileOutputStream file = new FileOutputStream(filename);
+                ObjectOutputStream out = new ObjectOutputStream(file);
+                
+                out.writeObject(world);
+                
+                out.close();
+                file.close();
+            } catch(ClassCastException | IOException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread wr = new Thread(r);
+        wr.start();
     }
 }

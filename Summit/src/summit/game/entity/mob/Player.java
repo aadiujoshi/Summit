@@ -67,10 +67,10 @@ public class Player extends HumanoidEntity{
     @Override
     public void paint(PaintEvent e) {
         super.paint(e);
-        e.getRenderer().renderText(("x:" + getX()), 
+        e.getRenderer().renderText(("x:" + (Math.round(getX()))), 
                     20, 15, Renderer.NO_OP, new ColorFilter(255, -255, -255));
 
-        e.getRenderer().renderText(("y:" + getY()), 
+        e.getRenderer().renderText(("y:" + (Math.round(getY()))), 
                 20, 25, Renderer.NO_OP, new ColorFilter(255, -255, -255));
 
         e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 

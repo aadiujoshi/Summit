@@ -39,7 +39,7 @@ public class Knockback implements Serializable {
         float cx = hitBy.getX() - this.sx;
         float cy = hitBy.getY() - this.sy;
 
-        //angular
+        //find angle
         double theta = Math.atan2(cy, cx);
 
         float nkx = k * (float)Math.cos(theta);
@@ -50,11 +50,6 @@ public class Knockback implements Serializable {
 
         this.ax = -kx / ((float)duration_ms/Time.MS_IN_S);
         this.ay = -ky / ((float)duration_ms/Time.MS_IN_S);
-
-        // System.out.println(kx + "  " + ky);
-        // System.out.println(ax + "  " + ay);
-
-        // System.out.println("hello");
     }
 
     public boolean finished(){

@@ -75,6 +75,10 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
         else
             setRenderOp(renderOp & ~Renderer.OUTLINE_BLUE & ~Renderer.OUTLINE_GREEN & ~Renderer.OUTLINE_RED);
     }
+    
+    public void reinit(){
+        
+    }
 
     //-------- getters and setters  --------------------------------
 

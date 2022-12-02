@@ -6,9 +6,10 @@ package summit.game;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
-import summit.game.animation.SnowfallAnimation;
+import summit.game.animation.ForegroundAnimation;
 import summit.game.entity.mob.Player;
 import summit.game.mapgenerator.GameMapGenerator;
 import summit.gfx.Camera;
@@ -17,6 +18,7 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
+import summit.gfx.Renderer;
 import summit.gui.Container;
 import summit.gui.Window;
 import summit.util.Time;
@@ -32,16 +34,12 @@ public class GameWorld implements Paintable, Serializable{
 
     private final long SEED;
 
-    // private Camera camera;
-
     //Same object shared by all GameMaps 
     private Player player;
 
-    private Window parentWindow;
-
-    private Stack<Container> gameContainers;
-
-    private Thread gameUpdateThread;
+    private transient Window parentWindow;
+    
+    private transient Thread gameUpdateThread;
 
     /**
      * Use this constructor to create a new game
@@ -67,11 +65,21 @@ public class GameWorld implements Paintable, Serializable{
         player = new Player(30, 30, stage1.getCamera());
 
         stage1.setPlayer(player);
-        stage1.setAnimation(new SnowfallAnimation(4, 3));
+        stage1.setAnimation(new ForegroundAnimation(4, 3, Renderer.toIntRGB(200, 200, 250)));
         stage1.setFilter(new ColorFilter(-60, -50, 0));
 
         player.setCamera(stage1.getCamera());
         
+        initUpdateThread();
+    }
+
+    // must be called after loading from save
+    public void reinit(Window w){
+        for (Map.Entry<String, GameMap> m : maps.entrySet()) {
+            if(m.getValue() != null)
+                m.getValue().reinit();
+        }
+        this.parentWindow = w;
         initUpdateThread();
     }
 
@@ -82,7 +90,7 @@ public class GameWorld implements Paintable, Serializable{
             public void run(){
                 //in milliseconds
                 int prevDelay = 1;
-                while(true){
+                while(!parentWindow.isClosed()){
                     // Time.nanoDelay(Time.NS_IN_MS*5);
                     long startTime = Time.timeNs();
                     
@@ -102,6 +110,7 @@ public class GameWorld implements Paintable, Serializable{
         if(loadedMap != null)
             loadedMap.update(e);
         
+        //change gamemaps
         if(bufferedNewMap != null){
             this.loadedMap.setLoaded(false);
             this.bufferedNewMap.setLoaded(true);
@@ -142,14 +151,6 @@ public class GameWorld implements Paintable, Serializable{
 
     public Camera getCamera() {
         return this.loadedMap.getCamera();
-    }
-
-    public Stack<Container> getGameContainers() {
-        return this.gameContainers;
-    }
-
-    public void setGameContainers(Stack<Container> gameContainers) {
-        this.gameContainers = gameContainers;
     }
 
     public Window getParentWindow() {

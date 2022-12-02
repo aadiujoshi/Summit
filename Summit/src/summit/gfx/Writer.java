@@ -8,7 +8,7 @@ import summit.util.Time;
 
 public class Writer extends Thread{
 
-    private volatile Object process = false;
+    private volatile boolean process = true;
 
     private volatile int[] finalFrame;
     private volatile int[][] frame;
@@ -27,7 +27,7 @@ public class Writer extends Thread{
 
     @Override
     public void run(){
-        while(true){
+        while(process){
             // Time.nanoDelay(10000);
             if(finalFrame != null && frame != null){
             // if((boolean)process){
@@ -58,8 +58,7 @@ public class Writer extends Thread{
         process = true;
     }
 
-    @Deprecated
-    public void endProcess(){
+    public void terminate(){
         process = false;
     }
 }

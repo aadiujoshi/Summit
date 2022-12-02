@@ -167,24 +167,29 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }
 
     private void updateMoving(){
-        if(ly != getY()){
-            
-        }
-        if(getX() > lx){
-            facing =  Direction.EAST;
-            moving = true;
-            lx = getX();
-        }
-
         if(lx != getX() || ly != getY()){
             moving = true;
-            lx = getX();
-            ly = getY();
         } else {
             moving = false;
         }
+
+        if(getY() > ly){
+            facing = Direction.NORTH;
+        }
+        if(getY() < ly){
+            facing = Direction.SOUTH;
+        }
+        if(getX() > lx){
+            facing =  Direction.EAST;
+        }
+        if(getX() < lx){
+            facing = Direction.WEST;
+        }
+        
+        lx = getX();
+        ly = getY();
     }
-    
+
     //---------------------------------------------------------
     //getters and setters
     //---------------------------------------------------------
@@ -360,7 +365,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
             });
         }
     }
-
 
     public void setHitCooldown(boolean hitCooldown) {
         this.hitCooldown = hitCooldown;

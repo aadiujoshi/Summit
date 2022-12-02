@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import summit.game.animation.ForegroundAnimation;
 import summit.game.animation.ParticleAnimation;
 import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
@@ -46,7 +47,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     private Camera camera = new Camera(0, 0);
 
     private ColorFilter filter;
-    private Paintable animation;
+    private ForegroundAnimation animation;
     private AmbientOcclusion ambientOcclusion;
 
     private TileStack[][] tiles;
@@ -76,6 +77,20 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
         this.particleAnimations = new Vector<>();
         this.ambientOcclusion = new AmbientOcclusion(25);
+    }
+
+    //saved world
+    public void reinit(){
+        this.animation.reinit();
+        for (ParticleAnimation pa : particleAnimations) {
+            pa.reinit();
+        }
+        for (Entity e : entities) {
+            e.reinit();
+        }
+        for (Structure s : structures) {
+            s.reinit();
+        }
     }
 
     @Override
@@ -281,7 +296,6 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     }
 
     public void addParticleAnimation(ParticleAnimation pa){
-        Scheduler.registerEvent(pa);
         particleAnimations.add(pa);
     }
 
@@ -307,7 +321,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         return this.animation;
     }
 
-    public void setAnimation(Paintable animation) {
+    public void setAnimation(ForegroundAnimation animation) {
         this.animation = animation;
     }
 

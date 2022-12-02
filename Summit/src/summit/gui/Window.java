@@ -59,8 +59,8 @@ public class Window implements MouseListener, KeyListener{
     // public static final int SCREEN_WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     // public static final int SCREEN_HEIGHT = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
-    public static final int SCREEN_WIDTH = 800;
-    public static final int SCREEN_HEIGHT = 450;
+    public static final int SCREEN_WIDTH = 1280;
+    public static final int SCREEN_HEIGHT = 720;
 
     private boolean closed = false;
     private static boolean mouseDown = false;
@@ -97,14 +97,14 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(1, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(3, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 
         schedulerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true){       
+                while(!closed){       
                     Time.nanoDelay(Time.NS_IN_MS/5);
                     Scheduler.checkEvents();
                 }
@@ -159,7 +159,7 @@ public class Window implements MouseListener, KeyListener{
         {
             frame = new JFrame(title + "|");
             frame.getContentPane().setPreferredSize(new Dimension(width, height));
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             frame.setResizable(false);
             frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
             // frame.setMaximumSize(new java.awt.Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -171,8 +171,11 @@ public class Window implements MouseListener, KeyListener{
                     super.windowClosing(e);
 
                     closed = true;
-                    if(world != null)
-                        GameLoader.saveWorld(world, "/Users/adi/Documents/GitHub/Summit/Summit/src/summit/gamesaves/testsave1.txt");
+
+                    if(world != null){
+                        GameLoader.saveWorld(world, "Summit/src/summit/gamesaves/testsave1.txt");
+                        quit();
+                    }
                 }
 
                 @Override
@@ -228,8 +231,6 @@ public class Window implements MouseListener, KeyListener{
             frame.setVisible(true);
 
         }
-
-        // Time.nanoDelay(Time.NS_IN_S);     
         
         graphicsThread.start();
         schedulerThread.start();
@@ -293,14 +294,13 @@ public class Window implements MouseListener, KeyListener{
 
         if(newState == WindowState.NEWGAME){
             world = new GameWorld(this, 3L);
-            world.setGameContainers(guiContainersGame);
             state = WindowState.GAME;
             return;
         }
 
         if(newState == WindowState.SAVEDGAME){
-            world = GameLoader.loadWorld("/Users/adi/Documents/GitHub/Summit/Summit/src/summit/gamesaves/testsave1.txt");
-            world.setGameContainers(guiContainersGame);
+            world = GameLoader.loadWorld("Summit/src/summit/gamesaves/testsave1.txt");
+            world.reinit(this);
             state = WindowState.GAME;
             return;
         }
@@ -323,7 +323,17 @@ public class Window implements MouseListener, KeyListener{
         }
     }
 
+    private void onQuit(){
+        //terminate upscaling threads
+        renderer.terminate();
+
+        if(world != null){
+            GameLoader.saveWorld(world, "Summit/src/summit/gamesaves/testsave1.txt");
+        }
+    } 
+
     public void quit(){
+        onQuit();
         closed = true;
         canvas.setVisible(false);
         frame.setVisible(false);
@@ -333,6 +343,10 @@ public class Window implements MouseListener, KeyListener{
     //--------------------------------------------------------------------
     //getters and setters
     //--------------------------------------------------------------------
+
+    public boolean isClosed() {
+        return this.closed;
+    }
 
     /**
      * Used for anonymous classes

@@ -11,14 +11,18 @@ import summit.gui.WindowState;
 import summit.util.Time;
 
 public class Main {
-    public static void main(String[] args) {
-        BufferedSprites.loadSprites();
 
+    public static final String path = System.getProperty("user.dir");
+    public static final String os = System.getProperty("os.name");
+
+    public static void main(String[] args) {
         java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
         System.out.println(screen);
         System.out.println(System.getProperty("user.dir"));
         System.out.println(System.getProperty("os.name"));
+
+        BufferedSprites.loadSprites();
 
         Window summit = new Window("Summit");
 

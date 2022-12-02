@@ -6,8 +6,6 @@ package summit.util;
 
 import java.io.Serializable;
 
-import javax.swing.SwingUtilities;
-
 public class Region implements Serializable{
 
     private float width;

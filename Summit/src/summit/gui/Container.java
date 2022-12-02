@@ -9,12 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import summit.game.GameMap;
-import summit.gfx.Camera;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
-import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.Region;
@@ -25,7 +22,7 @@ public class Container implements Serializable, Paintable, GUIClickReciever{
     private List<Container> components;
     private Region region;
     private Container parent;
-    private Window window;
+    private transient Window window;
 
     private boolean pushed;
 

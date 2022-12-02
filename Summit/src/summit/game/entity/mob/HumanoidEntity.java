@@ -65,6 +65,10 @@ public abstract class HumanoidEntity extends MobEntity{
         this.sprite_east_neutral = sprite_east_neutral;
     }
 
+    @Override
+    public void reinit(){
+        Scheduler.registerEvent(this.walkAnimation);
+    }
 
     @Override
     public void gameClick(GameUpdateEvent e) {

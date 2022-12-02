@@ -24,6 +24,10 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
         this.lastCall = INIT_MS;
     }
 
+    public void reinit(){
+        Scheduler.registerEvent(this);
+    }
+
     /**
      * Returns if this ScheduledEvent should stop revieving calls
      * @return boolean

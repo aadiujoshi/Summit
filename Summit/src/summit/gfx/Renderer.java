@@ -58,14 +58,19 @@ public class Renderer implements Serializable{
             final int end = (i+1)*(fHeight/t);
             
             writers[i] = new Writer(start, end, fWidth, fHeight);
-            
         }
 
-        // for (Thread wr : writers) {
-        //     wr.setPriority(Thread.NORM_PRIORITY);
-        //     wr.start();
-        // }
+        for (Thread wr : writers) {
+            wr.setPriority(Thread.NORM_PRIORITY);
+            wr.start();
+        }
         //---------------------------------------------------------------------------------------
+    }
+
+    public void terminate(){
+        for (int i = 0; i < writers.length; i++) {
+            writers[i].terminate();
+        }
     }
 
     public void resetFrame(){
@@ -98,10 +103,10 @@ public class Renderer implements Serializable{
             }
 
             // wait till all finished
-            for (int i = 0; i < writers.length; i++) {
-                if(!writers[i].finished())
-                    i = 0;
-            }
+            // for (int i = 0; i < writers.length; i++) {
+            //     if(!writers[i].finished())
+            //         i = 0;
+            // }
         }
     }
 

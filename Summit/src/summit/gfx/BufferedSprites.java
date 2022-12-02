@@ -24,7 +24,9 @@ public class BufferedSprites{
 
     public static void loadSprites(){
         
-        File[] dirFiles = new File("src/summit/resources").listFiles();
+        File[] dirFiles = new File(Main.path + 
+                                    (Main.os.contains("Windows") ? "\\Summit\\src\\summit\\resources" : "/Summit/src/summit/resources"))
+                                    .listFiles();
         
         for(int i = 0; i < dirFiles.length; i++){
             String absPath = dirFiles[i].getAbsolutePath();
