@@ -50,6 +50,10 @@ public class Region implements Serializable{
         return (float)Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }
 
+    public static float theta(float x1, float x2, float y1, float y2){
+        return (float)(Math.atan2(y1-y2, x1-x2));
+    }
+
     @Override
     public String toString(){
         return "x: " + x + ", y: " + y + ", width: " + width + ", height: " + height;

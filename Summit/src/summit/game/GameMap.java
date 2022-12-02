@@ -25,9 +25,12 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
+import summit.util.GameRegion;
 import summit.util.Region;
 
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
+
+    private ArrayList<Entity> spawnQueue;
 
     private ArrayList<Entity> entities;
     private ArrayList<Structure> structures;
@@ -70,6 +73,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         //---------------------------------------------------------------------
         entities = new ArrayList<>();
         structures = new ArrayList<>();
+        spawnQueue = new ArrayList<>();
         this.NAME = name;
         this.SEED = seed;
         this.WIDTH = width;
@@ -136,6 +140,12 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         for (Structure h : structures) {
             h.update(e);
         }
+
+        for (Entity spawn : spawnQueue) {
+            entities.add(spawn);
+        }
+
+        spawnQueue.clear();
     }
 
     @Override
@@ -214,6 +224,20 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     // getters and setters
     //--------------------------------------------------------------------
     
+    //returns
+    public GameRegion getContact(GameRegion r){
+        for (Structure s : structures) {
+            if(r.overlap(s))
+                return s;
+        }
+        for (Entity e : entities) {
+            if(r.overlap(e))
+                return e;
+        }
+        
+        return null;
+    }
+
     public TileStack[][] tilesInRD(Camera c){
         int nx = Math.round(c.getX());
         int ny = Math.round(c.getY());
@@ -304,9 +328,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     }
 
     public void spawn(Entity e){
-        if(!entities.contains(e))
-
-        entities.add(e);
+        spawnQueue.add(e);
     }
     
     public ColorFilter getFilter() {

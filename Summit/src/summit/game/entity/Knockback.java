@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
+import summit.util.Region;
 import summit.util.Time;
 
 public class Knockback implements Serializable {
@@ -35,12 +36,9 @@ public class Knockback implements Serializable {
         this.duration_ms = duration_ms;
 
         this.hitEntity = hitEntity;
-
-        float cx = hitBy.getX() - this.sx;
-        float cy = hitBy.getY() - this.sy;
-
+        
         //find angle
-        double theta = Math.atan2(cy, cx);
+        double theta = Region.theta(hitBy.getX(), sx, hitBy.getY(), sy);
 
         float nkx = k * (float)Math.cos(theta);
         float nky = k * (float)Math.sin(theta);
