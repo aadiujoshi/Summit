@@ -68,6 +68,8 @@ public class Renderer implements Serializable{
     }
 
     public void terminate(){
+        if(writers == null) return;
+
         for (int i = 0; i < writers.length; i++) {
             writers[i].terminate();
         }
