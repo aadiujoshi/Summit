@@ -59,8 +59,8 @@ public class Window implements MouseListener, KeyListener{
     // public static final int SCREEN_WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     // public static final int SCREEN_HEIGHT = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
-    public static final int SCREEN_WIDTH = 1280;
-    public static final int SCREEN_HEIGHT = 720;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 450;
 
     private boolean closed = false;
     private static boolean mouseDown = false;
@@ -97,7 +97,7 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(3, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(1, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 
@@ -173,7 +173,7 @@ public class Window implements MouseListener, KeyListener{
                     closed = true;
 
                     if(world != null){
-                        GameLoader.saveWorld(world, "Summit/src/summit/gamesaves/testsave1.txt");
+                        GameLoader.saveWorld(world, "src/summit/gamesaves/testsave1.txt");
                         quit();
                     }
                 }
@@ -299,7 +299,7 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.SAVEDGAME){
-            world = GameLoader.loadWorld("Summit/src/summit/gamesaves/testsave1.txt");
+            world = GameLoader.loadWorld("/Users/adi/Documents/GitHub/Summit/Summit/src/summit/gamesaves/testsave1.txt");
             world.reinit(this);
             state = WindowState.GAME;
             return;
@@ -328,7 +328,7 @@ public class Window implements MouseListener, KeyListener{
         renderer.terminate();
 
         if(world != null){
-            GameLoader.saveWorld(world, "Summit/src/summit/gamesaves/testsave1.txt");
+            GameLoader.saveWorld(world, "src/summit/gamesaves/testsave1.txt");
         }
     } 
 

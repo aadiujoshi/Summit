@@ -4,13 +4,9 @@
 */
 package summit.game.entity.mob;
 
-import java.awt.Point;
-
 import summit.game.GameUpdateEvent;
-import summit.game.animation.ParticleAnimation;
-import summit.game.animation.ScheduledEvent;
-import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
+import summit.game.entity.projectile.Snowball;
 import summit.game.item.SnowballItem;
 import summit.game.item.itemtable.Inventory;
 import summit.gfx.Camera;
@@ -18,11 +14,11 @@ import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
-import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
 import summit.gui.ItemGUI;
+import summit.gui.Window;
 import summit.util.Controls;
 import summit.util.Time;
 
@@ -91,6 +87,10 @@ public class Player extends HumanoidEntity{
     public void update(GameUpdateEvent e) {
         super.update(e);
         
+        if(Window.mouseDown()){
+            e.getMap().spawn(new Snowball(getX(), getY(), getHeight()));
+        }
+
         if(Controls.E){
             if(!invGui.isPushed())
                 e.getWindow().pushGameContainer(invGui);
