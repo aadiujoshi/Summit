@@ -3,7 +3,9 @@ package summit.util;
 import java.io.Serializable;
 
 import summit.game.GameClickReciever;
+import summit.game.GameUpdateReciever;
 import summit.game.entity.Entity;
+import summit.game.entity.GameTags;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -15,7 +17,7 @@ import summit.gfx.Renderer;
 /**
  * The superclass for basically anything in the actual game
  */
-public abstract class GameRegion extends Region implements Paintable, GameClickReciever{
+public abstract class GameRegion extends Region implements Paintable, GameUpdateReciever, GameClickReciever{
 
     //optional for some classes
     private String sprite;
@@ -24,6 +26,8 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
     private float spriteOffsetY;
 
     private boolean outline = true;
+
+    private GameTags tags;
 
     // +x is right -x is left +y is up -y is down
     //DO NOT USE
@@ -43,6 +47,8 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
 
     public GameRegion(float x, float y, float width, float height) {
         super(x, y, width, height);
+
+        this.tags = new GameTags();
     }
 
     public abstract void collide(Entity e);
@@ -101,6 +107,27 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
         if(light != null){
             light.setY(y);
         }
+    }
+
+    /**
+     * is property
+     */
+    final public boolean is(String property){
+        return tags.is(property);
+    }
+
+    /**
+     * set property value
+     */
+    public void set(String property, boolean value){
+        tags.set(property, value);
+    }
+
+    /**
+     * sets property to false
+     */
+    final public void add(String property){
+        tags.set(property, false);
     }
 
     public float getSpriteOffsetX() {

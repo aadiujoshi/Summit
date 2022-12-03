@@ -31,7 +31,6 @@ import summit.game.GameUpdateEvent;
 import summit.Main;
 import summit.game.GameMap;
 import summit.game.GameWorld;
-import summit.game.animation.Scheduler;
 import summit.game.tile.TileStack;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
@@ -40,6 +39,7 @@ import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.Controls;
 import summit.util.GameLoader;
+import summit.util.Scheduler;
 import summit.util.Time;
 
 public class Window implements MouseListener, KeyListener{
@@ -99,7 +99,7 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(1, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(3, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
 

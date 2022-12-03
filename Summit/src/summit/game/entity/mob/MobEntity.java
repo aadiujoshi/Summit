@@ -12,12 +12,14 @@ import summit.game.item.Item;
 import summit.game.item.itemtable.ItemTable;
 import summit.gfx.Renderer;
 import summit.util.Direction;
+import summit.util.GameRegion;
 
 public abstract class MobEntity extends Entity{
 
+    public static String pickupItems = "pickupItems";
+
     private EntityAI ai;
     private ItemTable items;
-    private boolean pickupItems;
     
     public MobEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -25,6 +27,8 @@ public abstract class MobEntity extends Entity{
         super.setDx(3);
         super.setDy(3);
         super.setColor(Renderer.toIntRGB(200, 0, 0));
+
+        super.add(pickupItems);
     }
 
     @Override
@@ -41,7 +45,7 @@ public abstract class MobEntity extends Entity{
 
         if(contact instanceof Item){
             Item c = (Item)contact;
-            if(canPickupItems()){
+            if(is(pickupItems)){
                 c.setStashed(true);
                 getItems().addItem(c);
             }
@@ -64,13 +68,5 @@ public abstract class MobEntity extends Entity{
 
     public void setItems(ItemTable items) {
         this.items = items;
-    }
-
-    public boolean canPickupItems() {
-        return this.pickupItems;
-    }
-
-    public void setPickupItems(boolean canPickupItems) {
-        this.pickupItems = canPickupItems;
     }
 }

@@ -2,11 +2,9 @@
 * BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
-package summit.game.animation;
+package summit.util;
 
 import java.io.Serializable;
-
-import summit.util.Time;
 
 public abstract class ScheduledEvent implements Serializable, Runnable {
     

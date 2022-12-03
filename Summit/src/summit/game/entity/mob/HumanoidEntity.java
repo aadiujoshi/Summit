@@ -5,12 +5,12 @@
 package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
-import summit.game.animation.ScheduledEvent;
-import summit.game.animation.Scheduler;
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.util.Direction;
+import summit.util.ScheduledEvent;
+import summit.util.Scheduler;
 
 public abstract class HumanoidEntity extends MobEntity{
 
@@ -36,7 +36,7 @@ public abstract class HumanoidEntity extends MobEntity{
             public void run(){
                 int op = getRenderOp();
                 
-                if(isMoving()){
+                if(is(moving)){
                     if(flipped)
                         setRenderOp(op ^ Renderer.FLIP_X);
                     else
@@ -84,10 +84,10 @@ public abstract class HumanoidEntity extends MobEntity{
         Renderer r = e.getRenderer();
 
         r.renderGame( switch(d){
-                        case EAST -> (isMoving() ? sprite_east_moving : sprite_east_neutral);
-                        case NORTH -> (isMoving() ? sprite_north_moving : sprite_north_neutral);
-                        case SOUTH -> (isMoving() ? sprite_south_moving : sprite_south_neutral);
-                        case WEST -> (isMoving() ? sprite_east_moving : sprite_east_neutral);
+                        case EAST -> (is(moving) ? sprite_east_moving : sprite_east_neutral);
+                        case NORTH -> (is(moving) ? sprite_north_moving : sprite_north_neutral);
+                        case SOUTH -> (is(moving) ? sprite_south_moving : sprite_south_neutral);
+                        case WEST -> (is(moving) ? sprite_east_moving : sprite_east_neutral);
                         default -> null;
                     }, 
                     getX(), getY()+4, 

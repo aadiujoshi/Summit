@@ -7,6 +7,7 @@ package summit.game.item;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 import summit.gfx.PaintEvent;
+import summit.util.GameRegion;
 import summit.util.Region;
 
 public abstract class Item extends Entity{

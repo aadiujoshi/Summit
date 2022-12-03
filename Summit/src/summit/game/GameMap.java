@@ -10,7 +10,6 @@ import java.util.Vector;
 
 import summit.game.animation.ForegroundAnimation;
 import summit.game.animation.ParticleAnimation;
-import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.Player;
 import summit.game.structure.Structure;
@@ -27,6 +26,7 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
+import summit.util.Scheduler;
 
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
 
@@ -45,8 +45,8 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     private Player player;
 
     //render distance for entitys and structures
-    private int rd_x = 20;
-    private int rd_y = 20;
+    private float rd_x = 25;
+    private float rd_y = 25;
 
     //stores the most recent of the player; used for when transitioning GameMaps
     private Camera camera = new Camera(0, 0);
@@ -107,7 +107,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
         for(Structure r_struct : structures) {
             if(r_struct.contains(e.gameX(), e.gameY()) && 
-                Region.distance(r_struct.getX(), r_struct.getY(), player.getX(), player.getY()) <= 3.5){
+                Region.distance(r_struct.getX(), r_struct.getY(), player.getX(), player.getY()) <= 3){
                 r_struct.gameClick(e);
                 return;
             }
@@ -116,7 +116,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             Entity entity = entities.get(i);
 
             if(entity.contains(e.gameX(), e.gameY()) && 
-                Region.distance(entity.getX(), entity.getY(), player.getX(), player.getY()) <= 3.5){
+                Region.distance(entity.getX(), entity.getY(), player.getX(), player.getY()) <= 3){
                 entity.gameClick(e);
                 return;
             }
@@ -135,7 +135,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         for (int i = 0; i < entities.size(); i++) {
             Entity et = entities.get(i);
             et.update(e);
-            if(entities.get(i).destroyed()){
+            if(entities.get(i).is(Entity.destroyed)){
                 et.destroy(e);
                 entities.remove(i);
                 i--;

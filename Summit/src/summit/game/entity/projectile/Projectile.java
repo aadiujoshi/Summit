@@ -5,14 +5,14 @@
 package summit.game.entity.projectile;
 
 import summit.game.GameUpdateEvent;
-import summit.game.animation.ScheduledEvent;
-import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
 import summit.game.structure.Structure;
 import summit.gfx.Light;
 import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
+import summit.util.ScheduledEvent;
+import summit.util.Scheduler;
 import summit.util.Time;
 
 public class Projectile extends Entity {
@@ -60,7 +60,7 @@ public class Projectile extends Entity {
     @Override
     public void update(GameUpdateEvent e){
         if(Region.distance(getX(), getY(), sx, sy) >= 20){
-            setDestroyed(true);
+            set(destroyed, true);
             return;
         }
 
@@ -72,17 +72,18 @@ public class Projectile extends Entity {
         if(moveTo(e.getMap(), nx, ny)){
             setPos(nx, ny);
         } else {
-            setDestroyed(true);
+            set(destroyed, true);
             return;
         }
     }
 
     @Override
     public void collide(Entity contact) {
-        if(!enabled && contact != ((Entity)origin)) return;
+        if(!enabled && contact != origin) return;
 
         contact.damage(this);
-        this.setDestroyed(true);
+
+        set(destroyed, true);
     }
 
     @Override

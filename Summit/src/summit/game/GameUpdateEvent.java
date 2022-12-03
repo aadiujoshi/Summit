@@ -6,6 +6,7 @@ package summit.game;
 
 import summit.gfx.Renderer;
 import summit.gui.Window;
+import summit.util.Time;
 
 public class GameUpdateEvent{
 
@@ -21,6 +22,9 @@ public class GameUpdateEvent{
     
     private float gameX;
     private float gameY;
+
+    //simulate if mouse was clicked on this event instance
+    private boolean mouseClicked;
 
     public GameUpdateEvent(GameWorld world, int deltaTime, 
                                 int mouseX_pix, int mouseY_pix, 
@@ -39,6 +43,8 @@ public class GameUpdateEvent{
 
         this.gameX = p.x;
         this.gameY = p.y;
+
+        this.mouseClicked = Time.timeNs() - window.lastClick() < Time.NS_IN_MS*10;
     }
     
     public void setLoadedMap(GameMap m){
@@ -79,5 +85,9 @@ public class GameUpdateEvent{
 
     public Window getWindow() {
         return this.window;
+    }
+
+    public boolean mouseClicked(){
+        return this.mouseClicked;
     }
 }

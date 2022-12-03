@@ -58,13 +58,9 @@ public class Knockback implements Serializable {
         GameMap map = e.getMap();
 
         float delta_t = (Time.timeNs() - START_TIME)/(float)Time.NS_IN_S;
-
-        // System.out.println(delta_t);
-
+        
         float nx = sx + (kx * delta_t) + (ax/2) * (delta_t*delta_t);
         float ny = sy + (ky * delta_t) + (ay/2) * (delta_t*delta_t);
-
-        // System.out.println(sx - nx + "  " + (sy-ny));
 
         if(hitEntity.moveTo(map, nx, ny)){
             hitEntity.setPos(nx, ny);

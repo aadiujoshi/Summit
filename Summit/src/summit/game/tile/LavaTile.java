@@ -27,6 +27,6 @@ public class LavaTile extends Tile{
     @Override
     public void collide(Entity e) {
         super.collide(e);
-        e.setOnFire(true);
+        e.set(Entity.onFire, isBoundary());
     }
 }

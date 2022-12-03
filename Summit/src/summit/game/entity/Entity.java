@@ -8,8 +8,7 @@ import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.animation.ParticleAnimation;
-import summit.game.animation.ScheduledEvent;
-import summit.game.animation.Scheduler;
+import summit.game.entity.projectile.Projectile;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -17,8 +16,25 @@ import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.util.Direction;
 import summit.util.GameRegion;
+import summit.util.ScheduledEvent;
+import summit.util.Scheduler;
 
-public abstract class Entity extends GameRegion implements GameUpdateReciever{
+public abstract class Entity extends GameRegion{
+    
+    //-----------  game tag / property keys ------------------------------
+
+    public static final String hitCooldown = "hitCooldown";
+    public static final String damageCooldown = "damageCooldown";
+    public static final String destroyed = "destroyed";
+    public static final String invulnerable = "invulnerable";
+    public static final String fireResistant = "fireResistant";
+    public static final String inWater = "inWater";
+    public static final String onFire = "onFire";
+    public static final String moving = "moving";
+    public static final String projectileDamage = "projectileDamage";
+
+    //-------------------------------------------------------------------
+
     private float dx, dy;
 
     //knockback lasts for 2 seconds
@@ -32,15 +48,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private Light shadow;
 
-    //just metadata for class name
-    private final String NAME = getClass().getSimpleName();
-
-    //set to true for 500 milliseconds after attacking another entity
-    private boolean hitCooldown;
-
-    //set to true for 500 milliseconds after being attacked by another entity
-    private boolean damageCooldown;
-
     private float hitDamage;
 
     //coefficient
@@ -48,13 +55,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private float maxHealth;
     private float health;
-    private boolean destroyed;
-
-    private boolean invulnerable;
-    private boolean fireResistant;
-    private boolean inWater;
-    private boolean onFire;
-    private boolean moving;
 
     public Entity(float x, float y, float width, float height){
         super(x,y,width,height);
@@ -70,6 +70,18 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         
         Light sdw = new Light(x, y, 1f, -50, -50, -50);
         this.shadow = sdw;
+
+        this.add(hitCooldown);
+        this.add(damageCooldown);
+        this.add(destroyed);
+        this.add(invulnerable);
+        this.add(fireResistant);
+        this.add(inWater);
+        this.add(onFire);
+        this.add(moving);
+        this.add(projectileDamage);
+
+        this.set(projectileDamage, true);
     }
 
     @Override
@@ -88,7 +100,7 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         GameMap map = e.getMap();
 
         if(health <= 0){
-            destroyed = true;
+            set(destroyed, true);
             return;
         }
 
@@ -106,7 +118,9 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }
 
     public void damage(Entity hitBy){
-        if(hitBy.hitCooldown())
+        if(hitBy.is(hitCooldown))
+            return;
+        if(hitBy instanceof Projectile && !is(projectileDamage))
             return;
 
         health -= hitBy.getHitDamage();
@@ -129,11 +143,11 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         });
         //---------------------------------------------------------
 
-        hitBy.setHitCooldown(true);
-        this.setDamageCooldown(true);
+        set(hitCooldown, true);
+        set(damageCooldown, true);
         
         if(health <= 0)
-            destroyed = true;
+            set(destroyed, true);
     }
 
     public void destroy(GameUpdateEvent e){
@@ -154,9 +168,9 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     private void updateMoving(){
         if(lx != getX() || ly != getY()){
-            moving = true;
+            this.set(moving, true);
         } else {
-            moving = false;
+            this.set(moving, false);
         }
 
         if(getY() > ly){
@@ -198,8 +212,39 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         updateMoving();
     }  
 
+    @Override
+    public void set(String property, boolean value){
+        super.set(property, value);
+
+        switch(property){
+            case hitCooldown -> {
+                if(is(hitCooldown)){
+                    Scheduler.registerEvent(new ScheduledEvent(500,1) {
+                        @Override
+                        public void run() {
+                            set(hitCooldown, false);
+                        }
+                    });
+                }
+
+                break;
+            }
+
+            case damageCooldown -> {
+                if(is(damageCooldown)){
+                    Scheduler.registerEvent(new ScheduledEvent(500,1) {
+                        @Override
+                        public void run() {
+                            set(damageCooldown, false);
+                        }
+                    });
+                }
+            }
+        }
+    }
+
     public float getDx() {
-        return this.dx / (inWater() ? 2 : 1);
+        return this.dx / (is(inWater) ? 2 : 1);
     }
 
     public void setDx(float dx) {
@@ -207,35 +252,11 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     }
 
     public float getDy() {
-        return this.dy / (inWater() ? 2 : 1);
+        return this.dy / (is(inWater) ? 2 : 1);
     }
 
     public void setDy(float dy) {
         this.dy = dy;
-    }
-
-    public boolean isMoving() {
-        return this.moving;
-    }
-    
-    public String getName(){
-        return this.NAME;
-    }
-    
-    public boolean inWater() {
-        return this.inWater;
-    }
-    
-    public boolean destroyed(){
-        return destroyed;
-    }
-
-    public void setDestroyed(boolean d){
-        this.destroyed = d;
-    }
-
-    public void setInWater(boolean inWater) {
-        this.inWater = inWater;
     }
     
     public float getHealth() {
@@ -244,20 +265,10 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     public void setHealth(float health) {
         this.health = health;
-        if(health <= 0)
-            setDestroyed(true);
     }
-    
+
     public void changeHealth(float c){
         this.health += c;
-    }
-
-    public boolean onFire(){
-        return this.onFire;
-    }
-
-    public void setOnFire(boolean onFire){
-        this.onFire = onFire;
     }
     
     public float getMaxHealth() {
@@ -268,14 +279,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
         this.maxHealth = maxHealth;
     }
     
-    public boolean isInvulnerable() {
-        return this.invulnerable;
-    }
-
-    public void setInvulnerable(boolean invulnerable) {
-        this.invulnerable = invulnerable;
-    }
-
     public float getHitDamage() {
         return this.hitDamage;
     }
@@ -304,60 +307,12 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
     public void setDamageResistance(float damageResistance) {
         this.damageResistance = damageResistance;
     }    
-
-    public boolean isFireResistant() {
-        return this.fireResistant;
-    }
-
-    public void setFireResistant(boolean fireResistant) {
-        this.fireResistant = fireResistant;
-    }
-
-    //special use method
-    protected void setMoving(boolean moving){
-        this.moving = moving;
-    }
     
-    public boolean hitCooldown() {
-        return this.hitCooldown;
-    }
-
-    public boolean damageCooldown() {
-        return this.damageCooldown;
-    }
-
     public Direction getFacing() {
         return this.facing;
     }
 
     public void setFacing(Direction facing) {
         this.facing = facing;
-    }
-
-
-    public void setDamageCooldown(boolean damageCooldown) {
-        this.damageCooldown = damageCooldown;
-
-        if(damageCooldown){
-            Scheduler.registerEvent(new ScheduledEvent(500,1) {
-                @Override
-                public void run() {
-                    setDamageCooldown(false);
-                }
-            });
-        }
-    }
-
-    public void setHitCooldown(boolean hitCooldown) {
-        this.hitCooldown = hitCooldown;
-
-        if(hitCooldown){
-            Scheduler.registerEvent(new ScheduledEvent(500,1) {
-                @Override
-                public void run() {
-                    setHitCooldown(false);
-                }
-            });
-        }
     }
 }

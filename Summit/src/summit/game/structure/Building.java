@@ -24,8 +24,6 @@ public class Building extends Structure{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        // System.out.println(e.gameX() + " " + e.gameY());
-    //  System.out.println(getX() + " " + getY());
         Player p = e.getMap().getPlayer();
 
         if((enterOrientation == Direction.SOUTH &&

@@ -27,7 +27,7 @@ public class WaterTile extends Tile{
     @Override
     public void collide(Entity e) {
         super.collide(e);
-        e.setInWater(true);
-        e.setOnFire(false);
+        e.set(Entity.inWater, true);
+        e.set(Entity.onFire, false);
     }
 }

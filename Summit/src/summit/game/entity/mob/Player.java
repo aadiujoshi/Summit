@@ -84,7 +84,7 @@ public class Player extends HumanoidEntity{
         super.update(e);
         
         //simulate click
-        if(Time.timeNs() - e.getWindow().lastClick() < Time.NS_IN_MS*2){
+        if(e.mouseClicked()){
         // if(Window.mouseDown()){
             e.getMap().spawn(new Snowball(this, 
                                 Region.theta(e.gameX(), getX(), 

@@ -10,8 +10,6 @@ import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.animation.ParticleAnimation;
-import summit.game.animation.ScheduledEvent;
-import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
@@ -20,6 +18,8 @@ import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.GameRegion;
+import summit.util.ScheduledEvent;
+import summit.util.Scheduler;
 
 public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
@@ -79,10 +79,10 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
     @Override
     public void collide(Entity e) {
-        e.setInWater(false);
-        e.setOnFire(false);
+        e.set(Entity.inWater, false);
+        e.set(Entity.onFire, false);
 
-        if(e.isMoving() && animateParticles && particleAnimation == null){
+        if(e.is(Entity.moving) && animateParticles && particleAnimation == null){
             particleAnimation = new ParticleAnimation(e.getX(), e.getY(), 500, 15, getColor());
         }
     }
