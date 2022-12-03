@@ -6,7 +6,6 @@ package summit.game.tile;
 
 import summit.game.GameUpdateEvent;
 import summit.gfx.Light;
-import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
@@ -22,11 +21,6 @@ public class SnowTile extends Tile{
         
         super.particleAnimation(true);
         super.setColor(Renderer.toIntRGB(170, 214, 230));
-    }
-    
-    @Override
-    public void paint(PaintEvent e){
-        super.paint(e);
     }
 
     @Override

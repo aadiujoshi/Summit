@@ -72,11 +72,6 @@ public abstract class Item extends Entity{
     public void collide(Entity e) { 
         
     }
-
-    @Override
-    public void destroy(GameUpdateEvent e){
-
-    }
     
     //---------------  getters and setters -------------------------
 

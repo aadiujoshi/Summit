@@ -22,11 +22,10 @@ public class Tree extends Entity{
         super.setSpriteOffsetY(1.5f);
         super.setColor(0x964B00);
     }
-
+    
     @Override
     public void damage(Entity hitBy){
         setHealth(getHealth() - hitBy.getHitDamage());
-        super.destroy(null);
         if(getHealth() <= 0)
             setDestroyed(true);
     }
@@ -45,10 +44,5 @@ public class Tree extends Entity{
         damage(e.getMap().getPlayer());
         e.getMap().addParticleAnimation(new ParticleAnimation(getX(), getY()-0.25f, 
                                         500, 20, getColor()));
-    }
-
-    @Override
-    public void collide(Entity g) {
-        
     }
 }

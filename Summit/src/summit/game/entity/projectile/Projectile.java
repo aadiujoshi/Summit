@@ -5,10 +5,11 @@
 package summit.game.entity.projectile;
 
 import summit.game.GameUpdateEvent;
+import summit.game.animation.ScheduledEvent;
+import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
 import summit.game.structure.Structure;
 import summit.gfx.Light;
-import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
@@ -20,12 +21,28 @@ public class Projectile extends Entity {
     private float sx;
     private float sy;
 
-    public Projectile(float x, float y, float angle, float mag, float width, float height) {
-        super(x, y, width, height);
+    private GameRegion origin;
+
+    private boolean enabled;
+
+    public Projectile(GameRegion origin, float angle, float mag, float width, float height) {
+        super(origin.getX(), origin.getY(), width, height);
+
         super.setDx(mag*(float)Math.cos(angle));
         super.setDy(mag*(float)Math.sin(angle));
-        super.setLight(new Light(x, y, 0.25f, -100, -100, -100));
+        
+        super.setLight(new Light(getX(), getY(), 0.25f, -100, -100, -100));
         super.setHealth(1);
+
+        this.sx = getX();
+        this.sy = getY();
+
+        Scheduler.registerEvent(new ScheduledEvent(100, 1) {
+            @Override
+            public void run() {
+                enabled = true;
+            }
+        });
 
         if(getDx() > getDy()){
             if(getDx() < 0)
@@ -42,7 +59,7 @@ public class Projectile extends Entity {
 
     @Override
     public void update(GameUpdateEvent e){
-        if(Region.distance(sx, getX(), sy, getY()) >= 20){
+        if(Region.distance(getX(), getY(), sx, sy) >= 20){
             setDestroyed(true);
             return;
         }
@@ -58,22 +75,13 @@ public class Projectile extends Entity {
             setDestroyed(true);
             return;
         }
-
-        GameRegion contact = e.getMap().getContact(this);
-
-        if(contact != null){
-            if(contact instanceof Entity){
-                collide((Entity)contact);
-            } else if(contact instanceof Structure){
-                ((Structure)contact).collide(this);
-            }
-            this.setDestroyed(true);
-        }
     }
-    
+
     @Override
-    public void collide(Entity e) {
-        e.damage(this);
+    public void collide(Entity contact) {
+        if(!enabled && contact != ((Entity)origin)) return;
+
+        contact.damage(this);
         this.setDestroyed(true);
     }
 

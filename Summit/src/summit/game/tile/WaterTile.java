@@ -5,8 +5,6 @@
 package summit.game.tile;
 
 import summit.game.GameUpdateEvent;
-import summit.game.animation.ScheduledEvent;
-import summit.game.animation.Scheduler;
 import summit.game.entity.Entity;
 import summit.gfx.Sprite;
 

@@ -4,9 +4,11 @@
 */
 package summit.game.entity.projectile;
 
+import summit.util.GameRegion;
+
 public class Arrow extends Projectile {
 
-    public Arrow(float x, float y, float angle) {
-        super(x, y, angle, 12, 0.5f, 0.25f);
+    public Arrow(GameRegion origin, float angle) {
+        super(origin, angle, 12, 0.5f, 0.25f);
     }
 }

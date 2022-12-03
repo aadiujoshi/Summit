@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import summit.game.GameUpdateEvent;
+import summit.Main;
 import summit.game.GameMap;
 import summit.game.GameWorld;
 import summit.game.animation.Scheduler;
@@ -54,13 +55,14 @@ public class Window implements MouseListener, KeyListener{
     //-----------------------
     public float fps;
     private long lastFrame;
+    private long lastClickNS;
     //-----------------------
 
     // public static final int SCREEN_WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     // public static final int SCREEN_HEIGHT = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
-    public static final int SCREEN_WIDTH = 800;
-    public static final int SCREEN_HEIGHT = 450;
+    public static final int SCREEN_WIDTH = 1280;
+    public static final int SCREEN_HEIGHT = 720;
 
     private boolean closed = false;
     private static boolean mouseDown = false;
@@ -173,7 +175,7 @@ public class Window implements MouseListener, KeyListener{
                     closed = true;
 
                     if(world != null){
-                        GameLoader.saveWorld(world, "src/summit/gamesaves/testsave1.txt");
+                        GameLoader.saveWorld(world, Main.path + "gamesaves\\testsave1.txt");
                         quit();
                     }
                 }
@@ -211,9 +213,6 @@ public class Window implements MouseListener, KeyListener{
             canvas.setPreferredSize(new Dimension(width, height));
             canvas.setSize(width, height);
             canvas.setFocusable(true);
-            // canvas.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-            // canvas.setMaximumSize(new java.awt.Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-            // canvas.revalidate();
 
             canvas.addKeyListener(this);
             canvas.addMouseListener(this);
@@ -299,7 +298,7 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.SAVEDGAME){
-            world = GameLoader.loadWorld("/Users/adi/Documents/GitHub/Summit/Summit/src/summit/gamesaves/testsave1.txt");
+            world = GameLoader.loadWorld(Main.path + "gamesaves\\testsave1.txt");
             world.reinit(this);
             state = WindowState.GAME;
             return;
@@ -328,7 +327,7 @@ public class Window implements MouseListener, KeyListener{
         renderer.terminate();
 
         if(world != null){
-            GameLoader.saveWorld(world, "src/summit/gamesaves/testsave1.txt");
+            GameLoader.saveWorld(world, Main.path + "gamesaves\\testsave1.txt");
         }
     } 
 
@@ -348,12 +347,8 @@ public class Window implements MouseListener, KeyListener{
         return this.closed;
     }
 
-    /**
-     * Used for anonymous classes
-     * @return This window instance
-     */
-    private Window getThis(){
-        return this;
+    public long lastClick(){
+        return this.lastClickNS;
     }
 
     public void pushHomeContainer(Container cont){
@@ -470,6 +465,7 @@ public class Window implements MouseListener, KeyListener{
     @Override
     public void mousePressed(MouseEvent e) {
         mouseDown = true;
+        this.lastClickNS = Time.timeNs();
 
         int rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
         int ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);

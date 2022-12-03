@@ -4,7 +4,10 @@
 */
 package summit.util;
 
+import java.awt.Rectangle;
 import java.io.Serializable;
+
+import javax.swing.SwingUtilities;
 
 public class Region implements Serializable{
 
@@ -22,7 +25,6 @@ public class Region implements Serializable{
     }
 
     public boolean overlap(Region other){
-
         float bWidth = other.getWidth();
         float bHeight = other.getHeight();
         float aWidth = getWidth();

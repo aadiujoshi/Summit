@@ -8,6 +8,8 @@ pause menu ->  graphics option panel
 character customization (just recolor character we alr have)
 armor hud
 
+ -> around 5905 lines of code as of 12/2/2022
+
 game
  - skeletons
  - arrows

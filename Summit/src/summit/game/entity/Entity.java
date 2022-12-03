@@ -7,12 +7,9 @@ package summit.game.entity;
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.game.animation.ParticleAnimation;
 import summit.game.animation.ScheduledEvent;
 import summit.game.animation.Scheduler;
-import summit.game.entity.mob.Zombie;
-import summit.game.item.Item;
-import summit.game.item.itemtable.ItemTable;
-import summit.game.tile.Tile;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -37,9 +34,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     //just metadata for class name
     private final String NAME = getClass().getSimpleName();
-
-    private Tile onTile;
-    private Entity contact;
 
     //set to true for 500 milliseconds after attacking another entity
     private boolean hitCooldown;
@@ -103,16 +97,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
             if(kb.finished())
                 this.kb = null;
         }
-
-        contact = map.entityAt(getX(), getY());
-
-        if(this.contact != null){
-            this.collide(contact);
-        }
-
-        onTile = map.getTileAt(getX(), getY());
-        onTile.collide(this);
-        
         updateMoving();
     }
 
@@ -152,11 +136,13 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
             destroyed = true;
     }
 
-    //called by parent object when set to destroy
-    public void destroy(GameUpdateEvent ge){
-        //code to drop item table
+    public void destroy(GameUpdateEvent e){
+        e.getMap().addParticleAnimation(
+                new ParticleAnimation(getX(), getY(), 
+                                        250, 
+                                        20, 
+                                        getColor()));
     }
-
     public boolean moveTo(GameMap map, float newX, float newY){
         if(map.getTileAt(newX, newY) == null || 
             map.getTileAt(newX, newY).isBoundary()){
@@ -280,10 +266,6 @@ public abstract class Entity extends GameRegion implements GameUpdateReciever{
 
     public void setMaxHealth(float maxHealth) {
         this.maxHealth = maxHealth;
-    }
-    
-    public Tile getOnTile(){
-        return this.onTile;
     }
     
     public boolean isInvulnerable() {

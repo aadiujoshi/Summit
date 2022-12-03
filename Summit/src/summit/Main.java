@@ -8,11 +8,10 @@ import java.awt.Toolkit;
 import summit.gfx.BufferedSprites;
 import summit.gui.Window;
 import summit.gui.WindowState;
-import summit.util.Time;
 
 public class Main {
 
-    public static final String path = System.getProperty("user.dir");
+    public static final String path = System.getProperty("user.dir") + "\\Summit\\src\\summit\\";
     public static final String os = System.getProperty("os.name");
 
     public static void main(String[] args) {
@@ -26,8 +25,6 @@ public class Main {
 
         Window summit = new Window("Summit");
 
-        Time.nanoDelay(Time.NS_IN_S/4*3);
-
-        // summit.setState(WindowState.NEWGAME);
+        summit.setState(WindowState.SELECTIONMENUS);
     }
 }

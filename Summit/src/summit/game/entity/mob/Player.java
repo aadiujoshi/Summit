@@ -20,6 +20,7 @@ import summit.gui.HUD;
 import summit.gui.ItemGUI;
 import summit.gui.Window;
 import summit.util.Controls;
+import summit.util.Region;
 import summit.util.Time;
 
 public class Player extends HumanoidEntity{
@@ -47,11 +48,6 @@ public class Player extends HumanoidEntity{
         this.camera = mapCam;
         //DO THIS
         // super.setSprites(something, something, something, something, something, something);
-    }
-
-    @Override
-    public void collide(Entity e){
-        super.collide(e);
     }
     
     @Override
@@ -87,8 +83,12 @@ public class Player extends HumanoidEntity{
     public void update(GameUpdateEvent e) {
         super.update(e);
         
-        if(Window.mouseDown()){
-            e.getMap().spawn(new Snowball(getX(), getY(), getHeight()));
+        //simulate click
+        if(Time.timeNs() - e.getWindow().lastClick() < Time.NS_IN_MS*2){
+        // if(Window.mouseDown()){
+            e.getMap().spawn(new Snowball(this, 
+                                Region.theta(e.gameX(), getX(), 
+                                            e.gameY(), getY())));
         }
 
         if(Controls.E){

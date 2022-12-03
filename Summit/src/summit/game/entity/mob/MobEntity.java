@@ -18,8 +18,6 @@ public abstract class MobEntity extends Entity{
     private EntityAI ai;
     private ItemTable items;
     private boolean pickupItems;
-
-    private Direction facing;
     
     public MobEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -38,16 +36,9 @@ public abstract class MobEntity extends Entity{
     }
 
     @Override
-    public void destroy(GameUpdateEvent e){
-        super.destroy(e);
-
-        e.getMap().addParticleAnimation(new ParticleAnimation(getX(), getY(), 
-                                        1000, 60, getColor()));
-    }
-
-    @Override
     public void collide(Entity contact) {
         super.collide(contact);
+
         if(contact instanceof Item){
             Item c = (Item)contact;
             if(canPickupItems()){

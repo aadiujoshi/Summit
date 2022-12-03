@@ -5,11 +5,13 @@
 package summit.game.entity.projectile;
 
 import summit.gfx.Sprite;
+import summit.util.GameRegion;
 
 public class Snowball extends Projectile {
 
-    public Snowball(float x, float y, float angle) {
-        super(x, y, angle, 10, 0.5f, 0.5f);
+    public Snowball(GameRegion origin, float angle) {
+        super(origin, angle, 20, 0.5f, 0.5f);
         super.setSprite(Sprite.SNOWBALL);
+        super.setHitDamage(1);
     }
 }

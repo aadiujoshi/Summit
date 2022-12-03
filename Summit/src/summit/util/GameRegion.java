@@ -83,6 +83,11 @@ public abstract class GameRegion extends Region implements Paintable, GameClickR
     //-------- getters and setters  --------------------------------
 
     @Override
+    public String toString(){
+        return NAME + ": " + super.toString();
+    }
+
+    @Override
     public void setX(float x){
         super.setX(x + xOffset);
         if(light != null){

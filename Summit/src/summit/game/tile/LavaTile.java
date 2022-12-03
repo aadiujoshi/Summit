@@ -5,12 +5,9 @@
 package summit.game.tile;
 
 import summit.game.GameUpdateEvent;
-import summit.gfx.Light;
-import summit.gfx.PaintEvent;
-import summit.gfx.RenderLayers;
-import summit.gfx.Sprite;
-import summit.util.GameRegion;
 import summit.game.entity.Entity;
+import summit.gfx.Light;
+import summit.gfx.Sprite;
 
 public class LavaTile extends Tile{
 
@@ -31,6 +28,5 @@ public class LavaTile extends Tile{
     public void collide(Entity e) {
         super.collide(e);
         e.setOnFire(true);
-        
     }
 }
