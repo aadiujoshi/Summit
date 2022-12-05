@@ -44,7 +44,7 @@ public class GameUpdateEvent{
         this.gameX = p.x;
         this.gameY = p.y;
 
-        this.mouseClicked = Time.timeNs() - window.lastClick() < Time.NS_IN_MS*10;
+        this.mouseClicked = Time.timeNs() - window.lastClick() < Time.NS_IN_MS*5;
     }
     
     public void setLoadedMap(GameMap m){

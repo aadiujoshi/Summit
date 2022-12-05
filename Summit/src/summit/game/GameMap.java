@@ -12,6 +12,7 @@ import summit.game.animation.ForegroundAnimation;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.Player;
+import summit.game.entity.projectile.Projectile;
 import summit.game.structure.Structure;
 import summit.game.structure.TraderHouse;
 import summit.game.tile.Tile;
@@ -27,6 +28,7 @@ import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
 import summit.util.Scheduler;
+import summit.util.Time;
 
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
 
@@ -34,8 +36,6 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     private ArrayList<Entity> entities;
     private ArrayList<Structure> structures;
-
-    private boolean sorted;
 
     //handles broken block animations
     //assumes NOT registered into scheduler
@@ -45,8 +45,8 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     private Player player;
 
     //render distance for entitys and structures
-    private float rd_x = 25;
-    private float rd_y = 25;
+    private int rd_x = 25;
+    private int rd_y = 25;
 
     //stores the most recent of the player; used for when transitioning GameMaps
     private Camera camera = new Camera(0, 0);
@@ -148,6 +148,31 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         //-----------------------------------------------------------------------------------
 
         //do collision
+        // ArrayList<GameRegion> objects = allObjectsInRD(camera);
+
+        // for (int i = 0; i < objects.size(); i++) {
+        //     for (int j = 0; j < objects.size(); j++) {
+        //         try{
+        //             Entity e1 = entities.get(i);
+        //             Entity e2 = entities.get(j);
+
+        //             getTileAt(e1.getX(), e1.getY()).collide(e1);
+
+        //             // if(objects.get(i) instanceof Projectile)
+        //             //     System.out.println(Time.timeMs());
+
+        //             if(i != j && entities.get(i).overlap(entities.get(j))){
+        //                 entities.get(i).collide(entities.get(j));
+        //                 entities.get(j).collide(entities.get(i));
+        //             }
+
+        //         } catch(java.lang.IndexOutOfBoundsException ie){
+        //             //idk why this happens lol
+        //             System.out.println("UPDATE FAIL");
+        //         }
+        //     }
+        // }
+
         for (int i = 0; i < entities.size(); i++) {
             for (int j = i; j < entities.size(); j++) {
                 if(i != j && entities.get(i).overlap(entities.get(j))){
@@ -163,11 +188,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         for (Entity spawn : spawnQueue) {
             entities.add(spawn);
         }
-
-        //sort front to back for depth rendering
-        if(spawnQueue.size() > 0)
-            sorted = false;
-
+        
         spawnQueue.clear();
     }
 
@@ -177,7 +198,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         if(animation != null)
             animation.setRenderLayer(e);
         
-        //e
+        //particles
         for (int i = 0; i < particleAnimations.size(); i++) {
             particleAnimations.get(i).setRenderLayer(e);
 
@@ -201,43 +222,28 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         //tile ambient occlusion
         ambientOcclusion.setRenderLayer(e);
 
-        //sort GameRegions (entities and structures) from front to back 
-        if(!sorted){
-            ArrayList<Region> sorted = new ArrayList<>();
+        //front to back depth
+        ArrayList<GameRegion> sorted = allObjectsInRD(e.getCamera());
 
-            for (int i = 0; i < entities.size(); i++) {
-                Entity entity = entities.get(i);
+        for (int i = 0; i < sorted.size(); i++) {
+            int lowestInd = i;
 
-                if(Region.distance(entity.getX(), entity.getY(), camera.getX(), camera.getY()) <= rd_x/2f)
-                    sorted.add(entity);
-            }
-            for (int i = 0; i < structures.size(); i++) {
-                Structure s = structures.get(i);
+            for (int j = i+1; j < sorted.size(); j++) {
+                float y1 = sorted.get(lowestInd).getY()-sorted.get(lowestInd).getHeight()/2;
+                float y2 = sorted.get(j).getY() - sorted.get(j).getHeight()/2;
 
-                if(Region.distance(s.getX(), s.getY(), camera.getX(), camera.getY()) <= rd_y/2f)
-                    sorted.add(s);
+                if(y2 > y1)
+                    lowestInd = j;
             }
 
-            for (int i = 0; i < sorted.size(); i++) {
-                int lowestInd = i;
-
-                for (int j = i+1; j < sorted.size(); j++) {
-                    float y1 = sorted.get(lowestInd).getY()-sorted.get(lowestInd).getHeight()/2;
-                    float y2 = sorted.get(j).getY() - sorted.get(j).getHeight()/2;
-
-                    if(y2 > y1)
-                        lowestInd = j;
-                }
-
-                Region temp = sorted.get(i);
-                sorted.set(i, sorted.get(lowestInd));
-                sorted.set(lowestInd, temp);
-            }
-
-            //sorted GameRegions
-            for (Region r: sorted) {
-                ((Paintable)r).setRenderLayer(e);
-            }
+            GameRegion temp = sorted.get(i);
+            sorted.set(i, sorted.get(lowestInd));
+            sorted.set(lowestInd, temp);
+        }
+        
+        //sorted GameRegions
+        for (GameRegion r: sorted) {
+            r.setRenderLayer(e);
         }
         
         //map filter
@@ -253,7 +259,32 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     // getters and setters
     //--------------------------------------------------------------------
     
-    //returns
+    public ArrayList<GameRegion> allObjectsInRD(Camera c){
+        ArrayList<GameRegion> all = new ArrayList<>();
+
+        float left = c.getX()-rd_x/2f;
+        float right = c.getX()+rd_x/2f;
+        float up = c.getY()+rd_y/2f;
+        float down = c.getY()-rd_y/2f;
+
+        for (int i = 0; i < entities.size(); i++){
+            Entity e = entities.get(i);
+
+            if(e.getX() > left && e.getX() < right && e.getY() < up && e.getY() > down)
+                all.add(e);
+        }
+            
+        for (int i = 0; i < structures.size(); i++){ 
+            Structure s = structures.get(i);
+
+            if(s.getX() > left && s.getX() < right && s.getY() < up && s.getY() > down)
+                all.add(s);
+        }
+        
+        return all;
+    }
+
+    @Deprecated
     public GameRegion getContact(GameRegion r){
         for (Structure s : structures) {
             if(r.overlap(s) && s != r)
@@ -329,7 +360,6 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         if(this.player == null)
             entities.add(player);
         this.player = player;
-
     }
     
     public String getName(){
@@ -384,6 +414,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.camera = camera;
     }
 
+    @Deprecated
     public Entity entityAt(Entity loc) {
         for (Entity entity : entities) {
             if(entity.contains(loc.getX(), loc.getY()) && loc != entity);

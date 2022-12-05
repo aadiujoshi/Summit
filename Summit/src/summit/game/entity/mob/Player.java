@@ -40,7 +40,7 @@ public class Player extends HumanoidEntity{
         super.setItems(new Inventory(this, 9, 5));
         super.collide(new SnowballItem(1, 1));
         super.setAI(null);
-        super.setLight(new Light(x, y, 3, 110, 110, 0));
+        // super.setLight(new Light(x, y, 3, 110, 110, 0));
 
         this.hud = new HUD(this);
         this.invGui = new ItemGUI((Inventory)super.getItems());

@@ -21,7 +21,7 @@ import summit.util.GameRegion;
 import summit.util.ScheduledEvent;
 import summit.util.Scheduler;
 
-public abstract class Tile extends GameRegion implements GameUpdateReciever {
+public abstract class Tile extends GameRegion {
 
     //if true -> entities cannot pass through this tile
     private boolean boundary;
@@ -45,6 +45,7 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
         super(x, y, width, height);
         super.setRLayer(RenderLayers.TILE_LAYER);
         super.setOutline(true);
+        super.setRenderOp((int)(Math.random()*5));
     }
 
     public Tile(float x, float y){
@@ -89,7 +90,6 @@ public abstract class Tile extends GameRegion implements GameUpdateReciever {
 
     @Override
     public void gameClick(GameUpdateEvent e){
-        System.out.println(this);
         if(breakable){
             this.setDestroy(true);
         }

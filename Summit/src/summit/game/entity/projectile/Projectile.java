@@ -6,8 +6,6 @@ package summit.game.entity.projectile;
 
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
-import summit.game.structure.Structure;
-import summit.gfx.Light;
 import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
@@ -31,7 +29,8 @@ public class Projectile extends Entity {
         super.setDx(mag*(float)Math.cos(angle));
         super.setDy(mag*(float)Math.sin(angle));
         
-        super.setLight(new Light(getX(), getY(), 0.25f, -100, -100, -100));
+        // super.setLight(new Light(getX(), getY(), 0.25f, -100, -100, -100));
+
         super.setHealth(1);
 
         this.sx = getX();

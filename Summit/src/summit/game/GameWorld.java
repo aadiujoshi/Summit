@@ -91,9 +91,10 @@ public class GameWorld implements Paintable, Serializable{
                 //in milliseconds
                 int prevDelay = 1;
                 while(!parentWindow.isClosed()){
-                    // Time.nanoDelay(Time.NS_IN_MS*5);
                     long startTime = Time.timeNs();
-                    
+
+                    // Time.nanoDelay(Time.NS_IN_MS);
+
                     invokeGameUpdates(prevDelay);
                     
                     prevDelay = (int)(Time.timeNs()-startTime);

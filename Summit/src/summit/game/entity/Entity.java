@@ -6,7 +6,6 @@ package summit.game.entity;
 
 import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
-import summit.game.GameUpdateReciever;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.projectile.Projectile;
 import summit.gfx.ColorFilter;
@@ -68,8 +67,7 @@ public abstract class Entity extends GameRegion{
         this.lx = x;
         this.ly = y;
         
-        Light sdw = new Light(x, y, 1f, -50, -50, -50);
-        this.shadow = sdw;
+        this.shadow = new Light(x, y, 1f, -100, -100, -100);
 
         this.add(hitCooldown);
         this.add(damageCooldown);
@@ -97,8 +95,6 @@ public abstract class Entity extends GameRegion{
 
     @Override
     public void update(GameUpdateEvent e){
-        GameMap map = e.getMap();
-
         if(health <= 0){
             set(destroyed, true);
             return;
@@ -114,7 +110,8 @@ public abstract class Entity extends GameRegion{
 
     @Override
     public void collide(Entity e){
-        
+        if(e.is(onFire))
+            set(onFire, true);
     }
 
     public void damage(Entity hitBy){
@@ -153,7 +150,7 @@ public abstract class Entity extends GameRegion{
     public void destroy(GameUpdateEvent e){
         e.getMap().addParticleAnimation(
                 new ParticleAnimation(getX(), getY(), 
-                                        250, 
+                                        500, 
                                         20, 
                                         getColor()));
     }

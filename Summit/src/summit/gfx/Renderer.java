@@ -11,6 +11,7 @@ import java.awt.image.DataBufferInt;
 import java.io.Serializable;
 
 import summit.util.Region;
+import summit.util.Time;
 
 public class Renderer implements Serializable{
 
@@ -21,6 +22,8 @@ public class Renderer implements Serializable{
     private int[] finalFrame;
     private final int finalHeight;
     private final int finalWidth;
+
+    private int vsync = 0;
     //------------------------------------------
 
     public static final int WIDTH = 256;
@@ -104,11 +107,7 @@ public class Renderer implements Serializable{
                 writers[i].startProcess(finalFrame, frame);
             }
 
-            // wait till all finished
-            // for (int i = 0; i < writers.length; i++) {
-            //     if(!writers[i].finished())
-            //         i = 0;
-            // }
+            Time.nanoDelay(Time.NS_IN_MS*vsync);
         }
     }
 
