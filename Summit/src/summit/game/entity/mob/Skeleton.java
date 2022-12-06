@@ -29,9 +29,9 @@ public class Skeleton extends HumanoidEntity{
     public void paint(PaintEvent e){
         super.paint(e);
 
-        // e.getRenderer().renderGame(Sprite.BOW, getX()+0.35f, getY()-0.2f, 
-        //                             getRenderOp() | Renderer.ROTATE_90 & ~Renderer.FLIP_X, 
-        //                             getColorFilter(), 
-        //                             e.getCamera());
+        e.getRenderer().renderGame(Sprite.BOW, getX()+0.35f, getY()-0.2f, 
+                                    getRenderOp() | Renderer.ROTATE_90 & ~Renderer.FLIP_X, 
+                                    getColorFilter(), 
+                                    e.getCamera());
     }
 }

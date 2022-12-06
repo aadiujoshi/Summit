@@ -4,12 +4,9 @@
 */
 package summit.util;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+
+import summit.gui.Window;
 
 public class Scheduler {
     
@@ -20,7 +17,10 @@ public class Scheduler {
 
     //called by some thread
     public static void checkEvents(){
+        Time.nanoDelay(Time.NS_IN_MS/10);
+
         long now = Time.timeMs();
+        
         for(int i = 0; i < events.size(); i++) {
             ScheduledEvent e = events.get(i);
             
@@ -40,7 +40,7 @@ public class Scheduler {
             }
         }
     }
-
+    
     public static void registerEvent(ScheduledEvent e){
         events.add(e);
     }

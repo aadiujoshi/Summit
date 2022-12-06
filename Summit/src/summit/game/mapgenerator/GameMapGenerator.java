@@ -75,8 +75,6 @@ public class GameMapGenerator {
             }
         }
 
-        // map.spawn(new Tree(40, 40));
-
         map.addStructure(new TraderHouse(19.5f, 19f, map));
 
         for (int i = 40; i < 41; i++) {
@@ -86,6 +84,18 @@ public class GameMapGenerator {
         }
 
         return map;
+    }
+
+    public static GameMap generateStage2(final long seed){
+        GameMap map = new GameMap(null, -seed, 128, 128);
+
+        
+
+        return map;
+    }
+
+    public static GameMap generateStage3(final long seed){
+        return null;
     }
 
     public static GameMap generateTraderHouse(GameMap parentMap){
@@ -102,13 +112,5 @@ public class GameMapGenerator {
         map.addStructure(new Door(7f, 0, parentMap, map));
         map.setCamera(new Camera(7f, 1));
         return map;
-    }
-
-    public static GameMap generateStage2(final long seed){
-        return null;
-    }
-
-    public static GameMap generateStage3(final long seed){
-        return null;
     }
 }

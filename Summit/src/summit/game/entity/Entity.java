@@ -19,20 +19,6 @@ import summit.util.ScheduledEvent;
 import summit.util.Scheduler;
 
 public abstract class Entity extends GameRegion{
-    
-    //-----------  game tag / property keys ------------------------------
-
-    public static final String hitCooldown = "hitCooldown";
-    public static final String damageCooldown = "damageCooldown";
-    public static final String destroyed = "destroyed";
-    public static final String invulnerable = "invulnerable";
-    public static final String fireResistant = "fireResistant";
-    public static final String inWater = "inWater";
-    public static final String onFire = "onFire";
-    public static final String moving = "moving";
-    public static final String projectileDamage = "projectileDamage";
-
-    //-------------------------------------------------------------------
 
     private float dx, dy;
 
@@ -154,6 +140,7 @@ public abstract class Entity extends GameRegion{
                                         20, 
                                         getColor()));
     }
+    
     public boolean moveTo(GameMap map, float newX, float newY){
         if(map.getTileAt(newX, newY) == null || 
             map.getTileAt(newX, newY).isBoundary()){
@@ -236,6 +223,8 @@ public abstract class Entity extends GameRegion{
                         }
                     });
                 }
+
+                break;
             }
         }
     }
@@ -312,4 +301,20 @@ public abstract class Entity extends GameRegion{
     public void setFacing(Direction facing) {
         this.facing = facing;
     }
+
+
+    
+    //-----------  game tag / property keys ------------------------------
+
+    public static final String hitCooldown = "hitCooldown";
+    public static final String damageCooldown = "damageCooldown";
+    public static final String destroyed = "destroyed";
+    public static final String invulnerable = "invulnerable";
+    public static final String fireResistant = "fireResistant";
+    public static final String inWater = "inWater";
+    public static final String onFire = "onFire";
+    public static final String moving = "moving";
+    public static final String projectileDamage = "projectileDamage";
+
+    //-------------------------------------------------------------------
 }

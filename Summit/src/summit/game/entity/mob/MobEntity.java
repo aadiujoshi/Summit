@@ -10,13 +10,14 @@ import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
 import summit.game.item.Item;
 import summit.game.item.itemtable.ItemTable;
+import summit.gfx.ColorFilter;
+import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
+import summit.gfx.Sprite;
 import summit.util.Direction;
 import summit.util.GameRegion;
 
 public abstract class MobEntity extends Entity{
-
-    public static String pickupItems = "pickupItems";
 
     private EntityAI ai;
     private ItemTable items;
@@ -28,7 +29,7 @@ public abstract class MobEntity extends Entity{
         super.setDy(3);
         super.setColor(Renderer.toIntRGB(200, 0, 0));
 
-        super.add(pickupItems);
+        add(pickupItems);
     }
 
     @Override
@@ -37,6 +38,14 @@ public abstract class MobEntity extends Entity{
 
         if(ai != null)
             ai.next(e);
+    }
+
+    @Override
+    public void paint(PaintEvent e){
+        super.paint(e);
+        
+        if(getFacing() == Direction.SOUTH)
+            e.getRenderer().renderGame(destroyed, getX(), getY()-getHeight()/2, Renderer.NO_OP, ColorFilter.NOFILTER, e.getCamera());
     }
 
     @Override
@@ -69,4 +78,12 @@ public abstract class MobEntity extends Entity{
     public void setItems(ItemTable items) {
         this.items = items;
     }
+
+    
+    //-----------  game tag / property keys ------------------------------
+
+    public static String pickupItems = "pickupItems";
+
+    //-------------------------------------------------------------------
+
 }

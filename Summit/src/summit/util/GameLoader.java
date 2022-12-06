@@ -36,7 +36,7 @@ public class GameLoader {
     }
 
     public static void saveWorld(GameWorld world, String filename){
-        Runnable r = () -> {
+        Thread wr = new Thread(() -> {
             try{
                 FileOutputStream file = new FileOutputStream(filename);
                 ObjectOutputStream out = new ObjectOutputStream(file);
@@ -48,8 +48,17 @@ public class GameLoader {
             } catch(ClassCastException | IOException e) {
                 e.printStackTrace();
             }
-        };
-        Thread wr = new Thread(r);
+        });
         wr.start();
+
+        Thread updater = new Thread(() -> {
+            while(wr.isAlive()){
+                System.out.println("Saving world...");
+                Time.nanoDelay(Time.NS_IN_S);
+            }
+            System.out.println("Save complete");
+        });
+
+        updater.start();
     }
 }

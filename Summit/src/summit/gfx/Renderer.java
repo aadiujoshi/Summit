@@ -434,10 +434,10 @@ public class Renderer implements Serializable{
                 if(sprite[r][c] != -1){
                     if( //check if on edge of sprite and is valid rgb 
                         
-                        (r == 0 && sprite[r][c] != -1) ||
-                        (r == sprite.length-1 && sprite[r][c] != -1) ||
-                        (c == 0 && sprite[r][c] != -1) ||
-                        (c == sprite[0].length-1 && sprite[r][c] != -1) ||
+                        (r == 0) ||
+                        (r == sprite.length-1) ||
+                        (c == 0) ||
+                        (c == sprite[0].length-1) ||
 
                         //check sides
                         (r-1 > -1 && sprite[r-1][c] == -1) ||

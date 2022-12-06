@@ -88,17 +88,16 @@ public class GameWorld implements Paintable, Serializable{
 
             @Override
             public void run(){
-                //in milliseconds
                 int prevDelay = 1;
                 while(!parentWindow.isClosed()){
                     long startTime = Time.timeNs();
-
-                    // Time.nanoDelay(Time.NS_IN_MS);
-
+                    
                     invokeGameUpdates(prevDelay);
                     
                     prevDelay = (int)(Time.timeNs()-startTime);
                 }
+
+                System.out.println("Game Update Thread Terminated");
             }
         });
 

@@ -28,9 +28,9 @@ public class Writer extends Thread{
     @Override
     public void run(){
         while(process){
-            // Time.nanoDelay(10000);
+            Time.nanoDelay(Time.NS_IN_MS/5);
+
             if(finalFrame != null && frame != null){
-            // if((boolean)process){
                 float scaleX = finalWidth/Renderer.WIDTH;
                 float scaleY = finalHeight/Renderer.HEIGHT;
 
@@ -41,24 +41,18 @@ public class Writer extends Thread{
                         }
                     }
                 }
-
-                // endProcess();
             }
         }
-    }
 
-    @Deprecated
-    public boolean finished(){
-        return !((boolean)process);
+        System.out.println("Writer Thread Terminated");
     }
-
+    
     public void startProcess(int[] finalFrame, int[][] frame){
         this.finalFrame = finalFrame;
         this.frame = frame;
-        process = true;
     }
-
+    
     public void terminate(){
-        process = false;
+        this.process = false;
     }
 }

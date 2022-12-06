@@ -106,19 +106,17 @@ public class Window implements MouseListener, KeyListener{
         schedulerThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(!closed){       
-                    Time.nanoDelay(Time.NS_IN_MS/5);
+                while(!closed)
                     Scheduler.checkEvents();
-                }
+                
+                System.out.println("Scheduler Thread Terminated");
             }
         });
 
         graphicsThread = new Thread(new Runnable() {
 
             long lastFpsUpdate = Time.timeMs();
-            // long fCount = 1;
-            // float avg = 200;
-
+            
             @Override
             public void run(){
                 lastFrame = Time.timeMs();
@@ -126,7 +124,6 @@ public class Window implements MouseListener, KeyListener{
                     Graphics2D g = null;
                     do {
                         try{
-                            // Time.nanoDelay((long)(Time.NS_IN_MS*(1000/144)));
                             long startFrame = Time.timeNs();
                             
                             g = (Graphics2D)bufferStrategy.getDrawGraphics();
@@ -154,6 +151,8 @@ public class Window implements MouseListener, KeyListener{
                         catch(java.lang.IllegalStateException e) { }
                     } while (bufferStrategy.contentsLost());
                 }
+
+                System.out.println("Graphics Thread Terminated");
             }
         });
 
@@ -175,8 +174,7 @@ public class Window implements MouseListener, KeyListener{
                     closed = true;
 
                     if(world != null){
-                        GameLoader.saveWorld(world, Main.path + "gamesaves\\testsave1.txt");
-                        quit();
+                        onQuit();
                     }
                 }
 
@@ -234,7 +232,7 @@ public class Window implements MouseListener, KeyListener{
         graphicsThread.start();
         schedulerThread.start();
 
-        System.out.println("Threads in use: " + (Thread.activeCount()+1));
+        System.out.println("Threads in use: " + (Thread.activeCount()+1) + "\n");
 
         Time.nanoDelay(Time.NS_IN_MS*100);
 
@@ -279,7 +277,6 @@ public class Window implements MouseListener, KeyListener{
         
         renderer.resetFrame();
     }
-
 
     public void setState(WindowState newState){
         if(state == newState) return;
@@ -343,12 +340,21 @@ public class Window implements MouseListener, KeyListener{
     //getters and setters
     //--------------------------------------------------------------------
 
+    private Window getThis(){
+        return this;
+    }
+
     public boolean isClosed() {
         return this.closed;
     }
 
     public long lastClick(){
-        return this.lastClickNS;
+        long tmp = lastClickNS;
+
+        //"used" this click
+        this.lastClickNS = 0;
+
+        return tmp;
     }
 
     public void pushHomeContainer(Container cont){

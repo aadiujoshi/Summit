@@ -4,9 +4,7 @@
 */
 package summit.game.entity.mob;
 
-import summit.game.GameUpdateEvent;
 import summit.game.ai.HostileMobAI;
-import summit.game.entity.Entity;
 import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
