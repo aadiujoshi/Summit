@@ -11,7 +11,7 @@ import summit.gui.WindowState;
 
 public class Main {
 
-    public static final String path = System.getProperty("user.dir") + "\\Summit\\src\\summit\\";
+    public static final String path = System.getProperty("user.dir") + "/src/summit/";
     public static final String os = System.getProperty("os.name");
 
     public static void main(String[] args) {
