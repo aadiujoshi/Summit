@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game.item;
@@ -9,7 +9,8 @@ import summit.util.Region;
 
 public class ArrowItem extends Item{
     public ArrowItem(float x, float y) {
-        super(new Region(x, y, 0.25f, 0.25f), new Region(0, 0, 0.5f, 0.5f));
+        super(new Region(x, y, 1, 1), 1);
+        
         super.setSprite(Sprite.ARROW_PROJ);
     }
 }

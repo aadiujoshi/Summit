@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game.item.weapon;
@@ -10,12 +10,11 @@ import summit.util.Region;
 
 public class SwordItem extends Item {
 
-    public SwordItem(float x, float y) {
-        super(new Region(x, y, 1, 1), new Region(0, 0, 1, 2));
+    public SwordItem(float x, float y, int state) {
+        super(((state == Item.GAME) ?
+                new Region(x, y, 1, 1) :
+                new Region(x, y, y, state)), 
+                state);
         super.setSprite(Sprite.STONE_SWORD);
     }
-
-    public SwordItem() {
-        this(0, 0);
-    }    
 }

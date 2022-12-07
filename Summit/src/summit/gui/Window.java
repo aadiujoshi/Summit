@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.gui;
@@ -55,7 +55,7 @@ public class Window implements MouseListener, KeyListener{
     //-----------------------
     public float fps;
     private long lastFrame;
-    private long lastClickNS;
+    private boolean availableClick;
     //-----------------------
 
     // public static final int SCREEN_WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -348,12 +348,10 @@ public class Window implements MouseListener, KeyListener{
         return this.closed;
     }
 
-    public long lastClick(){
-        long tmp = lastClickNS;
-
-        //"used" this click
-        this.lastClickNS = 0;
-
+    //used to simulate a mouse click for gameupdateevents
+    public boolean availableClick(){
+        boolean tmp = availableClick;
+        availableClick = false;
         return tmp;
     }
 
@@ -471,7 +469,7 @@ public class Window implements MouseListener, KeyListener{
     @Override
     public void mousePressed(MouseEvent e) {
         mouseDown = true;
-        this.lastClickNS = Time.timeNs();
+        this.availableClick = true;
 
         int rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
         int ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
@@ -483,6 +481,7 @@ public class Window implements MouseListener, KeyListener{
                 
                 GameMap loadedmap = world.getLoadedMap();
                 loadedmap.gameClick(new GameUpdateEvent(world, 0, rx, ry, false));
+                this.availableClick = true;
             }
             
             synchronized(guiContainersGame){

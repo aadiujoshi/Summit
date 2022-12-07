@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game.entity.projectile;
@@ -74,6 +74,8 @@ public class Projectile extends Entity {
             set(destroyed, true);
             return;
         }
+
+        set(inWater, false);
     }
 
     @Override
@@ -83,6 +85,18 @@ public class Projectile extends Entity {
         contact.damage(this);
 
         set(destroyed, true);
+    }
+
+    @Override
+    public float getDx(){
+        //change speed back to normal
+        return super.getDx() * (is(inWater) ? 2 : 1);
+    }
+
+    @Override
+    public float getDy(){
+        //change speed back to normal
+        return super.getDy() * (is(inWater) ? 2 : 1);
     }
 
     @Override

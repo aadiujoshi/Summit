@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game;
@@ -14,7 +14,6 @@ import summit.game.entity.Entity;
 import summit.game.entity.mob.Player;
 import summit.game.entity.projectile.Projectile;
 import summit.game.structure.Structure;
-import summit.game.structure.TraderHouse;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.gfx.AmbientOcclusion;
@@ -25,10 +24,9 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
+import summit.util.Controls;
 import summit.util.GameRegion;
 import summit.util.Region;
-import summit.util.Scheduler;
-import summit.util.Time;
 
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
 
@@ -148,40 +146,29 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         //-----------------------------------------------------------------------------------
 
         //do collision
-        // ArrayList<GameRegion> objects = allObjectsInRD(camera);
+        ArrayList<GameRegion> objects = allObjectsInRD(camera);
 
-        // for (int i = 0; i < objects.size(); i++) {
-        //     for (int j = 0; j < objects.size(); j++) {
-        //         try{
-        //             Entity e1 = entities.get(i);
-        //             Entity e2 = entities.get(j);
+        for (int i = 0; i < objects.size(); i++) {
+            for (int j = 0; j < objects.size(); j++) {
+                try{
+                    GameRegion gr1 = objects.get(i);
+                    GameRegion gr2 = objects.get(j);
 
-        //             getTileAt(e1.getX(), e1.getY()).collide(e1);
+                    if(gr1 instanceof Entity){
+                        getTileAt(gr1.getX(), gr1.getY()).collide((Entity)gr1);
+                        
+                        if(i != j && gr1.overlap(gr2)){                    
+                            gr2.collide((Entity)gr1);
+                        }
+                    }
 
-        //             // if(objects.get(i) instanceof Projectile)
-        //             //     System.out.println(Time.timeMs());
-
-        //             if(i != j && entities.get(i).overlap(entities.get(j))){
-        //                 entities.get(i).collide(entities.get(j));
-        //                 entities.get(j).collide(entities.get(i));
-        //             }
-
-        //         } catch(java.lang.IndexOutOfBoundsException ie){
-        //             //idk why this happens lol
-        //             System.out.println("UPDATE FAIL");
-        //         }
-        //     }
-        // }
-
-        for (int i = 0; i < entities.size(); i++) {
-            for (int j = i; j < entities.size(); j++) {
-                if(i != j && entities.get(i).overlap(entities.get(j))){
-                    entities.get(i).collide(entities.get(j));
-                    entities.get(j).collide(entities.get(i));
+                } catch(java.lang.IndexOutOfBoundsException ie){
+                    //idk why this happens lol
+                    System.out.println("UPDATE FAIL");
                 }
             }
         }
-
+        
         //-----------------------------------------------------------------------------------
 
         //actually spawn entities
@@ -220,7 +207,8 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         }
 
         //tile ambient occlusion
-        ambientOcclusion.setRenderLayer(e);
+        if(Controls.UP)
+            ambientOcclusion.setRenderLayer(e);
 
         //front to back depth
         ArrayList<GameRegion> sorted = allObjectsInRD(e.getCamera());
@@ -258,7 +246,21 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     //--------------------------------------------------------------------
     // getters and setters
     //--------------------------------------------------------------------
-    
+
+    @Deprecated
+    public GameRegion getContact(GameRegion r){
+        for (Structure s : structures) {
+            if(r.overlap(s) && s != r)
+                return s;
+        }
+        for (Entity e : entities) {
+            if(r.overlap(e) && e != r)
+                return e;
+        }
+        
+        return null;
+    }
+
     public ArrayList<GameRegion> allObjectsInRD(Camera c){
         ArrayList<GameRegion> all = new ArrayList<>();
 
@@ -281,21 +283,16 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                 all.add(s);
         }
         
-        return all;
-    }
+        // int lol = 0;
+        // for (GameRegion gameRegion : all) {
+        //     if (gameRegion instanceof Projectile) {
+        //         lol++;
+        //     }
+        // }
 
-    @Deprecated
-    public GameRegion getContact(GameRegion r){
-        for (Structure s : structures) {
-            if(r.overlap(s) && s != r)
-                return s;
-        }
-        for (Entity e : entities) {
-            if(r.overlap(e) && e != r)
-                return e;
-        }
-        
-        return null;
+        // System.out.println(lol);
+
+        return all;
     }
 
     public TileStack[][] tilesInRD(Camera c){

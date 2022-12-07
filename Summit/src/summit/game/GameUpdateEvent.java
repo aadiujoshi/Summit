@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game;
@@ -44,7 +44,7 @@ public class GameUpdateEvent{
         this.gameX = p.x;
         this.gameY = p.y;
 
-        this.mouseClicked = Time.timeNs() - window.lastClick() < Time.NS_IN_MS*5;
+        this.mouseClicked = window.availableClick();
     }
     
     public void setLoadedMap(GameMap m){

@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game.entity;
@@ -53,7 +53,7 @@ public abstract class Entity extends GameRegion{
         this.lx = x;
         this.ly = y;
         
-        this.shadow = new Light(x, y, 1f, -100, -100, -100);
+        this.shadow = new Light(x, y, 1f, -50, -50, -50);
 
         this.add(hitCooldown);
         this.add(damageCooldown);

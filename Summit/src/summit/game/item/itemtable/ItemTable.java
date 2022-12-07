@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game.item.itemtable;
@@ -36,7 +36,6 @@ public class ItemTable implements Serializable{
     public void drop(GameMap map){
         for(int i = 0; i < items.size(); i++){
             Item it = items.get(i);
-            it.setStashed(false);
             it.setPos(location.getX(), location.getY());
             map.spawn(items.get(i));
         }

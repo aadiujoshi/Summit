@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game.entity.mob;
@@ -59,6 +59,7 @@ public class Player extends HumanoidEntity{
     @Override
     public void paint(PaintEvent e) {
         super.paint(e);
+
         e.getRenderer().renderText(("x:" + (Math.round(getX()))), 
                     20, 15, Renderer.NO_OP, new ColorFilter(255, -255, -255));
 
@@ -85,7 +86,6 @@ public class Player extends HumanoidEntity{
         
         //simulate click
         if(e.mouseClicked()){
-        // if(Window.mouseDown()){
             e.getMap().spawn(new Snowball(this, 
                                 Region.theta(e.gameX(), getX(), 
                                             e.gameY(), getY())));

@@ -1,5 +1,5 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game.item;
@@ -12,10 +12,8 @@ import summit.util.Region;
 
 public abstract class Item extends Entity{
 
-    //if in inventory or not
-    //true -> in an inventory or lootTable
-    //false -> on the floor in the game
-    private boolean stashed;
+    public static int GAME = 1;
+    public static int TABLE = 2;
 
     //picked up by the mouse
     private boolean selected = false;
@@ -23,12 +21,11 @@ public abstract class Item extends Entity{
     //can stack on other of the same items
     private boolean stackable = true;
 
-    //the space the item takes in the item table
-    private Region tableRegion;
+    //if in inventory or in game
+    //TABLE -> in an inventory or lootTable
+    //GAME -> on the floor in the game
+    private final int STATE;
     
-    //itemtable it belongs to
-    // private ItemGUI paintRegion;
-
     //sprite thats rendered in the inventory/gui
     private String itemSprite;
 
@@ -36,37 +33,40 @@ public abstract class Item extends Entity{
     
     //space it takes in the inventory
     //x and y are set by inventory
-    public Item(Region gameRegion, Region tableRegion) {
-        super(gameRegion.getX(), gameRegion.getY(), gameRegion.getWidth(), gameRegion.getHeight());
-        
-        this.tableRegion = tableRegion;
+    public Item(Region bounds, int state) {
+        super(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+
+        STATE = state;
+
+        if(STATE == TABLE)
+            setValid(false);
     }
 
     @Override
     public void paint(PaintEvent e){
-        if(!stashed){
-            super.paint(e);
-        } else if(stashed){
-            e.getRenderer().render(getSprite(), getTX(), getTY(), getRenderOp(), getColorFilter());
-        }
+        // if(){
+        //     super.paint(e);
+        // } else if(stashed){
+        //     // e.getRenderer().render(getSprite(), getTX(), getTY(), getRenderOp(), getColorFilter());
+        // }
     }
 
     @Override
     public void update(GameUpdateEvent e){
         super.update(e);
 
-        if(stashed){
-            if(selected){
-                setTablePos(e.mouseX(), e.mouseY());
-            }
-        }
+        // if(stashed){
+        //     if(selected){
+        //         setPos(e.mouseX(), e.mouseY());
+        //     }
+        // }
     }
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        if(stashed){
-            selected = !selected;
-        }
+        // if(stashed){
+        //     selected = !selected;
+        // }
     }
 
     @Override
@@ -76,66 +76,8 @@ public abstract class Item extends Entity{
     
     //---------------  getters and setters -------------------------
 
-    public void setTablePos(int x, int y){
-        this.tableRegion.setPos(x, y);
-    }
-
-    public int getTX(){
-        return (int)this.tableRegion.getX();
-    }
-
-    public void setTX(int x){
-        this.tableRegion.setX(x);
-    }
-
-    public int getTY(){
-        return (int)this.tableRegion.getY();
-    }
-
-    public void setTY(int y){
-        this.tableRegion.setY(y);
-    }
-
-    public void setTWidth(int width){
-        this.tableRegion.setWidth(width);
-    }
-
-    public int getTWidth(){
-        return (int)this.tableRegion.getWidth();
-    }
-    
-    public void setTHeight(int height){
-        this.tableRegion.setHeight(height);
-    }
-
-    public int getTHeight(){
-        return (int)this.tableRegion.getWidth();
-    }
-
     public boolean isStackable() {
         return this.stackable;
-    }
-
-    public void unstash(){
-        this.stashed = false;
-    }
-
-    // public void setItemTable(ItemTable table){
-    //     if(!table.addItem(this)){
-    //         return;
-    //     }
-
-    //     this.paintRegion = table;
-    //     this.stashed = true;
-    // }
-
-    public boolean isStashed() {
-        return this.stashed;
-    }
-
-    public void setStashed(boolean stashed) {
-        this.stashed = stashed;
-        this.selected = false;
     }
     
     public String getItemSprite() {

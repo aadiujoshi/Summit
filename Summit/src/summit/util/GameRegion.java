@@ -27,6 +27,8 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
 
     private boolean outline = true;
 
+    private boolean valid = true;
+
     private GameTags tags;
 
     // +x is right -x is left +y is up -y is down
@@ -221,4 +223,12 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
     public String getSprite(){
         return this.sprite;
     }
+    
+    public boolean isValid() {
+        return this.valid;
+    }
+
+    public void setValid(boolean valid) {
+		this.valid = valid;
+	}
 }

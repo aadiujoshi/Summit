@@ -1,21 +1,18 @@
 /*
-* BPA project by Aadi Joshi, Aditya Bhattaharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
 * 2022
 */
 package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
 import summit.game.ai.EntityAI;
-import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
 import summit.game.item.Item;
 import summit.game.item.itemtable.ItemTable;
 import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
-import summit.gfx.Sprite;
 import summit.util.Direction;
-import summit.util.GameRegion;
 
 public abstract class MobEntity extends Entity{
 
@@ -30,6 +27,8 @@ public abstract class MobEntity extends Entity{
         super.setColor(Renderer.toIntRGB(200, 0, 0));
 
         add(pickupItems);
+        add(aggresive);
+        add(neutral);
     }
 
     @Override
@@ -54,8 +53,7 @@ public abstract class MobEntity extends Entity{
 
         if(contact instanceof Item){
             Item c = (Item)contact;
-            if(is(pickupItems)){
-                c.setStashed(true);
+            if(is(pickupItems) && items != null){
                 getItems().addItem(c);
             }
         }
@@ -79,10 +77,11 @@ public abstract class MobEntity extends Entity{
         this.items = items;
     }
 
-    
     //-----------  game tag / property keys ------------------------------
 
     public static String pickupItems = "pickupItems";
+    public static String aggresive = "aggresive";
+    public static String neutral = "neutral";
 
     //-------------------------------------------------------------------
 
