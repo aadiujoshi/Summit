@@ -9,14 +9,16 @@ import summit.gfx.Renderer;
 import java.util.ArrayList;
 import java.util.List;
 
+import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 
 public class TextContainer extends Container{
 
     private String text;
+    private ColorFilter textFilter;
 
-    public TextContainer(String text, Container parent, float relX, float relY, float relWidth, float relHeight) {
-        super(parent, relX, relY, relWidth, relHeight);
+    public TextContainer(String text, Container parent, float relX, float relY, String sprite) {
+        super(parent, relX, relY, sprite);
         this.text = text;
     }
 
@@ -41,10 +43,10 @@ public class TextContainer extends Container{
         }
 
         for (int i = 0; i < lines.size(); i++) {
-            e.getRenderer().renderText(lines.get(i), getX(), getY()+(i*9)-(lines.size()/2*4), Renderer.NO_OP, null);
+            e.getRenderer().renderText(lines.get(i), (int)getX(), (int)getY()+(i*9)-(lines.size()/2*4), Renderer.NO_OP, textFilter);
         }
     }
-
+    
     public String getText() {
         return this.text;
     }
@@ -52,5 +54,12 @@ public class TextContainer extends Container{
     public void setText(String text) {
         this.text = text;
     }
+    
+    public ColorFilter getTextFilter() {
+        return this.textFilter;
+    }
 
+    public void setTextFilter(ColorFilter textFilter) {
+        this.textFilter = textFilter;
+    }
 }

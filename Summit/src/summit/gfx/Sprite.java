@@ -32,4 +32,9 @@ public class Sprite {
     public static final String WOOD_SWORD = "wood-sword";
     public static final String STONE_SWORD = "stone-sword";
     public static final String HIT_EFFECT = "hit-effect";
+    public static final String PAUSE_ICON = "pause-icon";
+    public static final String MENUBOX1 = "guibox1";
+    public static final String MENUBOX2 = "guibox2";
+    public static final String MENUBOX3 = "guibox3";
+    public static final String FILL_SCREEN = "fill-screen";
 }

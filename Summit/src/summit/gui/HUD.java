@@ -17,7 +17,7 @@ public class HUD extends Container{
     private Player player;
     
     public HUD(Player player) {
-        super(null, 0.75f, 0.13f, 0f, 0f);
+        super(null, 0.75f, 0.13f, null);
         this.player = player;
     }
 
@@ -33,7 +33,7 @@ public class HUD extends Container{
         //round to nearest 0.5
         float h = Math.round(player.getHealth()*2)/2;
 
-        int py = getY();
+        int py = (int)getY();
         int right_x = (int)(getX()+(player.getMaxHealth()*10/2));
         int left_x = (int)(getX()-(player.getMaxHealth()*10/2));
         

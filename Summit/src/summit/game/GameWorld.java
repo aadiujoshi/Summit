@@ -20,6 +20,7 @@ import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gui.Container;
+import summit.gui.VideoSettings;
 import summit.gui.Window;
 import summit.util.Time;
 
@@ -28,9 +29,13 @@ public class GameWorld implements Paintable, Serializable{
     private HashMap<String, GameMap> maps;
     private GameMap loadedMap;
 
+    private boolean paused;
+
+    // private PauseMenu pauseMenu;
+
     //used for safer map transitioning
     //if not null, the loaded map is set to this on the next update tick and this is set to null
-    private GameMap bufferedNewMap;
+    private GameMap queuedNewMap;
 
     private final long SEED;
 
@@ -104,20 +109,27 @@ public class GameWorld implements Paintable, Serializable{
         gameUpdateThread.start();
     }
 
+    public void pause(){
+        
+    }
+
     private void invokeGameUpdates(int deltaTime){
+        if(paused)
+            return;
+        
         GameUpdateEvent e = new GameUpdateEvent(this, deltaTime, parentWindow.mouseX(), parentWindow.mouseY(), false);
         
         if(loadedMap != null)
             loadedMap.update(e);
         
         //change gamemaps
-        if(bufferedNewMap != null){
+        if(queuedNewMap != null){
             this.loadedMap.setLoaded(false);
-            this.bufferedNewMap.setLoaded(true);
-            this.bufferedNewMap.setPlayer(player);
-            player.setCamera(bufferedNewMap.getCamera());
-            this.loadedMap = bufferedNewMap;
-            this.bufferedNewMap = null;
+            this.queuedNewMap.setLoaded(true);
+            this.queuedNewMap.setPlayer(player);
+            player.setCamera(queuedNewMap.getCamera());
+            this.loadedMap = queuedNewMap;
+            this.queuedNewMap = null;
         }
     }
 
@@ -146,7 +158,7 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     public void setLoadedMap(GameMap newMap) {
-        this.bufferedNewMap = newMap;
+        this.queuedNewMap = newMap;
     }
 
     public Camera getCamera() {

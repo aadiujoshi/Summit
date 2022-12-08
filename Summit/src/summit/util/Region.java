@@ -4,10 +4,7 @@
 */
 package summit.util;
 
-import java.awt.Rectangle;
 import java.io.Serializable;
-
-import javax.swing.SwingUtilities;
 
 public class Region implements Serializable{
 
@@ -17,6 +14,10 @@ public class Region implements Serializable{
     private float x;
     private float y;
     
+    public Region(Region region){
+        this(region.getX(), region.getY(), region.getWidth(), region.getHeight());
+    }
+
     public Region(float x, float y, float width, float height){
         this.x = x;
         this.y = y;

@@ -210,7 +210,7 @@ public class Renderer implements Serializable{
     /**
      * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
      */
-    public void render(String s, float x, float y, int operation, ColorFilter filter){
+    public void render(String s, int x, int y, int operation, ColorFilter filter){
         
         int[][] sprite = BufferedSprites.getSprite(s);
 

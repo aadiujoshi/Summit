@@ -85,8 +85,8 @@ public class Window implements MouseListener, KeyListener{
 
     //------------------------------------------
     private MainSelectionMenu mainMenu;
-
-    
+    private VideoSettings vidSettings;
+    // private PauseMenu pauseMenu;
     //------------------------------------------
 
     public Window(String title){
@@ -99,9 +99,10 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(3, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer = new Renderer(2, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu();
+        vidSettings = new VideoSettings();
 
         schedulerThread = new Thread(new Runnable() {
             @Override
@@ -295,7 +296,9 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.SAVEDGAME){
-            world = GameLoader.loadWorld(Main.path + "gamesaves\\testsave1.txt");
+            world = GameLoader.loadWorld(Main.path + 
+                                        (Main.os.contains("Windows") ? "gamesaves\\testsave1.txt" :
+                                                                        "gamesaves/testsave1.txt"));
             world.reinit(this);
             state = WindowState.GAME;
             return;
@@ -324,7 +327,9 @@ public class Window implements MouseListener, KeyListener{
         renderer.terminate();
 
         if(world != null){
-            GameLoader.saveWorld(world, Main.path + "gamesaves\\testsave1.txt");
+            GameLoader.saveWorld(world, Main.path + 
+                                    (Main.os.contains("Windows") ? "gamesaves\\testsave1.txt" :
+                                                                    "gamesaves/testsave1.txt"));
         }
     } 
 
@@ -486,7 +491,7 @@ public class Window implements MouseListener, KeyListener{
             
             synchronized(guiContainersGame){
                 for(Container container : guiContainersGame) {
-                    if(container.getRegion().contains(rx, ry)){
+                    if(container.contains(rx, ry)){
                         container.guiClick(e);
                     }
                 }
@@ -494,7 +499,7 @@ public class Window implements MouseListener, KeyListener{
         }
         else {
             if(!guiContainersHome.isEmpty()){
-                if(guiContainersHome.peek().getRegion().contains(rx, ry)){
+                if(guiContainersHome.peek().contains(rx, ry)){
                     guiContainersHome.peek().guiClick(e);
                 }
             }

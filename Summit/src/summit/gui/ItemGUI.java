@@ -18,28 +18,18 @@ public class ItemGUI extends Container{
 
     //ref to actual player inventory
     private ItemTable items;
-
-    private String guiSprite;
-
+    
     public ItemGUI(Inventory inv) {
-        super(null, 0.5f, 0.5f, 0.5625f, (5f/9f));
+        super(null, 0.5f, 0.5f, Sprite.INVENTORY);
         this.items = inv;
     }
     
     @Override
     public void paint(PaintEvent e){
-        e.getRenderer().render(Sprite.INVENTORY, getX(), getY(), Renderer.NO_OP, null);
+        super.paint(e);
 
         for(Item item : items.getItems()){
             item.paint(e);
         }
-    }
-
-    public String getGuiSprite() {
-        return this.guiSprite;
-    }
-
-    public void setGuiSprite(String guiSprite) {
-        this.guiSprite = guiSprite;
     }
 }
