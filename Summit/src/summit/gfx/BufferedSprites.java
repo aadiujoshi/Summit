@@ -93,7 +93,7 @@ public class BufferedSprites{
 
     public static int[][] getSprite(String spriteInd){
         if(spriteInd == null)
-            return new int[0][0];
+            return new int[][]{{-1}};
 
         return (int[][])sprites.get(spriteInd);
     }
