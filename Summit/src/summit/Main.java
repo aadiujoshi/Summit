@@ -9,6 +9,12 @@ import summit.gfx.BufferedSprites;
 import summit.gui.Window;
 import summit.gui.WindowState;
 
+/*
+ *  vsync 0
+ *  ambient_occlusion true
+ *  threads 1
+*/
+
 public class Main {
 
     public static final String os = System.getProperty("os.name");

@@ -1,9 +1,6 @@
 package summit.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,22 +11,17 @@ import summit.Main;
 
 public class Settings {
 
-    private static FileWriter file;
-    private static HashMap<String, String> properties;
+    private static HashMap<String, String> properties = new HashMap<>();
 
     static{
         try {
-            properties = new HashMap<>();
-
             Scanner s = new Scanner(new File(Main.path + "settings.txt"));
 
-            while(s.hasNextLine()) {
+            while(s.hasNext()) {
                 properties.put(s.next(), s.next());
             }
 
-            System.out.println(properties);
-
-            file = new FileWriter(new File(Main.path + "settings.txt"));
+            System.out.println("Settings: " + properties);
 
             updateFile();
 
@@ -44,11 +36,12 @@ public class Settings {
         for (Map.Entry<String, String> setting : properties.entrySet()) {
             newSettings += setting.getKey() + " " + setting.getValue() + "\n";
         }
-
-        System.out.println(newSettings);
-
+        
         try{
+            FileWriter file = new FileWriter(new File(Main.path + "settings.txt"));
             file.write(newSettings);
+            file.flush();
+            file.close();
         } catch(IOException e){
             e.printStackTrace();
         }
@@ -61,6 +54,9 @@ public class Settings {
 
     public static Object getSetting(String key){
         String p = properties.get(key);
+
+        if(p == null)
+            throw new Error("No such setting: " + key);
 
         //parse
         if(p.equals("true"))

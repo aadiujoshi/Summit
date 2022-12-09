@@ -1,3 +1,3 @@
-rendering_threads 2
-vsync 0
 ambient_occlusion true
+vsync 0
+threads 1
