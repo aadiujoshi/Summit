@@ -17,4 +17,9 @@ public class SwordItem extends Item {
                 state);
         super.setSprite(Sprite.STONE_SWORD);
     }
+
+    @Override
+    public Item switchState() {
+        return null;
+    }
 }

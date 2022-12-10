@@ -5,29 +5,30 @@
 package summit.game;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
 
 import summit.game.animation.ForegroundAnimation;
 import summit.game.entity.mob.Player;
-import summit.game.mapgenerator.GameMapGenerator;
+import summit.game.gamemap.GameMap;
+import summit.game.gamemap.MainMap;
 import summit.gfx.Camera;
-import summit.gfx.ColorFilter;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
-import summit.gui.Container;
-import summit.gui.VideoSettings;
 import summit.gui.Window;
 import summit.util.Time;
 
 public class GameWorld implements Paintable, Serializable{
 
-    private HashMap<String, GameMap> maps;
+    private MainMap mainMap;
     private GameMap loadedMap;
+
+    private long gametime;
+    private long elapsedtime;
+    private final long START_TIME = Time.timeMs();
+
+    private final String SAVE_NAME;
 
     private boolean paused;
 
@@ -50,89 +51,77 @@ public class GameWorld implements Paintable, Serializable{
      * Use this constructor to create a new game
      * @param parentWindow
      */
-    public GameWorld(Window parentWindow, long seed){
+    public GameWorld(final String name, Window parentWindow, long seed){
         this.parentWindow = parentWindow;
         SEED = seed;
-        maps = new HashMap<>();
+        gametime = 0;
+        SAVE_NAME = name;
 
-        GameMap stage1 = GameMapGenerator.generateStage1(seed);
-        GameMap stage2 = GameMapGenerator.generateStage2(seed);
-        GameMap stage3 = GameMapGenerator.generateStage3(seed);
-
-        maps.put(stage1.getName(), stage1);
-        maps.put(null, stage2);
-        maps.put(null, stage3);
+        mainMap = new MainMap(seed);
+        loadedMap = mainMap;
         
-        loadedMap = maps.get("stage1"); 
-        
-        stage1.setCamera(new Camera(30, 30));
+        mainMap.setCamera(new Camera(30, 30));
 
-        player = new Player(30, 30, stage1.getCamera());
+        player = new Player(30, 30, mainMap.getCamera());
 
-        stage1.setPlayer(player);
-        stage1.setAnimation(new ForegroundAnimation(4, 3, Renderer.toIntRGB(200, 200, 250)));
-        stage1.setFilter(new ColorFilter(-60, -50, 0));
+        mainMap.setPlayer(player);
+        mainMap.setAnimation(new ForegroundAnimation(4, 3, Renderer.toIntRGB(200, 200, 250)));
 
-        player.setCamera(stage1.getCamera());
-        
         initUpdateThread();
     }
 
     // must be called after loading from save
     public void reinit(Window w){
-        for (Map.Entry<String, GameMap> m : maps.entrySet()) {
-            if(m.getValue() != null)
-                m.getValue().reinit();
-        }
         this.parentWindow = w;
+
+        mainMap.reinit();
+        // othermap.reinit();
+        // othermap.reinit();
+        // othermap.reinit();
+        // othermap.reinit();
+        // othermap.reinit();
+
         initUpdateThread();
     }
 
     public void initUpdateThread(){
-        gameUpdateThread = new Thread(new Runnable(){
+        gameUpdateThread = new Thread(() -> {
+            int prevDelay = 1;
+            while(!parentWindow.isClosed()){
+                long startTime = Time.timeNs();
 
-            @Override
-            public void run(){
-                int prevDelay = 1;
-                while(!parentWindow.isClosed()){
-                    long startTime = Time.timeNs();
-                    
-                    invokeGameUpdates(prevDelay);
-                    
-                    prevDelay = (int)(Time.timeNs()-startTime);
+                if(paused)
+                    continue;
+                
+                this.elapsedtime = Time.timeMs() - startTime;
+
+                //20 minutes
+                this.gametime = (elapsedtime) % 1200000;
+
+                GameUpdateEvent e = new GameUpdateEvent(this, prevDelay);
+                
+                if(loadedMap != null)
+                    loadedMap.update(e);
+                
+                //change gamemaps
+                if(queuedNewMap != null){
+                    this.loadedMap.setLoaded(false);
+                    this.queuedNewMap.setLoaded(true);
+                    this.queuedNewMap.setPlayer(player);
+                    player.setCamera(queuedNewMap.getCamera());
+                    this.loadedMap = queuedNewMap;
+                    this.queuedNewMap = null;
                 }
-
-                System.out.println("Game Update Thread Terminated");
+                
+                prevDelay = (int)(Time.timeNs()-startTime);
             }
-        });
 
+            System.out.println("Game Update Thread Terminated");
+        });
+        
         gameUpdateThread.start();
     }
-
-    public void pause(){
-        
-    }
-
-    private void invokeGameUpdates(int deltaTime){
-        if(paused)
-            return;
-        
-        GameUpdateEvent e = new GameUpdateEvent(this, deltaTime, parentWindow.mouseX(), parentWindow.mouseY(), false);
-        
-        if(loadedMap != null)
-            loadedMap.update(e);
-        
-        //change gamemaps
-        if(queuedNewMap != null){
-            this.loadedMap.setLoaded(false);
-            this.queuedNewMap.setLoaded(true);
-            this.queuedNewMap.setPlayer(player);
-            player.setCamera(queuedNewMap.getCamera());
-            this.loadedMap = queuedNewMap;
-            this.queuedNewMap = null;
-        }
-    }
-
+    
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.TOP_LAYER, this);
@@ -144,13 +133,16 @@ public class GameWorld implements Paintable, Serializable{
         }
     }
 
+    public long getGametime() {
+        return this.gametime;
+    }
+
     public Player getPlayer(){
         return this.player;
     }
 
     @Override
     public void paint(PaintEvent e){
-        
     }
 
     public GameMap getLoadedMap() {
@@ -171,5 +163,9 @@ public class GameWorld implements Paintable, Serializable{
 
     public void setParentWindow(Window parentWindow) {
         this.parentWindow = parentWindow;
+    }
+
+    public void pause(){
+        this.paused = true;
     }
 }

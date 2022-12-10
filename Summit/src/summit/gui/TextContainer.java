@@ -17,8 +17,11 @@ public class TextContainer extends Container{
     private String text;
     private ColorFilter textFilter;
 
-    public TextContainer(String text, Container parent, float relX, float relY, String sprite) {
-        super(parent, relX, relY, sprite);
+    public TextContainer(String text, Container parent, 
+                        Window window, 
+                        float relX, float relY, 
+                        String sprite) {
+        super(parent, window, relX, relY, sprite);
         this.text = text;
     }
 

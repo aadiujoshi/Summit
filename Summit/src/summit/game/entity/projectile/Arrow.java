@@ -4,11 +4,15 @@
 */
 package summit.game.entity.projectile;
 
+import summit.gfx.Sprite;
 import summit.util.GameRegion;
 
 public class Arrow extends Projectile {
 
-    public Arrow(GameRegion origin, float angle) {
+    public Arrow(GameRegion origin, float angle, float damage) {
         super(origin, angle, 12, 0.5f, 0.25f);
+        super.setColor(0x964B00);
+        super.setSprite(Sprite.ARROW_PROJ);
+        super.setHitDamage(damage);
     }
 }

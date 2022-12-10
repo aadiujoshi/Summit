@@ -32,8 +32,7 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     private boolean visible = true;
 
-    public Container(Container parent, float relX, float relY, String guiSprite){
-
+    public Container(Container parent, Window window, float relX, float relY, String guiSprite){
         super( (parent == null) ?
                 new Region(((int)(Renderer.WIDTH*relX)/16)*16, 
                             ((int)(Renderer.HEIGHT*relY)/16)*16, 
@@ -47,6 +46,7 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
         components = new ArrayList<>();
         this.parent = parent;
+        this.guiSprite = guiSprite;
     }
 
     @Override

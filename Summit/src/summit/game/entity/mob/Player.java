@@ -6,6 +6,7 @@ package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
+import summit.game.entity.projectile.Arrow;
 import summit.game.entity.projectile.Snowball;
 import summit.game.item.SnowballItem;
 import summit.game.item.itemtable.Inventory;
@@ -26,7 +27,7 @@ import summit.util.Time;
 public class Player extends HumanoidEntity{
 
     private Camera camera;
-    
+
     private HUD hud;
     private ItemGUI invGui;
     
@@ -40,14 +41,13 @@ public class Player extends HumanoidEntity{
         super.setItems(new Inventory(this, 9, 5));
         super.collide(new SnowballItem(1, 1));
         super.setAI(null);
-        // super.setLight(new Light(x, y, 3, 110, 110, 0));
+        
+        super.setLight(new Light(x, y, 2.5f, 100, 100, 0));
 
         this.hud = new HUD(this);
         this.invGui = new ItemGUI((Inventory)super.getItems());
         
         this.camera = mapCam;
-        //DO THIS
-        // super.setSprites(something, something, something, something, something, something);
     }
     
     @Override
@@ -66,10 +66,10 @@ public class Player extends HumanoidEntity{
         e.getRenderer().renderText(("y:" + (Math.round(getY()))), 
                 20, 25, Renderer.NO_OP, new ColorFilter(255, -255, -255));
 
-        e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
-                                        (getX()+(getSpriteOffsetX()/16f)), (getY()+(getSpriteOffsetY()/16f)), 
-                                        getRenderOp(), getColorFilter(),
-                                        e.getCamera());                 
+        // e.getRenderer().renderGame(Sprite.PLAYER_FACE_BACK_1, 
+        //                                 (getX()+(getSpriteOffsetX()/16f)), (getY()+(getSpriteOffsetY()/16f)), 
+        //                                 getRenderOp(), getColorFilter(),
+        //                                 e.getCamera());                 
     } 
 
     @Override
@@ -86,9 +86,10 @@ public class Player extends HumanoidEntity{
         
         //simulate click
         if(e.mouseClicked()){
-            e.getMap().spawn(new Snowball(this, 
+            e.getMap().spawn(new Arrow(this, 
                                 Region.theta(e.gameX(), getX(), 
-                                            e.gameY(), getY())));
+                                            e.gameY(), getY()),
+                                            1));
         }
 
         if(Controls.E){
@@ -114,6 +115,12 @@ public class Player extends HumanoidEntity{
         if(Controls.D && moveTo(e.getMap(), this.getX()+del_x, this.getY())){
             this.setX(this.getX()+del_x);
         }
+
+        //--- extra -----------------------------
+        if(is(inWater))
+            setSprite(Sprite.PLAYER_SUBMERGED_SOUTH);
+        else
+            setSprite(Sprite.PLAYER_FACE_BACK_1);
     }
 
     //---------------- getters and setters --------------------------

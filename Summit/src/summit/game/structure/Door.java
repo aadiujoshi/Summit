@@ -4,14 +4,14 @@
 */
 package summit.game.structure;
 
-import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.mob.Player;
+import summit.game.gamemap.GameMap;
 import summit.gfx.ColorFilter;
 import summit.gfx.Sprite;
 import summit.util.Direction;
 
-public class Door extends Building{
+public class Door extends MapEntrance{
 
     /**
      * exMap is the "main" GameMap, and parentMap is the room/building the door is in

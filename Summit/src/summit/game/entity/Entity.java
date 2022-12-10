@@ -4,10 +4,10 @@
 */
 package summit.game.entity;
 
-import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.projectile.Projectile;
+import summit.game.gamemap.GameMap;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -17,6 +17,7 @@ import summit.util.Direction;
 import summit.util.GameRegion;
 import summit.util.ScheduledEvent;
 import summit.util.Scheduler;
+import summit.util.Time;
 
 public abstract class Entity extends GameRegion{
 
@@ -157,17 +158,18 @@ public abstract class Entity extends GameRegion{
             this.set(moving, false);
         }
 
-        if(getY() > ly){
-            facing = Direction.NORTH;
-        }
-        if(getY() < ly){
-            facing = Direction.SOUTH;
-        }
+        //fix facing
         if(getX() > lx){
             facing =  Direction.EAST;
         }
         if(getX() < lx){
             facing = Direction.WEST;
+        }
+        if(getY() > ly){
+            facing = Direction.NORTH;
+        }
+        if(getY() < ly){
+            facing = Direction.SOUTH;
         }
         
         lx = getX();

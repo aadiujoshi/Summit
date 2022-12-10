@@ -4,8 +4,8 @@
 */
 package summit.game.structure;
 
-import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
+import summit.game.gamemap.GameMap;
 import summit.gui.Container;
 
 public class Station extends Structure{

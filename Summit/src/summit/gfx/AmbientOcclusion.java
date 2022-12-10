@@ -7,7 +7,7 @@ package summit.gfx;
 import java.awt.Point;
 import java.io.Serializable;
 
-import summit.game.GameMap;
+import summit.game.gamemap.GameMap;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.util.Direction;

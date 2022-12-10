@@ -4,8 +4,8 @@
 */
 package summit.gfx;
 
-import summit.game.GameMap;
 import summit.game.GameWorld;
+import summit.game.gamemap.GameMap;
 import summit.gui.Window;
 
 public class PaintEvent {

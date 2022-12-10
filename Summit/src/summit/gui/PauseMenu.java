@@ -6,8 +6,8 @@ import summit.gfx.Sprite;
 
 public class PauseMenu extends Container{
 
-    public PauseMenu(Window parentWindow) {
-        super(null, 0.5f, 0.5f, Sprite.FILL_SCREEN);
+    public PauseMenu(Window window) {
+        super(null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
 
         // addComponent(new VideoSettings());
 

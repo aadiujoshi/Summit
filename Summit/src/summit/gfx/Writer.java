@@ -27,10 +27,13 @@ public class Writer extends Thread{
 
     @Override
     public void run(){
-        while(process){
-            Time.nanoDelay(Time.NS_IN_MS/5);
+        a: while(process){
+            // Time.nanoDelay(Time.NS_IN_MS/2);
 
             if(finalFrame != null && frame != null){
+                if(!process)
+                    break a;
+
                 float scaleX = finalWidth/Renderer.WIDTH;
                 float scaleY = finalHeight/Renderer.HEIGHT;
 

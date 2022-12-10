@@ -19,4 +19,10 @@ public class SnowballItem extends Item{
     public SnowballItem(){
         this(0, 0);
     }
+
+    @Override
+    public Item switchState() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

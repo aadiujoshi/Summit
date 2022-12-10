@@ -20,7 +20,7 @@ public class ItemGUI extends Container{
     private ItemTable items;
     
     public ItemGUI(Inventory inv) {
-        super(null, 0.5f, 0.5f, Sprite.INVENTORY);
+        super(null, null, 0.5f, 0.5f, Sprite.INVENTORY);
         this.items = inv;
     }
     

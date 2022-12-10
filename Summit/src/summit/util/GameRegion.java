@@ -1,11 +1,10 @@
 package summit.util;
 
-import java.io.Serializable;
+import java.util.HashMap;
 
 import summit.game.GameClickReciever;
 import summit.game.GameUpdateReciever;
 import summit.game.entity.Entity;
-import summit.game.entity.GameTags;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -29,7 +28,7 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
 
     private boolean valid = true;
 
-    private GameTags tags;
+    private HashMap<String, Boolean> tags;
 
     // +x is right -x is left +y is up -y is down
     //DO NOT USE
@@ -50,7 +49,7 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
     public GameRegion(float x, float y, float width, float height) {
         super(x, y, width, height);
 
-        this.tags = new GameTags();
+        this.tags = new HashMap<>();
     }
 
     public abstract void collide(Entity e);
@@ -115,21 +114,21 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
      * is property
      */
     final public boolean is(String property){
-        return tags.is(property);
+        return tags.get(property);
     }
 
     /**
      * set property value
      */
     public void set(String property, boolean value){
-        tags.set(property, value);
+        tags.put(property, value);
     }
 
     /**
-     * sets property to false
+     * puts a property and sets it to false
      */
     final public void add(String property){
-        tags.set(property, false);
+        tags.put(property, false);
     }
 
     public float getSpriteOffsetX() {

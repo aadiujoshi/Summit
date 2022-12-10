@@ -6,8 +6,8 @@ package summit.game.entity;
 
 import java.io.Serializable;
 
-import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
+import summit.game.gamemap.GameMap;
 import summit.util.Region;
 import summit.util.Time;
 

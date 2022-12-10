@@ -7,7 +7,7 @@ package summit.game.item.itemtable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import summit.game.GameMap;
+import summit.game.gamemap.GameMap;
 import summit.game.item.Item;
 import summit.util.GameRegion;
 

@@ -17,7 +17,7 @@ public class HUD extends Container{
     private Player player;
     
     public HUD(Player player) {
-        super(null, 0.75f, 0.13f, null);
+        super(null, null, 0.75f, 0.13f, null);
         this.player = player;
     }
 

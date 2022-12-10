@@ -29,8 +29,8 @@ import javax.swing.WindowConstants;
 
 import summit.game.GameUpdateEvent;
 import summit.Main;
-import summit.game.GameMap;
 import summit.game.GameWorld;
+import summit.game.gamemap.GameMap;
 import summit.game.tile.TileStack;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
@@ -101,8 +101,8 @@ public class Window implements MouseListener, KeyListener{
 
         renderer = new Renderer(2, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        mainMenu = new MainSelectionMenu();
-        vidSettings = new VideoSettings();
+        mainMenu = new MainSelectionMenu(this);
+        vidSettings = new VideoSettings(this);
 
         schedulerThread = new Thread(new Runnable() {
             @Override
@@ -136,7 +136,6 @@ public class Window implements MouseListener, KeyListener{
                                 renderFrame(g);
                             }
 
-                            // System.out.println(Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000));
                             if(Time.timeMs()-lastFpsUpdate > 500){
                                 float fps_ = (Time.MS_IN_S/((Time.timeNs()-startFrame)/1000000f));
 
@@ -174,9 +173,7 @@ public class Window implements MouseListener, KeyListener{
 
                     closed = true;
 
-                    if(world != null){
-                        onQuit();
-                    }
+                    onQuit();
                 }
 
                 @Override
@@ -244,9 +241,7 @@ public class Window implements MouseListener, KeyListener{
         
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        // System.out.println(state);
-
+        
         PaintEvent pe = new PaintEvent(world, this, renderer, lastFrame, mouseX(), mouseY());
         
         OrderPaintEvent ope = new OrderPaintEvent(new RenderLayers(10), null);
@@ -290,7 +285,7 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.NEWGAME){
-            world = new GameWorld(this, 3L);
+            world = new GameWorld("ihatetiktok", this, 3L);
             state = WindowState.GAME;
             return;
         }
@@ -478,14 +473,13 @@ public class Window implements MouseListener, KeyListener{
 
         int rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
         int ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
-
+        
         e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(), rx, ry, e.getClickCount(), e.isPopupTrigger(), e.getButton());
         
         if(state == WindowState.GAME){
             if(world != null){
-                
                 GameMap loadedmap = world.getLoadedMap();
-                loadedmap.gameClick(new GameUpdateEvent(world, 0, rx, ry, false));
+                loadedmap.gameClick(new GameUpdateEvent(world, 0));
                 this.availableClick = true;
             }
             

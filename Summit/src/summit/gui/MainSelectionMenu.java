@@ -11,28 +11,28 @@ import java.awt.event.MouseEvent;
 
 public class MainSelectionMenu extends Container{
 
-    public MainSelectionMenu() {
-        super(null, 0.5f, 0.6f, Sprite.FILL_SCREEN);
+    public MainSelectionMenu(Window window) {
+        super(null, window, 0.5f, 0.6f, Sprite.FILL_SCREEN);
         
-        TextContainer newGame = new TextContainer("NEW GAME", this, 0.15f, 0.5f, Sprite.MENUBOX2){
+        TextContainer newGame = new TextContainer("NEW GAME", this, window, 0.25f, 0.5f, Sprite.MENUBOX2){
             @Override
             public void guiClick(MouseEvent e){
-                getParentWindow().setState(WindowState.NEWGAME);
+                window.setState(WindowState.NEWGAME);
             }
         };
         
-        TextContainer savedGames = new TextContainer("SAVED GAMES", this, 0.5f, 0.5f, Sprite.MENUBOX2){
+        TextContainer savedGames = new TextContainer("SAVED GAMES", this, window, 0.5f, 0.5f, Sprite.MENUBOX2){
             @Override
             public void guiClick(MouseEvent e){
-                getParentWindow().setState(WindowState.SAVEDGAME);
+                window.setState(WindowState.SAVEDGAME);
             }
         };
 
-        TextContainer quit = new TextContainer("QUIT", this, 0.85f, 0.5f, Sprite.MENUBOX2){
+        TextContainer quit = new TextContainer("QUIT", this, window, 0.75f, 0.5f, Sprite.MENUBOX2){
             @Override
             public void guiClick(MouseEvent e){
-                if(getParentWindow() != null){
-                    getParentWindow().quit();
+                if(window != null){
+                    window.quit();
                 }
             }
         };
@@ -48,8 +48,6 @@ public class MainSelectionMenu extends Container{
     
     @Override
     public void paint(PaintEvent e){
-        super.paint(e);
-
         super.paintComponents(e);
     }
 }

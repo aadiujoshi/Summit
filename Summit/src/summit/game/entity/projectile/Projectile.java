@@ -6,6 +6,7 @@ package summit.game.entity.projectile;
 
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
+import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
@@ -43,17 +44,48 @@ public class Projectile extends Entity {
             }
         });
 
-        if(getDx() > getDy()){
-            if(getDx() < 0)
-                setRenderOp(Renderer.NO_OP);
-            else 
-                setRenderOp(Renderer.FLIP_X);
-        } else {
-            if(getDy() < 0)
-                setRenderOp(Renderer.ROTATE_90 | Renderer.FLIP_Y);
-            else 
-                setRenderOp(Renderer.ROTATE_90);
+        float deg = (float)Math.toDegrees(angle);
+
+        if(deg < 0){
+            deg = 360+deg;
         }
+
+        //face east
+        if((deg <= 45 && deg >= 0) || (deg <= 360 && deg >= 315)){
+            setRenderOp(Renderer.FLIP_X);
+        }
+        //face west
+        else if(deg <= 215 && deg >= 135){
+            setRenderOp(Renderer.NO_OP);
+        }
+        //face north
+        else if(deg < 135 && deg > 45){
+            setRenderOp(Renderer.ROTATE_90);
+        }
+        //face south
+        else if(deg < 315 && deg > 215){
+            setRenderOp(Renderer.ROTATE_90 | Renderer.FLIP_Y);
+        }
+    }
+
+    @Override
+    public void paint(PaintEvent e){
+
+        // System.out.println(getFacing());
+
+        // setRenderOp(
+        //     switch(getFacing()){
+        //     case EAST -> Renderer.FLIP_X;
+        //     case NORTH -> Renderer.ROTATE_90;
+        //     case SOUTH -> Renderer.ROTATE_90 | Renderer.FLIP_Y;
+        //     case WEST -> Renderer.NO_OP;
+        //     case NW -> 0;
+        //     case NE -> 0;
+        //     case SW -> 0;
+        //     case SE -> 0;
+        // });
+
+        super.paint(e);
     }
 
     @Override

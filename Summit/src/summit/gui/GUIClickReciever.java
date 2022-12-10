@@ -6,6 +6,7 @@ package summit.gui;
 
 import java.awt.event.MouseEvent;
 
+@FunctionalInterface
 public interface GUIClickReciever{
     public void guiClick(MouseEvent e);
 }

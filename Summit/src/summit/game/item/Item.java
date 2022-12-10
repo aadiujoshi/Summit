@@ -74,6 +74,8 @@ public abstract class Item extends Entity{
         
     }
     
+    public abstract Item switchState();
+
     //---------------  getters and setters -------------------------
 
     public boolean isStackable() {

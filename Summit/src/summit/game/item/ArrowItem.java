@@ -13,4 +13,10 @@ public class ArrowItem extends Item{
         
         super.setSprite(Sprite.ARROW_PROJ);
     }
+
+    @Override
+    public Item switchState() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

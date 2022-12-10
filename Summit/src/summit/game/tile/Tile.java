@@ -6,11 +6,11 @@ package summit.game.tile;
 
 import java.awt.Point;
 
-import summit.game.GameMap;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
+import summit.game.gamemap.GameMap;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;

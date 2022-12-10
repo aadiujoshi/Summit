@@ -4,6 +4,7 @@
 */
 package summit.game;
 
+import summit.game.gamemap.GameMap;
 import summit.gfx.Renderer;
 import summit.gui.Window;
 import summit.util.Time;
@@ -15,7 +16,6 @@ public class GameUpdateEvent{
     private GameMap map;
     private GameWorld world;
     private int deltaTime;
-    private boolean tickInstance;
 
     private int mouseX_pix;
     private int mouseY_pix;
@@ -23,28 +23,27 @@ public class GameUpdateEvent{
     private float gameX;
     private float gameY;
 
+    private float gametime;
+
     //simulate if mouse was clicked on this event instance
     private boolean mouseClicked;
 
-    public GameUpdateEvent(GameWorld world, int deltaTime, 
-                                int mouseX_pix, int mouseY_pix, 
-                                boolean tickInstance){
+    public GameUpdateEvent(GameWorld world, int deltaTime){
         this.map = world.getLoadedMap();
         this.world = world;
         this.window = world.getParentWindow();
         this.deltaTime = deltaTime;
         
-        this.mouseX_pix = mouseX_pix;
-        this.mouseY_pix = mouseY_pix;
-
-        this.tickInstance = tickInstance;
-
+        this.mouseX_pix = window.mouseX();
+        this.mouseY_pix = window.mouseY();
+        
         java.awt.geom.Point2D.Float p = Renderer.toTile(mouseX_pix, mouseY_pix, world.getCamera());
 
         this.gameX = p.x;
         this.gameY = p.y;
 
         this.mouseClicked = window.availableClick();
+        this.gametime = world.getGametime();
     }
     
     public void setLoadedMap(GameMap m){
@@ -57,10 +56,6 @@ public class GameUpdateEvent{
     
     public int getDeltaTimeNS() {
         return this.deltaTime;
-    }
-    
-    public boolean isTickInstance() {
-        return this.tickInstance;
     }
 
     public int mouseX() {

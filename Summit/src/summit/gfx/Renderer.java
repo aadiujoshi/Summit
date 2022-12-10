@@ -211,7 +211,7 @@ public class Renderer implements Serializable{
      * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
      */
     public void render(String s, int x, int y, int operation, ColorFilter filter){
-        
+
         int[][] sprite = BufferedSprites.getSprite(s);
 
         if(sprite == null) return;
@@ -476,4 +476,3 @@ public class Renderer implements Serializable{
         return frame;
     }
 }
-
