@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import summit.game.animation.ForegroundAnimation;
 import summit.game.entity.mob.Player;
+import summit.game.gamemap.DungeonsMap;
 import summit.game.gamemap.GameMap;
 import summit.game.gamemap.MainMap;
 import summit.gfx.Camera;
@@ -22,6 +23,8 @@ import summit.util.Time;
 public class GameWorld implements Paintable, Serializable{
 
     private MainMap mainMap;
+    private DungeonsMap dungeons;
+
     private GameMap loadedMap;
 
     private long gametime;
@@ -58,15 +61,15 @@ public class GameWorld implements Paintable, Serializable{
         SAVE_NAME = name;
 
         mainMap = new MainMap(seed);
-        loadedMap = mainMap;
-        
-        mainMap.setCamera(new Camera(30, 30));
+        dungeons = new DungeonsMap(seed);
 
-        player = new Player(30, 30, mainMap.getCamera());
+        loadedMap = dungeons;
+        
+        player = new Player(30, 30, loadedMap.getCamera());
 
         mainMap.setPlayer(player);
-        mainMap.setAnimation(new ForegroundAnimation(4, 3, Renderer.toIntRGB(200, 200, 250)));
-
+        dungeons.setPlayer(player);
+        
         initUpdateThread();
     }
 

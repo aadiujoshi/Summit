@@ -80,8 +80,10 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.WIDTH = tiles[0].length;
         this.HEIGHT = tiles.length;
 
+        this.camera = new Camera(width/2, height/2);
+
         this.particleAnimations = new Vector<>();
-        this.ambientOcclusion = new AmbientOcclusion(25);
+        this.ambientOcclusion = new AmbientOcclusion(20);
     }
 
     //saved world
@@ -212,8 +214,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         }
 
         //tile ambient occlusion
-        if(Controls.UP)
-            ambientOcclusion.setRenderLayer(e);
+        ambientOcclusion.setRenderLayer(e);
 
         //front to back depth
         ArrayList<GameRegion> sorted = allObjectsInRD(e.getCamera());
@@ -287,15 +288,6 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             if(s.getX() > left && s.getX() < right && s.getY() < up && s.getY() > down)
                 all.add(s);
         }
-        
-        // int lol = 0;
-        // for (GameRegion gameRegion : all) {
-        //     if (gameRegion instanceof Projectile) {
-        //         lol++;
-        //     }
-        // }
-
-        // System.out.println(lol);
 
         return all;
     }
@@ -330,7 +322,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     public Tile getTileAt(float x, float y){
         TileStack ts = getTileStackAt(x, y);
-        return (ts == null) ? null : ts.peekTile();
+        return (ts == null || ts.peekTile() == null) ? null : ts.peekTile();
     }
 
     public TileStack getTileStackAt(float x, float y){

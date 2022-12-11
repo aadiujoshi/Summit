@@ -36,6 +36,8 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
     }
 
     public Tile peekTile(){
+        if(tiles.isEmpty())
+            return null;
         return tiles.peek();
     }
 
@@ -69,10 +71,11 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
                 continue;
             }
         }
-        
-        if(peekTile().getReqPushTile() != null){
-            pushTile(peekTile().getReqPushTile());
-            peekTile().setReqPushTile(null);
+        if(peekTile() != null){
+            if(peekTile().getReqPushTile() != null){
+                pushTile(peekTile().getReqPushTile());
+                peekTile().setReqPushTile(null);
+            }
         }
     }
 }

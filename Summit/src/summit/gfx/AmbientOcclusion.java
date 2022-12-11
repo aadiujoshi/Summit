@@ -24,7 +24,6 @@ public class AmbientOcclusion implements Serializable, Paintable{
     public AmbientOcclusion(int intesity){
         this.intensity = intesity;
         this.spread = (int)(intesity/(20/9f));
-        // this.spread = 7;
     }
 
     @Override

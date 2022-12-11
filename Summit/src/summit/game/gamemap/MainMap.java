@@ -3,6 +3,7 @@ package summit.game.gamemap;
 import java.util.Random;
 
 import summit.game.GameUpdateEvent;
+import summit.game.animation.ForegroundAnimation;
 import summit.game.gamemap.mapgenerator.OpenSimplexNoise;
 import summit.game.structure.TraderHouse;
 import summit.game.structure.Tree;
@@ -11,15 +12,17 @@ import summit.game.tile.SnowTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.game.tile.WaterTile;
-import summit.gfx.ColorFilter;
+import summit.gfx.Renderer;
 
 public class MainMap extends GameMap{
 
     public MainMap(long seed) {
         super(seed, 128, 128);
         
-        int width = 128;
-        int height = 128;
+        setAnimation(new ForegroundAnimation(4, 3, Renderer.toIntRGB(200, 200, 250)));
+
+        int width = getWidth();
+        int height = getHeight();
 
         OpenSimplexNoise gen = new OpenSimplexNoise(seed);  
         Random random = new Random(seed);

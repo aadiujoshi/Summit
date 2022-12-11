@@ -10,6 +10,15 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 import java.awt.image.BufferedImage;
 
+//GOOD SEEDS:
+/*
+ * 7612044935570407424
+ * 2774791137792783360
+ * 7346731479933566976
+ * 
+ * 
+ */
+
 public class CaveGenVisualization extends JPanel{
 
     private static JFrame window;
@@ -28,9 +37,9 @@ public class CaveGenVisualization extends JPanel{
     public CaveGenVisualization(){
         window = new JFrame("testing thing for summit game map generation");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(width, width);
+        window.setSize(1280, 720);
 
-        super.setPreferredSize(new java.awt.Dimension(width, height));
+        super.setPreferredSize(new java.awt.Dimension(1280, 720));
 
         window.add(this);
 
@@ -62,83 +71,64 @@ public class CaveGenVisualization extends JPanel{
         Graphics2D g = (Graphics2D) gr;
 
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Random rand = new Random((long)(Math.random()*Long.MAX_VALUE));
 
-        expand(rand, width/2, height/2, img);
-        System.out.println("finished expanding");
+        long seed = (long)(Math.random()*Long.MAX_VALUE);
+        // long seed = 5906817065274444800L;
+
+        Random rand = new Random(seed);
+
+        gen(rand, width/2, height/2, (Object)0, img);
+        gen(rand, width/2, height/2, (Object)0, img);
+        gen(rand, width/2, height/2, (Object)0, img);
+
+        System.out.println("finished expanding seed: " + seed);
         stack = 0;
+
+
 
         // Graphics g2 = img.getGraphics();
         // g2.setColor(Color.RED);
         // g2.fillRect(0, 0, width, height);
 
         g.drawImage(img, 0,0, super.getWidth(), super.getHeight(), null);
-
     }
 
-    private void expand(Random rand, int x, int y, BufferedImage img){
-        if(stack >= 7500)
+    private void gen(Random rand, int x, int y, Object iterations, BufferedImage tiles){
+        if((int)iterations >= 5000)
             return;
-        stack++;
 
-        img.setRGB(x, y, color);
-        
+        iterations = (int)iterations + 1;
+
+        tiles.setRGB(x, y, color);
+
         double c = rand.nextInt(4);
 
         //left
         if(c == 0){
             if(x-1 > -1){
-                expand(rand, x-1, y, img);
+                gen(rand, x-1, y, iterations, tiles);
             }
         }
 
         //up
         if(c == 1){
             if(y-1 > -1){
-                expand(rand, x, y-1, img);
+                gen(rand, x, y-1, iterations, tiles);
             }
         }
 
         //down
         if(c == 2){
-            if(y+1 < height){
-                expand(rand, x, y+1, img);
+            if(y+1 < tiles.getHeight()){
+                gen(rand, x, y+1, iterations, tiles);
             }
         }
 
         //right
         if(c == 3){
-            if(x+1 < width){
-                expand(rand, x+1, y, img);
+            if(x+1 < tiles.getWidth()){
+                gen(rand, x+1, y, iterations, tiles);
             }
         }
-
-        // left
-        // if(x-1 > -1 && !tiles[y][x-1]){
-        //     if(rand.nextDouble() > 0.3){
-        //         expand(tiles, rand, x-1, y, img);
-        //     }
-        // }
-
-        // //up
-        // if(y-1 > -1 && !tiles[y-1][x]){
-        //     if(rand.nextDouble() > 0.3){
-        //         expand(tiles, rand, x, y-1, img);
-        //     }
-        // }
-
-        // //down
-        // if(y+1 < height && !tiles[y+1][x]){
-        //     if(rand.nextDouble() > 0.3){
-        //         expand(tiles, rand, x, y+1, img);
-        //     }
-        // }
-
-        // //right
-        // if(x+1 < width && !tiles[y][x+1]){
-        //     if(rand.nextDouble() > 0.3){
-        //         expand(tiles, rand, x+1, y, img);
-        //     }
-        // }
     }
 }
