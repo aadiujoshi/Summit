@@ -27,8 +27,7 @@ public abstract class MobEntity extends Entity{
         super.setColor(Renderer.toIntRGB(200, 0, 0));
 
         add(pickupItems);
-        add(aggresive);
-        add(neutral);
+        add(hostile);
     }
 
     @Override
@@ -80,8 +79,7 @@ public abstract class MobEntity extends Entity{
     //-----------  game tag / property keys ------------------------------
 
     public static String pickupItems = "pickupItems";
-    public static String aggresive = "aggresive";
-    public static String neutral = "neutral";
+    public static String hostile = "hostile";
 
     //-------------------------------------------------------------------
 

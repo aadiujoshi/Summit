@@ -27,6 +27,10 @@ public class Sound {
         wav = new File(path);
     }
     
+    public static void stopAll(){
+        DUNGEON_SOUNDS.stop();
+    }
+
     public void stop(){
         playing = false;
     }

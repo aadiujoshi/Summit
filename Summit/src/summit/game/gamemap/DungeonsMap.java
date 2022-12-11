@@ -5,6 +5,7 @@ import java.util.Random;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.mob.Player;
 import summit.game.tile.EmptyTile;
+import summit.game.tile.LavaTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
@@ -51,7 +52,6 @@ public class DungeonsMap extends GameMap{
                 else {
                     tiles[y][x].pushTile(new EmptyTile(x, y));
                     tiles[y][x].pushTile(new EmptyTile(x, y));
-                    // tiles[y][x].pushTile(new LavaTile(x, y));
                 }
             }
         }

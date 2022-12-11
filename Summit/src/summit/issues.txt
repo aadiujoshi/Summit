@@ -1,0 +1,2 @@
+entity facing detection does not work properly (Entity::updateMoving())
+the hitbox of the door inside the house is misaligned

@@ -72,7 +72,7 @@ public class CaveGenVisualization extends JPanel{
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         long seed = (long)(Math.random()*Long.MAX_VALUE);
-        // long seed = 837429893703829504L;
+        // long seed = 3;
 
         Random rand = new Random(seed);
 
@@ -86,6 +86,8 @@ public class CaveGenVisualization extends JPanel{
 
         System.out.println("finished expanding seed: " + seed);
         
+        img.setRGB(width/2, height/2, Color.RED.getRGB());
+
         g.drawImage(img, 0,0, super.getWidth(), super.getHeight(), null);
     }
 

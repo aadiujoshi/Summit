@@ -23,7 +23,7 @@ public class GameUpdateEvent{
     private float gameX;
     private float gameY;
 
-    private float gametime;
+    private long gametime;
 
     //simulate if mouse was clicked on this event instance
     private boolean mouseClicked;
@@ -54,6 +54,10 @@ public class GameUpdateEvent{
         return this.map;
     }
     
+    public long gameTime(){
+        return this.gametime;
+    }
+
     public int getDeltaTimeNS() {
         return this.deltaTime;
     }

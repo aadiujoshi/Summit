@@ -17,7 +17,6 @@ import summit.util.Direction;
 import summit.util.GameRegion;
 import summit.util.ScheduledEvent;
 import summit.util.Scheduler;
-import summit.util.Time;
 
 public abstract class Entity extends GameRegion{
 
@@ -125,9 +124,10 @@ public abstract class Entity extends GameRegion{
                 }
             }
         });
+
         //---------------------------------------------------------
 
-        set(hitCooldown, true);
+        hitBy.set(hitCooldown, true);
         set(damageCooldown, true);
         
         if(health <= 0)
@@ -275,7 +275,7 @@ public abstract class Entity extends GameRegion{
         this.hitDamage = hitDamage;
     }
 
-    private void setKnockback(float k, int durationMS, Entity hitBy){
+    public void setKnockback(float k, int durationMS, Entity hitBy){
         this.kb = new Knockback(k, this, hitBy, durationMS);
     }
     

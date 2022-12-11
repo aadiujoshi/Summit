@@ -14,6 +14,7 @@ import summit.game.GameUpdateReciever;
 import summit.game.animation.ForegroundAnimation;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
+import summit.game.entity.mob.MobEntity;
 import summit.game.entity.mob.Player;
 import summit.game.structure.Structure;
 import summit.game.tile.Tile;
@@ -44,9 +45,14 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     //player
     private Player player;
 
-    //render distance for entitys and structures
-    private int rd_x = 25;
-    private int rd_y = 25;
+    //render distance
+    private int rd = 25;
+
+    //simulation distnace for gameupdaterecievers
+    private int sd = 25;
+
+    //hostile mob cap
+    private int hostileMobCap = 20;
 
     //stores the most recent of the player; used for when transitioning GameMaps
     private Camera camera = new Camera(0, 0);
@@ -150,7 +156,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         //-----------------------------------------------------------------------------------
 
         //do collision
-        ArrayList<GameRegion> objects = allObjectsInRD(camera);
+        ArrayList<GameRegion> objects = objectsInDist(camera, sd);
 
         for (int i = 0; i < objects.size(); i++) {
             for (int j = 0; j < objects.size(); j++) {
@@ -175,7 +181,13 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         
         //------------ spawn hostile mobs ---------------------------------------------------
 
-        
+        int h_count = hostileMobCount();
+
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                // if()
+            }
+        }
 
         //-----------------------------------------------------------------------------------
 
@@ -218,7 +230,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         ambientOcclusion.setRenderLayer(e);
 
         //front to back depth
-        ArrayList<GameRegion> sorted = allObjectsInRD(e.getCamera());
+        ArrayList<GameRegion> sorted = objectsInDist(e.getCamera(), rd);
 
         for (int i = 0; i < sorted.size(); i++) {
             int lowestInd = i;
@@ -268,13 +280,24 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         return null;
     }
 
-    public ArrayList<GameRegion> allObjectsInRD(Camera c){
+    public int hostileMobCount(){
+        int total = 0;
+
+        for (int i = 0; i < entities.size(); i++) {
+            if(entities.get(i).is(MobEntity.hostile))
+                total++;
+        }
+
+        return 1;
+    }
+
+    public ArrayList<GameRegion> objectsInDist(Camera c, float dist){
         ArrayList<GameRegion> all = new ArrayList<>();
 
-        float left = c.getX()-rd_x/2f;
-        float right = c.getX()+rd_x/2f;
-        float up = c.getY()+rd_y/2f;
-        float down = c.getY()-rd_y/2f;
+        float left = c.getX()-dist/2f;
+        float right = c.getX()+dist/2f;
+        float up = c.getY()+dist/2f;
+        float down = c.getY()-dist/2f;
 
         for (int i = 0; i < entities.size(); i++){
             Entity e = entities.get(i);

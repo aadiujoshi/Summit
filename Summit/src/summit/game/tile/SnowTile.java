@@ -22,9 +22,4 @@ public class SnowTile extends Tile{
         super.particleAnimation(true);
         super.setColor(Renderer.toIntRGB(170, 214, 230));
     }
-
-    @Override
-    public void update(GameUpdateEvent e) {
-        
-    }
 }

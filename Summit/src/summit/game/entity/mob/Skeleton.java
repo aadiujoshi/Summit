@@ -22,7 +22,7 @@ public class Skeleton extends HumanoidEntity{
         super.setHealth(getMaxHealth());
         super.setHitDamage(1);
 
-        // super.setColor(0x301934);
+        super.set(hostile, true);
     }
 
     @Override

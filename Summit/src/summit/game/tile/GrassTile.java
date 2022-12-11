@@ -14,9 +14,4 @@ public class GrassTile extends Tile{
         super.setSprite(Sprite.GRASS_TILE);
         
     }
-
-    @Override
-    public void update(GameUpdateEvent e) {
-        
-    }
 }

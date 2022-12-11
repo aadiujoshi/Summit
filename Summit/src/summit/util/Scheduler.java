@@ -6,8 +6,6 @@ package summit.util;
 
 import java.util.ArrayList;
 
-import summit.gui.Window;
-
 public class Scheduler {
     
     private static ArrayList<ScheduledEvent> events = new ArrayList<>();

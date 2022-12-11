@@ -15,6 +15,7 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gui.Window;
+import summit.sound.Sound;
 import summit.util.Time;
 
 public class GameWorld implements Paintable, Serializable{
@@ -111,6 +112,7 @@ public class GameWorld implements Paintable, Serializable{
                 prevDelay = (int)(Time.timeNs()-startTime);
             }
 
+            Sound.stopAll();
             System.out.println("Game Update Thread Terminated");
         });
         

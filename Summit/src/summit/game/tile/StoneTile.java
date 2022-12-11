@@ -16,10 +16,4 @@ public class StoneTile extends Tile{
         super.particleAnimation(true);
         super.setColor(Renderer.toIntRGB(100, 100, 100));
     }
-
-    @Override
-    public void update(GameUpdateEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
 }

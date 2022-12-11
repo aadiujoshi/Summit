@@ -53,6 +53,10 @@ public abstract class Tile extends GameRegion {
     }    
 
     @Override
+    public void update(GameUpdateEvent e){
+    }
+
+    @Override
     public void paint(PaintEvent e){
         super.paint(e);
 

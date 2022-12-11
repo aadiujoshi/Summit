@@ -114,7 +114,8 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
      * is property
      */
     final public boolean is(String property){
-        return tags.get(property);
+        Object b = tags.get(property);
+        return (b == null) ? false : (boolean)b;
     }
 
     /**

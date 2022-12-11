@@ -8,8 +8,4 @@ public class EmptyTile extends Tile{
         super(x, y);
         super.setBoundary(true);
     }
-
-    @Override
-    public void update(GameUpdateEvent e) {
-    }
 }
