@@ -6,9 +6,7 @@ package summit.game;
 
 import java.io.Serializable;
 
-import summit.game.animation.ForegroundAnimation;
 import summit.game.entity.mob.Player;
-import summit.game.gamemap.DungeonsMap;
 import summit.game.gamemap.GameMap;
 import summit.game.gamemap.MainMap;
 import summit.gfx.Camera;
@@ -16,15 +14,13 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
-import summit.gfx.Renderer;
 import summit.gui.Window;
 import summit.util.Time;
 
 public class GameWorld implements Paintable, Serializable{
 
     private MainMap mainMap;
-    private DungeonsMap dungeons;
-
+    
     private GameMap loadedMap;
 
     private long gametime;
@@ -60,15 +56,11 @@ public class GameWorld implements Paintable, Serializable{
         gametime = 0;
         SAVE_NAME = name;
 
-        mainMap = new MainMap(seed);
-        dungeons = new DungeonsMap(seed);
-
-        loadedMap = dungeons;
+        player = new Player(0, 0);
+        mainMap = new MainMap(player, seed);
+        loadedMap = mainMap;
         
-        player = new Player(30, 30, loadedMap.getCamera());
-
-        mainMap.setPlayer(player);
-        dungeons.setPlayer(player);
+        player.setCamera(loadedMap.getCamera());
         
         initUpdateThread();
     }

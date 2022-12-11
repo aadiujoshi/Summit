@@ -64,7 +64,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     private boolean loaded;
 
-    public GameMap(final long seed, int width, int height) {
+    public GameMap(Player player, final long seed, int width, int height) {
 
         this.tiles = new TileStack[height][width];
         for (int x = 0; x < tiles[0].length; x++) {
@@ -80,6 +80,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.WIDTH = tiles[0].length;
         this.HEIGHT = tiles.length;
 
+        this.setPlayer(player);
         this.camera = new Camera(width/2, height/2);
 
         this.particleAnimations = new Vector<>();

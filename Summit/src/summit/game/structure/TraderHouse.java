@@ -12,9 +12,9 @@ import summit.gfx.Sprite;
 public class TraderHouse extends MapEntrance{
     
     public TraderHouse(float x, float y, GameMap parentMap){
-        super(x, y, 4, 3, parentMap);
+        super(x, y, 4, 3, new TraderHouseMap(parentMap.getPlayer(), x, y, parentMap.getSeed()), parentMap);
 
-        TraderHouseMap interior = new TraderHouseMap(this, parentMap.getSeed());
+        TraderHouseMap interior = (TraderHouseMap)super.getExMap();
 
         interior.addStructure(new Door(7, 0, parentMap, interior));
 
@@ -22,7 +22,5 @@ public class TraderHouse extends MapEntrance{
 
         super.setSprite(Sprite.VILLAGE_HOUSE);
         super.setSpriteOffsetY(0.5f);
-        super.setShadow(ColorFilter.NOFILTER);
-        super.situate(parentMap);
     }
 }

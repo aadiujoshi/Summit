@@ -19,12 +19,7 @@ public class MapEntrance extends Structure{
         super(x, y, width, height, parentMap);
         this.exMap = exMap;
     }
-
-    //external map is initialized later
-    public MapEntrance(float x, float y, float width, float height, GameMap parentMap) {
-        super(x, y, width, height, parentMap);
-    }
-
+    
     @Override
     public void gameClick(GameUpdateEvent e) {
         Player p = e.getMap().getPlayer();

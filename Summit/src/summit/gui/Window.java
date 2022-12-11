@@ -285,7 +285,7 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.NEWGAME){
-            world = new GameWorld("ihatetiktok", this, 7612044935570407424L);
+            world = new GameWorld("ihatetiktok", this, 837429893703829504L);
             state = WindowState.GAME;
             return;
         }

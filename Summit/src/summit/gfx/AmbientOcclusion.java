@@ -42,6 +42,9 @@ public class AmbientOcclusion implements Serializable, Paintable{
             for (int c = 0; c < tiles[0].length; c++) {
                 if(tiles[r][c] == null)
                     continue;
+                    
+                if(tiles[r][c].peekTile().getLight() != Light.NO_LIGHT)
+                    continue;
 
                 Tile t = tiles[r][c].peekTile();
 

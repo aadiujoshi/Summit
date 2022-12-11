@@ -27,6 +27,12 @@ public class ColorFilter implements Serializable{
         this.blue = blue;
     }
 
+    public ColorFilter(int color){
+        this.red = ((color >> 16) & 0xff);
+        this.green = ((color >> 8) & 0xff);
+        this.blue = ((color >> 0) & 0xff);
+    }
+
     public int filterColor(int color){
         
         int r1 = ((color >> 16) & 0xff);

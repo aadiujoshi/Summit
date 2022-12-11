@@ -1,20 +1,32 @@
 package summit.game.gamemap;
 
-import java.util.Arrays;
 import java.util.Random;
 
+import summit.game.GameUpdateEvent;
+import summit.game.entity.mob.Player;
 import summit.game.tile.EmptyTile;
-import summit.game.tile.LavaTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
+import summit.sound.Sound;
+import summit.util.ScheduledEvent;
+import summit.util.Time;
 
 public class DungeonsMap extends GameMap{
 
-    public DungeonsMap(long seed) {
-        super(seed, 128, 128);
+    private ScheduledEvent ambientSounds;
+
+    public DungeonsMap(Player player, long seed) {
+        super(player, seed, 128, 128);
 
         super.setFilter(new ColorFilter(-100, -100, -100));
+
+        ambientSounds = new ScheduledEvent(Time.MS_IN_S*(60*5), ScheduledEvent.FOREVER) {
+            @Override
+            public void run() {
+                Sound.DUNGEON_SOUNDS.play();
+            }
+        };
 
         int width = getWidth();
         int height = getHeight();
@@ -39,13 +51,14 @@ public class DungeonsMap extends GameMap{
                 else {
                     tiles[y][x].pushTile(new EmptyTile(x, y));
                     tiles[y][x].pushTile(new EmptyTile(x, y));
+                    // tiles[y][x].pushTile(new LavaTile(x, y));
                 }
             }
         }
     }
 
     private boolean[][] gen(Random rand, int x, int y, Object iterations, boolean[][] tiles){
-        if((int)iterations >= 5000)
+        if((int)iterations >= 4000)
             return tiles;
         iterations = (int)iterations + 1;
         tiles[y][x] = true;
@@ -75,5 +88,27 @@ public class DungeonsMap extends GameMap{
             }
         }
         return tiles;
+    }
+
+    @Override
+    public void setLoaded(boolean b){
+        super.setLoaded(b);
+        
+        if(b){
+            Sound.DUNGEON_SOUNDS.play();
+        }
+        if(!b){
+            Sound.DUNGEON_SOUNDS.stop();
+        }
+    }
+
+    @Override
+    public void update(GameUpdateEvent e){
+        super.update(e);
+
+        if(!isLoaded())
+            ambientSounds.setPaused(true);
+        else
+            ambientSounds.setPaused(false);
     }
 }

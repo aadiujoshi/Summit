@@ -15,6 +15,8 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
     private long lastCall;
     private final long INIT_MS;
 
+    private boolean paused;
+
     public ScheduledEvent(long delay_ms, int n_calls){
         this.delay_ms = delay_ms;
         this.n_calls = n_calls;
@@ -22,10 +24,18 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
         this.lastCall = INIT_MS;
     }
 
+    public void setPaused(boolean p){
+        paused = p;
+    }
+
+    public boolean paused(){
+        return paused;
+    }
+
     public void reinit(){
         Scheduler.registerEvent(this);
     }
-
+    
     /**
      * Returns if this ScheduledEvent should stop revieving calls
      * @return boolean
@@ -35,7 +45,7 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
     }
 
     public void shortenLife(){
-        if(n_calls != FOREVER)
+        if(n_calls != FOREVER && !paused)
             n_calls--;
     }
     

@@ -19,7 +19,7 @@ import summit.util.GameRegion;
 
 public abstract class Structure extends GameRegion {
 
-    private ColorFilter shadow = new ColorFilter(-70, -70, -70);
+    private ColorFilter shadow = new ColorFilter(-60, -60, -60);
 
     private ArrayList<Light> shadows;
 

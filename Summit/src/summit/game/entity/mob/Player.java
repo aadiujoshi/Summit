@@ -31,10 +31,10 @@ public class Player extends HumanoidEntity{
     private HUD hud;
     private ItemGUI invGui;
     
-    public Player(float x, float y, Camera mapCam) {
+    public Player(float x, float y) {
         super(x, y, 1, 2);
-        super.setDx(6f);
-        super.setDy(6f);
+        super.setDx(4.2f);
+        super.setDy(4.2f);
         super.setHealth(10f);
         super.setMaxHealth(10f);
         super.setHitDamage(1);
@@ -42,12 +42,12 @@ public class Player extends HumanoidEntity{
         super.collide(new SnowballItem(1, 1));
         super.setAI(null);
         
-        super.setLight(new Light(x, y, 5.5f, 100, 100, 100));
+        // super.setLight(new Light(x, y, 5.5f, 100, 100, 100));
 
         this.hud = new HUD(this);
         this.invGui = new ItemGUI((Inventory)super.getItems());
         
-        this.camera = mapCam;
+        // this.camera = mapCam;
     }
     
     @Override
@@ -84,6 +84,12 @@ public class Player extends HumanoidEntity{
     public void update(GameUpdateEvent e) {
         super.update(e);
         
+        if(e.getMap().getName().equals("DungeonsMap"))
+            super.setLight(new Light(getX(), getY(), 5.5f, 100, 100, 100));
+        else
+            super.setLight(Light.NO_LIGHT);
+
+
         //simulate click
         if(e.mouseClicked()){
             e.getMap().spawn(new Arrow(this, 

@@ -1,5 +1,6 @@
 package summit.game.gamemap;
 
+import summit.game.entity.mob.Player;
 import summit.game.structure.TraderHouse;
 import summit.game.tile.TileStack;
 import summit.game.tile.WoodPlank;
@@ -7,8 +8,11 @@ import summit.gfx.Camera;
 
 public class TraderHouseMap extends GameMap{
 
-    public TraderHouseMap(TraderHouse house, long seed) {
-        super(seed, 10, 10);
+    /*
+     * x and y are house locations
+     */
+    public TraderHouseMap(Player player, float x, float y, long seed) {
+        super(player, seed, 10, 10);
 
         int width = 10;
         int height = 10;

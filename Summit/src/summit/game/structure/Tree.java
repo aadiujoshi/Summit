@@ -20,7 +20,7 @@ public class Tree extends Entity{
         super.setMaxHealth(5);
         super.setHealth(5);
         super.setSprite(Sprite.PINE_TREE);
-        // super.setShadow(new Light(x, y, 1, -150, -150, -150));
+        super.setShadow(new Light(x, y, 1, -150, -150, -150));
         super.setSpriteOffsetY(1.5f);
         super.setColor(0x964B00);
 
