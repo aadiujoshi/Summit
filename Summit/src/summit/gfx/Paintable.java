@@ -10,7 +10,7 @@ public interface Paintable {
      * <p>
      * RenderLayers to store 2D ArrayList to store layers
      */
-    public void setRenderLayer(OrderPaintEvent ope);
+    public void setRenderLayer(OrderPaintEvent e);
 
     /**
      * Called after the order method to render the Paintable object

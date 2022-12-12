@@ -23,8 +23,8 @@ public class MainMap extends GameMap{
         super(player, seed, 128, 128);
         
         super.setAnimation(new ForegroundAnimation(4, 3, Renderer.toIntRGB(200, 200, 250)));
-        // super.setFilter(new ColorFilter(-60, -50, 0));
-        super.setFilter(new ColorFilter(0, 0, -50));
+        super.setFilter(new ColorFilter(-60, -50, 0));
+        // super.setFilter(new ColorFilter(0, 0, -50));
         // super.setFilter(new ColorFilter(0x00B16A));
 
         int width = getWidth();

@@ -4,19 +4,13 @@
 */
 package summit.game.tile;
 
-import java.awt.Point;
-
 import summit.game.GameUpdateEvent;
-import summit.game.GameUpdateReciever;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
-import summit.game.gamemap.GameMap;
-import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
-import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.ScheduledEvent;
 import summit.util.Scheduler;
@@ -79,7 +73,7 @@ public abstract class Tile extends GameRegion {
 
     //make breaking particle animation
     public void destroy(GameUpdateEvent e){
-        e.getMap().addParticleAnimation(new ParticleAnimation(getX(), getY(), 500, 15, getColor()));
+        e.getMap().addAnimation(new ParticleAnimation(getX(), getY(), 500, 15, getColor()));
     }
 
     @Override

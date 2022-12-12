@@ -11,6 +11,7 @@ import java.util.Vector;
 import summit.game.GameClickReciever;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
+import summit.game.animation.Animation;
 import summit.game.animation.ForegroundAnimation;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
@@ -38,9 +39,8 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     private ArrayList<Entity> entities;
     private ArrayList<Structure> structures;
 
-    //handles broken block animations
-    //assumes NOT registered into scheduler
-    private Vector<ParticleAnimation> particleAnimations;
+    //assumes registered into scheduler
+    private Vector<Animation> animations;
 
     //player
     private Player player;
@@ -89,14 +89,14 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.setPlayer(player);
         this.camera = new Camera(width/2, height/2);
 
-        this.particleAnimations = new Vector<>();
+        this.animations = new Vector<>();
         this.ambientOcclusion = new AmbientOcclusion(20);
     }
 
     //saved world
     public void reinit(){
         this.animation.reinit();
-        for (ParticleAnimation pa : particleAnimations) {
+        for (Animation pa : animations) {
             pa.reinit();
         }
         for (Entity e : entities) {
@@ -206,11 +206,11 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             animation.setRenderLayer(e);
         
         //particles
-        for (int i = 0; i < particleAnimations.size(); i++) {
-            particleAnimations.get(i).setRenderLayer(e);
+        for (int i = 0; i < animations.size(); i++) {
+            animations.get(i).setRenderLayer(e);
 
-            if(particleAnimations.get(i).terminate()){
-                particleAnimations.remove(i);
+            if(animations.get(i).terminate()){
+                animations.remove(i);
                 i--;
                 continue;
             }
@@ -396,8 +396,8 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         return this.SEED;
     }
 
-    public void addParticleAnimation(ParticleAnimation pa){
-        particleAnimations.add(pa);
+    public void addAnimation(Animation a){
+        animations.add(a);
     }
 
     public void remove(Entity e){

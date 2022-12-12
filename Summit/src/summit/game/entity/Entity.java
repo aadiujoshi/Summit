@@ -135,7 +135,7 @@ public abstract class Entity extends GameRegion{
     }
 
     public void destroy(GameUpdateEvent e){
-        e.getMap().addParticleAnimation(
+        e.getMap().addAnimation(
                 new ParticleAnimation(getX(), getY(), 
                                         500, 
                                         20, 

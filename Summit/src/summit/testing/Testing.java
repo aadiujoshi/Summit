@@ -15,13 +15,15 @@ public class Testing {
 
         // Settings.changeSetting("vsync", 5);
 
-        Sound.DUNGEON_SOUNDS.play();
+        Sound.WALKING_HARD.play();
 
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // Sound.DUNGEON_SOUNDS.play();
+
+        // try {
+        //     Thread.sleep(10000);
+        // } catch (InterruptedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
     }
 }

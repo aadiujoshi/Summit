@@ -8,14 +8,12 @@ import java.awt.Point;
 
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
-import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
-import summit.util.ScheduledEvent;
 import summit.util.Scheduler;
 import summit.util.Time;
 
-public class ParticleAnimation extends ScheduledEvent implements Paintable{
+public class ParticleAnimation extends Animation{
 
     private int color;
 

@@ -1,15 +1,14 @@
 package summit.sound;
 
-import javax.sound.sampled.*;
+import java.io.File;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 
 import summit.Main;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 //  STOLEN CODE !!!!!!!!!
 
@@ -17,6 +16,7 @@ public class Sound {
     //-------------- Preloaded sounds -------------------------------------
 
     public static final Sound DUNGEON_SOUNDS = new Sound(Main.path + "sound/ambience/dungeons_ambience.wav");
+    public static final Sound WALKING_HARD = new Sound(Main.path + "sound/sfx/footsteps_hard.wav");
 
     //-----------------------------------------------------------------
     
@@ -29,10 +29,15 @@ public class Sound {
     
     public static void stopAll(){
         DUNGEON_SOUNDS.stop();
+        WALKING_HARD.stop();
     }
 
     public void stop(){
         playing = false;
+    }
+
+    public boolean playing(){
+        return playing;
     }
 
     public void play() {

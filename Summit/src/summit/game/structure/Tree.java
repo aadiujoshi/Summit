@@ -49,7 +49,7 @@ public class Tree extends Entity{
     @Override
     public void gameClick(GameUpdateEvent e) {
         damage(e.getMap().getPlayer());
-        e.getMap().addParticleAnimation(new ParticleAnimation(getX(), getY()-0.25f, 
+        e.getMap().addAnimation(new ParticleAnimation(getX(), getY()-0.25f, 
                                         500, 20, getColor()));
     }
 }
