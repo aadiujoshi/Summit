@@ -14,7 +14,7 @@ import summit.util.Direction;
 import summit.util.Region;
 
 /**
- * Expensive operation for shading raised tiles
+ * Operation for shading tiles and creating depth
  */
 public class AmbientOcclusion implements Serializable, Paintable{
 

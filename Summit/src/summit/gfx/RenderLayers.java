@@ -6,6 +6,13 @@ package summit.gfx;
 
 import java.util.ArrayList;
 
+/**
+ * A RenderLayers stores all the Paintable objects to be rendered, which are stored in layers.
+ * Each layer is an ArrayList of Paintable objects, and there are 10 layers stored in an array.
+ * Once all the Paintable objects have been added, the renderLayers(PaintEvent) method is called, which calls the 
+ * paint(PaintEvent) method on all the objects in order of their layer.
+ * 
+ */
 public class RenderLayers{
 
     public static final int TILE_LAYER = 2;
@@ -35,8 +42,6 @@ public class RenderLayers{
             for (Paintable p : layer) {
                 p.paint(e);
             }
-            // System.out.println("[" + layer.size() + "]");
         }
-        // System.out.println("-----------------------------------------------");
     }
 }

@@ -183,9 +183,6 @@ public class Renderer implements Serializable{
                 if(shape == Light.Shape.CIRCLE && d <= radius){
                     ColorFilter filt = new ColorFilter((int)(r-((d/radius)*r)), (int)(g-((d/radius)*g)), (int)(b-((d/radius)*b)));
                     frame[yy][xx] = filt.filterColor(frame[yy][xx]);
-                } else if(shape == Light.Shape.SQUARE){
-                    ColorFilter filt = new ColorFilter((int)(r-((d/sqrVertexDist)*r)), (int)(g-((d/sqrVertexDist)*g)), (int)(b-((d/sqrVertexDist)*b)));
-                    frame[yy][xx] = filt.filterColor(frame[yy][xx]);
                 }
             }
         }

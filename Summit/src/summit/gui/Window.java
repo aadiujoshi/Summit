@@ -328,9 +328,14 @@ public class Window implements MouseListener, KeyListener{
         }
     } 
 
+
+    /**
+     * Closes the game, and disposes of all active threads. 
+     * If a game is in session, it is automatically saved.
+     */
     public void quit(){
-        onQuit();
         closed = true;
+        onQuit();
         canvas.setVisible(false);
         frame.setVisible(false);
         frame.dispose();
@@ -340,15 +345,19 @@ public class Window implements MouseListener, KeyListener{
     //getters and setters
     //--------------------------------------------------------------------
 
-    private Window getThis(){
-        return this;
-    }
-
+    /**
+     * @return If this Window has been closed
+     */
     public boolean isClosed() {
         return this.closed;
     }
 
-    //used to simulate a mouse click for gameupdateevents
+    /**
+     * This method is called by GameUpdateEvent to simulate a mouse click for 
+     * GameUpdateRecievers
+     * 
+     * @return If the mouse has been clicked
+     */
     public boolean availableClick(){
         boolean tmp = availableClick;
         availableClick = false;

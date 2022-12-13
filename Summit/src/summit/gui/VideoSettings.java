@@ -6,10 +6,10 @@ import summit.util.Settings;
 
 import java.awt.event.MouseEvent;
 
-public class VideoSettings extends Container {
+public class VideoSettings extends TextContainer {
 
     public VideoSettings(Window window) {
-        super(null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
+        super("VIDEO SETTINGS", null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
         
         // @Override
         //     public void guiClick(MouseEvent e){

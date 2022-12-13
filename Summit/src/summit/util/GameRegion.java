@@ -74,7 +74,6 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
 
     /**
      * Outline sprite if mouse is hovering
-     * @param PaintEvent e
      */
     public void outline(PaintEvent e){
         if(this.contains(e.gameX(), e.gameY()))
@@ -83,6 +82,11 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
             setRenderOp(renderOp & ~Renderer.OUTLINE_BLUE & ~Renderer.OUTLINE_GREEN & ~Renderer.OUTLINE_RED);
     }
     
+    /**
+     * Called on every GameRegion after a game save is deserialized (GameWorld is reopened)
+     * </p>
+     * Usually used to 
+     */
     public void reinit(){
         
     }

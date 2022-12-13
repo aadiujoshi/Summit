@@ -16,7 +16,10 @@ public class Light implements Serializable, Paintable{
 
     private int rLayer = RenderLayers.TILE_LAYER+1; 
 
-    public static final Light NO_LIGHT = new Light(0, 0,0, 0, 0, 0);
+    public static final Light NO_LIGHT = new Light(0, 0,0, 0, 0, 0){
+        public void setX(float x){}
+        public void setY(float y){}
+    };
 
     private float radius;
 
@@ -27,6 +30,16 @@ public class Light implements Serializable, Paintable{
     private int green;
     private int blue;
 
+    /**
+     * Constructs a new Light object with the specified RGB values 
+     * 
+     * @param x the gamespace x coordinate 
+     * @param y the gamespace y coordinate
+     * @param radius the gamespace radius of this light
+     * @param r red value
+     * @param g green value
+     * @param b blue value
+     */
     public Light(float x, float y, float radius, int r, int g, int b){
         this.radius = radius;
         this.x = x;
@@ -36,6 +49,14 @@ public class Light implements Serializable, Paintable{
         this.blue = b;
     }
 
+    /**
+     * Constructs a new Light object with the specified ColorFilter 
+     * 
+     * @param x the gamespace x coordinate 
+     * @param y the gamespace y coordinate
+     * @param radius the gamespace radius of this light
+     * @param fitler a GameFilter which contains the RGB values for the light
+     */
     public Light(float x, float y, float radius, ColorFilter filter){
         this(x, y, radius, filter.getRed(), filter.getGreen(), filter.getBlue());
     }
@@ -52,6 +73,11 @@ public class Light implements Serializable, Paintable{
 
     //-------------  getters and setters -------------------
     
+    @Override
+    public String toString(){
+        return "x: " + x + " y: " + y + " radius: " + radius + "  [" + red + "  " + green + "  " + blue + "]";
+    }
+
     public void setShape(Light.Shape s){
         this.shape = s;
     }

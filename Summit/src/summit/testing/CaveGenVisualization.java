@@ -78,11 +78,7 @@ public class CaveGenVisualization extends JPanel{
         // long seed = 3;
 
         Random rand = new Random(seed);
-
-        // gen(rand, width/3, height/3, (Object)0, img);
-        // gen(rand, width/3*2, height/3, (Object)0, img);
-        // gen(rand, width/3, height/3*2, (Object)0, img);
-        // gen(rand, width/3*2, height/3*2, (Object)0, img);
+        
         gen(rand, width/2, height/2, (Object)0, img);
         gen(rand, width/2, height/2, (Object)0, img);
         gen(rand, width/2, height/2, (Object)0, img);

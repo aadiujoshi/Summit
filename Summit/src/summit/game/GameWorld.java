@@ -71,11 +71,6 @@ public class GameWorld implements Paintable, Serializable{
         this.parentWindow = w;
 
         mainMap.reinit();
-        // othermap.reinit();
-        // othermap.reinit();
-        // othermap.reinit();
-        // othermap.reinit();
-        // othermap.reinit();
 
         initUpdateThread();
     }
@@ -96,8 +91,13 @@ public class GameWorld implements Paintable, Serializable{
 
                 GameUpdateEvent e = new GameUpdateEvent(this, prevDelay);
                 
-                if(loadedMap != null)
-                    loadedMap.update(e);
+                if(loadedMap != null){
+                    try{
+                        loadedMap.update(e);
+                    } catch(Exception fsda) {
+                        
+                    }
+                }
                 
                 //change gamemaps
                 if(queuedNewMap != null){

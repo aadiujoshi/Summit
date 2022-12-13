@@ -91,8 +91,8 @@ public class Player extends HumanoidEntity{
             e.getMap().addAnimation(
                     new GlistenAnimation(
                         e.gameX(), e.gameY(), 
-                        1000, 
-                        Color.BLUE.getRGB()));
+                        10, 
+                        0x551a8b));
 
             e.getMap().spawn(new Arrow(this, 
                                 Region.theta(e.gameX(), getX(), 

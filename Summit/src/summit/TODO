@@ -1,0 +1,20 @@
+TODO:
+ - Organize file system
+ - Save files to local database
+ - Finish the pause menu
+ - Buffered game save 
+     - Store game save meta data in one folder
+ - Instruction manual
+ - Actual class UML (paid $$$ 🤑🤑🤑🤑)
+ - Slides presentation (start this)
+ - 
+
+BROKEN:
+ - entity facing detection does not work properly (Entity::updateMoving())
+ - the hitbox of the door inside the house is misaligned
+
+
+BORING:
+ - complimentary/aestheric rocks, flowers, grass
+ - add glistenanimation (done) to water, and snow
+ - make uneven lighting (light calculated on instantiation)
