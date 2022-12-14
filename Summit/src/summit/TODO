@@ -7,7 +7,6 @@ TODO:
  - Instruction manual
  - Actual class UML (paid $$$ 🤑🤑🤑🤑)
  - Slides presentation (start this)
- - 
 
 BROKEN:
  - entity facing detection does not work properly (Entity::updateMoving())

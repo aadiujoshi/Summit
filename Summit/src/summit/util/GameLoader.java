@@ -16,7 +16,18 @@ public class GameLoader {
     
     private GameLoader(){}
 
+    private static volatile boolean saving;
+
     public static GameWorld loadWorld(String filename){
+
+        while(saving){ 
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } 
+        }
+
         try{
             FileInputStream file = new FileInputStream(filename);
             ObjectInputStream out = new ObjectInputStream(file);
@@ -36,6 +47,9 @@ public class GameLoader {
     }
 
     public static void saveWorld(GameWorld world, String filename){
+
+        saving = true;
+
         Thread wr = new Thread(() -> {
             try{
                 FileOutputStream file = new FileOutputStream(filename);
@@ -57,6 +71,7 @@ public class GameLoader {
                 Time.nanoDelay(Time.NS_IN_S);
             }
             System.out.println("Save complete");
+            saving = false;
         });
 
         updater.start();

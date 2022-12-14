@@ -22,9 +22,11 @@ import summit.util.Region;
 public class Container extends Region implements Paintable, GUIClickReciever{
 
     private List<Container> components;
-    // private Region region;
     private Container parent;
     private transient Window window;
+
+    private ColorFilter filter = ColorFilter.NOFILTER;
+    private boolean permanent;
 
     private String guiSprite;
 
@@ -34,8 +36,8 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     public Container(Container parent, Window window, float relX, float relY, String guiSprite){
         super( (parent == null) ?
-                new Region(((int)(Renderer.WIDTH*relX)/16)*16, 
-                            ((int)(Renderer.HEIGHT*relY)/16)*16, 
+                new Region(((int)(Renderer.WIDTH*relX)), 
+                            ((int)(Renderer.HEIGHT*relY)), 
                             BufferedSprites.getSprite(guiSprite)[0].length, 
                             BufferedSprites.getSprite(guiSprite).length) :
                 new Region(
@@ -65,7 +67,7 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     @Override
     public void paint(PaintEvent e) {
-        e.getRenderer().render(guiSprite, (int)getX(), (int)getY(), Renderer.NO_OP, ColorFilter.NOFILTER);
+        e.getRenderer().render(guiSprite, (int)getX(), (int)getY(), Renderer.NO_OP, filter);
         paintComponents(e);
     }
 
@@ -128,5 +130,21 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     public void setGuiSprite(String guiSprite) {
         this.guiSprite = guiSprite;
+    }
+    
+    public ColorFilter getFilter() {
+        return this.filter;
+    }
+
+    public void setFilter(ColorFilter filter) {
+        this.filter = filter;
+    }
+    
+    public boolean isPermanent() {
+        return this.permanent;
+    }
+
+    public void setPermanent(boolean permanent) {
+        this.permanent = permanent;
     }
 }

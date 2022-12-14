@@ -14,6 +14,7 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
+import summit.gui.PauseButton;
 import summit.gui.Window;
 import summit.sound.Sound;
 import summit.util.Time;
@@ -32,7 +33,7 @@ public class GameWorld implements Paintable, Serializable{
 
     private boolean paused;
 
-    // private PauseMenu pauseMenu;
+    private transient PauseButton pauseButton;
 
     //used for safer map transitioning
     //if not null, the loaded map is set to this on the next update tick and this is set to null
@@ -62,6 +63,8 @@ public class GameWorld implements Paintable, Serializable{
         loadedMap = mainMap;
         
         player.setCamera(loadedMap.getCamera());
+
+        this.pauseButton = new PauseButton(parentWindow, this);
         
         initUpdateThread();
     }
@@ -69,6 +72,8 @@ public class GameWorld implements Paintable, Serializable{
     // must be called after loading from save
     public void reinit(Window w){
         this.parentWindow = w;
+
+        pauseButton = new PauseButton(w, this);
 
         mainMap.reinit();
 
@@ -79,6 +84,9 @@ public class GameWorld implements Paintable, Serializable{
         gameUpdateThread = new Thread(() -> {
             int prevDelay = 1;
             while(!parentWindow.isClosed()){
+                //show pause button
+                parentWindow.pushGameContainer(pauseButton);
+
                 long startTime = Time.timeNs();
 
                 if(paused)
