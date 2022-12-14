@@ -104,7 +104,7 @@ public class Player extends HumanoidEntity{
             if(!invGui.isPushed())
                 e.getWindow().pushGameContainer(invGui);
             return;
-        } else if(!Controls.E){
+        } else if(!Controls.E && invGui.isPushed()){
             e.getWindow().popGameContainer();
         }
 

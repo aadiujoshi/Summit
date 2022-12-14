@@ -37,8 +37,9 @@ public class Sprite {
     public static final String MENUBOX1 = "guibox1";
     public static final String MENUBOX2 = "guibox2";
     public static final String MENUBOX3 = "guibox3";
+    public static final String MENUBOX4 = "menu-bar1";
+    public static final String MENUBOX5 = "guibox5";
     public static final String FILL_SCREEN = "fill-screen";
     public static final String CAVE_ENTRACE = "cave-entrance";
     public static final String PLAYER_SUBMERGED_SOUTH = "player-submerged_south";
-
 }

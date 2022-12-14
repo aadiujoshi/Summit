@@ -256,11 +256,14 @@ public class Window implements MouseListener, KeyListener{
             if(world != null)
                 world.setRenderLayer(ope);
                 
-            ope.getRenderLayers().renderLayers(pe);
-
-            for (int i = 0; i < guiContainersGame.size(); i++) {
-                guiContainersGame.get(i).paint(pe);
+            try{
+                ope.getRenderLayers().renderLayers(pe);
+            } catch (NullPointerException e) {
+                System.out.println("Null Camera");
             }
+
+            if(!guiContainersGame.isEmpty())
+                guiContainersGame.peek().paint(pe);
         }
         
         //----------------------------------------------------------------------------------
@@ -279,6 +282,7 @@ public class Window implements MouseListener, KeyListener{
 
         if(newState == WindowState.SELECTIONMENUS){
             clearHomeContainers();
+            clearGameContainers();
             pushHomeContainer(mainMenu);
             state = newState;
             return;
@@ -492,11 +496,9 @@ public class Window implements MouseListener, KeyListener{
                 this.availableClick = true;
             }
             
-            synchronized(guiContainersGame){
-                for(Container container : guiContainersGame) {
-                    if(container.contains(rx, ry)){
-                        container.guiClick(e);
-                    }
+            if(!guiContainersGame.isEmpty()){
+                if(guiContainersGame.peek().contains(rx, ry)){
+                    guiContainersGame.peek().guiClick(e);
                 }
             }
         }
