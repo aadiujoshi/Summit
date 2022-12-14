@@ -369,7 +369,7 @@ public class Renderer implements Serializable{
     }
 
     /** 
-     * Rotate 90 degrees clockwise
+     * Rotate 90 degrees counterclockwise
     */
     public static int[][] rotate(int[][] arr){
         int[][] rotated = new int[arr.length][arr[0].length];
