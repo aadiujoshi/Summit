@@ -31,7 +31,7 @@ public class GameWorld implements Paintable, Serializable{
 
     private final String SAVE_NAME;
 
-    private boolean paused;
+    private transient volatile boolean paused;
 
     private transient PauseButton pauseButton;
 
@@ -172,5 +172,9 @@ public class GameWorld implements Paintable, Serializable{
 
     public void pause(){
         this.paused = true;
+    }
+
+    public void unpause(){
+        this.paused = false;
     }
 }

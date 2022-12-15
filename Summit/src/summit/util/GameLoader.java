@@ -47,6 +47,13 @@ public class GameLoader {
     }
 
     public static void saveWorld(GameWorld world, String filename){
+        while(saving){ 
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } 
+        }
 
         saving = true;
 

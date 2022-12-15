@@ -37,13 +37,17 @@ public class MainSelectionMenu extends Container{
             }
         };
 
-        newGame.setGuiSprite(Sprite.MENUBOX2);
-        savedGames.setGuiSprite(Sprite.MENUBOX2);
-        quit.setGuiSprite(Sprite.MENUBOX2);
-
+        TextContainer videoSettings = new TextContainer("SETTINGS", this, window, 0.5f, 0.7f, Sprite.MENUBOX6){
+            @Override
+            public void guiClick(MouseEvent e){
+                window.setState(WindowState.SETTINGS);
+            }
+        };
+        
         addComponent(newGame);
         addComponent(savedGames);
         addComponent(quit);
+        addComponent(videoSettings);
     }
     
     @Override

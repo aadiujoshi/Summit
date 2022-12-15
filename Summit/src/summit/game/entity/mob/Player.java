@@ -4,13 +4,11 @@
 */
 package summit.game.entity.mob;
 
-import java.awt.Color;
-
+import summit.deprecated.item.SnowballItem;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.GlistenAnimation;
+import summit.game.entity.Entity;
 import summit.game.entity.projectile.Arrow;
-import summit.game.item.SnowballItem;
-import summit.game.item.itemtable.Inventory;
 import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
@@ -19,7 +17,6 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
-import summit.gui.ItemGUI;
 import summit.sound.Sound;
 import summit.util.Controls;
 import summit.util.Region;
@@ -30,7 +27,7 @@ public class Player extends HumanoidEntity{
     private Camera camera;
 
     private HUD hud;
-    private ItemGUI invGui;
+    // private ItemGUI invGui;
     
     public Player(float x, float y) {
         super(x, y, 1, 2);
@@ -39,16 +36,14 @@ public class Player extends HumanoidEntity{
         super.setHealth(10f);
         super.setMaxHealth(10f);
         super.setHitDamage(1);
-        super.setItems(new Inventory(this, 9, 5));
+        // super.setItems(new Inventory(this, 9, 5));
         super.collide(new SnowballItem(1, 1));
         super.setAI(null);
         
         // super.setLight(new Light(x, y, 5.5f, 100, 100, 100));
 
         this.hud = new HUD(this);
-        this.invGui = new ItemGUI((Inventory)super.getItems());
-        
-        // this.camera = mapCam;
+        // this.invGui = new ItemGUI((Inventory)super.getItems());
     }
     
     @Override
@@ -70,10 +65,10 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
-        if(!invGui.isPushed()){
-            e.getWindow().pushGameContainer(invGui);
-            Controls.E = true;
-        }
+        // if(!invGui.isPushed()){
+        //     e.getWindow().pushGameContainer(invGui);
+        //     Controls.E = true;
+        // }
     }
 
     @Override
@@ -81,9 +76,10 @@ public class Player extends HumanoidEntity{
         super.update(e);
 
         if(e.getMap().getName().equals("DungeonsMap"))
-            super.setLight(new Light(getX(), getY(), 5.5f, 100, 100, 100));
+            super.setLight(new Light(getX(), getY(), 3f, 100, 100, 100));
         else
             super.setLight(Light.NO_LIGHT);
+
 
 
         //simulate click
@@ -91,7 +87,7 @@ public class Player extends HumanoidEntity{
             e.getMap().addAnimation(
                     new GlistenAnimation(
                         e.gameX(), e.gameY(), 
-                        10, 
+                        20, 
                         0x551a8b));
 
             e.getMap().spawn(new Arrow(this, 
@@ -100,13 +96,13 @@ public class Player extends HumanoidEntity{
                                             1));
         }
 
-        if(Controls.E){
-            if(!invGui.isPushed())
-                e.getWindow().pushGameContainer(invGui);
-            return;
-        } else if(!Controls.E && invGui.isPushed()){
-            e.getWindow().popGameContainer();
-        }
+        // if(Controls.E){
+        //     if(!invGui.isPushed())
+        //         e.getWindow().pushGameContainer(invGui);
+        //     return;
+        // } else if(!Controls.E && invGui.isPushed()){
+        //     e.getWindow().popGameContainer();
+        // }
 
         float del_x = getDx()/Time.NS_IN_S *e.getDeltaTimeNS();
         float del_y = getDy()/Time.NS_IN_S *e.getDeltaTimeNS();
@@ -171,11 +167,11 @@ public class Player extends HumanoidEntity{
         return this.camera;
     }
 
-    public ItemGUI getInventoryGui() {
-        return this.invGui;
-    }
+    // public ItemGUI getInventoryGui() {
+    //     return this.invGui;
+    // }
 
-    public void setInventoryGui(ItemGUI invGui) {
-        this.invGui = invGui;
-    }
+    // public void setInventoryGui(ItemGUI invGui) {
+    //     this.invGui = invGui;
+    // }
 }

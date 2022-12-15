@@ -2,9 +2,6 @@ package summit.game.animation;
 
 import java.awt.Point;
 
-import java.awt.geom.Point2D;
-import java.util.Arrays;
-
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -28,7 +25,7 @@ public class GlistenAnimation extends Animation{
 
     private float spread = 0.75f;
     
-    private static final int frame_len = 150;
+    private static final int frame_len = 125;
 
     //duration in ms
     // delay * calls = duration
@@ -68,7 +65,7 @@ public class GlistenAnimation extends Animation{
         for (int i = 0; i < lights.length; i++) {
             Point po = Renderer.toPixel(lights[i].getX(), lights[i].getY(), e.getCamera());
 
-            if(calls[i] == 0){
+            if(calls[i] == 0 || calls[i] == 2){
                 // System.out.println(calls[i]);
                 // System.out.println(lights[i].getX() + lights[i].getY());
                 e.getRenderer().fillRect(po.x, po.y, 1, 1, color);
@@ -84,13 +81,6 @@ public class GlistenAnimation extends Animation{
 
     @Override
     public void run() {
-
-        // for (Light l : lights) {
-        //     if(l != Light.NO_LIGHT)
-        //         System.out.print(l + "   ");
-        // }
-        // System.out.println();
-
         for (int i = 0; i < lights.length; i++) {
             if(calls[i] == -1){
                 float nx = sx + (float)(Math.random()*spread-spread);

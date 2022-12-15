@@ -26,7 +26,6 @@ public class Container extends Region implements Paintable, GUIClickReciever{
     private transient Window window;
 
     private ColorFilter filter = ColorFilter.NOFILTER;
-    private boolean permanent;
 
     private String guiSprite;
 
@@ -58,6 +57,10 @@ public class Container extends Region implements Paintable, GUIClickReciever{
                 components.get(i).guiClick(e);
             }
         }
+    }
+
+    public void close(){
+        
     }
 
     @Override
@@ -138,13 +141,5 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     public void setFilter(ColorFilter filter) {
         this.filter = filter;
-    }
-    
-    public boolean isPermanent() {
-        return this.permanent;
-    }
-
-    public void setPermanent(boolean permanent) {
-        this.permanent = permanent;
     }
 }

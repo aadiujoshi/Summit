@@ -7,8 +7,6 @@ package summit.game.entity.mob;
 import summit.game.GameUpdateEvent;
 import summit.game.ai.EntityAI;
 import summit.game.entity.Entity;
-import summit.game.item.Item;
-import summit.game.item.itemtable.ItemTable;
 import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -17,7 +15,7 @@ import summit.util.Direction;
 public abstract class MobEntity extends Entity{
 
     private EntityAI ai;
-    private ItemTable items;
+    // private ItemTable items;
     
     public MobEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -47,15 +45,19 @@ public abstract class MobEntity extends Entity{
     }
 
     @Override
+    public void gameClick(GameUpdateEvent e) {
+    }
+
+    @Override
     public void collide(Entity contact) {
         super.collide(contact);
 
-        if(contact instanceof Item){
-            Item c = (Item)contact;
-            if(is(pickupItems) && items != null){
-                getItems().addItem(c);
-            }
-        }
+        // if(contact instanceof Item){
+        //     Item c = (Item)contact;
+        //     if(is(pickupItems) && items != null){
+        //         getItems().addItem(c);
+        //     }
+        // }
     }
 
     //------  getters and setters -------------------------------------------
@@ -68,13 +70,13 @@ public abstract class MobEntity extends Entity{
         this.ai = ai;
     }
     
-    public ItemTable getItems() {
-        return this.items;
-    }
+    // public ItemTable getItems() {
+    //     return this.items;
+    // }
 
-    public void setItems(ItemTable items) {
-        this.items = items;
-    }
+    // public void setItems(ItemTable items) {
+    //     this.items = items;
+    // }
 
     //-----------  game tag / property keys ------------------------------
 

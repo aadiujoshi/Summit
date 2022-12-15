@@ -12,6 +12,8 @@ import summit.util.Time;
 
 public class HostileMobAI extends EntityAI{
 
+    private float attackRange;
+
     public HostileMobAI(MobEntity e){
         super(e);
     }
@@ -32,18 +34,24 @@ public class HostileMobAI extends EntityAI{
 
         int reached = 0;
 
-        if(Math.abs(entity.getX() - dest_x) >= 0.5f && entity.moveTo(e.getMap(), entity.getX() + delta_x, entity.getY()))
+        if(Math.abs(entity.getX() - dest_x) >= attackRange && entity.moveTo(e.getMap(), entity.getX() + delta_x, entity.getY()))
             entity.setX(entity.getX() + delta_x);
         else if(Math.abs(entity.getX() - dest_x) <= 0.5f)
             reached++;
         
-        if(Math.abs(entity.getY() - dest_y) >= 0.5f && entity.moveTo(e.getMap(), entity.getX(), entity.getY() + delta_y))
+        if(Math.abs(entity.getY() - dest_y) >= attackRange && entity.moveTo(e.getMap(), entity.getX(), entity.getY() + delta_y))
             entity.setY(entity.getY() + delta_y);
         else if(Math.abs(entity.getY() - dest_y) <= 0.5f)
             reached++;
+        
+        entity.attack(p);
+    }
+    
+    public float getAttackRange() {
+        return this.attackRange;
+    }
 
-        if(reached == 2){
-            p.damage(entity);
-        }
+    public void setAttackRange(float attackRange) {
+        this.attackRange = attackRange;
     }
 }

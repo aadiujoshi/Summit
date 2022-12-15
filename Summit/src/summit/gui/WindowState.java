@@ -21,6 +21,11 @@ public enum WindowState {
     SAVEDGAME,
 
     /**
+     * 
+     */
+    SETTINGS,
+
+    /**
      * Playing the Game
      */
     GAME,

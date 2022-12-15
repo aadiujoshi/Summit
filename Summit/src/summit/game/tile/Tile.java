@@ -71,6 +71,11 @@ public abstract class Tile extends GameRegion {
             particleAnimation = null;
     }
 
+    @Override
+    public void reinit(){
+        rotateAnimation(rotateAnim != null);
+    }
+
     //make breaking particle animation
     public void destroy(GameUpdateEvent e){
         e.getMap().addAnimation(new ParticleAnimation(getX(), getY(), 500, 15, getColor()));

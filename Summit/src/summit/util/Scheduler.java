@@ -15,7 +15,7 @@ public class Scheduler {
 
     //called by some thread
     public static void checkEvents(){
-        Time.nanoDelay(Time.NS_IN_MS/10);
+        // Time.nanoDelay(Time.NS_IN_MS/10);
 
         long now = Time.timeMs();
         

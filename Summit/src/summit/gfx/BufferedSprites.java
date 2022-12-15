@@ -18,7 +18,7 @@ public class BufferedSprites{
     private static HashMap<String, int[][]> sprites = new HashMap<>();
 
     public final static char[] charRefs = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                                                '!', '/', '<', '>', ':', '+', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '&', '=', '(', ')', '.', '?'};
+                                                '!', '/', '<', '>', ':', '+', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '(', ')', '.', '?'};
 
     // private static Object[] sprites;
 
@@ -49,7 +49,8 @@ public class BufferedSprites{
                                         int argb = sprite.getRGB(c1, r1);
                                 
                                         if((argb >> 24) != 0){
-                                            argb &= 0b01010101111111111111111111111111;
+                                            //make text black
+                                            argb &= 0b01010101000000000000000000000000;
                                         }
                                         if((argb >> 24) == 0){
                                             argb = -1;

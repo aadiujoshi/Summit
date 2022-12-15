@@ -37,7 +37,7 @@ public class Projectile extends Entity {
         this.sx = getX();
         this.sy = getY();
 
-        Scheduler.registerEvent(new ScheduledEvent(100, 1) {
+        Scheduler.registerEvent(new ScheduledEvent(120, 1) {
             @Override
             public void run() {
                 enabled = true;
@@ -66,6 +66,11 @@ public class Projectile extends Entity {
         else if(deg < 315 && deg > 215){
             setRenderOp(Renderer.ROTATE_90 | Renderer.FLIP_Y);
         }
+    }
+
+    @Override
+    public void attack(Entity e) {
+        this.collide(e);
     }
 
     @Override

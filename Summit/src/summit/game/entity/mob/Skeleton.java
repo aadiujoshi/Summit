@@ -34,4 +34,9 @@ public class Skeleton extends HumanoidEntity{
                                     getColorFilter(), 
                                     e.getCamera());
     }
+
+    @Override
+    public void attack(Entity e) {
+        
+    }
 }

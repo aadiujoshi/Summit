@@ -4,16 +4,13 @@
 */
 package summit.gui;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import summit.game.item.Item;
-import summit.game.item.itemtable.Inventory;
-import summit.game.item.itemtable.ItemTable;
+import summit.deprecated.item.Item;
+import summit.deprecated.item.itemtable.Inventory;
+import summit.deprecated.item.itemtable.ItemTable;
 import summit.gfx.PaintEvent;
-import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 
+@Deprecated
 public class ItemGUI extends Container{
 
     //ref to actual player inventory

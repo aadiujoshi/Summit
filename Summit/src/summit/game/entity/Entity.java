@@ -134,6 +134,16 @@ public abstract class Entity extends GameRegion{
             set(destroyed, true);
     }
 
+
+    @Override
+    public void gameClick(GameUpdateEvent e){
+        
+    }
+
+    public void attack(Entity e){
+
+    }
+
     public void destroy(GameUpdateEvent e){
         e.getMap().addAnimation(
                 new ParticleAnimation(getX(), getY(), 
@@ -148,6 +158,35 @@ public abstract class Entity extends GameRegion{
             return false;
         }
 
+        return true;
+    }
+
+    public boolean lineOfSight(Entity e, GameMap map){
+
+        //vertically aligned
+        if(e.getX() == getX()){
+            float start = Math.min(getY(), e.getY());
+            float end = Math.max(getY(), e.getY());
+
+            for(float y = start; y <= end; y++){
+                if(map.getTileAt(getX(), y).isBoundary()){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        float m = (e.getY()-getY()) / (e.getX()-getX());
+        float b = -1*((float)m*getX()-getY());
+
+        float start = Math.min(getX(), e.getX());
+        float end = Math.max(getX(), e.getX());
+
+        for(float inc_x = start; inc_x < end; inc_x += (1/map.getWidth())){
+            if(map.getTileAt( (inc_x*m + b) , inc_x).isBoundary()){
+                return false;
+            }
+        }
         return true;
     }
 

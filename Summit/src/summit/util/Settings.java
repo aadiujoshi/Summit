@@ -68,7 +68,7 @@ public class Settings {
         if(((int)p.charAt(0))-48 >= 0 && ((int)p.charAt(0))-48 <= 9)
             return ((int)p.charAt(0))-48;
         
-        //return as boring-ass string
+        //return as string
         return p;
     }
 }

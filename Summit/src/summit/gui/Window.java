@@ -40,6 +40,7 @@ import summit.gfx.Sprite;
 import summit.util.Controls;
 import summit.util.GameLoader;
 import summit.util.Scheduler;
+import summit.util.Settings;
 import summit.util.Time;
 
 public class Window implements MouseListener, KeyListener{
@@ -64,7 +65,7 @@ public class Window implements MouseListener, KeyListener{
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
 
-    private boolean closed = false;
+    private volatile boolean closed = false;
     private static boolean mouseDown = false;
 
     private int width;
@@ -85,8 +86,7 @@ public class Window implements MouseListener, KeyListener{
 
     //------------------------------------------
     private MainSelectionMenu mainMenu;
-    private VideoSettings vidSettings;
-    // private PauseMenu pauseMenu;
+    private VideoSettings settings;
     //------------------------------------------
 
     public Window(String title){
@@ -99,10 +99,12 @@ public class Window implements MouseListener, KeyListener{
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
-        renderer = new Renderer(2, SCREEN_WIDTH, SCREEN_HEIGHT);
+        int _t = ((int)Settings.getSetting("threads") == 0) ? 1 : (int)Settings.getSetting("threads");
+
+        renderer = new Renderer(_t, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu(this);
-        vidSettings = new VideoSettings(this);
+        settings = new VideoSettings(this);
 
         schedulerThread = new Thread(new Runnable() {
             @Override
@@ -161,7 +163,7 @@ public class Window implements MouseListener, KeyListener{
             frame = new JFrame(title + "|");
             frame.getContentPane().setPreferredSize(new Dimension(width, height));
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            frame.setResizable(false);
+            frame.setResizable(true);
             frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
             // frame.setMaximumSize(new java.awt.Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
             // frame.revalidate();
@@ -246,7 +248,7 @@ public class Window implements MouseListener, KeyListener{
         
         OrderPaintEvent ope = new OrderPaintEvent(new RenderLayers(10), null);
         
-        if(state == WindowState.SELECTIONMENUS){
+        if(state != WindowState.GAME){
             renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.NO_OP, null);
             
             if (!guiContainersHome.isEmpty())
@@ -288,6 +290,12 @@ public class Window implements MouseListener, KeyListener{
             return;
         }
 
+        if(newState == WindowState.SETTINGS){
+            pushHomeContainer(settings);
+            state = WindowState.SETTINGS;
+            return;
+        }
+
         if(newState == WindowState.NEWGAME){
             world = new GameWorld("ihatetiktok", this, 3L);
             state = WindowState.GAME;
@@ -305,6 +313,9 @@ public class Window implements MouseListener, KeyListener{
 
         if(newState == WindowState.BACK){
             switch(state){
+                case SETTINGS:
+                    setState(WindowState.SELECTIONMENUS);
+                    break;
                 case GAME:
                     setState(WindowState.SELECTIONMENUS);
                     break;
@@ -352,7 +363,7 @@ public class Window implements MouseListener, KeyListener{
     /**
      * @return If this Window has been closed
      */
-    public boolean isClosed() {
+    public synchronized boolean isClosed() {
         return this.closed;
     }
 
@@ -371,17 +382,20 @@ public class Window implements MouseListener, KeyListener{
     public void pushHomeContainer(Container cont){
         if(cont.isPushed())
             return;
+        
         guiContainersHome.push(cont);
         cont.setPushed(true);
         cont.setParentWindow(this);
     }
 
     public void popHomeContainer(){
+        guiContainersHome.peek().close();
         guiContainersHome.pop().setPushed(false);
     }
 
     public void clearHomeContainers(){
         for (Container container : guiContainersHome) {
+            guiContainersHome.peek().close();
             container.setPushed(false);
         }
         guiContainersHome.clear();
@@ -396,12 +410,15 @@ public class Window implements MouseListener, KeyListener{
     }
 
     public void popGameContainer(){
-        if(!guiContainersGame.isEmpty())
+        if(!guiContainersGame.isEmpty()){
+            guiContainersGame.peek().close();
             guiContainersGame.pop().setPushed(false);
+        }
     }
 
     public void clearGameContainers(){
         for(Container container : guiContainersHome) {
+            guiContainersGame.peek().close();
             container.setPushed(false);
         }
         guiContainersGame.clear();
@@ -427,13 +444,11 @@ public class Window implements MouseListener, KeyListener{
             public void run() {
                 fullscreen = full;
                 if(fullscreen){
-                    frame.setResizable(true);
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(frame);
                 }
                 else if(!fullscreen){
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
                     frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-                    frame.setResizable(false);
                 }
             }
         });

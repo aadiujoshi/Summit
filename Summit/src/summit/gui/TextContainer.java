@@ -23,6 +23,7 @@ public class TextContainer extends Container{
                         String sprite) {
         super(parent, window, relX, relY, sprite);
         this.text = text;
+        textFilter = new ColorFilter(0xffffff);
     }
 
     @Override

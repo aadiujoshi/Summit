@@ -9,10 +9,21 @@ import summit.util.GameLoader;
 
 public class PauseMenu extends Container{
 
+    private VideoSettings vs;
+    private GameWorld world;
+
     public PauseMenu(Window window, GameWorld world) {
         super(null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
 
-        addComponent(new VideoSettings(window));
+        vs = new VideoSettings(window);
+        this.world = world;
+
+        addComponent(new TextContainer("VIDEO SETTINGS", vs, window, getWidth(), getHeight(), getGuiSprite()){
+            @Override
+            public void guiClick(MouseEvent e){
+                window.pushGameContainer(vs);
+            }
+        });
 
         addComponent(new TextContainer("SAVE AND QUIT", this, window, 0.25f, 0.5f, Sprite.MENUBOX2){
             @Override
@@ -33,7 +44,7 @@ public class PauseMenu extends Container{
     }
 
     @Override
-    public void guiClick(MouseEvent e){
-        super.guiClick(e);
+    public void close(){
+        world.unpause();
     }
 }

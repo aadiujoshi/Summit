@@ -70,11 +70,6 @@ public abstract class HumanoidEntity extends MobEntity{
         Scheduler.registerEvent(this.walkAnimation);
     }
 
-    @Override
-    public void gameClick(GameUpdateEvent e) {
-        damage(e.getMap().getPlayer());
-    }
-
     // @Override
     public void paintNOTDONE(PaintEvent e){
         super.paint(e);

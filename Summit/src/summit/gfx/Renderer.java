@@ -11,6 +11,7 @@ import java.awt.image.DataBufferInt;
 import java.io.Serializable;
 
 import summit.util.Region;
+import summit.util.Settings;
 import summit.util.Time;
 
 public class Renderer implements Serializable{
@@ -107,7 +108,7 @@ public class Renderer implements Serializable{
                 writers[i].startProcess(finalFrame, frame);
             }
 
-            Time.nanoDelay(Time.NS_IN_MS*vsync);
+            Time.nanoDelay(Time.NS_IN_MS*(int)Settings.getSetting("vsync"));
         }
     }
 
