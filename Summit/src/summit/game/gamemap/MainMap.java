@@ -84,5 +84,23 @@ public class MainMap extends GameMap{
     public void update(GameUpdateEvent e){
         super.update(e);
 
+        TileStack[][] tiles = super.getTiles();
+
+        int iced = 0;
+
+        for (int r = 0; r < tiles.length; r++) {
+            for (int c = 0; c < tiles[0].length; c++) {
+                if(tiles[r][c].peekTile().getName().equals("SnowTile")){
+                    iced++;
+                    continue;
+                }
+
+                if(Math.random() < 0.00001)
+                    tiles[r][c].pushTile(new SnowTile(c, r));
+            }
+        }
+        
+        if(iced == getWidth()*getHeight())
+            System.out.println("GAME OVER");
     }
 }

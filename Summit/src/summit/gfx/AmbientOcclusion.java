@@ -12,6 +12,7 @@ import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.util.Direction;
 import summit.util.Region;
+import summit.util.Settings;
 
 /**
  * Operation for shading tiles and creating depth
@@ -21,13 +22,22 @@ public class AmbientOcclusion implements Serializable, Paintable{
     private int intensity;
     private int spread;
 
-    public AmbientOcclusion(int intesity){
-        this.intensity = intesity;
-        this.spread = (int)(intesity/(20/9f));
+    public AmbientOcclusion(){
+        setVals();
+    }
+    
+    private void setVals(){
+        this.intensity = ((int)Settings.getSetting("ambient_occlusion"))*3;
+        this.spread = (int)(intensity/(20/9f));
     }
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
+        this.setVals();
+
+        if(intensity == 0)
+            return;
+
         ope.addToLayer(RenderLayers.TILE_LAYER, this);
     }
 

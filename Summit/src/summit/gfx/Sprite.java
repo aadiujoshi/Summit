@@ -43,4 +43,8 @@ public class Sprite {
     public static final String FILL_SCREEN = "fill-screen";
     public static final String CAVE_ENTRACE = "cave-entrance";
     public static final String PLAYER_SUBMERGED_SOUTH = "player-submerged_south";
+    public static final String RED_KEY = "red-key";
+    public static final String BLUE_KEY = "blue-key";
+    public static final String GREEN_KEY = "green-key";
+    public static final String GREY_KEY = "grey-key";
 }

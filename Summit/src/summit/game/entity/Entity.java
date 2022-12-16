@@ -81,6 +81,8 @@ public abstract class Entity extends GameRegion{
 
     @Override
     public void update(GameUpdateEvent e){
+        
+
         if(health <= 0){
             set(destroyed, true);
             return;

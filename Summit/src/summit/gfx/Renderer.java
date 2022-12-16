@@ -364,7 +364,7 @@ public class Renderer implements Serializable{
      */
     public static Point2D.Float toTile(int mx, int my, Camera cam){
         float rx = (cam.getX() - ((WIDTH/16f)/2)) + (mx/16f);// - 0.1f;
-        float ry = (cam.getY() + ((HEIGHT/16f)/2)) - (my/16f);// + 0.25f;
+        float ry = (cam.getY() + ((HEIGHT/16f)/2)) - (my/16f) + 0.25f;
 
         return new Point2D.Float(rx, ry);
     }

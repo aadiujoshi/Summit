@@ -14,6 +14,7 @@ import summit.game.GameUpdateReciever;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.util.Time;
 
 public class TileStack implements Serializable, GameClickReciever, Paintable, GameUpdateReciever {
 
@@ -48,12 +49,13 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
 
     @Override 
     public void paint(PaintEvent e){
-        
     }
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
-        for(Tile t: tiles){
+        for (int i = 0; i < tiles.size(); i++) {
+            Tile t = tiles.get(i);
+
             if(t != null)
                 t.setRenderLayer(ope);
         }
@@ -71,11 +73,13 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
                 continue;
             }
         }
-        if(peekTile() != null){
-            if(peekTile().getReqPushTile() != null){
-                pushTile(peekTile().getReqPushTile());
-                peekTile().setReqPushTile(null);
-            }
-        }
+        
+        // Tile req = peekTile().getReqPushTile();
+
+        // if(req != null){
+        //     pushTile(req);
+        //     peekTile().setReqPushTile(null);
+        //     System.out.println(tiles);
+        // }
     }
 }

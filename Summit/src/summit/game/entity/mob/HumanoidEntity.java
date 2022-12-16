@@ -28,7 +28,7 @@ public abstract class HumanoidEntity extends MobEntity{
     public HumanoidEntity(float x, float y, float width, float height) {
         super(x, y, width, height);
 
-        this.walkAnimation = new ScheduledEvent(250, ScheduledEvent.FOREVER){
+        this.walkAnimation = new ScheduledEvent(400, ScheduledEvent.FOREVER){
 
             boolean flipped = false;
 

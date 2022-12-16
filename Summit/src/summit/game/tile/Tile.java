@@ -24,7 +24,7 @@ public abstract class Tile extends GameRegion {
 
     //managed by TileStack;
     //If not null, the tile is pushed to the top of the tile stack
-    private Tile reqPushTile;
+    // private Tile reqPushTile;
 
     //Rendering hint, nothing to do with gameplay
     private int depth;
@@ -48,6 +48,9 @@ public abstract class Tile extends GameRegion {
 
     @Override
     public void update(GameUpdateEvent e){
+        //cover with snow
+        // if(Math.random() < 0.000005)
+        //     reqPushTile = new SnowTile(getX(), getY());
     }
 
     @Override
@@ -162,11 +165,11 @@ public abstract class Tile extends GameRegion {
         }
     }
     
-    public Tile getReqPushTile() {
-        return this.reqPushTile;
-    }
+    // public Tile getReqPushTile() {
+    //     return this.reqPushTile;
+    // }
 
-    public void setReqPushTile(Tile reqPushTile) {
-        this.reqPushTile = reqPushTile;
-    }
+    // public void setReqPushTile(Tile reqPushTile) {
+    //     this.reqPushTile = reqPushTile;
+    // }
 }

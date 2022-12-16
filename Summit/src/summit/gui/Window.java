@@ -303,8 +303,10 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.SAVEDGAME){
-            world = GameLoader.loadWorld("/Summit/gamesaves/testsave1.txt");
-            world.reinit(this, "");
+            world = GameLoader.loadWorld("Summit/gamesaves/testsave1.txt");
+            world.reinit(this, "Summit/gamesaves/testsave1.txt");
+            world.pause();
+            
             state = WindowState.GAME;
             return;
         }
@@ -496,7 +498,7 @@ public class Window implements MouseListener, KeyListener{
         this.availableClick = true;
 
         int rx = e.getX()/(SCREEN_WIDTH/Renderer.WIDTH);
-        int ry = e.getY()/(SCREEN_HEIGHT/Renderer.HEIGHT);
+        int ry = (e.getY())/(SCREEN_HEIGHT/Renderer.HEIGHT);
         
         e = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(), rx, ry, e.getClickCount(), e.isPopupTrigger(), e.getButton());
         

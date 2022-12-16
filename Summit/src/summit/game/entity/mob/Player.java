@@ -7,14 +7,11 @@ package summit.game.entity.mob;
 import summit.deprecated.item.SnowballItem;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.GlistenAnimation;
-import summit.game.entity.Entity;
 import summit.game.entity.projectile.Arrow;
 import summit.gfx.Camera;
-import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
-import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
 import summit.util.Controls;
@@ -27,7 +24,8 @@ public class Player extends HumanoidEntity{
     private Camera camera;
 
     private HUD hud;
-    // private ItemGUI invGui;
+
+    private boolean obtainedKeys[];
     
     public Player(float x, float y) {
         super(x, y, 1, 2);
@@ -43,6 +41,8 @@ public class Player extends HumanoidEntity{
         // super.setLight(new Light(x, y, 5.5f, 100, 100, 100));
 
         this.hud = new HUD(this);
+
+        this.obtainedKeys = new boolean[3];
         // this.invGui = new ItemGUI((Inventory)super.getItems());
     }
     
@@ -51,17 +51,6 @@ public class Player extends HumanoidEntity{
         super.setRenderLayer(e);
         hud.setRenderLayer(e);
     }
-
-    @Override
-    public void paint(PaintEvent e) {
-        super.paint(e);
-
-        e.getRenderer().renderText(("x:" + (Math.round(getX()))), 
-                    20, 15, Renderer.NO_OP, new ColorFilter(255, -255, -255));
-
-        e.getRenderer().renderText(("y:" + (Math.round(getY()))), 
-                20, 25, Renderer.NO_OP, new ColorFilter(255, -255, -255));           
-    } 
 
     @Override
     public void gameClick(GameUpdateEvent e) {
@@ -79,9 +68,7 @@ public class Player extends HumanoidEntity{
             super.setLight(new Light(getX(), getY(), 3f, 100, 100, 100));
         else
             super.setLight(Light.NO_LIGHT);
-
-
-
+            
         //simulate click
         if(e.mouseClicked()){
             e.getMap().addAnimation(
@@ -123,8 +110,11 @@ public class Player extends HumanoidEntity{
         //--- extra -----------------------------
         if(is(inWater))
             setSprite(Sprite.PLAYER_SUBMERGED_SOUTH);
+        else if(!is(moving))
+            setSprite(Sprite.PLAYER_NEUTRAL_SOUTH);
         else
             setSprite(Sprite.PLAYER_FACE_BACK_1);
+        
         //-----------------------------------------
         //sounds
 
@@ -165,6 +155,10 @@ public class Player extends HumanoidEntity{
      */
     public Camera getCamera(){
         return this.camera;
+    }
+
+    public boolean[] getObtainedKeys(){
+        return this.obtainedKeys;
     }
 
     // public ItemGUI getInventoryGui() {

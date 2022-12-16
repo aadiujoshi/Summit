@@ -31,6 +31,7 @@ import summit.gfx.Renderer;
 import summit.util.Controls;
 import summit.util.GameRegion;
 import summit.util.Region;
+import summit.util.Settings;
 
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
 
@@ -90,7 +91,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.camera = new Camera(width/2, height/2);
 
         this.animations = new Vector<>();
-        this.ambientOcclusion = new AmbientOcclusion(20);
+        this.ambientOcclusion = new AmbientOcclusion();
     }
 
     //saved world

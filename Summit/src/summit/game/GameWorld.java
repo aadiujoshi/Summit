@@ -16,6 +16,7 @@ import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gui.PauseButton;
 import summit.gui.Window;
+import summit.util.GameLogger;
 import summit.util.Sound;
 import summit.util.Time;
 
@@ -104,8 +105,8 @@ public class GameWorld implements Paintable, Serializable{
                 if(loadedMap != null){
                     try{
                         loadedMap.update(e);
-                    } catch(Exception fsda) {
-                        
+                    } catch(Exception ex) {
+                        // GameLogger.logError();
                     }
                 }
                 
