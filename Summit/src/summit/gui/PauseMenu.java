@@ -29,7 +29,7 @@ public class PauseMenu extends Container{
             @Override
             public void guiClick(MouseEvent e){
                 if(window != null){
-                    GameLoader.saveWorld(world, Main.path + "gamesaves\\testsave1.txt");
+                    GameLoader.saveWorld(world, "\\gamesaves\\testsave1.txt");
                     window.setState(WindowState.SELECTIONMENUS);
                 }
             }

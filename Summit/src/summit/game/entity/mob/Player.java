@@ -17,9 +17,9 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
-import summit.sound.Sound;
 import summit.util.Controls;
 import summit.util.Region;
+import summit.util.Sound;
 import summit.util.Time;
 
 public class Player extends HumanoidEntity{

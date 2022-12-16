@@ -11,8 +11,6 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-import summit.Main;
-
 public class BufferedSprites{
 
     private static HashMap<String, int[][]> sprites = new HashMap<>();
@@ -20,11 +18,9 @@ public class BufferedSprites{
     public final static char[] charRefs = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
                                                 '!', '/', '<', '>', ':', '+', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '(', ')', '.', '?'};
 
-    // private static Object[] sprites;
-
     public static void loadSprites(){
         
-        File[] dirFiles = new File(Main.path + "resources").listFiles();
+        File[] dirFiles = new File("Summit\\resources\\sprites").listFiles();
 
         for(int i = 0; i < dirFiles.length; i++){
             String absPath = dirFiles[i].getAbsolutePath();

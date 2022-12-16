@@ -7,15 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import summit.Main;
-
 public class Settings {
 
     private static HashMap<String, String> properties = new HashMap<>();
 
     static{
         try {
-            Scanner s = new Scanner(new File(Main.path + "settings.txt"));
+            Scanner s = new Scanner(new File("Summit\\settings.txt"));
 
             while(s.hasNext()) {
                 properties.put(s.next(), s.next());
@@ -38,7 +36,7 @@ public class Settings {
         }
         
         try{
-            FileWriter file = new FileWriter(new File(Main.path + "settings.txt"));
+            FileWriter file = new FileWriter(new File("Summit\\settings.txt"));
             file.write(newSettings);
             file.flush();
             file.close();

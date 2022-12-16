@@ -1,5 +1,5 @@
 TODO:
- - Organize file system
+ - Organize file system (done)
  - Save files to local database
  - Finish the pause menu
  - Buffered game save 
@@ -14,6 +14,6 @@ BROKEN:
 
 
 BORING:
- - complimentary/aestheric rocks, flowers, grass
- - add glistenanimation (done) to water, and snow
+ - complimentary/aesthetic rocks, flowers, grass
+ - add glistenanimation to water, and snow (done)
  - make uneven lighting (light calculated on instantiation)

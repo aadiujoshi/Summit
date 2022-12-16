@@ -16,7 +16,7 @@ import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gui.PauseButton;
 import summit.gui.Window;
-import summit.sound.Sound;
+import summit.util.Sound;
 import summit.util.Time;
 
 public class GameWorld implements Paintable, Serializable{
@@ -30,6 +30,7 @@ public class GameWorld implements Paintable, Serializable{
     private final long START_TIME = Time.timeMs();
 
     private final String SAVE_NAME;
+    private transient String filepath;
 
     private transient volatile boolean paused;
 
@@ -70,8 +71,9 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     // must be called after loading from save
-    public void reinit(Window w){
+    public void reinit(Window w, String filepath){
         this.parentWindow = w;
+        this.filepath = filepath;
 
         pauseButton = new PauseButton(w, this);
 
@@ -176,5 +178,13 @@ public class GameWorld implements Paintable, Serializable{
 
     public void unpause(){
         this.paused = false;
+    }
+    
+    public String getFilepath() {
+        return this.filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
     }
 }

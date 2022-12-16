@@ -303,10 +303,8 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.SAVEDGAME){
-            world = GameLoader.loadWorld(Main.path + 
-                                        (Main.os.contains("Windows") ? "gamesaves\\testsave1.txt" :
-                                                                        "gamesaves/testsave1.txt"));
-            world.reinit(this);
+            world = GameLoader.loadWorld("/Summit/gamesaves/testsave1.txt");
+            world.reinit(this, "");
             state = WindowState.GAME;
             return;
         }
@@ -337,9 +335,7 @@ public class Window implements MouseListener, KeyListener{
         renderer.terminate();
 
         if(world != null){
-            GameLoader.saveWorld(world, Main.path + 
-                                    (Main.os.contains("Windows") ? "gamesaves\\testsave1.txt" :
-                                                                    "gamesaves/testsave1.txt"));
+            GameLoader.saveWorld(world, "Summit/gamesaves/testsave1.txt");
         }
     } 
 

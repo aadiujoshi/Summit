@@ -9,8 +9,8 @@ import summit.game.tile.LavaTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
-import summit.sound.Sound;
 import summit.util.ScheduledEvent;
+import summit.util.Sound;
 import summit.util.Time;
 
 public class DungeonsMap extends GameMap{
