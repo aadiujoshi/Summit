@@ -1,3 +1,3 @@
-ambient_occlusion 5
+ambient_occlusion 7
 vsync 0
 threads 2

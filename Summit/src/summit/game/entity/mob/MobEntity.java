@@ -45,6 +45,11 @@ public abstract class MobEntity extends Entity{
     }
 
     @Override
+    public void attack(Entity e){
+        super.attack(e);
+    }
+
+    @Override
     public void gameClick(GameUpdateEvent e) {
     }
 
@@ -52,6 +57,7 @@ public abstract class MobEntity extends Entity{
     public void collide(Entity contact) {
         super.collide(contact);
 
+        
         // if(contact instanceof Item){
         //     Item c = (Item)contact;
         //     if(is(pickupItems) && items != null){

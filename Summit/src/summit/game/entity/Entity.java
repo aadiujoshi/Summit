@@ -6,6 +6,8 @@ package summit.game.entity;
 
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
+import summit.game.entity.mob.MobEntity;
+import summit.game.entity.mob.Player;
 import summit.game.entity.projectile.Projectile;
 import summit.game.gamemap.GameMap;
 import summit.gfx.ColorFilter;
@@ -20,8 +22,9 @@ import summit.util.Scheduler;
 
 public abstract class Entity extends GameRegion{
 
+    //the map this entity belongs to
     private String map;
-
+    
     private float dx, dy;
 
     //knockback lasts for 2 seconds
@@ -57,7 +60,7 @@ public abstract class Entity extends GameRegion{
         
         this.shadow = new Light(x, y, 1f, -50, -50, -50);
 
-        this.add(hitCooldown);
+        this.add(attackCooldown);
         this.add(damageCooldown);
         this.add(destroyed);
         this.add(invulnerable);
@@ -84,7 +87,6 @@ public abstract class Entity extends GameRegion{
     @Override
     public void update(GameUpdateEvent e){
 
-
         if(health <= 0){
             set(destroyed, true);
             return;
@@ -105,7 +107,7 @@ public abstract class Entity extends GameRegion{
     }
 
     public void damage(Entity hitBy){
-        if(hitBy.is(hitCooldown))
+        if(hitBy.is(attackCooldown))
             return;
         if(hitBy instanceof Projectile && !is(projectileDamage))
             return;
@@ -130,12 +132,23 @@ public abstract class Entity extends GameRegion{
         });
 
         //---------------------------------------------------------
-
-        hitBy.set(hitCooldown, true);
+        
         set(damageCooldown, true);
         
-        if(health <= 0)
+        if(health <= 0){
+            if(hitBy instanceof Player){
+                Player pl = ((Player)hitBy);
+                if(map.equals("DungeonMap") && is(MobEntity.hostile)){
+                    if(Math.random() < 0.01){
+                        pl.getObtainedKeys()[0] = true;
+                    }
+                }
+
+                pl.addXp(3);
+            }
+
             set(destroyed, true);
+        }
     }
 
 
@@ -145,13 +158,14 @@ public abstract class Entity extends GameRegion{
     }
 
     public void attack(Entity e){
-
+        set(attackCooldown, true);
+        e.damage(this);
     }
 
     public void destroy(GameUpdateEvent e){
         e.getMap().addAnimation(
                 new ParticleAnimation(getX(), getY(), 
-                                        500, 
+                                        300, 
                                         20, 
                                         getColor()));
     }
@@ -246,12 +260,12 @@ public abstract class Entity extends GameRegion{
         super.set(property, value);
 
         switch(property){
-            case hitCooldown -> {
-                if(is(hitCooldown)){
+            case attackCooldown -> {
+                if(is(attackCooldown)){
                     Scheduler.registerEvent(new ScheduledEvent(500,1) {
                         @Override
                         public void run() {
-                            set(hitCooldown, false);
+                            set(attackCooldown, false);
                         }
                     });
                 }
@@ -351,7 +365,7 @@ public abstract class Entity extends GameRegion{
     
     //-----------  game tag / property keys ------------------------------
 
-    public static final String hitCooldown = "hitCooldown";
+    public static final String attackCooldown = "hitCooldown";
     public static final String damageCooldown = "damageCooldown";
     public static final String destroyed = "destroyed";
     public static final String invulnerable = "invulnerable";

@@ -6,7 +6,6 @@ package summit.gfx;
 
 import java.awt.Point;
 import java.io.Serializable;
-import java.util.function.ToDoubleBiFunction;
 
 import summit.game.gamemap.GameMap;
 import summit.game.tile.Tile;

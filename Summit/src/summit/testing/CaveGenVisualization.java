@@ -66,6 +66,7 @@ public class CaveGenVisualization extends JPanel{
         });
 
         window.setVisible(true);
+
     }
 
     @Override

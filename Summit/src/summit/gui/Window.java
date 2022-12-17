@@ -28,10 +28,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import summit.game.GameUpdateEvent;
-import summit.Main;
 import summit.game.GameWorld;
 import summit.game.gamemap.GameMap;
-import summit.game.tile.TileStack;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;

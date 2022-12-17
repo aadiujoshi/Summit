@@ -42,7 +42,7 @@ public class Sound {
         
         playing = true;
 
-        new Thread(() -> {
+        Thread s = new Thread(() -> {
             try{
                 final Clip clip = (Clip)AudioSystem.getLine(new Line.Info(Clip.class));
 
@@ -71,6 +71,8 @@ public class Sound {
             catch (Exception e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
+        s.setPriority(Thread.MIN_PRIORITY);
+        s.start();
     }
 }

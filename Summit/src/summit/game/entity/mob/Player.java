@@ -26,6 +26,7 @@ public class Player extends HumanoidEntity{
     private HUD hud;
 
     private boolean obtainedKeys[];
+    private int xp;
     
     public Player(float x, float y) {
         super(x, y, 1, 2);
@@ -71,12 +72,6 @@ public class Player extends HumanoidEntity{
             
         //simulate click
         if(e.mouseClicked()){
-            e.getMap().addAnimation(
-                    new GlistenAnimation(
-                        e.gameX(), e.gameY(), 
-                        20, 
-                        0x551a8b));
-
             e.getMap().spawn(new Arrow(this, 
                                 Region.theta(e.gameX(), getX(), 
                                             e.gameY(), getY()),
@@ -159,6 +154,14 @@ public class Player extends HumanoidEntity{
 
     public boolean[] getObtainedKeys(){
         return this.obtainedKeys;
+    }
+
+    public int getXp() {
+        return this.xp;
+    }
+
+    public void addXp(int exp) {
+        this.xp += exp;
     }
 
     // public ItemGUI getInventoryGui() {
