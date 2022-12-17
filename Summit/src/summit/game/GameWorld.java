@@ -9,6 +9,8 @@ import java.io.Serializable;
 import summit.game.entity.mob.Player;
 import summit.game.gamemap.GameMap;
 import summit.game.gamemap.MainMap;
+import summit.game.tile.SnowTile;
+import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
@@ -34,7 +36,6 @@ public class GameWorld implements Paintable, Serializable{
     private transient String filepath;
 
     private transient volatile boolean paused;
-
     private transient PauseButton pauseButton;
 
     //used for safer map transitioning
@@ -42,6 +43,7 @@ public class GameWorld implements Paintable, Serializable{
     private GameMap queuedNewMap;
 
     private final long SEED;
+    public static final int MS_PER_TICK = 5;
 
     //Same object shared by all GameMaps 
     private Player player;
@@ -85,22 +87,21 @@ public class GameWorld implements Paintable, Serializable{
 
     public void initUpdateThread(){
         gameUpdateThread = new Thread(() -> {
-            int prevDelay = 1;
             while(!parentWindow.isClosed()){
                 //show pause button
                 parentWindow.pushGameContainer(pauseButton);
-
-                long startTime = Time.timeNs();
-
+                
                 if(paused)
                     continue;
+
+                long startTime = Time.timeNs();
                 
                 this.elapsedtime = Time.timeMs() - startTime;
 
                 //20 minutes
                 this.gametime = (elapsedtime) % 1200000;
 
-                GameUpdateEvent e = new GameUpdateEvent(this, prevDelay);
+                GameUpdateEvent e = new GameUpdateEvent(this);
                 
                 if(loadedMap != null){
                     try{
@@ -120,7 +121,9 @@ public class GameWorld implements Paintable, Serializable{
                     this.queuedNewMap = null;
                 }
                 
-                prevDelay = (int)(Time.timeNs()-startTime);
+                long delay_ns = Time.timeNs()-startTime;
+
+                Time.nanoDelay((MS_PER_TICK*Time.NS_IN_MS)-delay_ns);
             }
 
             Sound.stopAll();
@@ -139,6 +142,28 @@ public class GameWorld implements Paintable, Serializable{
         if(loadedMap != null){
             loadedMap.setRenderLayer(ope);
         }
+    }
+
+    private void mainmapSnow(){
+        
+        TileStack[][] tiles = mainMap.getTiles();
+
+        int iced = 0;
+
+        for (int r = 0; r < tiles.length; r++) {
+            for (int c = 0; c < tiles[0].length; c++) {
+                if(tiles[r][c].peekTile().getName().equals("SnowTile")){
+                    iced++;
+                    continue;
+                }
+
+                if(Math.random() < 0.00001)
+                    tiles[r][c].pushTile(new SnowTile(c, r));
+            }
+        }
+        
+        if(iced == mainMap.getWidth()*mainMap.getHeight())
+            System.out.println("GAME OVER");
     }
 
     public long getGametime() {

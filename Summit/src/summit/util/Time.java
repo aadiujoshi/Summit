@@ -23,6 +23,7 @@ public class Time{
     public static void nanoDelay(long nanos)
     {
         if(nanos < 0) return;
+        
         final long end = System.nanoTime() + nanos;
         long timeLeft = nanos;
         do {

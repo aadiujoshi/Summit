@@ -6,7 +6,7 @@ package summit.util;
 
 public enum Direction {
     NORTH, SOUTH, EAST, WEST,
-    NE, NW, SE, SW
+    NE, NW, SE, SW;
 
     // public static final int NORTH = 90;
     // public static final int SOUTH = 270;

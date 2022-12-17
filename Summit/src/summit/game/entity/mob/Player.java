@@ -65,7 +65,7 @@ public class Player extends HumanoidEntity{
         super.update(e);
 
         if(e.getMap().getName().equals("DungeonsMap"))
-            super.setLight(new Light(getX(), getY(), 3f, 100, 100, 100));
+            super.setLight(new Light(getX(), getY(), 5.5f, 80, 80, 80));
         else
             super.setLight(Light.NO_LIGHT);
             

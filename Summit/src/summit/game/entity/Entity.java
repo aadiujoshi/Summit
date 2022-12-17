@@ -20,6 +20,8 @@ import summit.util.Scheduler;
 
 public abstract class Entity extends GameRegion{
 
+    private String map;
+
     private float dx, dy;
 
     //knockback lasts for 2 seconds
@@ -81,7 +83,7 @@ public abstract class Entity extends GameRegion{
 
     @Override
     public void update(GameUpdateEvent e){
-        
+
 
         if(health <= 0){
             set(destroyed, true);

@@ -6,14 +6,12 @@ package summit.game.gamemap;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import summit.game.GameClickReciever;
 import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.animation.Animation;
 import summit.game.animation.ForegroundAnimation;
-import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.MobEntity;
 import summit.game.entity.mob.Player;
@@ -28,10 +26,8 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
-import summit.util.Controls;
 import summit.util.GameRegion;
 import summit.util.Region;
-import summit.util.Settings;
 
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
 
@@ -41,7 +37,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     private ArrayList<Structure> structures;
 
     //assumes registered into scheduler
-    private Vector<Animation> animations;
+    private ArrayList<Animation> animations;
 
     //player
     private Player player;
@@ -49,7 +45,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     //render distance
     private int rd = 25;
 
-    //simulation distnace for gameupdaterecievers
+    //simulation distance for gameupdaterecievers
     private int sd = 25;
 
     //hostile mob cap
@@ -90,7 +86,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.setPlayer(player);
         this.camera = new Camera(width/2, height/2);
 
-        this.animations = new Vector<>();
+        this.animations = new ArrayList<>();
         this.ambientOcclusion = new AmbientOcclusion();
     }
 
@@ -202,6 +198,9 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     @Override
     public void setRenderLayer(OrderPaintEvent e) {
+        //map filter
+        e.addToLayer(RenderLayers.TOP_LAYER, this);
+
         //general animation (snowfall)
         if(animation != null)
             animation.setRenderLayer(e);
@@ -253,9 +252,6 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         for (GameRegion r: sorted) {
             r.setRenderLayer(e);
         }
-        
-        //map filter
-        e.addToLayer(RenderLayers.TOP_LAYER, this);
     }
 
     @Override

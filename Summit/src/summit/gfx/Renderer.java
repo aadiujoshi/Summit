@@ -303,14 +303,14 @@ public class Renderer implements Serializable{
     }
 
     public int[] frameAsArray(){
-        int[] reformated = new int[frame.length*frame[0].length];
+        int[] reformatted = new int[frame.length*frame[0].length];
 
         //holy shit that works #program_in_c
         for(int row = 0; row < frame.length; row++) {
-            System.arraycopy( frame[row],0 ,reformated ,row*frame[0].length ,frame[0].length);
+            System.arraycopy( frame[row],0 ,reformatted ,row*frame[0].length ,frame[0].length);
         }
 
-        return reformated;
+        return reformatted;
     }
 
     //--------------------------------------------------------------------

@@ -6,6 +6,7 @@ package summit.gfx;
 
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.function.ToDoubleBiFunction;
 
 import summit.game.gamemap.GameMap;
 import summit.game.tile.Tile;
@@ -26,6 +27,9 @@ public class AmbientOcclusion implements Serializable, Paintable{
         setVals();
     }
     
+    /**
+     * Get ao intensity from settings file
+     */
     private void setVals(){
         this.intensity = ((int)Settings.getSetting("ambient_occlusion"))*3;
         this.spread = (int)(intensity/(20/9f));
@@ -54,177 +58,153 @@ public class AmbientOcclusion implements Serializable, Paintable{
                     continue;
 
                 Tile t = tiles[r][c].peekTile();
-
-                String type = t.getName();
-                int d = t.getDepth();
-
-                for(int r1 = r-1; r1 < tiles.length; r1++) {
-                    for (int c1 = c-1; c1 < tiles[0].length; c1++) {
-                        if(!Renderer.inArrBounds(r1, c1, tiles.length, tiles[0].length) || tiles[r1][c1] == null || (r1 == r && c1 == c))
-                            continue;
-                        
-                        Tile t1 = tiles[r1][c1].peekTile();
-
-                        if(!t1.getName().equals(type) && t1.getDepth() != d){
-                            if(r1 == r-1 && c1 == c-1)
-                                ambientShadow(Direction.SW, t, e);
-
-                            if(r1 == r-1 && c1 == c)
-                                ambientShadow(Direction.SOUTH, t, e);
-
-                            if(r1 == r-1 && c1 == c+1)
-                                ambientShadow(Direction.SE, t, e);
-
-                            if(r1 == r && c1 == c-1)
-                                ambientShadow(Direction.WEST, t, e);
-
-                            if(r1 == r && c1 == c+1)
-                                ambientShadow(Direction.EAST, t, e);
-
-                            if(r1 == r+1 && c1 == c-1)
-                                ambientShadow(Direction.NW, t, e);
-                            
-                            if(r1 == r+1 && c1 == c)
-                                ambientShadow(Direction.NORTH, t, e);
-
-                            if(r1 == r+1 && c1 == c+1)
-                                ambientShadow(Direction.NE, t, e);
-                        }
-                    }
-                }
+                
+                ambientShadow(t, e);
             }   
         }
     }
 
     /**
-     * x and y are center pos of the tile 
-     * </p>
-     * direction is relative to the tile
+     * shade the valid area AROUND this tile
      */
-    private void ambientShadow(Direction d, Tile t, PaintEvent e){
+    private void ambientShadow(Tile tile, PaintEvent e){
 
-        int gx = (int)t.getX();
-        int gy = (int)t.getY();
+        int gx = (int)tile.getX();
+        int gy = (int)tile.getY();
 
         Point p = Renderer.toPixel(gx, gy, e.getCamera());
         GameMap map = e.getLoadedMap();
-        Renderer r = e.getRenderer();
+        Renderer ren = e.getRenderer();
 
-        if(d == Direction.WEST){
-            int s = (int)(p.x-spread-8);
-            for (int x = s; x < p.x-7; x++) {
+        //relative to the center tile
+        Tile t_left = map.getTileAt(gx-1, gy);
+        Tile t_right = map.getTileAt(gx+1, gy);
+        Tile t_up = map.getTileAt(gx, gy+1);
+        Tile t_down = map.getTileAt(gx, gy-1);
 
-                int val = (int)(-intensity*((x-s)/(spread*1f)));
+        int comp_depth = tile.getDepth();
 
-                r.filterRect(x, p.y-8, 1, 16, new ColorFilter(val, val, val));
-            }
-            return;
-        }
-        if(d == Direction.EAST){
-            int s = (int)(p.x+spread+8);
+        TileStack[][] tiles = map.getTiles();
 
-            for (int x = s; x > p.x+8; x--) {
-                int val = (int)(-intensity*((s-x)/(spread*1f)));
+        //------------------  SHADE SIDES  ----------------------------------------------------
 
-                r.filterRect(x, p.y-8, 1, 16, new ColorFilter(val, val, val));
-            }
+        int ind = 0;
 
-            return;
-        }
-        if(d == Direction.NORTH){
-            int s = (int)(p.y-spread-8);
+        for (int ty = gy-1; ty <= gy+1; ty++) {
+            for (int tx = gx-1; tx <= gx+1; tx++, ind++) {
+                if(!Renderer.inArrBounds(ty, tx, tiles.length, tiles[0].length) || 
+                    tiles[ty][tx] == null || 
+                    (tx == gx && ty == gy)){
 
-            for (int y = s; y < p.y-8; y++) {
-                int val = (int)(-intensity*((y-s)/(spread*1f)));
+                    continue;
+                }
+                
+                Tile borderTile = map.getTileAt(tx, ty);
 
-                r.filterRect(p.x-7, y, 16, 1, new ColorFilter(val, val, val));
-            }
+                if(borderTile.getDepth() == comp_depth){
+                    continue;
+                }
 
-            return;
-        }
-        if(d == Direction.SOUTH){
-            int s = (int)(p.y+spread+8);
+                //------------  sides  -----------------------
+                //south
+                if(ind == 1){
+                    if(t_down != null && t_down.getDepth() != comp_depth){
+                        int s = (int)(p.y+spread+8);
 
-            for (int y = s; y > p.y+7; y--) {
-                int val = (int)(-intensity*((s-y)/(spread*1f)));
+                        for (int y = s; y > p.y+7; y--) {
+                            int val = (int)(-intensity*((s-y)/(spread*1f)));
 
-                r.filterRect(p.x-7, y, 16, 1, new ColorFilter(val, val, val));
-            }
+                            ren.filterRect(p.x-7, y, 16, 1, new ColorFilter(val, val, val));
+                        }
+                    }
+                }
 
-            return;
-        }
+                //west
+                if(ind == 3){
+                    if(t_left != null && t_left.getDepth() != comp_depth){
+                        int s = (int)(p.x-spread-8);
+                        for (int x = s; x < p.x-7; x++) {
 
-        int[][] frame = e.getRenderer().getFrame();
+                            int val = (int)(-intensity*((x-s)/(spread*1f)));
 
-        if(d == Direction.NW){
-            if(validCorner(d, t, map)){
-                drawQuadrant(d, p.x-8, p.y-9, frame);
-            }
-        }
-        if(d == Direction.NE){
-            if(validCorner(d, t, map)){
-                drawQuadrant(d, p.x+9, p.y-9, frame);
-            }
-        }
-        if(d == Direction.SW){
-            if(validCorner(d, t, map)){
-                drawQuadrant(d, p.x-8, p.y+8, frame);
-            }
-        }
-        if(d == Direction.SE){
-            if(validCorner(d, t, map)){
-                drawQuadrant(d, p.x+9, p.y+8, frame);
+                            ren.filterRect(x, p.y-8, 1, 16, new ColorFilter(val, val, val));
+                        }
+                    }
+                }
+
+                //east
+                if(ind == 5){
+                    if(t_right != null && t_right.getDepth() != comp_depth){
+                        int s = (int)(p.x+spread+8);
+
+                        for (int x = s; x > p.x+8; x--) {
+                            int val = (int)(-intensity*((s-x)/(spread*1f)));
+
+                            ren.filterRect(x, p.y-8, 1, 16, new ColorFilter(val, val, val));
+                        }
+                    }
+                }
+
+                //north
+                if(ind == 7){
+                    if(t_up != null && t_up.getDepth() != comp_depth){
+                        int s = (int)(p.y-spread-8);
+
+                        for (int y = s; y < p.y-8; y++) {
+                            int val = (int)(-intensity*((y-s)/(spread*1f)));
+
+                            ren.filterRect(p.x-7, y, 16, 1, new ColorFilter(val, val, val));
+                        }
+                    }
+                }
+                
+
+                //------------  corners  -----------------------
+                
+                //current comparing tile depth
+                int comp = map.getTileAt(tx, ty).getDepth();
+
+                int[][] frame = e.getRenderer().getFrame();
+
+                //south west
+                if(ind == 0){
+                    if(t_left != null && t_down != null){
+                        if(t_left.getDepth() == comp && t_down.getDepth() == comp){
+                            drawQuadrant(Direction.SW, p.x-8, p.y+8, frame);
+                        }
+                    }
+                }
+                
+                //south east
+                if(ind == 2){
+                    if(t_right != null && t_down != null){
+                        if(t_right.getDepth() == comp && t_down.getDepth() == comp){
+                            drawQuadrant(Direction.SE, p.x+9, p.y+8, frame);
+                        }
+                    }
+                }
+
+                //north west
+                if(ind == 6){
+                    if(t_left != null && t_up != null){
+                        if(t_left.getDepth() == comp && t_up.getDepth() == comp){
+                            drawQuadrant(Direction.NW, p.x-8, p.y-9, frame);
+                        }
+                    }
+                }
+
+                //north east
+                if(ind == 8){
+                    if(t_right != null && t_up != null){
+                        if(t_right.getDepth() == comp && t_up.getDepth() == comp){
+                            drawQuadrant(Direction.NE, p.x+9, p.y-9, frame);
+                        }
+                    }
+                }
             }
         }
     }
-
-    /*
-     * 
-     * S = shaded tile
-     * E = enclosing tile
-     * R = relative tile (determine direction)
-     * 
-     * NW:
-     * [S][E]
-     * [E][R]
-     * 
-     * 
-     */
-    private boolean validCorner(Direction d, Tile rel, GameMap map){
-        if(true) return false;
-
-        int rx = (int)rel.getX();
-        int ry = (int)rel.getY();
-
-        Tile t_left = map.getTileAt(rx-1, ry);
-        Tile t_right = map.getTileAt(rx+1, ry);
-        Tile t_up = map.getTileAt(rx, ry+1);
-        Tile t_down = map.getTileAt(rx, ry-1);
-
-        if(d == Direction.NW){
-            if(t_left != null && t_up != null && (t_left.getName().equals(t_up.getName()))){
-                return true;
-            }
-        }   
-        if(d == Direction.NE){
-            if(t_right != null && t_up != null && (t_right.getName().equals(t_up.getName()))){
-                return true;
-            }
-        }
-        if(d == Direction.SW){
-            if(t_right != null && t_down != null && (t_right.getName().equals(t_down.getName()))){
-                return true;
-            }
-        }
-        if(d == Direction.SE){
-            if(t_left != null && t_down != null && (t_left.getName().equals(t_down.getName()))){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
+    
     //draw the corners of the ambient shadow
     private void drawQuadrant(Direction dir, int cx, int cy, int[][] frame){
         

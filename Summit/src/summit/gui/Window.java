@@ -306,7 +306,7 @@ public class Window implements MouseListener, KeyListener{
             world = GameLoader.loadWorld("Summit/gamesaves/testsave1.txt");
             world.reinit(this, "Summit/gamesaves/testsave1.txt");
             world.pause();
-            
+
             state = WindowState.GAME;
             return;
         }
@@ -505,13 +505,14 @@ public class Window implements MouseListener, KeyListener{
         if(state == WindowState.GAME){
             if(world != null){
                 GameMap loadedmap = world.getLoadedMap();
-                loadedmap.gameClick(new GameUpdateEvent(world, 0));
+                loadedmap.gameClick(new GameUpdateEvent(world));
                 this.availableClick = true;
             }
             
             if(!guiContainersGame.isEmpty()){
                 if(guiContainersGame.peek().contains(rx, ry)){
                     guiContainersGame.peek().guiClick(e);
+                    this.availableClick = false;
                 }
             }
         }
@@ -519,6 +520,7 @@ public class Window implements MouseListener, KeyListener{
             if(!guiContainersHome.isEmpty()){
                 if(guiContainersHome.peek().contains(rx, ry)){
                     guiContainersHome.peek().guiClick(e);
+                    this.availableClick = false;
                 }
             }
         }

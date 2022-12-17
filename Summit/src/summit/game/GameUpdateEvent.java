@@ -28,11 +28,11 @@ public class GameUpdateEvent{
     //simulate if mouse was clicked on this event instance
     private boolean mouseClicked;
 
-    public GameUpdateEvent(GameWorld world, int deltaTime){
+    public GameUpdateEvent(GameWorld world){
         this.map = world.getLoadedMap();
         this.world = world;
         this.window = world.getParentWindow();
-        this.deltaTime = deltaTime;
+        this.deltaTime = (int)(GameWorld.MS_PER_TICK*Time.NS_IN_MS);
         
         this.mouseX_pix = window.mouseX();
         this.mouseY_pix = window.mouseY();
