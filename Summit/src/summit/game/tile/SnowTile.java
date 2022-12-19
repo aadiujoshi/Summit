@@ -5,6 +5,7 @@
 package summit.game.tile;
 
 import summit.game.GameUpdateEvent;
+import summit.game.item.SnowballItem;
 import summit.gfx.Light;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
@@ -21,5 +22,16 @@ public class SnowTile extends Tile{
         
         super.particleAnimation(true);
         super.setColor(Renderer.toIntRGB(170, 214, 230));
+    }
+
+    @Override
+    public void gameClick(GameUpdateEvent e){
+        super.gameClick(e);
+
+        e.getMap().getPlayer().addItems(
+                new SnowballItem(
+                    e.getMap().getPlayer()), 
+                    "snowballs", 
+                    1);
     }
 }

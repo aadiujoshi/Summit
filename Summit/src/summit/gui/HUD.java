@@ -11,6 +11,8 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Sprite;
+import summit.util.ScheduledEvent;
+import summit.util.Scheduler;
 
 import java.awt.event.MouseEvent;
 
@@ -18,9 +20,13 @@ public class HUD extends Container{
 
     private Player player;
     
+    private String message;
+    private ScheduledEvent messageTimer;
+
     public HUD(Player player) {
         super(null, null, 0.5f, 0.5f, Sprite.FILL_SCREEN);
         this.player = player;
+        this.message = "";
     }
 
     @Override
@@ -91,5 +97,24 @@ public class HUD extends Container{
                 ren.render(Sprite.GREY_KEY, _sx, key_y, Renderer.NO_OP, ColorFilter.NOFILTER);
             }
         }
+
+        e.getRenderer().renderText(message, (int)getX(), (int)(getHeight()*0.2f), Renderer.NO_OP, new ColorFilter(0xffffff));
+    }
+    
+    public void setMessage(String m) {
+        this.message = m;
+
+        if(messageTimer != null){
+            this.messageTimer.manualTerminate();
+        }
+        
+        this.messageTimer = new ScheduledEvent(2000, 1) {
+            @Override
+            public void run() {
+                message = "";
+            }
+        };
+
+        Scheduler.registerEvent(messageTimer);
     }
 }

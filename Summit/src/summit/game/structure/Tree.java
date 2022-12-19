@@ -7,7 +7,10 @@ package summit.game.structure;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
+import summit.game.entity.mob.Player;
 import summit.game.entity.projectile.Projectile;
+import summit.game.item.AppleItem;
+import summit.game.item.StickItem;
 import summit.gfx.Light;
 import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
@@ -32,9 +35,20 @@ public class Tree extends Entity{
         if(hitBy instanceof Projectile && !is(projectileDamage))
             return;
             
-        setHealth(getHealth() - hitBy.getHitDamage());
-        if(getHealth() <= 0)
+        setHealth(getHealth() - hitBy.getAttackDamage());
+        if(getHealth() <= 0){
+            if(hitBy instanceof Player){
+
+                int na = (int)(Math.random()*3);
+                int nt = (int)(Math.random()*3);
+
+                if(na >= nt)
+                    ((Player)hitBy).addItems(new AppleItem((Player)hitBy), "apples", na);
+                else
+                    ((Player)hitBy).addItems(new StickItem((Player)hitBy), "sticks", nt);
+            }
             set(destroyed, true);
+        }
     }
 
     @Override

@@ -259,7 +259,7 @@ public class Window implements MouseListener, KeyListener{
             try{
                 ope.getRenderLayers().renderLayers(pe);
             } catch (NullPointerException e) {
-                System.out.println("Null Camera");
+                System.out.println(e);
             }
 
             if(!guiContainersGame.isEmpty())

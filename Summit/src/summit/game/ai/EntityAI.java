@@ -17,5 +17,10 @@ public abstract class EntityAI implements Serializable{
         this.entity = e;
     }
 
+    protected void wander(GameUpdateEvent e){
+        
+    }
+
     public abstract void next(GameUpdateEvent e);
+    public abstract void reinit();
 }

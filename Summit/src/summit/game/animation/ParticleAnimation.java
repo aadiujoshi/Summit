@@ -63,7 +63,7 @@ public class ParticleAnimation extends Animation{
 
     @Override
     public void paint(PaintEvent e) {
-        if(terminate()) return;
+        if(shouldTerminate()) return;
 
         for (int i = 0; i < pCount; i++) {
             Point p = Renderer.toPixel(px[i], py[i], e.getCamera());

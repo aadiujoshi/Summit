@@ -6,8 +6,6 @@ package summit.game.entity;
 
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
-import summit.game.entity.mob.MobEntity;
-import summit.game.entity.mob.Player;
 import summit.game.entity.projectile.Projectile;
 import summit.game.gamemap.GameMap;
 import summit.gfx.ColorFilter;
@@ -23,7 +21,7 @@ import summit.util.Scheduler;
 public abstract class Entity extends GameRegion{
 
     //the map this entity belongs to
-    private String map;
+    private String curMap = " ";
     
     private float dx, dy;
 
@@ -38,7 +36,13 @@ public abstract class Entity extends GameRegion{
 
     private Light shadow;
 
-    private float hitDamage;
+    private float projDamage;
+
+    private float attackDamage;
+    private int damageCooldownMS;
+
+    private float attackRange;
+    private int attackCooldownMS;
 
     //coefficient
     private float damageResistance;
@@ -52,7 +56,9 @@ public abstract class Entity extends GameRegion{
 
         this.maxHealth = 1;
         this.health = maxHealth;
-        this.hitDamage = 0;
+        this.attackDamage = 0;
+        this.projDamage = 1;
+        this.attackRange = 2;
         this.damageResistance = 0;
 
         this.lx = x;
@@ -86,6 +92,7 @@ public abstract class Entity extends GameRegion{
 
     @Override
     public void update(GameUpdateEvent e){
+        curMap = e.getMap().getName();
 
         if(health <= 0){
             set(destroyed, true);
@@ -107,14 +114,14 @@ public abstract class Entity extends GameRegion{
     }
 
     public void damage(Entity hitBy){
-        if(hitBy.is(attackCooldown))
+        if(hitBy.is(attackCooldown) || this.is(damageCooldown))
             return;
         if(hitBy instanceof Projectile && !is(projectileDamage))
             return;
 
-        health -= hitBy.getHitDamage();
+        health -= hitBy.getAttackDamage();
         
-        this.setKnockback(20, 500, hitBy);
+        this.setKnockback(10, 500, hitBy);
 
         //flash animation-----------------------------------------
         Scheduler.registerEvent(new ScheduledEvent(125,8) {
@@ -136,17 +143,6 @@ public abstract class Entity extends GameRegion{
         set(damageCooldown, true);
         
         if(health <= 0){
-            if(hitBy instanceof Player){
-                Player pl = ((Player)hitBy);
-                if(map.equals("DungeonMap") && is(MobEntity.hostile)){
-                    if(Math.random() < 0.01){
-                        pl.getObtainedKeys()[0] = true;
-                    }
-                }
-
-                pl.addXp(3);
-            }
-
             set(destroyed, true);
         }
     }
@@ -157,9 +153,11 @@ public abstract class Entity extends GameRegion{
         
     }
 
-    public void attack(Entity e){
-        set(attackCooldown, true);
+    public void attack(Entity e, GameUpdateEvent ev){
         e.damage(this);
+        
+        if(!is(attackCooldown))
+            set(attackCooldown, true);
     }
 
     public void destroy(GameUpdateEvent e){
@@ -200,8 +198,8 @@ public abstract class Entity extends GameRegion{
         float start = Math.min(getX(), e.getX());
         float end = Math.max(getX(), e.getX());
 
-        for(float inc_x = start; inc_x < end; inc_x += (1/map.getWidth())){
-            if(map.getTileAt( (inc_x*m + b) , inc_x).isBoundary()){
+        for(float inc_x = start; inc_x < end; inc_x += (1f/map.getWidth())){
+            if(map.getTileAt( inc_x , (inc_x*m + b)).isBoundary()){
                 return false;
             }
         }
@@ -262,7 +260,7 @@ public abstract class Entity extends GameRegion{
         switch(property){
             case attackCooldown -> {
                 if(is(attackCooldown)){
-                    Scheduler.registerEvent(new ScheduledEvent(500,1) {
+                    Scheduler.registerEvent(new ScheduledEvent(attackCooldownMS,1) {
                         @Override
                         public void run() {
                             set(attackCooldown, false);
@@ -275,7 +273,7 @@ public abstract class Entity extends GameRegion{
 
             case damageCooldown -> {
                 if(is(damageCooldown)){
-                    Scheduler.registerEvent(new ScheduledEvent(500,1) {
+                    Scheduler.registerEvent(new ScheduledEvent(damageCooldownMS,1) {
                         @Override
                         public void run() {
                             set(damageCooldown, false);
@@ -312,7 +310,7 @@ public abstract class Entity extends GameRegion{
         this.health = health;
     }
 
-    public void changeHealth(float c){
+    public void modHealth(float c){
         this.health += c;
     }
     
@@ -324,12 +322,12 @@ public abstract class Entity extends GameRegion{
         this.maxHealth = maxHealth;
     }
     
-    public float getHitDamage() {
-        return this.hitDamage;
+    public float getAttackDamage() {
+        return this.attackDamage;
     }
 
-    public void setHitDamage(float hitDamage) {
-        this.hitDamage = hitDamage;
+    public void setAttackDamage(float hitDamage) {
+        this.attackDamage = hitDamage;
     }
 
     public void setKnockback(float k, int durationMS, Entity hitBy){
@@ -360,9 +358,43 @@ public abstract class Entity extends GameRegion{
     public void setFacing(Direction facing) {
         this.facing = facing;
     }
-
-
     
+    public String getCurMap() {
+        return this.curMap;
+    }
+
+    public float getAttackRange() {
+        return this.attackRange;
+    }
+
+    public void setAttackRange(float attackRange) {
+        this.attackRange = attackRange;
+    }
+
+    public int getAttackCooldownMS() {
+        return this.attackCooldownMS;
+    }
+
+    public void setAttackCooldownMS(int attackCooldownMS) {
+        this.attackCooldownMS = attackCooldownMS;
+    }
+
+    public int getDamageCooldownMS() {
+        return this.damageCooldownMS;
+    }
+
+    public void setDamageCooldownMS(int hitCooldownMS) {
+        this.damageCooldownMS = hitCooldownMS;
+    }
+    
+    public float getProjDamage() {
+        return this.projDamage;
+    }
+
+    public void setProjDamage(float projDamage) {
+        this.projDamage = projDamage;
+    }
+
     //-----------  game tag / property keys ------------------------------
 
     public static final String attackCooldown = "hitCooldown";

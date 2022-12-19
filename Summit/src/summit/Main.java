@@ -30,6 +30,6 @@ public class Main {
 
         Window summit = new Window("Summit");
 
-        summit.setState(WindowState.SELECTIONMENUS);
+        // summit.setState(WindowState.SELECTIONMENUS);
     }
 }

@@ -7,6 +7,7 @@ package summit.game.tile;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
+import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
@@ -21,6 +22,9 @@ public abstract class Tile extends GameRegion {
     private boolean boundary;
     private boolean breakable;
     private boolean destroyed;
+    
+    private boolean iced;
+    private ColorFilter iceFilter;
 
     //managed by TileStack;
     //If not null, the tile is pushed to the top of the tile stack
@@ -40,6 +44,8 @@ public abstract class Tile extends GameRegion {
         super.setRLayer(RenderLayers.TILE_LAYER);
         super.setOutline(true);
         super.setRenderOp((int)(Math.random()*5));
+
+        this.iceFilter = new ColorFilter(0, 0, 50);
     }
 
     public Tile(float x, float y){
@@ -55,6 +61,11 @@ public abstract class Tile extends GameRegion {
 
     @Override
     public void paint(PaintEvent e){
+        if(!iced)
+            setColorFilter(ColorFilter.NOFILTER);
+        else
+            setColorFilter(iceFilter);
+
         super.paint(e);
 
         // Point p = Renderer.toPixel(getX(), getY(), e.getCamera());
@@ -62,7 +73,7 @@ public abstract class Tile extends GameRegion {
         // e.getRenderer().renderText((int)getX()+"", (int)p.x, (int)p.y-4, Renderer.NO_OP, null);
         // e.getRenderer().renderText((int)getY()+"", (int)p.x, (int)p.y+4, Renderer.NO_OP, null);
     }
-
+    
     @Override
     public void setRenderLayer(OrderPaintEvent e){
         super.setRenderLayer(e); 
@@ -70,7 +81,7 @@ public abstract class Tile extends GameRegion {
         if(particleAnimation != null)
             particleAnimation.setRenderLayer(e);
 
-        if(particleAnimation != null && particleAnimation.terminate())
+        if(particleAnimation != null && particleAnimation.shouldTerminate())
             particleAnimation = null;
     }
 
@@ -165,6 +176,18 @@ public abstract class Tile extends GameRegion {
         }
     }
     
+    public boolean isIced() {
+        return this.iced;
+    }
+
+    public void setIced(boolean iced) {
+        this.iced = iced;
+    }
+    
+    public void setIceFilter(ColorFilter iceFilter) {
+        this.iceFilter = iceFilter;
+    }
+
     // public Tile getReqPushTile() {
     //     return this.reqPushTile;
     // }

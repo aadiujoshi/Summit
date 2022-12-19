@@ -13,6 +13,6 @@ public class Arrow extends Projectile {
         super(origin, angle, 12, 0.5f, 0.25f);
         super.setColor(0xDCDCDC);
         super.setSprite(Sprite.ARROW_PROJ);
-        super.setHitDamage(damage);
+        super.setAttackDamage(damage);
     }
 }

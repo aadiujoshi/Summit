@@ -5,6 +5,7 @@ import java.util.HashMap;
 import summit.game.GameClickReciever;
 import summit.game.GameUpdateReciever;
 import summit.game.entity.Entity;
+import summit.game.entity.mob.Player;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -76,7 +77,11 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
      * Outline sprite if mouse is hovering
      */
     public void outline(PaintEvent e){
-        if(this.contains(e.gameX(), e.gameY()))
+        Player p = e.getLoadedMap().getPlayer();
+
+        float dist = distance(p.getX(), p.getY(), getX(), getY());
+
+        if(this.contains(e.gameX(), e.gameY()) && dist <= p.getAttackRange())
             setRenderOp(renderOp | Renderer.OUTLINE_BLUE | Renderer.OUTLINE_GREEN | Renderer.OUTLINE_RED);
         else
             setRenderOp(renderOp & ~Renderer.OUTLINE_BLUE & ~Renderer.OUTLINE_GREEN & ~Renderer.OUTLINE_RED);

@@ -26,7 +26,7 @@ public class LavaTile extends Tile{
             public void gameClick(GameUpdateEvent e) {
             }
         };
-        dummy.setHitDamage(1);
+        dummy.setAttackDamage(1);
         dummy.setHealth(Integer.MAX_VALUE);
     }
 

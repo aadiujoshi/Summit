@@ -1,0 +1,146 @@
+/*
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* 2022
+*/
+package summit.gfx;
+
+import java.io.Serializable;
+
+public class ColorFilter implements Serializable{
+    
+    //jvm crashes if colorfilter is null for some reason
+    public static final ColorFilter NOFILTER = new ColorFilter(0, 0, 0);
+
+    public final static int PERCENTAGE = 1;
+    public final static int ADDITIVE = 0;
+
+    private final int MODE;
+
+    private int red;
+    private int green;
+    private int blue;
+
+    private float p_red;
+    private float p_green;
+    private float p_blue;
+
+    /**
+     * Allows for negative values, as opposed to bitmasked rgb
+     * @param red
+     * @param green
+     * @param blue
+     */
+    public ColorFilter(int red, int green, int blue){
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+
+        this.MODE = ADDITIVE;
+    }
+
+    public ColorFilter(float p_red, float p_green, float p_blue){
+        this.p_red = p_red;
+        this.p_green = p_green;
+        this.p_blue = p_blue;
+
+        this.MODE = PERCENTAGE;
+    }
+    
+    public int filterColor(int color){
+        
+        int r1 = ((color >> 16) & 0xff);
+        int g1 = ((color >> 8) & 0xff);
+        int b1 = ((color >> 0) & 0xff);
+        
+        r1 = ((r1+this.red > 255) ? 255: r1+this.red);
+        g1 = ((g1+this.green > 255) ? 255: g1+this.green);
+        b1 = ((b1+this.blue > 255) ? 255: b1+this.blue);
+        
+        r1 = ((r1 < 0) ? 0: r1);
+        g1 = ((g1 < 0) ? 0: g1);
+        b1 = ((b1 < 0) ? 0: b1);
+
+        return (r1 << 16) | (g1 << 8) | (b1 << 0);
+
+        // int r1 = ((color >> 16) & 0xff);
+        // int g1 = ((color >> 8) & 0xff);
+        // int b1 = ((color >> 0) & 0xff);
+        
+        // r1 = ((r1+red > 255) ? 255: r1+red);
+        // g1 = ((g1+green > 255) ? 255: g1+green);
+        // b1 = ((b1+blue > 255) ? 255: b1+blue);
+        
+        // r1 = ((r1 < 0) ? 0: r1);
+        // g1 = ((g1 < 0) ? 0: g1);
+        // b1 = ((b1 < 0) ? 0: b1);
+
+        // if(MODE == ADDITIVE){
+        //     r1 = ((r1+red > 255) ? 255: r1+red);
+        //     g1 = ((g1+green > 255) ? 255: g1+green);
+        //     b1 = ((b1+blue > 255) ? 255: b1+blue);
+            
+        //     r1 = ((r1 < 0) ? 0: r1);
+        //     g1 = ((g1 < 0) ? 0: g1);
+        //     b1 = ((b1 < 0) ? 0: b1);
+
+        // } else if(MODE == PERCENTAGE){
+            
+        //     r1 = (int)(r1*p_red);
+        //     g1 = (int)(g1*p_green);
+        //     b1 = (int)(b1*p_blue);
+
+        //     r1 = r1 > 255 ? 255 : r1;
+        //     g1 = g1 > 255 ? 255 : g1;
+        //     b1 = b1 > 255 ? 255 : b1;
+
+        //     r1 = ((r1 < 0) ? 0: r1);
+        //     g1 = ((g1 < 0) ? 0: g1);
+        //     b1 = ((b1 < 0) ? 0: b1);
+        // }
+    }
+
+    //------- getters and setters ----------------------------
+
+    @Override
+    public String toString(){
+        return "[" + red + "  " + green + "  " + blue + "]";
+    }
+
+    public float getRed() {
+        return MODE == ADDITIVE ? this.red : this.p_red;
+    }
+
+    public float getGreen() {
+        return MODE == ADDITIVE ? this.p_green : this.p_green;
+    }
+    
+    public float getBlue() {
+        return MODE == ADDITIVE ? this.blue : this.p_blue;
+    }
+
+    public int getMode() {
+        return this.MODE;
+    }
+}
+
+
+
+
+
+
+
+        //sort GameRegions (entities and structures) from front to back 
+        // ArrayList<Region> sorted = new ArrayList<>();
+
+        // for (int i = 0; i < entities.size(); i++) {
+        //     Entity entity = entities.get(i);
+
+        //     if(Region.distance(entity.getX(), entity.getY(), camera.getX(), camera.getY()) <= rd_x/2f)
+        //         sorted.add(entity);
+        // }
+        // for (int i = 0; i < structures.size(); i++) {
+        //     Structure s = structures.get(i);
+
+        //     if(Region.distance(s.getX(), s.getY(), camera.getX(), camera.getY()) <= rd_y/2f)
+        //         sorted.add(s);
+        // }

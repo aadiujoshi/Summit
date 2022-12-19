@@ -36,7 +36,7 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
         return tiles.pop();
     }
 
-    public Tile peekTile(){
+    public Tile topTile(){
         if(tiles.isEmpty())
             return null;
         return tiles.peek();
@@ -63,6 +63,10 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
 
     @Override
     public void update(GameUpdateEvent e) {
+        
+        if(tiles.size()-2 >= 0)
+            tiles.get(tiles.size()-2).setIced(topTile().isIced());
+
         for(int i = 0; i < tiles.size(); i++){
             Tile t = tiles.get(i);
             t.update(e);
@@ -73,7 +77,7 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
                 continue;
             }
         }
-        
+
         // Tile req = peekTile().getReqPushTile();
 
         // if(req != null){

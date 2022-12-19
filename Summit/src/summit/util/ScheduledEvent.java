@@ -13,15 +13,17 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
     private int n_calls;
     private long delay_ms;
     private long lastCall;
-    private final long INIT_MS;
+
+    // can be reset after reloading a world
+    private long init_ms;
 
     private boolean paused;
 
     public ScheduledEvent(long delay_ms, int n_calls){
         this.delay_ms = delay_ms;
         this.n_calls = n_calls;
-        this.INIT_MS = Time.timeMs();
-        this.lastCall = INIT_MS;
+        this.init_ms = Time.timeMs();
+        this.lastCall = init_ms;
     }
 
     public void setPaused(boolean p){
@@ -33,14 +35,21 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
     }
 
     public void reinit(){
+        this.init_ms = Time.timeMs();
+        this.lastCall = init_ms;
+
         Scheduler.registerEvent(this);
     }
     
+    public void manualTerminate(){
+        this.n_calls = 0;
+    }
+
     /**
      * Returns if this ScheduledEvent should stop revieving calls
      * @return boolean
      */
-    public boolean terminate(){
+    public boolean shouldTerminate(){
         return n_calls < 1 && n_calls != FOREVER;
     }
 
@@ -58,7 +67,7 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
     }
 
     public long getInitTime(){
-        return INIT_MS;
+        return init_ms;
     }
     
     public long getLastCall() {

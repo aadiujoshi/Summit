@@ -29,7 +29,12 @@ public class Sprite {
     public static final String INVENTORY = "inventory";
     public static final String SKELETON_FACE_BACK = "skeleton-face_back";
     public static final String BOW = "bow";
+    public static final String APPLE_ITEM = "apple-item";
+    public static final String STICK_ITEM = "stick-item";
+    public static final String BONE_ITEM = "bone-item";
+    public static final String GOLD_COIN = "coin-item";
     public static final String ARROW_PROJ = "arrow-left";
+    public static final String ARROW_ITEM = "arrow-item";
     public static final String WOOD_SWORD = "wood-sword";
     public static final String STONE_SWORD = "stone-sword";
     public static final String HIT_EFFECT = "hit-effect";

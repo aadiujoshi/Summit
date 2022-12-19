@@ -53,10 +53,10 @@ public class AmbientOcclusion implements Serializable, Paintable{
                 if(tiles[r][c] == null)
                     continue;
                     
-                if(tiles[r][c].peekTile().getLight() != Light.NO_LIGHT)
+                if(tiles[r][c].topTile().getLight() != Light.NO_LIGHT)
                     continue;
 
-                Tile t = tiles[r][c].peekTile();
+                Tile t = tiles[r][c].topTile();
                 
                 ambientShadow(t, e);
             }   

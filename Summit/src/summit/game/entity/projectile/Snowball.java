@@ -12,6 +12,6 @@ public class Snowball extends Projectile {
     public Snowball(GameRegion origin, float angle) {
         super(origin, angle, 20, 0.5f, 0.5f);
         super.setSprite(Sprite.SNOWBALL);
-        super.setHitDamage(0);
+        super.setAttackDamage(0);
     }
 }

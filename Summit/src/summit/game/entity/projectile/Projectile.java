@@ -21,9 +21,7 @@ public class Projectile extends Entity {
     private float sy;
 
     private GameRegion origin;
-
-    private boolean enabled;
-
+    
     public Projectile(GameRegion origin, float angle, float mag, float width, float height) {
         super(origin.getX(), origin.getY(), width, height);
 
@@ -34,16 +32,11 @@ public class Projectile extends Entity {
 
         super.setHealth(1);
 
+        this.origin = origin;
+
         this.sx = getX();
         this.sy = getY();
-
-        Scheduler.registerEvent(new ScheduledEvent(120, 1) {
-            @Override
-            public void run() {
-                enabled = true;
-            }
-        });
-
+        
         float deg = (float)Math.toDegrees(angle);
 
         if(deg < 0){
@@ -69,7 +62,7 @@ public class Projectile extends Entity {
     }
 
     @Override
-    public void attack(Entity e) {
+    public void attack(Entity e, GameUpdateEvent ev) {
         this.collide(e);
     }
 
@@ -117,7 +110,7 @@ public class Projectile extends Entity {
 
     @Override
     public void collide(Entity contact) {
-        if(!enabled && contact != origin) return;
+        if(((GameRegion)contact) == origin) return;
 
         contact.damage(this);
 
@@ -139,5 +132,9 @@ public class Projectile extends Entity {
     @Override
     public void gameClick(GameUpdateEvent e){
 
+    }
+
+    public GameRegion getOrigin() {
+        return this.origin;
     }
 }

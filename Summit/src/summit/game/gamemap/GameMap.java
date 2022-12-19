@@ -15,6 +15,8 @@ import summit.game.animation.ForegroundAnimation;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.MobEntity;
 import summit.game.entity.mob.Player;
+import summit.game.entity.mob.Skeleton;
+import summit.game.entity.mob.Zombie;
 import summit.game.structure.Structure;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
@@ -28,6 +30,8 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
+import summit.util.ScheduledEvent;
+import summit.util.Scheduler;
 
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
 
@@ -39,6 +43,9 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     //assumes registered into scheduler
     private ArrayList<Animation> animations;
 
+    //mob spawning
+    private ScheduledEvent spawnMobs;
+
     //player
     private Player player;
 
@@ -46,10 +53,10 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     private int rd = 25;
 
     //simulation distance for gameupdaterecievers
-    private int sd = 25;
+    private int sd = 50;
 
     //hostile mob cap
-    private int hostileMobCap = 20;
+    private int hostileMobCap = 10;
 
     //stores the most recent of the player; used for when transitioning GameMaps
     private Camera camera = new Camera(0, 0);
@@ -88,11 +95,53 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
         this.animations = new ArrayList<>();
         this.ambientOcclusion = new AmbientOcclusion();
+
+        this.spawnMobs = new ScheduledEvent(2500, ScheduledEvent.FOREVER) {
+            @Override
+            public void run() {
+                //------------ spawn hostile mobs ---------------------------------------------------
+                if(!isLoaded())
+                    return;
+                
+                int h_count = hostileMobCount();
+                
+                float range = sd/2f;
+                
+                //try to spawn
+                for (int i = 0; i < hostileMobCap-h_count; i++) {
+                    int mobType = (int)(Math.random()*4);
+
+                    float offsetx = (float)(Math.random()*range-range/2);
+                    float offsety = (float)(Math.random()*range-range/2);
+                    
+                    float nx = player.getX() + offsetx;
+                    float ny = player.getY() + offsety;
+
+                    if(getTileAt(nx, ny) != null && !getTileAt(nx, ny).isBoundary() && 
+                        Region.distance(nx, ny, player.getX(), player.getY()) >= 15){
+
+                        if(mobType == 0){
+                            spawn(new Zombie(nx, ny));
+                        }
+
+                        if(mobType == 1){
+                            spawn(new Skeleton(nx, ny));
+                        }
+                    }
+                }
+
+                //-----------------------------------------------------------------------------------
+            }
+        };
+
+        Scheduler.registerEvent(spawnMobs);
     }
 
     //saved world
     public void reinit(){
         this.animation.reinit();
+        this.spawnMobs.reinit();
+
         for (Animation pa : animations) {
             pa.reinit();
         }
@@ -110,9 +159,11 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             e.gameY() > getHeight() || e.gameY() < 0)
                 return;
 
+        float reach = player.getAttackRange();
+
         for(Structure r_struct : structures) {
             if(r_struct.contains(e.gameX(), e.gameY()) && 
-                Region.distance(r_struct.getX(), r_struct.getY(), player.getX(), player.getY()) <= 3){
+                Region.distance(r_struct.getX(), r_struct.getY(), player.getX(), player.getY()) <= reach){
                 r_struct.gameClick(e);
                 return;
             }
@@ -121,12 +172,12 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             Entity entity = entities.get(i);
 
             if(entity.contains(e.gameX(), e.gameY()) && 
-                Region.distance(entity.getX(), entity.getY(), player.getX(), player.getY()) <= 3){
+                Region.distance(entity.getX(), entity.getY(), player.getX(), player.getY()) <= reach){
                 entity.gameClick(e);
                 return;
             }
         }
-        if(Region.distance(player.getX(), player.getY(), e.gameX(), e.gameY()) <= 3.5)
+        if(Region.distance(player.getX(), player.getY(), e.gameX(), e.gameY()) <= reach)
             getTileStackAt(e.gameX(), e.gameY()).gameClick(e);
     }
 
@@ -164,36 +215,25 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                     if(gr1 instanceof Entity){
                         getTileAt(gr1.getX(), gr1.getY()).collide((Entity)gr1);
                         
-                        if(i != j && gr1.overlap(gr2)){                    
+                        if(i != j && gr1.overlap(gr2)){         
                             gr2.collide((Entity)gr1);
                         }
                     }
 
                 } catch(java.lang.IndexOutOfBoundsException ie){
-                    //idk why this happens lol
                     System.out.println("UPDATE FAIL");
                 }
             }
         }
         
-        //------------ spawn hostile mobs ---------------------------------------------------
-
-        int h_count = hostileMobCount();
-
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[0].length; j++) {
-                // if()
-            }
-        }
-
-        //-----------------------------------------------------------------------------------
-
         //actually spawn entities
-        for (Entity spawn : spawnQueue) {
-            entities.add(spawn);
+        synchronized(spawnQueue){
+            for (Entity spawn : spawnQueue) {
+                entities.add(spawn);
+            }
+            
+            spawnQueue.clear();
         }
-        
-        spawnQueue.clear();
     }
 
     @Override
@@ -209,7 +249,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         for (int i = 0; i < animations.size(); i++) {
             animations.get(i).setRenderLayer(e);
 
-            if(animations.get(i).terminate()){
+            if(animations.get(i).shouldTerminate()){
                 animations.remove(i);
                 i--;
                 continue;
@@ -285,7 +325,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                 total++;
         }
 
-        return 1;
+        return total;
     }
 
     public ArrayList<GameRegion> objectsInDist(Camera c, float dist){
@@ -343,7 +383,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     public Tile getTileAt(float x, float y){
         TileStack ts = getTileStackAt(x, y);
-        return (ts == null || ts.peekTile() == null) ? null : ts.peekTile();
+        return (ts == null || ts.topTile() == null) ? null : ts.topTile();
     }
 
     public TileStack getTileStackAt(float x, float y){
@@ -402,7 +442,9 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     }
 
     public void spawn(Entity e){
-        spawnQueue.add(e);
+        synchronized(spawnQueue){
+            spawnQueue.add(e);
+        }
     }
     
     public ColorFilter getFilter() {
@@ -427,6 +469,10 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public void dontSpawnMobs(){
+        spawnMobs = null;
     }
 
     @Deprecated

@@ -25,6 +25,8 @@ public class TraderHouseMap extends GameMap{
             }
         }
 
+        dontSpawnMobs();
+
         setCamera(new Camera(7f, 1f));
     }
 }

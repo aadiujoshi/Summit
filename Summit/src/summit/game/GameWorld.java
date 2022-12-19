@@ -64,8 +64,9 @@ public class GameWorld implements Paintable, Serializable{
 
         player = new Player(0, 0);
         mainMap = new MainMap(player, seed);
+        mainMap.setLoaded(true);
         loadedMap = mainMap;
-        
+
         player.setCamera(loadedMap.getCamera());
 
         this.pauseButton = new PauseButton(parentWindow, this);
@@ -142,28 +143,6 @@ public class GameWorld implements Paintable, Serializable{
         if(loadedMap != null){
             loadedMap.setRenderLayer(ope);
         }
-    }
-
-    private void mainmapSnow(){
-        
-        TileStack[][] tiles = mainMap.getTiles();
-
-        int iced = 0;
-
-        for (int r = 0; r < tiles.length; r++) {
-            for (int c = 0; c < tiles[0].length; c++) {
-                if(tiles[r][c].peekTile().getName().equals("SnowTile")){
-                    iced++;
-                    continue;
-                }
-
-                if(Math.random() < 0.00001)
-                    tiles[r][c].pushTile(new SnowTile(c, r));
-            }
-        }
-        
-        if(iced == mainMap.getWidth()*mainMap.getHeight())
-            System.out.println("GAME OVER");
     }
 
     public long getGametime() {

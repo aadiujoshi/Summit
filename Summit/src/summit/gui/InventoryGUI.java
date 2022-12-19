@@ -1,0 +1,68 @@
+/*
+* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
+* 2022
+*/
+package summit.gui;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
+import summit.game.item.Item;
+import summit.gfx.ColorFilter;
+import summit.gfx.PaintEvent;
+import summit.gfx.Renderer;
+import summit.gfx.Sprite;
+
+public class InventoryGUI extends Container{
+
+    //ref to actual player inventory
+    private HashMap<String, Stack<Item>> items;
+    
+    //a little bit of hardcoding never hurt anyone
+    private float[] item_x = new float[]{0.25f, 0.25f, 0.25f, 
+                                            0.5f, 0.5f, 0.5f, 
+                                            0.75f, 0.75f, 0.75f};
+    private float[] item_y = new float[]{0.25f, 0.5f, 0.75f,
+                                            0.25f, 0.5f, 0.75f,
+                                            0.25f, 0.5f, 0.75f};
+
+    // private HashMap<String, String> sprites;
+
+    // private String[] sprites = new String[]{Sprite.ARROW_ITEM, Sprite.SNOWBALL, Sprite.APPLE_ITEM,
+    //                                         Sprite.STICK_ITEM, Sprite.BONE_ITEM, Sprite.GOLD_COIN,
+    //                                         null, null, null};
+
+    public InventoryGUI(HashMap<String, Stack<Item>> inv) {
+        super(null, null, 0.5f, 0.5f, Sprite.INVENTORY);
+        this.items = inv;
+
+        // this.sprites = new HashMap<>();
+        
+        // sprites.put("apples", Sprite.APPLE_ITEM);
+        // sprites.put("arrows", Sprite.ARROW_ITEM);
+        // sprites.put("bones", Sprite.BONE_ITEM);
+        // sprites.put("gold", Sprite.GOLD_COIN);
+        // sprites.put("sticks", Sprite.STICK_ITEM);
+        // sprites.put("snowballs", Sprite.SNOWBALL);
+    }
+    
+    @Override
+    public void paint(PaintEvent e){
+        super.paint(e);
+
+        int i = 0;
+        for(Map.Entry<String, Stack<Item>> item : items.entrySet()){
+            int n = item.getValue().size();
+
+            int px = (int)(getX()-getWidth()/2) + (int)(getWidth()*item_x[i]);
+            int py = (int)(getY()-getHeight()/2) + (int)(getHeight()*item_y[i]);
+
+            e.getRenderer().render(item.getKey(), px, py, Renderer.NO_OP, ColorFilter.NOFILTER);
+
+            e.getRenderer().renderText(n+"", px+4, py+4, Renderer.NO_OP, new ColorFilter(255, 255, 255));
+
+            i++;
+        }
+    }
+}

@@ -66,7 +66,7 @@ public abstract class Structure extends GameRegion {
                 if(x1 < 0 || x1 > map.getWidth() || y1 < 0 || y1 > map.getHeight())
                     continue;
 
-                Tile t = tiles[y1][x1].peekTile();
+                Tile t = tiles[y1][x1].topTile();
                 t.setBoundary(true);
 
                 Light l = new Light(x1, y1, 1.2f, shadow);

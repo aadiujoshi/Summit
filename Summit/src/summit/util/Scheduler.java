@@ -10,6 +10,8 @@ public class Scheduler {
     
     private static ArrayList<ScheduledEvent> events = new ArrayList<>();
 
+    private static ArrayList<ScheduledEvent> eventAddQueue = new ArrayList<>();
+
     /** Singleton */
     private Scheduler(){}
 
@@ -32,14 +34,24 @@ public class Scheduler {
                 e.shortenLife();
                 e.setLastCall(now);
             }
-            if(e.terminate()){
+            if(e.shouldTerminate()){
                 events.remove(i);
                 i--;
             }
         }
+
+        synchronized(eventAddQueue){
+            for (ScheduledEvent se : eventAddQueue) {
+                events.add(se);
+            }
+            eventAddQueue.clear();
+        }
     }
+
     
     public static void registerEvent(ScheduledEvent e){
-        events.add(e);
+        synchronized(eventAddQueue){
+            eventAddQueue.add(e);
+        }
     }
 }

@@ -1,0 +1,49 @@
+if(false){
+            GameMap map = e.getLoadedMap();
+
+            String u = map.getTileAt(getX(), getY()+1).getName();
+            String d = map.getTileAt(getX(), getY()-1).getName();
+            String l = map.getTileAt(getX()-1, getY()).getName();
+            String r = map.getTileAt(getX(), getY()+1).getName();
+
+            Point p = Renderer.toPixel(getX(), getY(), e.getCamera());
+
+            if(!u.equals("SnowTile")){
+                e.getRenderer().filterRect(p.x-7, p.y-5, 16, 3, new ColorFilter(-30, -30, -30));
+            } 
+            if(!d.equals("SnowTile")){
+                e.getRenderer().filterRect(p.x-8, p.y-5, 16, 3, new ColorFilter(-30, -30, -30));
+            }
+            if(!l.equals("SnowTile")){
+                e.getRenderer().filterRect(p.x-7, p.y-8, 3, 16, new ColorFilter(-30, -30, -30));
+            }
+            if(!r.equals("SnowTile")){
+                e.getRenderer().filterRect(p.x+8, p.y+5, 3, 16, new ColorFilter(-30, -30, -30));
+            }
+        }
+
+
+// amb occlusion    
+                // if(r+1 < tiles.length && tiles[r+1][c] != null)
+                //     if(!type.equals(tiles[r+1][c].peekTile().getName()) && !tiles[r+1][c].peekTile().isRaisedTile())
+                //         ambientShadow(Direction.NORTH, (int)t.getX(), (int)t.getY(), e);
+
+                // if(r-1 > -1 && tiles[r-1][c] != null)
+                //     if(!type.equals(tiles[r-1][c].peekTile().getName()) && !tiles[r-1][c].peekTile().isRaisedTile())
+                //         ambientShadow(Direction.SOUTH, (int)t.getX(), (int)t.getY(), e);
+
+                // if(c-1 > -1 && tiles[r][c-1] != null)
+                //     if(!type.equals(tiles[r][c-1].peekTile().getName()) && !tiles[r][c-1].peekTile().isRaisedTile())
+                //         ambientShadow(Direction.WEST, (int)t.getX(), (int)t.getY(), e);
+
+                // if(c+1 < tiles[0].length && tiles[r][c+1] != null)
+                //     if(!type.equals(tiles[r][c+1].peekTile().getName()) && !tiles[r][c+1].peekTile().isRaisedTile())
+                //         ambientShadow(Direction.EAST, (int)t.getX(), (int)t.getY(), e);
+
+
+        // super.setSpriteOffsetX(0);
+        // super.setSpriteOffsetY(8);
+        // super.setColorFilter(new ColorFilter(20, 100, -50));
+        // var l = new Light(this.getX(), this.getY(), 1f, 170, 0, 0);
+        // l.setShape(Light.Shape.SQUARE);
+        // super.setLight(l);

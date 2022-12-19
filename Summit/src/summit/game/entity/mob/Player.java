@@ -4,26 +4,31 @@
 */
 package summit.game.entity.mob;
 
-import summit.deprecated.item.SnowballItem;
+import java.util.HashMap;
+import java.util.Stack;
+
 import summit.game.GameUpdateEvent;
-import summit.game.animation.GlistenAnimation;
 import summit.game.entity.projectile.Arrow;
+import summit.game.item.Item;
 import summit.gfx.Camera;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
-import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
+import summit.gui.InventoryGUI;
 import summit.util.Controls;
 import summit.util.Region;
 import summit.util.Sound;
 import summit.util.Time;
 
 public class Player extends HumanoidEntity{
-
+    
     private Camera camera;
 
     private HUD hud;
+    private InventoryGUI invGui;
+
+    private HashMap<String, Stack<Item>> items;
 
     private boolean obtainedKeys[];
     private int xp;
@@ -32,16 +37,23 @@ public class Player extends HumanoidEntity{
         super(x, y, 1, 2);
         super.setDx(4.2f);
         super.setDy(4.2f);
-        super.setHealth(10f);
         super.setMaxHealth(10f);
-        super.setHitDamage(1);
-        // super.setItems(new Inventory(this, 9, 5));
-        super.collide(new SnowballItem(1, 1));
+        super.setHealth(getMaxHealth());
+        super.setAttackDamage(1);
         super.setAI(null);
         
         // super.setLight(new Light(x, y, 5.5f, 100, 100, 100));
 
+        this.items = new HashMap<>();
+        items.put(Sprite.ARROW_ITEM, new Stack<Item>());
+        items.put(Sprite.SNOWBALL, new Stack<Item>());
+        items.put(Sprite.APPLE_ITEM, new Stack<Item>());
+        items.put(Sprite.STICK_ITEM, new Stack<Item>());
+        items.put(Sprite.BONE_ITEM, new Stack<Item>());
+        items.put(Sprite.GOLD_COIN, new Stack<Item>());
+
         this.hud = new HUD(this);
+        this.invGui = new InventoryGUI(items);
 
         this.obtainedKeys = new boolean[3];
         // this.invGui = new ItemGUI((Inventory)super.getItems());
@@ -63,6 +75,16 @@ public class Player extends HumanoidEntity{
 
     @Override
     public void update(GameUpdateEvent e) {
+        
+        if(Controls.E){
+            if(!invGui.isPushed())
+                e.getWindow().pushGameContainer(invGui);
+            return;
+        } else if(!Controls.E && invGui.isPushed()){
+            e.getWindow().popGameContainer();
+        }
+
+
         super.update(e);
 
         if(e.getMap().getName().equals("DungeonsMap"))
@@ -75,16 +97,8 @@ public class Player extends HumanoidEntity{
             e.getMap().spawn(new Arrow(this, 
                                 Region.theta(e.gameX(), getX(), 
                                             e.gameY(), getY()),
-                                            1));
+                                            getProjDamage()));
         }
-
-        // if(Controls.E){
-        //     if(!invGui.isPushed())
-        //         e.getWindow().pushGameContainer(invGui);
-        //     return;
-        // } else if(!Controls.E && invGui.isPushed()){
-        //     e.getWindow().popGameContainer();
-        // }
 
         float del_x = getDx()/Time.NS_IN_S *e.getDeltaTimeNS();
         float del_y = getDy()/Time.NS_IN_S *e.getDeltaTimeNS();
@@ -163,7 +177,18 @@ public class Player extends HumanoidEntity{
     public void addXp(int exp) {
         this.xp += exp;
     }
+    
+    //adds num copies of base, simplename is used for the display message
+    public void addItems(Item copy, String simpleName, int num){
 
+        for(int i = 0; i < num; i++){
+            items.get(copy.getSprite()).push((Item)copy.copy());
+        }
+
+        if(num != 0)
+            hud.setMessage("+" + (num+"") + " " + simpleName);
+    }
+    
     // public ItemGUI getInventoryGui() {
     //     return this.invGui;
     // }

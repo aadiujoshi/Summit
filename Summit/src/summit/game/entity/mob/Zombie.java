@@ -4,7 +4,9 @@
 */
 package summit.game.entity.mob;
 
+import summit.game.GameUpdateEvent;
 import summit.game.ai.HostileMobAI;
+import summit.game.entity.Entity;
 import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -15,19 +17,32 @@ public class Zombie extends HumanoidEntity{
     public Zombie(float x, float y) {
         super(x, y, 1, 2);
         super.setAI(new HostileMobAI(this));
+        super.setAttackRange(0.5f);
         super.setHealth(5);
         super.setSprite(Sprite.PLAYER_FACE_BACK_1);
         super.setMaxHealth(5);
-        super.setHitDamage(0);
+        super.setAttackDamage(1);
+
+        super.set(hostile, true);
     }
 
     @Override
     public void paint(PaintEvent e){
         if(!is(damageCooldown)){
             setColorFilter(new ColorFilter(0, 100, 0));
+            
+            if(getCurMap().equals("DungeonsMap")){
+                setColorFilter(new ColorFilter(0, 30, 0));
+            }
         }
-        super.paint(e);
-        e.getRenderer().renderGame(Sprite.WOOD_SWORD, getX()+0.25f, getY()-0.25f, Renderer.NO_OP, ColorFilter.NOFILTER, e.getCamera());
+        
+        if(outline())
+            this.outline(e);
+        e.getRenderer().renderGame(getSprite(), 
+                                    getX()+getSpriteOffsetX(), getY()+getSpriteOffsetY(), getRenderOp(),
+                                    getColorFilter(),
+                                    e.getCamera());
+
+        e.getRenderer().renderGame(Sprite.STONE_SWORD, getX()+0.25f, getY()-0.25f, Renderer.NO_OP, ColorFilter.NOFILTER, e.getCamera());
     }
-    
 }

@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import summit.game.GameWorld;
 import summit.gfx.Sprite;
 import summit.util.GameLoader;
+import summit.util.Sound;
 
 public class PauseMenu extends Container{
 
@@ -28,6 +29,7 @@ public class PauseMenu extends Container{
             @Override
             public void guiClick(MouseEvent e){
                 if(window != null){
+                    Sound.stopAll();
                     GameLoader.saveWorld(world, "Summit/gamesaves/testsave1.txt");
                     window.setState(WindowState.SELECTIONMENUS);
                 }

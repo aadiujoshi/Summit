@@ -5,11 +5,13 @@ import java.util.Random;
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ForegroundAnimation;
 import summit.game.entity.mob.Player;
+import summit.game.entity.mob.Skeleton;
 import summit.game.gamemap.mapgenerator.OpenSimplexNoise;
 import summit.game.structure.DungeonsEntrace;
 import summit.game.structure.TraderHouse;
 import summit.game.structure.Tree;
 import summit.game.tile.GrassTile;
+import summit.game.tile.IceTile;
 import summit.game.tile.SnowTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
@@ -72,11 +74,40 @@ public class MainMap extends GameMap{
                 }
             }
         }
-
+        
         addStructure(new TraderHouse(19.5f, 19f, this));
         addStructure(new DungeonsEntrace( 
                             getWidth()/2, 
                             getHeight()/2-3, 
                             this));
+    }
+
+    @Override
+    public void update(GameUpdateEvent e){
+        super.update(e);
+
+        // iceTiles();
+    }
+
+    private void iceTiles(){
+        
+        TileStack[][] tiles = getTiles();
+
+        int iced = 0;
+
+        for (int r = 0; r < tiles.length; r++) {
+            for (int c = 0; c < tiles[0].length; c++) {
+                if(tiles[r][c].topTile().getName().equals("SnowTile")){
+                    iced++;
+                    continue;
+                }
+
+                if(Math.random() < 0.00001)
+                    tiles[r][c].pushTile(new IceTile(c, r));
+            }
+        }
+        
+        if(iced == getWidth()*getHeight())
+            System.out.println("GAME OVER");
     }
 }
