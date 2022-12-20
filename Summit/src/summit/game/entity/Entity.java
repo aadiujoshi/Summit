@@ -100,7 +100,7 @@ public abstract class Entity extends GameRegion{
         }
 
         if(kb != null){
-            kb.move(e);
+            kb.update(e);
             if(kb.finished())
                 this.kb = null;
         }

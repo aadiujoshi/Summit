@@ -171,7 +171,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
 
-            if(entity.contains(e.gameX(), e.gameY()) && 
+            if(entity != null && entity.contains(e.gameX(), e.gameY()) && 
                 Region.distance(entity.getX(), entity.getY(), player.getX(), player.getY()) <= reach){
                 entity.gameClick(e);
                 return;

@@ -25,6 +25,7 @@ public class Tree extends Entity{
         super.setSprite(Sprite.PINE_TREE);
         super.setShadow(new Light(x, y, 1, -150, -150, -150));
         super.setSpriteOffsetY(1.5f);
+        super.setDamageCooldownMS(300);
         super.setColor(0x964B00);
 
         set(projectileDamage, false);
@@ -32,10 +33,13 @@ public class Tree extends Entity{
     
     @Override
     public void damage(Entity hitBy){
+        if(this.is(damageCooldown))
+            return;
         if(hitBy instanceof Projectile && !is(projectileDamage))
             return;
             
         setHealth(getHealth() - hitBy.getAttackDamage());
+
         if(getHealth() <= 0){
             if(hitBy instanceof Player){
 
@@ -49,6 +53,8 @@ public class Tree extends Entity{
             }
             set(destroyed, true);
         }
+
+        set(damageCooldown, true);
     }
 
     @Override
@@ -62,6 +68,9 @@ public class Tree extends Entity{
 
     @Override
     public void gameClick(GameUpdateEvent e) {
+        if(this.is(damageCooldown))
+            return;
+
         damage(e.getMap().getPlayer());
         e.getMap().addAnimation(new ParticleAnimation(getX(), getY()-0.25f, 
                                         500, 20, getColor()));

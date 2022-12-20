@@ -4,29 +4,29 @@
 */
 package summit.gui;
 
-import summit.gfx.Renderer;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import summit.game.entity.mob.Player;
 import summit.gfx.ColorFilter;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
+import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.ScheduledEvent;
 import summit.util.Scheduler;
-
-import java.awt.event.MouseEvent;
 
 public class HUD extends Container{
 
     private Player player;
     
-    private String message;
-    private ScheduledEvent messageTimer;
+    private ArrayList<String> messages;
 
     public HUD(Player player) {
         super(null, null, 0.5f, 0.5f, Sprite.FILL_SCREEN);
         this.player = player;
-        this.message = "";
+        this.messages = new ArrayList<>();
     }
 
     @Override
@@ -98,20 +98,22 @@ public class HUD extends Container{
             }
         }
 
-        e.getRenderer().renderText(message, (int)getX(), (int)(getHeight()*0.2f), Renderer.NO_OP, new ColorFilter(0xffffff));
+        for (int i = 0; i < messages.size(); i++) {
+            e.getRenderer().renderText(messages.get(i), 
+                        (int)getX(), 
+                        (int)(getHeight()*0.25f) + (i*10), 
+                        Renderer.NO_OP, 
+                        new ColorFilter(0xffffff));
+        }
     }
     
-    public void setMessage(String m) {
-        this.message = m;
-
-        if(messageTimer != null){
-            this.messageTimer.manualTerminate();
-        }
+    public synchronized void addMessage(String m) {
+        this.messages.add(0, m);
         
-        this.messageTimer = new ScheduledEvent(2000, 1) {
+        ScheduledEvent messageTimer = new ScheduledEvent(500, 1) {
             @Override
             public void run() {
-                message = "";
+                messages.remove(0);
             }
         };
 

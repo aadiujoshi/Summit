@@ -9,7 +9,10 @@ import java.util.Stack;
 
 import summit.game.GameUpdateEvent;
 import summit.game.entity.projectile.Arrow;
+import summit.game.item.BowItem;
 import summit.game.item.Item;
+import summit.game.item.Sword;
+import summit.game.item.WeaponItem;
 import summit.gfx.Camera;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -27,6 +30,9 @@ public class Player extends HumanoidEntity{
 
     private HUD hud;
     private InventoryGUI invGui;
+
+    private HashMap<String, WeaponItem> weapons;
+    private WeaponItem equipped;
 
     private HashMap<String, Stack<Item>> items;
 
@@ -51,6 +57,10 @@ public class Player extends HumanoidEntity{
         items.put(Sprite.STICK_ITEM, new Stack<Item>());
         items.put(Sprite.BONE_ITEM, new Stack<Item>());
         items.put(Sprite.GOLD_COIN, new Stack<Item>());
+
+        this.weapons = new HashMap<>();
+        weapons.put(Sprite.STONE_SWORD, new Sword(this));
+        weapons.put(Sprite.BOW, new BowItem(this));
 
         this.hud = new HUD(this);
         this.invGui = new InventoryGUI(items);
@@ -186,7 +196,7 @@ public class Player extends HumanoidEntity{
         }
 
         if(num != 0)
-            hud.setMessage("+" + (num+"") + " " + simpleName);
+            hud.addMessage("+" + (num+"") + " " + simpleName);
     }
     
     // public ItemGUI getInventoryGui() {

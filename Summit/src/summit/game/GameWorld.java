@@ -6,6 +6,7 @@ package summit.game;
 
 import java.io.Serializable;
 
+import summit.game.animation.TransitionAnimation;
 import summit.game.entity.mob.Player;
 import summit.game.gamemap.GameMap;
 import summit.game.gamemap.MainMap;
@@ -19,6 +20,7 @@ import summit.gfx.RenderLayers;
 import summit.gui.PauseButton;
 import summit.gui.Window;
 import summit.util.GameLogger;
+import summit.util.Scheduler;
 import summit.util.Sound;
 import summit.util.Time;
 
@@ -41,6 +43,8 @@ public class GameWorld implements Paintable, Serializable{
     //used for safer map transitioning
     //if not null, the loaded map is set to this on the next update tick and this is set to null
     private GameMap queuedNewMap;
+
+    private TransitionAnimation mapTransition;
 
     private final long SEED;
     public static final int MS_PER_TICK = 5;
@@ -90,10 +94,12 @@ public class GameWorld implements Paintable, Serializable{
         gameUpdateThread = new Thread(() -> {
             while(!parentWindow.isClosed()){
                 //show pause button
-                parentWindow.pushGameContainer(pauseButton);
-                
                 if(paused)
                     continue;
+
+                    
+                parentWindow.pushGameContainer(pauseButton);
+                
 
                 long startTime = Time.timeNs();
                 
@@ -120,6 +126,10 @@ public class GameWorld implements Paintable, Serializable{
                     player.setCamera(queuedNewMap.getCamera());
                     this.loadedMap = queuedNewMap;
                     this.queuedNewMap = null;
+
+                    this.mapTransition = null;
+                    this.mapTransition = new TransitionAnimation();
+                    Scheduler.registerEvent(mapTransition);
                 }
                 
                 long delay_ns = Time.timeNs()-startTime;
@@ -142,6 +152,10 @@ public class GameWorld implements Paintable, Serializable{
 
         if(loadedMap != null){
             loadedMap.setRenderLayer(ope);
+        }
+
+        if(mapTransition != null){
+            mapTransition.setRenderLayer(ope);
         }
     }
 

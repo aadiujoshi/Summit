@@ -7,11 +7,12 @@ package summit.game.entity;
 import java.io.Serializable;
 
 import summit.game.GameUpdateEvent;
+import summit.game.GameUpdateReciever;
 import summit.game.gamemap.GameMap;
 import summit.util.Region;
 import summit.util.Time;
 
-public class Knockback implements Serializable {
+public class Knockback implements GameUpdateReciever, Serializable {
 
     private float sx;
     private float sy;
@@ -25,6 +26,8 @@ public class Knockback implements Serializable {
     private final long START_TIME = Time.timeNs();
 
     private int duration_ms;
+
+    private boolean overrideFinish;
 
     private Entity hitEntity;
 
@@ -51,10 +54,10 @@ public class Knockback implements Serializable {
     }
 
     public boolean finished(){
-        return Time.timeNs() - START_TIME >= duration_ms*Time.NS_IN_MS;
+        return (Time.timeNs() - START_TIME >= duration_ms*Time.NS_IN_MS) || overrideFinish;
     }
     
-    public void move(GameUpdateEvent e){
+    public void update(GameUpdateEvent e){
         GameMap map = e.getMap();
 
         float delta_t = (Time.timeNs() - START_TIME)/(float)Time.NS_IN_S;
@@ -62,8 +65,10 @@ public class Knockback implements Serializable {
         float nx = sx + (kx * delta_t) + (ax/2) * (delta_t*delta_t);
         float ny = sy + (ky * delta_t) + (ay/2) * (delta_t*delta_t);
 
-        if(hitEntity.moveTo(map, nx, ny)){
+        if(map.getTileAt(nx, ny) != null && !map.getTileAt(nx, ny).isBoundary()){
             hitEntity.setPos(nx, ny);
+        } else{
+            overrideFinish = true;
         }
     }
 }
