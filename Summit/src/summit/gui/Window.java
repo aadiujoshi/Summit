@@ -133,7 +133,11 @@ public class Window implements MouseListener, KeyListener{
                             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                             
                             {
-                                renderFrame(g);
+                                try{
+                                    renderFrame(g);
+                                } catch(Exception e){
+                                    System.out.println("Render error: " + e);
+                                }
                             }
 
                             if(Time.timeMs()-lastFpsUpdate > 500){
@@ -258,8 +262,8 @@ public class Window implements MouseListener, KeyListener{
                 
             try{
                 ope.getRenderLayers().renderLayers(pe);
-            } catch (NullPointerException e) {
-                System.out.println(e);
+            } catch (Exception e) {
+                System.out.println("Map render exception: " + e);
             }
 
             if(!guiContainersGame.isEmpty())
@@ -301,8 +305,8 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.SAVEDGAME){
-            world = GameLoader.loadWorld("Summit/gamesaves/testsave1.txt");
-            world.reinit(this, "Summit/gamesaves/testsave1.txt");
+            world = GameLoader.loadWorld("gamesaves/testsave1.txt");
+            world.reinit(this, "gamesaves/testsave1.txt");
             world.pause();
 
             state = WindowState.GAME;
@@ -335,7 +339,7 @@ public class Window implements MouseListener, KeyListener{
         renderer.terminate();
 
         if(world != null){
-            GameLoader.saveWorld(world, "Summit/gamesaves/testsave1.txt");
+            GameLoader.saveWorld(world, "gamesaves/testsave1.txt");
         }
     } 
 

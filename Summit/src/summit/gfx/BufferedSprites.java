@@ -20,7 +20,7 @@ public class BufferedSprites{
 
     public static void loadSprites(){
         
-        File[] dirFiles = new File("Summit\\resources\\sprites").listFiles();
+        File[] dirFiles = new File("resources\\sprites").listFiles();
 
         for(int i = 0; i < dirFiles.length; i++){
             String absPath = dirFiles[i].getAbsolutePath();

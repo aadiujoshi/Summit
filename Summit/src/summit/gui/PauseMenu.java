@@ -30,7 +30,7 @@ public class PauseMenu extends Container{
             public void guiClick(MouseEvent e){
                 if(window != null){
                     Sound.stopAll();
-                    GameLoader.saveWorld(world, "Summit/gamesaves/testsave1.txt");
+                    GameLoader.saveWorld(world, "gamesaves/testsave1.txt");
                     window.setState(WindowState.SELECTIONMENUS);
                 }
             }

@@ -66,10 +66,11 @@ public abstract class Tile extends GameRegion {
 
     @Override
     public void paint(PaintEvent e){
-        if(!iced)
-            setColorFilter(ColorFilter.NOFILTER);
-        else{
+        if(iced)
             setColorFilter(iceFilter);
+        else{
+            //reset to default filter
+            setColorFilter(getColorFilter());
         }
 
         super.paint(e);

@@ -11,8 +11,8 @@ import javax.sound.sampled.LineListener;
 public class Sound {
     //-------------- Preloaded sounds -------------------------------------
 
-    public static final Sound DUNGEON_SOUNDS = new Sound("Summit/resources/sound/ambience/dungeons_ambience.wav");
-    public static final Sound WALKING_HARD = new Sound("Summit/resources/sound/sfx/footsteps_hard.wav");
+    public static final Sound DUNGEON_SOUNDS = new Sound("resources/sound/ambience/dungeons_ambience.wav");
+    public static final Sound WALKING_HARD = new Sound("resources/sound/sfx/footsteps_hard.wav");
 
     //-----------------------------------------------------------------
     

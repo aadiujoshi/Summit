@@ -3,13 +3,17 @@ package summit.game.gamemap;
 import summit.game.entity.mob.Player;
 import summit.game.tile.IceTile;
 import summit.game.tile.SnowTile;
+import summit.game.tile.StoneTile;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
+import summit.gfx.ColorFilter;
 
 public class BossRoom extends GameMap{
 
     public BossRoom(Player player, long seed) {
         super(player, seed, 40, 30);
+
+        super.setFilter(new ColorFilter(-110, -100, -30));
 
         TileStack[][] tiles = super.getTiles();
 
@@ -17,6 +21,7 @@ public class BossRoom extends GameMap{
         for (int r = 0; r < tiles.length; r++) {
             for (int c = 0; c < tiles[0].length; c++) {
                 IceTile s = new IceTile(c, r);
+                s.setColorFilter(new ColorFilter(-50, -50, -50));
                 s.setBreakable(Tile.UNBREAKABLE);
                 s.setBoundary(true);
 
@@ -24,6 +29,7 @@ public class BossRoom extends GameMap{
 
                 if(Math.random() > 0.7){
                     IceTile s_ = new IceTile(c, r);
+                    s_.setColorFilter(new ColorFilter(-50, -50, -50));
                     s_.setBreakable(Tile.UNBREAKABLE);
                     s_.setBoundary(true);
 
@@ -32,8 +38,8 @@ public class BossRoom extends GameMap{
             }
         }
 
-        int roomWidth = 10;
-        int roomHeight = 10;
+        int roomWidth = 15;
+        int roomHeight = 15;
 
         int sr = tiles.length/2 - roomHeight/2;
         int sc = tiles[0].length/2 - roomWidth/2;
@@ -47,7 +53,7 @@ public class BossRoom extends GameMap{
             for (int c = sc; c < ec; c++) {
                 tiles[r][c] = new TileStack(c, r);
 
-                SnowTile s = new SnowTile(c, r);
+                StoneTile s = new StoneTile(c, r);
                 s.setBreakable(Tile.UNBREAKABLE);
 
                 tiles[r][c].pushTile(s);

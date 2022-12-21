@@ -13,7 +13,7 @@ public class Settings {
 
     static{
         try {
-            Scanner s = new Scanner(new File("Summit\\settings.txt"));
+            Scanner s = new Scanner(new File("settings.txt"));
 
             while(s.hasNext()) {
                 properties.put(s.next(), s.next());
@@ -36,7 +36,7 @@ public class Settings {
         }
         
         try{
-            FileWriter file = new FileWriter(new File("Summit\\settings.txt"));
+            FileWriter file = new FileWriter(new File("settings.txt"));
             file.write(newSettings);
             file.flush();
             file.close();
