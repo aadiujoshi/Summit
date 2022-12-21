@@ -16,6 +16,7 @@ public class Sprite {
     public static final String VILLAGE_HOUSE = "village-house";
     public static final String STONE_TILE = "stone-tile";
     public static final String GRASS_TILE = "grass-tile";
+    public static final String ICE_TILE = "ice-tile";
     public static final String WATER_TILE = "water-tile";
     public static final String HALF_HEART = "heart-half";
     public static final String FULL_HEART = "heart-full";
@@ -28,6 +29,8 @@ public class Sprite {
     public static final String DOOR = "door";
     public static final String INVENTORY = "inventory";
     public static final String SKELETON_FACE_BACK = "skeleton-face_back";
+    public static final String TALL_ROCK1 = "tall-rock1";
+    public static final String BLUE_LAMP1 = "blue-lamp1";
     public static final String BOW = "bow";
     public static final String APPLE_ITEM = "apple-item";
     public static final String STICK_ITEM = "stick-item";

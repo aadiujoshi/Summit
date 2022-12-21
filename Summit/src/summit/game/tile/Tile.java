@@ -18,12 +18,16 @@ import summit.util.Scheduler;
 
 public abstract class Tile extends GameRegion {
 
+    public static final int UNBREAKABLE = -1;
+
     //if true -> entities cannot pass through this tile
     private boolean boundary;
-    private boolean breakable;
+    // private boolean breakable;
     private boolean destroyed;
     
     private boolean iced;
+    private int hitsToBreak;
+    private int hits;
     private ColorFilter iceFilter;
 
     //managed by TileStack;
@@ -45,6 +49,7 @@ public abstract class Tile extends GameRegion {
         super.setOutline(true);
         super.setRenderOp((int)(Math.random()*5));
 
+        this.hitsToBreak = UNBREAKABLE;
         this.iceFilter = new ColorFilter(0, 0, 50);
     }
 
@@ -63,8 +68,9 @@ public abstract class Tile extends GameRegion {
     public void paint(PaintEvent e){
         if(!iced)
             setColorFilter(ColorFilter.NOFILTER);
-        else
+        else{
             setColorFilter(iceFilter);
+        }
 
         super.paint(e);
 
@@ -107,7 +113,11 @@ public abstract class Tile extends GameRegion {
 
     @Override
     public void gameClick(GameUpdateEvent e){
-        if(breakable){
+        hits++;
+
+        if(isBreakable()){
+            if((iced && hits == 3) ||
+                (!iced))
             this.setDestroy(true);
         }
     }
@@ -142,11 +152,11 @@ public abstract class Tile extends GameRegion {
     }
 
     public boolean isBreakable() {
-        return this.breakable;
+        return hitsToBreak != UNBREAKABLE;
     }
 
-    public void setBreakable(boolean breakable) {
-		this.breakable = breakable;
+    public void setBreakable(int hitsToBreak) {
+		this.hitsToBreak = hitsToBreak;
 	}
 
     public int getDepth() {
@@ -156,7 +166,6 @@ public abstract class Tile extends GameRegion {
     public void setDepth(int depth) {
         this.depth = depth;
     }
-
 
     public void particleAnimation(boolean a){
         this.animateParticles = a;
@@ -182,6 +191,8 @@ public abstract class Tile extends GameRegion {
 
     public void setIced(boolean iced) {
         this.iced = iced;
+        if(iced)
+            hits = 0;
     }
     
     public void setIceFilter(ColorFilter iceFilter) {

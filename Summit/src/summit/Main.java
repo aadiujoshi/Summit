@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 
 import summit.gfx.BufferedSprites;
 import summit.gui.Window;
-import summit.gui.WindowState;
 
 /*
  *  vsync 0

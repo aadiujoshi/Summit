@@ -67,9 +67,9 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
     public void paint(PaintEvent e) {
         if(outline())
             this.outline(e);
-        e.getRenderer().renderGame(sprite, 
-                                    getX()+spriteOffsetX, getY()+spriteOffsetY, renderOp,
-                                    filter,
+        e.getRenderer().renderGame(getSprite(), 
+                                    getX()+getSpriteOffsetX(), getY()+getSpriteOffsetY(), getRenderOp(),
+                                    getColorFilter(),
                                     e.getCamera());
     }
 

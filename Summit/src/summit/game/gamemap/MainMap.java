@@ -11,7 +11,6 @@ import summit.game.structure.DungeonsEntrace;
 import summit.game.structure.TraderHouse;
 import summit.game.structure.Tree;
 import summit.game.tile.GrassTile;
-import summit.game.tile.IceTile;
 import summit.game.tile.SnowTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
@@ -103,7 +102,7 @@ public class MainMap extends GameMap{
                 }
 
                 if(Math.random() < 0.00001)
-                    tiles[r][c].pushTile(new IceTile(c, r));
+                    tiles[r][c].topTile().setIced(true);
             }
         }
         

@@ -6,6 +6,7 @@ package summit.game.tile;
 
 import summit.game.GameUpdateEvent;
 import summit.game.item.SnowballItem;
+import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
@@ -16,9 +17,11 @@ public class SnowTile extends Tile{
     public SnowTile(float x, float y){
         super(x, y);
         super.setSprite(Sprite.SNOW_TILE);
-        super.setBreakable(true);
+        super.setBreakable(1);
         Light l = new Light(x, y, 1f, 100, 100, 100);
         l.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER-1);
+        
+        super.setIceFilter(new ColorFilter(-10,-20,0));
         
         super.particleAnimation(true);
         super.setColor(Renderer.toIntRGB(170, 214, 230));
@@ -28,10 +31,12 @@ public class SnowTile extends Tile{
     public void gameClick(GameUpdateEvent e){
         super.gameClick(e);
 
-        e.getMap().getPlayer().addItems(
-                new SnowballItem(
-                    e.getMap().getPlayer()), 
-                    "snowballs", 
-                    1);
+        if(isBreakable()){
+            e.getMap().getPlayer().addItems(
+                    new SnowballItem(
+                        e.getMap().getPlayer()), 
+                        "snowballs", 
+                        1);
+        }
     }
 }
