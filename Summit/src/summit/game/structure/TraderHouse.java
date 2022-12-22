@@ -17,9 +17,7 @@ public class TraderHouse extends MapEntrance{
         TraderHouseMap interior = (TraderHouseMap)super.getExMap();
 
         interior.addStructure(new Door(7, 0, parentMap, interior));
-
-        super.setExMap(interior);
-
+        
         super.setSprite(Sprite.VILLAGE_HOUSE);
         super.setSpriteOffsetY(0.5f);
     }

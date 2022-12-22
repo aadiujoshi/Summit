@@ -11,6 +11,8 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import summit.Main;
+
 public class BufferedSprites{
 
     private static HashMap<String, int[][]> sprites = new HashMap<>();
@@ -20,7 +22,7 @@ public class BufferedSprites{
 
     public static void loadSprites(){
         
-        File[] dirFiles = new File("resources\\sprites").listFiles();
+        File[] dirFiles = new File(Main.path + "resources/sprites").listFiles();
 
         for(int i = 0; i < dirFiles.length; i++){
             String absPath = dirFiles[i].getAbsolutePath();

@@ -1,15 +1,17 @@
 package summit.game.gamemap;
 
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Random;
 
-import summit.game.GameUpdateEvent;
 import summit.game.entity.mob.Player;
+import summit.game.structure.ItemChest;
 import summit.game.tile.EmptyTile;
-import summit.game.tile.LavaTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
 import summit.util.ScheduledEvent;
+import summit.util.Scheduler;
 import summit.util.Sound;
 import summit.util.Time;
 
@@ -21,13 +23,6 @@ public class DungeonsMap extends GameMap{
         super(player, seed, 128, 128);
 
         super.setFilter(new ColorFilter(-100, -100, -100));
-
-        ambientSounds = new ScheduledEvent(Time.MS_IN_S*(60*5), ScheduledEvent.FOREVER) {
-            @Override
-            public void run() {
-                Sound.DUNGEON_SOUNDS.play();
-            }
-        };
 
         int width = getWidth();
         int height = getHeight();
@@ -55,6 +50,35 @@ public class DungeonsMap extends GameMap{
                 }
             }
         }
+
+        //find places to spawn chests
+        ArrayList<Point> chest_locs = new ArrayList<>();
+
+        for (int y = 0; y < tiles.length-1; y++) {
+            for (int x = 0; x < tiles[0].length; x++) {
+                if(tiles[y][x].topTile().isBoundary() && !tiles[y-1][x].topTile().isBoundary()){
+
+                    //5 percent chance that a chest spawns at this point
+                    if(rand.nextDouble() < 0.05){
+                        chest_locs.add(new Point(x,y-1));
+                    }
+                }
+            }
+        }
+
+        //spawn the chests
+
+        int key1index = rand.nextInt(chest_locs.size());
+        int key2index = rand.nextInt(chest_locs.size());
+
+        while(key2index == key1index){
+            key2index = rand.nextInt(chest_locs.size());
+        }
+        
+        for (Point point : chest_locs) {
+            addStructure(new ItemChest(point.x, point.y, sy, this));
+        }
+
     }
 
     private boolean[][] gen(Random rand, int x, int y, Object iterations, boolean[][] tiles){
@@ -96,19 +120,16 @@ public class DungeonsMap extends GameMap{
         
         if(b){
             Sound.DUNGEON_SOUNDS.play();
+            this.ambientSounds = new ScheduledEvent(Time.MS_IN_S*(60*5), ScheduledEvent.FOREVER) {
+                @Override
+                public void run() {
+                    Sound.DUNGEON_SOUNDS.play();
+                }
+            };
         }
         if(!b){
             Sound.DUNGEON_SOUNDS.stop();
+            this.ambientSounds = null;
         }
-    }
-
-    @Override
-    public void update(GameUpdateEvent e){
-        super.update(e);
-
-        if(!isLoaded())
-            ambientSounds.setPaused(true);
-        else
-            ambientSounds.setPaused(false);
     }
 }

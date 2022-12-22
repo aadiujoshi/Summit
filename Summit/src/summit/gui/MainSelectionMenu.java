@@ -4,8 +4,13 @@
 */
 package summit.gui;
 
+import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
+
+import java.awt.Color;
+import java.awt.Desktop;
+import java.net.URL;
 
 import java.awt.event.MouseEvent;
 
@@ -43,11 +48,25 @@ public class MainSelectionMenu extends Container{
                 window.setState(WindowState.SETTINGS);
             }
         };
+
+        TextContainer email = new TextContainer("EMAIL", this, window, 0.89f, 0.85f, Sprite.MENUBOX6){
+            @Override
+            public void guiClick(MouseEvent e){
+                try {
+                    Desktop.getDesktop().browse(new URL("https://mail.google.com/mail/?view=cm&fs=1&to=aadiujoshi@gmail.com&su=&body=&bcc=").toURI());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+        email.setTextFilter(new ColorFilter(Color.GREEN.getRGB()));
+        email.setGuiSprite(null);
         
         addComponent(newGame);
         addComponent(savedGames);
         addComponent(quit);
         addComponent(videoSettings);
+        addComponent(email);
     }
     
     @Override

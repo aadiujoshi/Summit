@@ -47,7 +47,7 @@ public abstract class MobEntity extends Entity{
             
             if(pl != null){
                 if(getCurMap().equals("DungeonsMap") && is(MobEntity.hostile)){
-                    if(Math.random() < 1){
+                    if(Math.random() < 0.05){
                         pl.getObtainedKeys()[0] = true;
                     }
                 }

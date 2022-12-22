@@ -8,11 +8,13 @@ import javax.sound.sampled.Line;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
+import summit.Main;
+
 public class Sound {
     //-------------- Preloaded sounds -------------------------------------
 
-    public static final Sound DUNGEON_SOUNDS = new Sound("resources/sound/ambience/dungeons_ambience.wav");
-    public static final Sound WALKING_HARD = new Sound("resources/sound/sfx/footsteps_hard.wav");
+    public static final Sound DUNGEON_SOUNDS = new Sound(Main.path + "resources/sound/ambience/dungeons_ambience.wav");
+    public static final Sound WALKING_HARD = new Sound(Main.path + "resources/sound/sfx/footsteps_hard.wav");
 
     //-----------------------------------------------------------------
     

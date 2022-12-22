@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import summit.Main;
 import summit.game.GameUpdateEvent;
 import summit.game.GameWorld;
 import summit.game.gamemap.GameMap;
@@ -60,8 +61,8 @@ public class Window implements MouseListener, KeyListener{
     // public static final int SCREEN_WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
     // public static final int SCREEN_HEIGHT = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
-    public static final int SCREEN_WIDTH = 1280;
-    public static final int SCREEN_HEIGHT = 720;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 520;
 
     private volatile boolean closed = false;
     private static boolean mouseDown = false;
@@ -305,8 +306,8 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.SAVEDGAME){
-            world = GameLoader.loadWorld("gamesaves/testsave1.txt");
-            world.reinit(this, "gamesaves/testsave1.txt");
+            world = GameLoader.loadWorld(Main.path + "gamesaves/testsave1.txt");
+            world.reinit(this, Main.path + "gamesaves/testsave1.txt");
             world.pause();
 
             state = WindowState.GAME;
@@ -339,7 +340,7 @@ public class Window implements MouseListener, KeyListener{
         renderer.terminate();
 
         if(world != null){
-            GameLoader.saveWorld(world, "gamesaves/testsave1.txt");
+            GameLoader.saveWorld(world, Main.path + "gamesaves/testsave1.txt");
         }
     } 
 
