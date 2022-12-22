@@ -205,12 +205,14 @@ public class Renderer implements Serializable{
         }
     }
 
+    public void render(String sprite, int x, int y, int operation, ColorFilter filter){
+        this.render(BufferedSprites.getSprite(sprite), x, y, operation, filter);
+    }
+
     /**
      * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
      */
-    public void render(String s, int x, int y, int operation, ColorFilter filter){
-
-        int[][] sprite = BufferedSprites.getSprite(s);
+    public void render(int[][] sprite, int x, int y, int operation, ColorFilter filter){
 
         if(sprite == null) return;
 

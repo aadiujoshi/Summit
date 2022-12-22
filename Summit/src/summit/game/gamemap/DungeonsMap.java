@@ -68,6 +68,7 @@ public class DungeonsMap extends GameMap{
 
         //spawn the chests
 
+        //guaranteed chance of 2 keys 
         int key1index = rand.nextInt(chest_locs.size());
         int key2index = rand.nextInt(chest_locs.size());
 
@@ -75,8 +76,19 @@ public class DungeonsMap extends GameMap{
             key2index = rand.nextInt(chest_locs.size());
         }
         
+        int i = 0;
         for (Point point : chest_locs) {
-            addStructure(new ItemChest(point.x, point.y, sy, this));
+
+            int k_ = -1;
+            if(i == key1index)
+                k_ = 1;
+            if(i == key2index)[
+                k_ == 2;
+            ]
+
+            addStructure(new ItemChest(point.x, point.y, k_,this));
+
+            i++;
         }
 
     }

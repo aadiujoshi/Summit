@@ -30,11 +30,23 @@ public class Skeleton extends HumanoidEntity{
     @Override
     public void paint(PaintEvent e){
         super.paint(e);
-
+     
         e.getRenderer().renderGame(Sprite.BOW, getX()+0.35f, getY()-0.2f, 
                                     getRenderOp() & ~Renderer.FLIP_X, 
                                     getColorFilter(), 
                                     e.getCamera());
+    }
+
+    @Override
+    public void damage(Entity hitBy){
+        super.damage(hitBy);
+
+        //globalize item system to all entities not just the player
+        if(is(destroyed)){
+            if(hitBy.canPickupItems()){
+                hitBy.pickupItems(super.getItems());
+            }
+        }
     }
 
     @Override
