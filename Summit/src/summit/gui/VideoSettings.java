@@ -15,6 +15,9 @@ public class VideoSettings extends Container {
     private float[] bx = new float[]{0.65f, 0.75f, 0.85f};
     private float[] by = new float[]{0.3f, 0.4f, 0.5f};
 
+    private final int initThreads = (int)Settings.getSetting("threads");
+    private boolean threadsChange;
+
     public VideoSettings(Window window) {
         super(null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
         
@@ -49,6 +52,11 @@ public class VideoSettings extends Container {
         TextContainer threads_inc = new TextContainer("+", this, window, bx[1], by[2], Sprite.MENUBOX5){
             public void guiClick(MouseEvent e){
                 updateCont(threads_count, "threads", 1);
+                if(initThreads != (int)Settings.getSetting("threads")){
+                    threadsChange = true;
+                } else {
+                    threadsChange = false;
+                }
             }
         };
 
@@ -71,6 +79,11 @@ public class VideoSettings extends Container {
         TextContainer threads_dec = new TextContainer("-", this, window, bx[2], by[2], Sprite.MENUBOX5){
             public void guiClick(MouseEvent e){
                 updateCont(threads_count, "threads", -1);
+                if(initThreads != (int)Settings.getSetting("threads")){
+                    threadsChange = true;
+                } else {
+                    threadsChange = false;
+                }
             }
         };
 
@@ -147,5 +160,13 @@ public class VideoSettings extends Container {
                     px, 
                     (int)(Renderer.HEIGHT*by[2]), 
                     Renderer.NO_OP, f);
+
+        //threads count change warning
+        if(threadsChange){
+            e.getRenderer().renderText("!Restart game", px, 
+                                    (int)(Renderer.HEIGHT*by[2])+10, 
+                                    Renderer.NO_OP, 
+                                    new ColorFilter(0xff0009));
+        }
     }
 }

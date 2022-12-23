@@ -4,21 +4,34 @@
 */
 package summit.game.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.projectile.Projectile;
 import summit.game.gamemap.GameMap;
+import summit.game.item.Item;
+import summit.game.item.WeaponItem;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
+import summit.gfx.Sprite;
 import summit.util.Direction;
 import summit.util.GameRegion;
 import summit.util.ScheduledEvent;
 import summit.util.Scheduler;
 
 public abstract class Entity extends GameRegion{
+
+    //string key is the sprite from Sprite class, with the value of stack of items
+    private HashMap<String, Stack<Item>> items;
+
+    //currently equipped weapon
+    private WeaponItem equipped;
 
     //the map this entity belongs to
     private String curMap = " ";
@@ -66,6 +79,15 @@ public abstract class Entity extends GameRegion{
         
         this.shadow = new Light(x, y, 1f, -50, -50, -50);
 
+        this.items = new HashMap<>();
+
+        items.put(Sprite.ARROW_ITEM, new Stack<Item>());
+        items.put(Sprite.SNOWBALL, new Stack<Item>());
+        items.put(Sprite.APPLE_ITEM, new Stack<Item>());
+        items.put(Sprite.STICK_ITEM, new Stack<Item>());
+        items.put(Sprite.BONE_ITEM, new Stack<Item>());
+        items.put(Sprite.GOLD_COIN, new Stack<Item>());
+
         this.add(attackCooldown);
         this.add(damageCooldown);
         this.add(destroyed);
@@ -75,6 +97,7 @@ public abstract class Entity extends GameRegion{
         this.add(onFire);
         this.add(moving);
         this.add(projectileDamage);
+        this.add(pickupItems);
 
         this.set(projectileDamage, true);
     }
@@ -394,6 +417,57 @@ public abstract class Entity extends GameRegion{
     public void setProjDamage(float projDamage) {
         this.projDamage = projDamage;
     }
+    
+    public WeaponItem getEquipped() {
+        return this.equipped;
+    }
+
+    public void setEquipped(WeaponItem equipped) {
+        this.equipped = equipped;
+    }
+
+    public HashMap<String, Stack<Item>> getItems(){
+        return this.items;
+    }
+    
+    public void pickupItems(HashMap<String, Stack<Item>> items2){
+        if(!is(pickupItems))
+            return;
+        
+        for (var itemStack : items2.entrySet()) {
+            for (Item it : itemStack.getValue()) {
+                it.setOwner(this);
+            }
+
+            items.get(itemStack.getKey()).addAll(itemStack.getValue());
+            itemStack.getValue().clear();
+        }
+    }
+
+    public void useItem(String item){
+        var s = items.get(item);
+        if(s.isEmpty())
+            return;
+
+        s.peek().use();
+
+        if(s.peek().isUsed())
+            s.pop();
+    }
+
+    /**
+     * used when initializing an entity, NOT for recieving items
+     * @param copy
+     * @param num
+     */
+    public void addItems(Item copy, int num){
+        
+        for(int i = 0; i < num; i++){
+            Item c = copy.copy();
+            c.setOwner(this);
+            items.get(copy.getSprite()).push(c);
+        }
+    }
 
     //-----------  game tag / property keys ------------------------------
 
@@ -406,6 +480,7 @@ public abstract class Entity extends GameRegion{
     public static final String onFire = "onFire";
     public static final String moving = "moving";
     public static final String projectileDamage = "projectileDamage";
+    public static final String pickupItems = "pickupItems";
 
     //-------------------------------------------------------------------
 }

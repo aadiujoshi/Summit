@@ -48,6 +48,9 @@ public class Sound {
             try{
                 final Clip clip = (Clip)AudioSystem.getLine(new Line.Info(Clip.class));
 
+                clip.open(AudioSystem.getAudioInputStream(wav));
+                clip.start();
+
                 clip.addLineListener(new LineListener()
                 {
                     @Override
@@ -59,9 +62,7 @@ public class Sound {
                         }
                     }
                 });
-
-                clip.open(AudioSystem.getAudioInputStream(wav));
-                clip.start();
+                
 
                 //check if manually stopped sound
                 while(playing){}
@@ -75,6 +76,7 @@ public class Sound {
             }
         });
         s.setPriority(Thread.MIN_PRIORITY);
+        s.setDaemon(true);
         s.start();
     }
 }

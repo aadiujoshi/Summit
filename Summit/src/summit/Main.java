@@ -19,7 +19,7 @@ public class Main {
     public static final String os = System.getProperty("os.name");
 
     //extra path incase folder names are different
-    public static final String path = "";
+    public static final String path = "Summit/";
 
     public static void main(String[] args) {
         java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

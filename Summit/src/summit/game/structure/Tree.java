@@ -4,12 +4,15 @@
 */
 package summit.game.structure;
 
+import java.util.Stack;
+
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.Player;
 import summit.game.entity.projectile.Projectile;
 import summit.game.item.AppleItem;
+import summit.game.item.Item;
 import summit.game.item.StickItem;
 import summit.gfx.Light;
 import summit.gfx.PaintEvent;
@@ -27,7 +30,14 @@ public class Tree extends Entity{
         super.setSpriteOffsetY(1.5f);
         super.setDamageCooldownMS(300);
         super.setColor(0x964B00);
+        
+        set(pickupItems, true);
 
+        addItems(new AppleItem(this), (int)(Math.random()*3));
+        addItems(new StickItem(this), (int)(Math.random()*3));
+
+        set(pickupItems, false);
+        
         set(projectileDamage, false);
     }
     
@@ -41,16 +51,7 @@ public class Tree extends Entity{
         setHealth(getHealth() - hitBy.getAttackDamage());
 
         if(getHealth() <= 0){
-            if(hitBy instanceof Player){
-
-                int na = (int)(Math.random()*3);
-                int nt = (int)(Math.random()*3);
-
-                if(na >= nt)
-                    ((Player)hitBy).addItems(new AppleItem((Player)hitBy), "apples", na);
-                else
-                    ((Player)hitBy).addItems(new StickItem((Player)hitBy), "sticks", nt);
-            }
+            hitBy.pickupItems(getItems());
             set(destroyed, true);
         }
 

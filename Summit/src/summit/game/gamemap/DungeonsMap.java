@@ -54,7 +54,7 @@ public class DungeonsMap extends GameMap{
         //find places to spawn chests
         ArrayList<Point> chest_locs = new ArrayList<>();
 
-        for (int y = 0; y < tiles.length-1; y++) {
+        for (int y = 1; y < tiles.length-1; y++) {
             for (int x = 0; x < tiles[0].length; x++) {
                 if(tiles[y][x].topTile().isBoundary() && !tiles[y-1][x].topTile().isBoundary()){
 
@@ -82,9 +82,9 @@ public class DungeonsMap extends GameMap{
             int k_ = -1;
             if(i == key1index)
                 k_ = 1;
-            if(i == key2index)[
-                k_ == 2;
-            ]
+            if(i == key2index){
+                k_ = 2;
+            }
 
             addStructure(new ItemChest(point.x, point.y, k_,this));
 

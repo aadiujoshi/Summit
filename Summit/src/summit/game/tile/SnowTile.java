@@ -34,8 +34,7 @@ public class SnowTile extends Tile{
         if(isBreakable()){
             e.getMap().getPlayer().addItems(
                     new SnowballItem(
-                        e.getMap().getPlayer()), 
-                        "snowballs", 
+                        e.getMap().getPlayer()),  
                         1);
         }
     }

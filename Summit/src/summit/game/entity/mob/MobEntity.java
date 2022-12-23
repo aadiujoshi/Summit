@@ -4,10 +4,13 @@
 */
 package summit.game.entity.mob;
 
+import java.util.HashMap;
+
 import summit.game.GameUpdateEvent;
 import summit.game.ai.EntityAI;
 import summit.game.entity.Entity;
 import summit.game.entity.projectile.Projectile;
+import summit.game.item.WeaponItem;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.PaintEvent;
@@ -119,7 +122,6 @@ public abstract class MobEntity extends Entity{
 
     //-----------  game tag / property keys ------------------------------
 
-    public static String pickupItems = "pickupItems";
     public static String hostile = "hostile";
 
     //-------------------------------------------------------------------

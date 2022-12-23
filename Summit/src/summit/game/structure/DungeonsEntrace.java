@@ -12,7 +12,7 @@ public class DungeonsEntrace extends MapEntrance{
      */
     public DungeonsEntrace(float x, float y, GameMap parentMap) {
         // super(x, y, 1, 1, new DungeonsMap(parentMap.getPlayer(), parentMap.getSeed()), parentMap);
-        super(x, y, 1, 1, new BossRoom(parentMap.getPlayer(), parentMap.getSeed()), parentMap);
+        super(x, y, 1, 1, new DungeonsMap(parentMap.getPlayer(), parentMap.getSeed()), parentMap);
         
         super.getExMap().addStructure(new DungeonsExit( 
                             super.getExMap().getWidth()/2, 

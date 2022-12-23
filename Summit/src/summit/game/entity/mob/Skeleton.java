@@ -8,6 +8,7 @@ import summit.game.GameUpdateEvent;
 import summit.game.ai.HostileMobAI;
 import summit.game.entity.Entity;
 import summit.game.entity.projectile.Arrow;
+import summit.game.item.BowItem;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
@@ -24,17 +25,14 @@ public class Skeleton extends HumanoidEntity{
         super.setHealth(getMaxHealth());
         super.setAttackDamage(1);
 
+        super.setEquipped(new BowItem(this));
+
         super.set(hostile, true);
     }
 
     @Override
     public void paint(PaintEvent e){
         super.paint(e);
-     
-        e.getRenderer().renderGame(Sprite.BOW, getX()+0.35f, getY()-0.2f, 
-                                    getRenderOp() & ~Renderer.FLIP_X, 
-                                    getColorFilter(), 
-                                    e.getCamera());
     }
 
     @Override
@@ -43,8 +41,8 @@ public class Skeleton extends HumanoidEntity{
 
         //globalize item system to all entities not just the player
         if(is(destroyed)){
-            if(hitBy.canPickupItems()){
-                hitBy.pickupItems(super.getItems());
+            if(hitBy.is(pickupItems)){
+                hitBy.pickupItems(this.getItems());
             }
         }
     }

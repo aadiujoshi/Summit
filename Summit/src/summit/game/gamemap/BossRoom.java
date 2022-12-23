@@ -46,7 +46,7 @@ public class BossRoom extends GameMap{
         int er = tiles.length/2 + roomHeight/2;
         int ec = tiles[0].length/2 + roomWidth/2;
 
-        System.out.println(sr + "  " + sc + "  "+ er + "  " + ec);
+        System.out.println(sr + "  " + sc + "  " + er + "  " + ec);
 
         //cut out walkable area
         for (int r = sr; r < er; r++) {

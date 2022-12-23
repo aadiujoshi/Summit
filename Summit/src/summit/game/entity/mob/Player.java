@@ -16,27 +16,25 @@ import summit.game.item.WeaponItem;
 import summit.gfx.Camera;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
+import summit.gfx.RenderLayers;
+import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
 import summit.gui.InventoryGUI;
+import summit.gui.Window;
 import summit.util.Controls;
+import summit.util.ControlsReciever;
 import summit.util.Region;
 import summit.util.Sound;
 import summit.util.Time;
 
-public class Player extends HumanoidEntity{
+public class Player extends HumanoidEntity implements ControlsReciever{
     
     private Camera camera;
 
     private HUD hud;
     private InventoryGUI invGui;
-
-    private HashMap<String, WeaponItem> weapons;
-    private WeaponItem equipped;
-
-    private HashMap<String, Stack<Item>> items;
-
-    private boolean obtainedKeys[];
+    
     private int xp;
     
     public Player(float x, float y) {
@@ -44,31 +42,34 @@ public class Player extends HumanoidEntity{
         super.setDx(4.2f);
         super.setDy(4.2f);
         super.setMaxHealth(10f);
-        super.setHealth(getMaxHealth());
+        super.setHealth(5.5f);
         super.setAttackDamage(1);
+        super.set(pickupItems, true);
         super.setAI(null);
         
-        // super.setLight(new Light(x, y, 5.5f, 100, 100, 100));
+        super.setEquipped(new Sword(this));
 
-        this.items = new HashMap<>();
+        var items = super.getItems();
         items.put(Sprite.ARROW_ITEM, new Stack<Item>());
         items.put(Sprite.SNOWBALL, new Stack<Item>());
         items.put(Sprite.APPLE_ITEM, new Stack<Item>());
         items.put(Sprite.STICK_ITEM, new Stack<Item>());
         items.put(Sprite.BONE_ITEM, new Stack<Item>());
         items.put(Sprite.GOLD_COIN, new Stack<Item>());
-
-        this.weapons = new HashMap<>();
-        weapons.put(Sprite.STONE_SWORD, new Sword(this));
-        weapons.put(Sprite.BOW, new BowItem(this));
-
+        
         this.hud = new HUD(this);
         this.invGui = new InventoryGUI(items);
 
-        this.obtainedKeys = new boolean[3];
+        Controls.addControlsReciever(this);
+        
         // this.invGui = new ItemGUI((Inventory)super.getItems());
     }
     
+    @Override
+    public void reinit(){
+        Controls.addControlsReciever(this);
+    }
+
     @Override
     public void setRenderLayer(OrderPaintEvent e){
         super.setRenderLayer(e);
@@ -76,16 +77,7 @@ public class Player extends HumanoidEntity{
     }
 
     @Override
-    public void gameClick(GameUpdateEvent e) {
-        // if(!invGui.isPushed()){
-        //     e.getWindow().pushGameContainer(invGui);
-        //     Controls.E = true;
-        // }
-    }
-
-    @Override
     public void update(GameUpdateEvent e) {
-        
         if(Controls.E){
             if(!invGui.isPushed())
                 e.getWindow().pushGameContainer(invGui);
@@ -94,12 +86,13 @@ public class Player extends HumanoidEntity{
             e.getWindow().popGameContainer();
         }
 
-
         super.update(e);
 
-        if(!e.getMap().getName().equals("MainMap"))
-            super.setLight(new Light(getX(), getY(), 5.5f, 80, 80, 80));
-        else
+        if(!e.getMap().getName().equals("MainMap")){
+            Light li = new Light(getX(), getY(), 5.5f, 80, 80, 80);
+            li.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER+1);
+            super.setLight(li);
+        } else
             super.setLight(Light.NO_LIGHT);
             
         //simulate click
@@ -145,6 +138,18 @@ public class Player extends HumanoidEntity{
         }
     }
 
+    @Override
+    public void press() {
+        if(Controls.Q){
+            useItem(Sprite.APPLE_ITEM);
+        }
+    }
+
+    @Override
+    public void release() {
+        
+    }
+
     //---------------- getters and setters --------------------------
 
     @Override 
@@ -168,6 +173,31 @@ public class Player extends HumanoidEntity{
         setPos(camera.getX(), camera.getY());
     }
 
+    public boolean[] getObtainedKeys(){
+        boolean[] keys = new boolean[3];
+
+        int i = 0;
+
+        for (var itemStack : getItems().entrySet()) {
+            for (var it : itemStack.getValue()) {
+                if(it.getTextName().equals("red key")){
+                    keys[i] = true;
+                    i++;
+                }
+                if(it.getTextName().equals("green key")){
+                    keys[i] = true;
+                    i++;
+                }
+                if(it.getTextName().equals("blue key")){
+                    keys[i] = true;
+                    i++;
+                }
+            }
+        }
+
+        return keys;
+    }
+
     /**
      * DO NOT USE THIS METHOD FOR RENDERING
      * @return This players camera
@@ -175,11 +205,7 @@ public class Player extends HumanoidEntity{
     public Camera getCamera(){
         return this.camera;
     }
-
-    public boolean[] getObtainedKeys(){
-        return this.obtainedKeys;
-    }
-
+    
     public int getXp() {
         return this.xp;
     }
@@ -188,22 +214,23 @@ public class Player extends HumanoidEntity{
         this.xp += exp;
     }
     
-    //adds num copies of base, simplename is used for the display message
-    public void addItems(Item copy, String simpleName, int num){
-
-        for(int i = 0; i < num; i++){
-            items.get(copy.getSprite()).push((Item)copy.copy());
-        }
+    //adds num copies of copy
+    @Override
+    public void addItems(Item copy, int num){
+        super.addItems(copy, num);
 
         if(num != 0)
-            hud.addMessage("+" + (num+"") + " " + simpleName);
+            hud.addMessage("+" + (num+"") + " " + copy.getTextName());
     }
-    
-    // public ItemGUI getInventoryGui() {
-    //     return this.invGui;
-    // }
 
-    // public void setInventoryGui(ItemGUI invGui) {
-    //     this.invGui = invGui;
-    // }
+    @Override
+    public void pickupItems(HashMap<String, Stack<Item>> items){
+        for (var i : items.entrySet()) {
+            if((i.getValue().size()) != 0){
+                hud.addMessage("+" + (i.getValue().size()) + " " + i.getValue().peek().getTextName());
+            }
+        }
+
+        super.pickupItems(items);
+    }
 }

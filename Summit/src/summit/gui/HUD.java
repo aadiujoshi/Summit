@@ -56,7 +56,7 @@ public class HUD extends Container{
         ///////////////////////////////////////////////////////////////////////////////////
 
         //round to nearest 0.5
-        float h = Math.round(player.getHealth()*2)/2;
+        float h = Math.round(player.getHealth()*2f)/2f;
 
         {
             int py = (int)(getHeight()*0.13);
@@ -64,15 +64,15 @@ public class HUD extends Container{
             int left_x = (int)((getWidth()*0.75)-(player.getMaxHealth()*10/2));
             
             for(int px = left_x; px < right_x; px+=10) {
-                if(h == 0){
-                    ren.render(Sprite.EMPTY_HEART, px, py, Renderer.NO_OP, ColorFilter.NOFILTER);
-                } else if(h == 0.5){
-                    ren.render(Sprite.HALF_HEART, px, py, Renderer.NO_OP, ColorFilter.NOFILTER);
-                    h-=0.5;
-                } else if(h % 1 == 0){
+                if(h > 0.5){
                     ren.render(Sprite.FULL_HEART, px, py, Renderer.NO_OP, ColorFilter.NOFILTER);
                     h-=1;
-                }
+                } else if(h == 0.5f){
+                    ren.render(Sprite.HALF_HEART, px, py, Renderer.NO_OP, ColorFilter.NOFILTER);
+                    h-=0.5;
+                } else if(h == 0){
+                    ren.render(Sprite.EMPTY_HEART, px, py, Renderer.NO_OP, ColorFilter.NOFILTER);
+                } 
             }
         }
 

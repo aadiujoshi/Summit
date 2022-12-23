@@ -2,6 +2,7 @@ package summit.game.item;
 
 import java.io.Serializable;
 
+import summit.game.entity.Entity;
 import summit.game.entity.mob.MobEntity;
 
 public abstract class Item implements Serializable{
@@ -10,11 +11,13 @@ public abstract class Item implements Serializable{
     //if this item can be used by the enitity
     private boolean used;
 
+    private String textName = getClass().getSimpleName();
+
     private final String TYPE = getClass().getSimpleName();
 
-    private MobEntity owner;
+    private Entity owner;
 
-    public Item(MobEntity owner){
+    public Item(Entity owner){
         this.owner = owner;
     }
 
@@ -36,8 +39,12 @@ public abstract class Item implements Serializable{
         this.sprite = sprite;
     }
     
-    public MobEntity getOwner() {
+    public Entity getOwner() {
         return this.owner;
+    }
+    
+    public void setOwner(Entity owner) {
+        this.owner = owner;
     }
     
     public boolean isUsed() {
@@ -47,4 +54,13 @@ public abstract class Item implements Serializable{
     public void setUsed(boolean used) {
         this.used = used;
     }
+    
+    public String getTextName() {
+        return this.textName;
+    }
+
+    public void setTextName(String textName) {
+        this.textName = textName;
+    }
+
 }

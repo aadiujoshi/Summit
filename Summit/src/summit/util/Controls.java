@@ -5,15 +5,23 @@
 package summit.util;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class Controls {
-    
+    private static ArrayList<ControlsReciever> cr = new ArrayList<>();
+
     private Controls(){}
 
     public static volatile boolean W;
     public static volatile boolean A;
     public static volatile boolean S;
     public static volatile boolean D;
+
+    public static volatile boolean Q;
+    public static volatile boolean R;
+    public static volatile boolean T;
+    public static volatile boolean F;
+
     public static volatile boolean UP;
     public static volatile boolean DOWN;
     public static volatile boolean LEFT;
@@ -37,6 +45,18 @@ public class Controls {
                 break;
             case KeyEvent.VK_D:
                 D = true;
+                break;
+            case KeyEvent.VK_Q:
+                Q = true;
+                break;
+            case KeyEvent.VK_R:
+                R = true;
+                break;
+            case KeyEvent.VK_T:
+                T = true;
+                break;
+            case KeyEvent.VK_F:
+                F = true;
                 break;
             case KeyEvent.VK_UP:
                 UP = true;
@@ -66,6 +86,10 @@ public class Controls {
                 E = false;
                 break;
         }
+
+        for (ControlsReciever controlsReciever : cr) {
+            controlsReciever.press();
+        }
     }
 
     public static void setRelease(KeyEvent e){
@@ -81,6 +105,18 @@ public class Controls {
                 break;
             case KeyEvent.VK_D:
                 D = false;
+                break;
+            case KeyEvent.VK_Q:
+                Q = false;
+                break;
+            case KeyEvent.VK_R:
+                R = false;
+                break;
+            case KeyEvent.VK_T:
+                T = false;
+                break;
+            case KeyEvent.VK_F:
+                F = false;
                 break;
             case KeyEvent.VK_UP:
                 UP = false;
@@ -106,5 +142,13 @@ public class Controls {
             case KeyEvent.VK_E:
                 break;
         }
+
+        
     }
+
+    public static synchronized void addControlsReciever(ControlsReciever contR){
+        synchronized(cr){
+            cr.add(contR);
+        }
+    } 
 }
