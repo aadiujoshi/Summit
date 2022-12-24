@@ -10,7 +10,8 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
 import summit.util.Direction;
 import summit.util.ScheduledEvent;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 
 public abstract class HumanoidEntity extends MobEntity{
 
@@ -49,7 +50,7 @@ public abstract class HumanoidEntity extends MobEntity{
             }
         };
 
-        Scheduler.registerEvent(walkAnimation);
+        GraphicsScheduler.registerEvent(walkAnimation);
     }
 
     protected void setSprites(String sprite_north_moving, String sprite_north_neutral, 
@@ -67,7 +68,7 @@ public abstract class HumanoidEntity extends MobEntity{
 
     @Override
     public void reinit(){
-        Scheduler.registerEvent(this.walkAnimation);
+        GraphicsScheduler.registerEvent(this.walkAnimation);
     }
 
     // @Override

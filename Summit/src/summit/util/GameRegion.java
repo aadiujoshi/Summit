@@ -189,7 +189,7 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
         return this.rLayer;
     }
 
-    public void setRLayer(int rLayer) {
+    public void setRenderLayer(int rLayer) {
         this.rLayer = rLayer;
     }
 

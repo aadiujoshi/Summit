@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import summit.game.entity.mob.Player;
+import summit.game.item.BlueKey;
+import summit.game.item.GreenKey;
+import summit.game.item.Item;
 import summit.game.structure.ItemChest;
 import summit.game.tile.EmptyTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
 import summit.util.ScheduledEvent;
-import summit.util.Scheduler;
 import summit.util.Sound;
 import summit.util.Time;
 
@@ -67,27 +69,24 @@ public class DungeonsMap extends GameMap{
         }
 
         //spawn the chests
-
         //guaranteed chance of 2 keys 
         int key1index = rand.nextInt(chest_locs.size());
         int key2index = rand.nextInt(chest_locs.size());
 
+        //make sure keys are in different chests
         while(key2index == key1index){
             key2index = rand.nextInt(chest_locs.size());
         }
         
         int i = 0;
         for (Point point : chest_locs) {
-
-            int k_ = -1;
+            Item k = null;
             if(i == key1index)
-                k_ = 1;
-            if(i == key2index){
-                k_ = 2;
-            }
+                k = new BlueKey(null);
+            if(i == key2index)
+                k = new GreenKey(null);
 
-            addStructure(new ItemChest(point.x, point.y, k_,this));
-
+            addStructure(new ItemChest(point.x, point.y, k, this));
             i++;
         }
 
@@ -96,6 +95,7 @@ public class DungeonsMap extends GameMap{
     private boolean[][] gen(Random rand, int x, int y, Object iterations, boolean[][] tiles){
         if((int)iterations >= 4000)
             return tiles;
+        
         iterations = (int)iterations + 1;
         tiles[y][x] = true;
         double c = rand.nextInt(4);
@@ -129,7 +129,7 @@ public class DungeonsMap extends GameMap{
     @Override
     public void setLoaded(boolean b){
         super.setLoaded(b);
-        
+
         if(b){
             Sound.DUNGEON_SOUNDS.play();
             this.ambientSounds = new ScheduledEvent(Time.MS_IN_S*(60*5), ScheduledEvent.FOREVER) {

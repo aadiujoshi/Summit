@@ -34,11 +34,15 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
         return paused;
     }
 
-    public void reinit(){
+    public void reinit(int schedulerThread){
         this.init_ms = Time.timeMs();
         this.lastCall = init_ms;
 
-        Scheduler.registerEvent(this);
+        if(schedulerThread == 1){
+            GameScheduler.registerEvent(this);
+        } else {
+            GraphicsScheduler.registerEvent(this);
+        }
     }
     
     public void manualTerminate(){

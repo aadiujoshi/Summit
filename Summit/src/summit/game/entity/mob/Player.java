@@ -16,6 +16,7 @@ import summit.game.item.WeaponItem;
 import summit.gfx.Camera;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
+import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
@@ -48,23 +49,32 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         super.setAI(null);
         
         super.setEquipped(new Sword(this));
-
-        var items = super.getItems();
-        items.put(Sprite.ARROW_ITEM, new Stack<Item>());
-        items.put(Sprite.SNOWBALL, new Stack<Item>());
-        items.put(Sprite.APPLE_ITEM, new Stack<Item>());
-        items.put(Sprite.STICK_ITEM, new Stack<Item>());
-        items.put(Sprite.BONE_ITEM, new Stack<Item>());
-        items.put(Sprite.GOLD_COIN, new Stack<Item>());
         
+        var items = super.getItems();
+
+        items.put(Sprite.RED_KEY, new Stack<Item>());
+        items.put(Sprite.GREEN_KEY, new Stack<Item>());
+        items.put(Sprite.BLUE_KEY, new Stack<Item>());
+
         this.hud = new HUD(this);
-        this.invGui = new InventoryGUI(items);
+        this.invGui = new InventoryGUI(super.getItems());
 
         Controls.addControlsReciever(this);
         
         // this.invGui = new ItemGUI((Inventory)super.getItems());
     }
     
+    @Override
+    public void paint(PaintEvent e){
+        if(outline())
+            this.outline(e);
+        e.getRenderer().renderGame(getSprite(), 
+                                    e.getCamera().getX()+getSpriteOffsetX(), e.getCamera().getY()+getSpriteOffsetY(), 
+                                    getRenderOp(),
+                                    getColorFilter(),
+                                    e.getCamera());
+    }
+
     @Override
     public void reinit(){
         Controls.addControlsReciever(this);
@@ -139,14 +149,14 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     }
 
     @Override
-    public void press() {
+    public void keyPress() {
         if(Controls.Q){
             useItem(Sprite.APPLE_ITEM);
         }
     }
 
     @Override
-    public void release() {
+    public void keyRelease() {
         
     }
 
@@ -175,22 +185,17 @@ public class Player extends HumanoidEntity implements ControlsReciever{
 
     public boolean[] getObtainedKeys(){
         boolean[] keys = new boolean[3];
-
-        int i = 0;
-
+        
         for (var itemStack : getItems().entrySet()) {
             for (var it : itemStack.getValue()) {
                 if(it.getTextName().equals("red key")){
-                    keys[i] = true;
-                    i++;
+                    keys[0] = true;
                 }
                 if(it.getTextName().equals("green key")){
-                    keys[i] = true;
-                    i++;
+                    keys[1] = true;
                 }
                 if(it.getTextName().equals("blue key")){
-                    keys[i] = true;
-                    i++;
+                    keys[2] = true;
                 }
             }
         }
@@ -226,7 +231,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     @Override
     public void pickupItems(HashMap<String, Stack<Item>> items){
         for (var i : items.entrySet()) {
-            if((i.getValue().size()) != 0){
+            if((i.getValue().size()) != 0 && i.getValue().peek() != null){
                 hud.addMessage("+" + (i.getValue().size()) + " " + i.getValue().peek().getTextName());
             }
         }

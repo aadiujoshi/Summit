@@ -28,9 +28,9 @@ public class TransitionAnimation extends Animation {
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
                 if(Region.distance(c, r, Renderer.WIDTH/2, Renderer.HEIGHT/2) >= radius){
-                    // frame[r][c] = Renderer.toIntRGB((int)(Math.random()*256), 
-                    //                                 (int)(Math.random()*256), 
-                    //                                 (int)(Math.random()*256));
+                    frame[r][c] = Renderer.toIntRGB((int)(Math.random()*256), 
+                                                    (int)(Math.random()*256), 
+                                                    (int)(Math.random()*256));
                     frame[r][c] = 0;
                 }
             }

@@ -20,7 +20,8 @@ import summit.gfx.RenderLayers;
 import summit.gui.PauseButton;
 import summit.gui.Window;
 import summit.util.GameLogger;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 import summit.util.Sound;
 import summit.util.Time;
 
@@ -47,7 +48,7 @@ public class GameWorld implements Paintable, Serializable{
     private TransitionAnimation mapTransition;
 
     private final long SEED;
-    public static final int MS_PER_TICK = 5;
+    public static final int MS_PER_TICK = 15;
 
     //Same object shared by all GameMaps 
     private Player player;
@@ -114,6 +115,7 @@ public class GameWorld implements Paintable, Serializable{
                     try{
                         loadedMap.update(e);
                     } catch(Exception ex) {
+                        System.out.println(ex);
                         // GameLogger.logError();
                     }
                 }
@@ -129,7 +131,7 @@ public class GameWorld implements Paintable, Serializable{
 
                     this.mapTransition = null;
                     this.mapTransition = new TransitionAnimation();
-                    Scheduler.registerEvent(mapTransition);
+                    GraphicsScheduler.registerEvent(mapTransition);
                 }
                 
                 long delay_ns = Time.timeNs()-startTime;

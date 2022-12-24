@@ -14,7 +14,8 @@ import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.util.GameRegion;
 import summit.util.ScheduledEvent;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 
 public abstract class Tile extends GameRegion {
 
@@ -45,7 +46,7 @@ public abstract class Tile extends GameRegion {
 
     public Tile(float x, float y, float width, float height){
         super(x, y, width, height);
-        super.setRLayer(RenderLayers.TILE_LAYER);
+        super.setRenderLayer(RenderLayers.TILE_LAYER);
         super.setOutline(true);
         super.setRenderOp((int)(Math.random()*5));
 
@@ -180,7 +181,7 @@ public abstract class Tile extends GameRegion {
                     setRenderOp((int)(Math.random()*5));
                 }
             };
-            Scheduler.registerEvent(rotateAnim);
+            GraphicsScheduler.registerEvent(rotateAnim);
         } else {
             rotateAnim = null;
         }

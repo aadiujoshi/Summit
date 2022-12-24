@@ -23,7 +23,8 @@ import summit.gfx.Sprite;
 import summit.util.Direction;
 import summit.util.GameRegion;
 import summit.util.ScheduledEvent;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 
 public abstract class Entity extends GameRegion{
 
@@ -64,8 +65,8 @@ public abstract class Entity extends GameRegion{
     private float health;
 
     public Entity(float x, float y, float width, float height){
-        super(x,y,width,height);
-        super.setRLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
+        super(x, y, width, height);
+        super.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
 
         this.maxHealth = 1;
         this.health = maxHealth;
@@ -106,6 +107,9 @@ public abstract class Entity extends GameRegion{
     public void setRenderLayer(OrderPaintEvent ope){ 
         super.setRenderLayer(ope);
         shadow.setRenderLayer(ope);
+
+        if(equipped != null)
+            equipped.setRenderLayer(ope);
     }
 
     @Override
@@ -147,7 +151,7 @@ public abstract class Entity extends GameRegion{
         this.setKnockback(10, 500, hitBy);
 
         //flash animation-----------------------------------------
-        Scheduler.registerEvent(new ScheduledEvent(125,8) {
+        GraphicsScheduler.registerEvent(new ScheduledEvent(125,8) {
             private boolean flash = false;
             @Override
             public void run() {
@@ -167,6 +171,10 @@ public abstract class Entity extends GameRegion{
         
         if(health <= 0){
             set(destroyed, true);
+            
+            if(hitBy.is(pickupItems)){
+                hitBy.pickupItems(this.getItems());
+            }
         }
     }
 
@@ -283,7 +291,7 @@ public abstract class Entity extends GameRegion{
         switch(property){
             case attackCooldown -> {
                 if(is(attackCooldown)){
-                    Scheduler.registerEvent(new ScheduledEvent(attackCooldownMS,1) {
+                    GameScheduler.registerEvent(new ScheduledEvent(attackCooldownMS,1) {
                         @Override
                         public void run() {
                             set(attackCooldown, false);
@@ -296,7 +304,7 @@ public abstract class Entity extends GameRegion{
 
             case damageCooldown -> {
                 if(is(damageCooldown)){
-                    Scheduler.registerEvent(new ScheduledEvent(damageCooldownMS,1) {
+                    GameScheduler.registerEvent(new ScheduledEvent(damageCooldownMS,1) {
                         @Override
                         public void run() {
                             set(damageCooldown, false);
@@ -436,10 +444,13 @@ public abstract class Entity extends GameRegion{
         
         for (var itemStack : items2.entrySet()) {
             for (Item it : itemStack.getValue()) {
-                it.setOwner(this);
+                if(it != null)
+                    it.setOwner(this);
             }
 
-            items.get(itemStack.getKey()).addAll(itemStack.getValue());
+            if(items.get(itemStack.getKey()) != null)
+                items.get(itemStack.getKey()).addAll(itemStack.getValue());
+            
             itemStack.getValue().clear();
         }
     }

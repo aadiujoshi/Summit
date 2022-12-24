@@ -21,6 +21,7 @@ public class Sprite {
     public static final String HALF_HEART = "heart-half";
     public static final String FULL_HEART = "heart-full";
     public static final String CHEST_CLOSED = "chest-closed";
+    public static final String CHEST_OPENED = "chest-opened";
     public static final String SUMMIT_BACKGROUND = "background";
     public static final String TEXT_APPEND_KEY = "-text";
     public static final String EMPTY_HEART = "heart-empty";
@@ -33,6 +34,7 @@ public class Sprite {
     public static final String TALL_ROCK1 = "tall-rock1";
     public static final String BLUE_LAMP1 = "blue-lamp1";
     public static final String BOW = "bow";
+    public static final String BOW_2 = "bow-pull";
     public static final String APPLE_ITEM = "apple-item";
     public static final String STICK_ITEM = "stick-item";
     public static final String BONE_ITEM = "bone-item";

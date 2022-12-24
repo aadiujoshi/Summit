@@ -10,7 +10,8 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 import summit.util.Time;
 
 public class ParticleAnimation extends Animation{
@@ -53,7 +54,7 @@ public class ParticleAnimation extends Animation{
             py[i] = sy;
         }
 
-        Scheduler.registerEvent(this);
+        GraphicsScheduler.registerEvent(this);
     }
 
     @Override

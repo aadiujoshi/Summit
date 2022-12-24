@@ -27,14 +27,15 @@ public abstract class Structure extends GameRegion {
 
     public Structure(float x, float y, float width, float height, GameMap parentMap) {
         super(x, y, width, height);
-        super.setRLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
+        super.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
         this.situate(parentMap);
         this.parentMap = parentMap;
     }
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
-        ope.addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
+        super.setRenderLayer(ope);
+        
         for (Light s : shadows) {
             s.setRenderLayer(ope);
         }

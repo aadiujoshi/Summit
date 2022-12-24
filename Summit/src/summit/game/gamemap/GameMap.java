@@ -31,7 +31,7 @@ import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
 import summit.util.ScheduledEvent;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
 
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever{
 
@@ -134,16 +134,16 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             }
         };
 
-        Scheduler.registerEvent(spawnMobs);
+        GameScheduler.registerEvent(spawnMobs);
     }
 
     //saved world
     public void reinit(){
-        this.animation.reinit();
-        this.spawnMobs.reinit();
+        this.animation.reinit(2);
+        this.spawnMobs.reinit(1);
 
         for (Animation pa : animations) {
-            pa.reinit();
+            pa.reinit(2);
         }
         for (Entity e : entities) {
             e.reinit();

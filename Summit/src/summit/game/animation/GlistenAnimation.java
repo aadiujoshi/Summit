@@ -8,7 +8,8 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 
 public class GlistenAnimation extends Animation{
 
@@ -48,7 +49,7 @@ public class GlistenAnimation extends Animation{
             calls[i] = -i;
         }
 
-        Scheduler.registerEvent(this);
+        GraphicsScheduler.registerEvent(this);
     }
 
     @Override

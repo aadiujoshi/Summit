@@ -35,12 +35,25 @@ public abstract class WeaponItem extends Item implements Paintable{
 
     @Override
     public void setRenderLayer(OrderPaintEvent e){
-        e.addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER+1, this);
+        e.addToLayer(RenderLayers.STRUCTURE_ENTITY_LAYER, this);
     }
 
     @Override
     public void paint(PaintEvent e){
-        e.getRenderer().renderGame(getSprite(), getOwner().getX()+0.35f, getOwner().getY()-0.2f, 
+        Entity owner = getOwner();
+
+        if(owner.is(Entity.inWater))
+            return;
+
+        float x = owner.getX();
+        float y = owner.getY();
+
+        if(owner.getName().equals("Player")){
+            x = e.getCamera().getX();
+            y = e.getCamera().getY();
+        }
+        
+        e.getRenderer().renderGame(getSprite(), x+0.5f, y-0.2f, 
                                     (getOwner().getRenderOp() & ~Renderer.FLIP_X), 
                                     ColorFilter.NOFILTER, 
                                     e.getCamera());

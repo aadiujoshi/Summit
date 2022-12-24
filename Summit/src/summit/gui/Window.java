@@ -38,7 +38,8 @@ import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.Controls;
 import summit.util.GameLoader;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 import summit.util.Settings;
 import summit.util.Time;
 
@@ -81,7 +82,8 @@ public class Window implements MouseListener, KeyListener{
     private BufferStrategy bufferStrategy;
 
     private Thread graphicsThread;
-    private Thread schedulerThread;
+    private Thread scheduler1Thread;
+    private Thread scheduler2Thread;
 
     //------------------------------------------
     private MainSelectionMenu mainMenu;
@@ -105,13 +107,23 @@ public class Window implements MouseListener, KeyListener{
         mainMenu = new MainSelectionMenu(this);
         settings = new VideoSettings(this);
 
-        schedulerThread = new Thread(new Runnable() {
+        scheduler1Thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(!closed)
-                    Scheduler.checkEvents();
+                    GameScheduler.checkEvents();
                 
-                System.out.println("Scheduler Thread Terminated");
+                System.out.println("Scheduler1 Thread Terminated");
+            }
+        });
+
+        scheduler2Thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!closed)
+                    GraphicsScheduler.checkEvents();
+                
+                System.out.println("Scheduler2 Thread Terminated");
             }
         });
 
@@ -233,7 +245,8 @@ public class Window implements MouseListener, KeyListener{
         }
         
         graphicsThread.start();
-        schedulerThread.start();
+        scheduler1Thread.start();
+        scheduler2Thread.start();
 
         System.out.println("Threads in use: " + (Thread.activeCount()+1) + "\n");
 

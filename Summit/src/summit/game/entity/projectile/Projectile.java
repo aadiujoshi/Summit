@@ -11,7 +11,7 @@ import summit.gfx.Renderer;
 import summit.util.GameRegion;
 import summit.util.Region;
 import summit.util.ScheduledEvent;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
 import summit.util.Time;
 
 public class Projectile extends Entity {

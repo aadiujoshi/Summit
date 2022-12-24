@@ -41,7 +41,9 @@ public class RenderLayers{
         for (ArrayList<Paintable> layer : layers) {
             for (Paintable p : layer) {
                 p.paint(e);
+                // System.out.println(p.getClass());
             }
+            // System.out.println("------------------------------");
         }
     }
 }

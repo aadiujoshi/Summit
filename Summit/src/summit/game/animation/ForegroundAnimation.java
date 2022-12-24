@@ -9,7 +9,8 @@ import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.util.ScheduledEvent;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 import summit.util.Time;
 
 public class ForegroundAnimation extends Animation{
@@ -42,7 +43,7 @@ public class ForegroundAnimation extends Animation{
                             ((int)(Math.random()*Renderer.HEIGHT) << 0);
         }
 
-        Scheduler.registerEvent(this);
+        GraphicsScheduler.registerEvent(this);
     }
 
     @Override

@@ -15,7 +15,8 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.ScheduledEvent;
-import summit.util.Scheduler;
+import summit.util.GameScheduler;
+import summit.util.GraphicsScheduler;
 
 public class HUD extends Container{
 
@@ -117,6 +118,6 @@ public class HUD extends Container{
             }
         };
 
-        Scheduler.registerEvent(messageTimer);
+        GraphicsScheduler.registerEvent(messageTimer);
     }
 }

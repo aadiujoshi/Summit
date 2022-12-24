@@ -88,7 +88,7 @@ public class Controls {
         }
 
         for (ControlsReciever controlsReciever : cr) {
-            controlsReciever.press();
+            controlsReciever.keyPress();
         }
     }
 
