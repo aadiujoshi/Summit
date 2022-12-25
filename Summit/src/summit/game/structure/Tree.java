@@ -24,6 +24,7 @@ public class Tree extends Entity{
         super(x, y, 1, 1);
 
         super.setMaxHealth(5);
+        super.setMoveable(false);
         super.setHealth(5);
         super.setSprite(Sprite.PINE_TREE);
         super.setShadow(new Light(x, y, 1, -150, -150, -150));

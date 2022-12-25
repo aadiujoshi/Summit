@@ -9,7 +9,7 @@ import summit.game.ai.HostileMobAI;
 import summit.game.entity.Entity;
 import summit.game.entity.projectile.Arrow;
 import summit.game.item.BoneItem;
-import summit.game.item.BowItem;
+import summit.game.item.Bow;
 import summit.game.item.GoldCoin;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -27,7 +27,7 @@ public class Skeleton extends HumanoidEntity{
         super.setHealth(getMaxHealth());
         super.setAttackDamage(1);
 
-        super.setEquipped(new BowItem(this));
+        super.setEquipped(new Bow(this));
 
         super.set(hostile, true);
     }

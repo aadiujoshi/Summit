@@ -7,6 +7,7 @@ package summit.game.entity.mob;
 import summit.game.GameUpdateEvent;
 import summit.game.ai.HostileMobAI;
 import summit.game.entity.Entity;
+import summit.game.item.GoldCoin;
 import summit.game.item.Sword;
 import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
@@ -25,6 +26,8 @@ public class Zombie extends HumanoidEntity{
         super.setMaxHealth(5);
         super.setAttackDamage(1);
 
+        super.addItems(new GoldCoin(this), (int)(Math.random()*10));
+
         super.set(hostile, true);
     }
 
@@ -38,13 +41,7 @@ public class Zombie extends HumanoidEntity{
             // }
         }
         
-        if(outline())
-            this.outline(e);
-            
-        e.getRenderer().renderGame(getSprite(), 
-                                    getX()+getSpriteOffsetX(), getY()+getSpriteOffsetY(), getRenderOp(),
-                                    getColorFilter(),
-                                    e.getCamera());
+        super.paint0(e);
 
         // e.getRenderer().renderGame(Sprite.STONE_SWORD, getX()+0.25f, getY()-0.25f, Renderer.NO_OP, ColorFilter.NOFILTER, e.getCamera());
     }

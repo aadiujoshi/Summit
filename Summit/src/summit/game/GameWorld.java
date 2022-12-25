@@ -4,7 +4,9 @@
 */
 package summit.game;
 
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 
 import summit.game.animation.TransitionAnimation;
 import summit.game.entity.mob.Player;
@@ -119,12 +121,12 @@ public class GameWorld implements Paintable, Serializable{
                                                     new GameUpdateEvent(this, MS_PER_TICK);
                 
                 if(loadedMap != null){
-                    try{
-                        loadedMap.update(e);
-                    } catch(Exception ex) {
-                        ex.printStackTrace();
-                        // GameLogger.logError();
-                    }
+                    loadedMap.update(e);
+                    // try{
+                    //     loadedMap.update(e);
+                    // } catch(ArrayIndexOutOfBoundsException ex) {
+                    //     ex.printStackTrace();
+                    // }
                 }
                 
                 //change gamemaps

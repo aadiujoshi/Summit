@@ -32,7 +32,7 @@ public class CaveGenVisualization extends JPanel{
 
     private int color = 0x00ff00;
     
-    public static void main(String args[]) {
+    public static void jlk(String args[]) {
         new CaveGenVisualization();
     }
 

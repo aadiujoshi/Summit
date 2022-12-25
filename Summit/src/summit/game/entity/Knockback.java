@@ -65,7 +65,7 @@ public class Knockback implements GameUpdateReciever, Serializable {
         float nx = sx + (kx * delta_t) + (ax/2) * (delta_t*delta_t);
         float ny = sy + (ky * delta_t) + (ay/2) * (delta_t*delta_t);
 
-        if(map.getTileAt(nx, ny) != null && !map.getTileAt(nx, ny).isBoundary()){
+        if(hitEntity.moveTo(map, nx, ny) && map.getTileAt(nx, ny) != null && !map.getTileAt(nx, ny).isBoundary()){
             hitEntity.setPos(nx, ny);
         } else{
             overrideFinish = true;

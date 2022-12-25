@@ -11,7 +11,7 @@ import java.util.Stack;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.projectile.Arrow;
 import summit.game.item.BlueKey;
-import summit.game.item.BowItem;
+import summit.game.item.Bow;
 import summit.game.item.GreenKey;
 import summit.game.item.Item;
 import summit.game.item.ItemStorage;
@@ -42,6 +42,9 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     private InventoryGUI invGui;
     
     private int xp;
+
+    private Sword sword;
+    private Bow bow;
     
     public Player(float x, float y) {
         super(x, y);
@@ -56,12 +59,14 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         
         super.setEquipped(new Sword(this));
         
-        addItems(new RedKey(this), 0);
-        addItems(new GreenKey(this), 0);
-        addItems(new BlueKey(this), 0);
+        super.addItems(new RedKey(this), 1);
+        super.addItems(new GreenKey(this), 1);
+        super.addItems(new BlueKey(this), 1);
 
         this.hud = new HUD(this);
         this.invGui = new InventoryGUI(super.getItems());
+        this.sword = new Sword(this);
+        this.bow = new Bow(this);
 
         Controls.addControlsReciever(this);
         
@@ -161,6 +166,10 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         if(Controls.Q){
             useItem(Sprite.APPLE_ITEM);
         }
+        if(Controls.R){
+            setEquipped(getEquipped());
+        }
+
     }
 
     @Override

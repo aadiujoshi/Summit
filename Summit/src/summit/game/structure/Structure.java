@@ -27,6 +27,7 @@ public abstract class Structure extends GameRegion {
 
     public Structure(float x, float y, float width, float height, GameMap parentMap) {
         super(x, y, width, height);
+        super.setMoveable(false);
         super.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
         this.situate(parentMap);
         this.parentMap = parentMap;

@@ -74,6 +74,7 @@ public abstract class Entity extends GameRegion{
     public Entity(float x, float y, float width, float height){
         super(x, y, width, height);
         super.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER);
+        super.setMoveable(true);
 
         this.maxHealth = 1;
         this.health = maxHealth;
@@ -213,26 +214,37 @@ public abstract class Entity extends GameRegion{
                                         getColor()));
     }
     
-    public boolean moveTo(GameMap map, float newX, float newY){
-        //leniancy 
-        // float settle = 1/16f;
-        // float settle = 0;
+    /**
+     * used if stuck in a wall
+     */
+    @Deprecated
+    public void clip(GameMap map){
 
-        if(map.getTileAt(newX, newY) == null || 
-            map.getTileAt(newX, newY).isBoundary()){
+        setPos(Math.round(getX()), Math.round(getY()));
 
-            return false;
-        }
+        //check 4 corners of hitbox
+        // if(){
 
-        // for (float x = newX-getWidth()/2f+settle; x <= newX+getWidth()/2f-settle; x+= (settle != 0 ? settle : 1/16f)) {
-        //     for (float y = newY-getHeight()/2f+settle; y <= newY+getHeight()/2f-settle; y+= (settle != 0 ? settle : 1/16f)) {
-        //         if(map.getTileAt(x, y) == null || 
-        //             map.getTileAt(x, y).isBoundary()){
-
-        //             return false;
-        //         }
-        //     }
         // }
+
+    }
+
+    public boolean moveTo(GameMap map, float newX, float newY){
+        if(!isMoveable())
+            return false;
+
+        //leniancy 
+        float settle = 1/16f;
+        
+        for (float x = newX-getWidth()/2f+settle; x <= newX+getWidth()/2f-settle; x+= (settle != 0 ? settle : 1/16f)) {
+            for (float y = newY-getHeight()/2f+settle; y <= newY+getHeight()/2f-settle; y+= (settle != 0 ? settle : 1/16f)) {
+                if(map.getTileAt(x, y) == null || 
+                    map.getTileAt(x, y).isBoundary()){
+
+                    return false;
+                }
+            }
+        }
         return true;
     }
 

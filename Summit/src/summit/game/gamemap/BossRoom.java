@@ -6,6 +6,7 @@ import summit.game.tile.SnowTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
+import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
 
 public class BossRoom extends GameMap{
@@ -14,6 +15,7 @@ public class BossRoom extends GameMap{
         super(player, seed, 40, 30);
 
         super.setFilter(new ColorFilter(-110, -100, -30));
+        super.setCamera(new Camera(getWidth()/2, getHeight()/2));
 
         TileStack[][] tiles = super.getTiles();
 
@@ -46,7 +48,7 @@ public class BossRoom extends GameMap{
         int er = tiles.length/2 + roomHeight/2;
         int ec = tiles[0].length/2 + roomWidth/2;
 
-        System.out.println(sr + "  " + sc + "  " + er + "  " + ec);
+        // System.out.println(sr + "  " + sc + "  " + er + "  " + ec);
 
         //cut out walkable area
         for (int r = sr; r < er; r++) {

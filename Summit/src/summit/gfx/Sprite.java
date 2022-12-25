@@ -17,6 +17,8 @@ public class Sprite {
     public static final String STONE_TILE = "stone-tile";
     public static final String GRASS_TILE = "grass-tile";
     public static final String ICE_TILE = "ice-tile";
+    public static final String ICE_KING = "ice-king-south";
+    public static final String ICE_KING_NEUTRAL = "ice-king-neutral-south";
     public static final String WATER_TILE = "water-tile";
     public static final String HALF_HEART = "heart-half";
     public static final String FULL_HEART = "heart-full";

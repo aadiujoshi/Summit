@@ -16,6 +16,7 @@ public class RaisedStone extends Structure{
         super.setSpriteOffsetY(0.25f);
         super.setSprite(Sprite.RAISED_STONE);
         super.setShadow(ColorFilter.NOFILTER);
+        super.setEnabled(false);
         super.situate(parentMap);
     }
 

@@ -8,6 +8,7 @@ import summit.game.entity.mob.Player;
 import summit.game.item.BlueKey;
 import summit.game.item.GreenKey;
 import summit.game.item.Item;
+import summit.game.structure.BossRoomEntrance;
 import summit.game.structure.ItemChest;
 import summit.game.structure.RaisedStone;
 import summit.game.tile.EmptyTile;
@@ -100,6 +101,37 @@ public class DungeonsMap extends GameMap{
             }
         }
 
+
+
+        //find 4x4 space under wall to put boss room entrance
+        //"b" is boundary
+        //"o" is open
+        //[b][b]
+        //[o][o] <- spawn here
+        //[o][o]
+        
+        ArrayList<Point> door_locs = new ArrayList<>();
+
+        for (int r = 1; r < tiles.length-1; r++) {
+            for (int c = 0; c < tiles[0].length-1; c++) {
+                //check top
+                if(tiles[r+1][c].topTile().isBoundary() && tiles[r+1][c+1].topTile().isBoundary()){
+                    //check this row
+                    if(!tiles[r][c].topTile().isBoundary() && !tiles[r][c+1].topTile().isBoundary()){
+                        //check bottom row
+                        if(!tiles[r-1][c].topTile().isBoundary() && !tiles[r-1][c+1].topTile().isBoundary()){
+                            door_locs.add(new Point(c,r));
+                        }
+                    }
+                }
+            }
+        }
+
+        Point doorCoord = door_locs.get(rand.nextInt(door_locs.size()));
+
+        System.out.println(doorCoord);
+
+        addStructure(new BossRoomEntrance(doorCoord.x+0.5f, doorCoord.y+0.5f, this));
     }
 
     private boolean[][] gen(Random rand, int x, int y, Object iterations, boolean[][] tiles){

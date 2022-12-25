@@ -28,7 +28,8 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
 
     private boolean outline = true;
 
-    private boolean valid = true;
+    private boolean moveable = true;
+    private boolean enabled = true;
 
     private HashMap<String, Boolean> tags;
 
@@ -50,7 +51,7 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
 
     public GameRegion(float x, float y, float width, float height) {
         super(x, y, width, height);
-
+        
         this.tags = new HashMap<>();
     }
 
@@ -66,12 +67,20 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
 
     @Override
     public void paint(PaintEvent e) {
+        paint0(e);
+    }
+
+    /**
+     * Can be used by Subclasses for basic rendering
+     * @param e PaintEvent
+     */
+    public final void paint0(PaintEvent e){
         if(outline())
             this.outline(e);
         e.getRenderer().renderGame(getSprite(), 
-                                    getX()+getSpriteOffsetX(), getY()+getSpriteOffsetY(), getRenderOp(),
-                                    getColorFilter(),
-                                    e.getCamera());
+                                getX()+getSpriteOffsetX(), getY()+getSpriteOffsetY(), getRenderOp(),
+                                getColorFilter(),
+                                e.getCamera());
     }
 
     /**
@@ -234,11 +243,19 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
         return this.sprite;
     }
     
-    public boolean isValid() {
-        return this.valid;
+    public boolean isMoveable() {
+        return this.moveable;
     }
 
-    public void setValid(boolean valid) {
-		this.valid = valid;
+    public void setMoveable(boolean valid) {
+		this.moveable = valid;
+	}
+
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

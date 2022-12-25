@@ -113,7 +113,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                 
                 //try to spawn
                 for (int i = 0; i < hostileMobCap-h_count; i++) {
-                    int mobType = (int)(Math.random()*4);
+                    int mobType = (int)(Math.random()*2);
 
                     float offsetx = (float)(Math.random()*range-range/2);
                     float offsety = (float)(Math.random()*range-range/2);
@@ -121,16 +121,18 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                     float nx = player.getX() + offsetx;
                     float ny = player.getY() + offsety;
 
-                    if(getTileAt(nx, ny) != null && !getTileAt(nx, ny).isBoundary() && 
-                        Region.distance(nx, ny, player.getX(), player.getY()) >= 15){
+                    MobEntity mob = null;
 
-                        if(mobType == 0){
-                            spawn(new Zombie(nx, ny));
-                        }
+                    if(mobType == 0){
+                        mob = new Zombie(nx, ny);
+                    }
 
-                        if(mobType == 1){
-                            spawn(new Skeleton(nx, ny));
-                        }
+                    if(mobType == 1){
+                        mob = new Skeleton(nx, ny);
+                    }
+
+                    if(mob.moveTo(getThis(), nx, ny) && mob.distance(player) >= 15){
+                        spawn(mob);
                     }
                 }
 
@@ -220,10 +222,17 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         ArrayList<GameRegion> objects = objectsInDist(camera, simDist);
 
         for (int i = 0; i < objects.size(); i++) {
+            GameRegion gr1 = objects.get(i);
+
+            if(!gr1.isEnabled())
+                        continue;
+
             for (int j = 0; j < objects.size(); j++) {
                 try{
-                    GameRegion gr1 = objects.get(i);
                     GameRegion gr2 = objects.get(j);
+
+                    if(!gr2.isEnabled())
+                        continue;
 
                     if(gr1 instanceof Entity){
                         getTileAt(gr1.getX(), gr1.getY()).collide(e, (Entity)gr1);
@@ -231,20 +240,8 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                         if(i != j && gr1.overlap(gr2)){         
                             gr2.collide(e, (Entity)gr1);
                             
-                            //clip gr1
-                            // if(!(gr2 instanceof Projectile)){
-                            //     a: for (float nx = gr1.getX()-1f; nx <= gr1.getX()+1f; nx++) {
-                            //         for (float ny = gr1.getY()-1f; ny <= gr1.getY()+1f; ny++) {
-                            //             System.out.println(nx + "  " + ny);
-
-                            //             if(((Entity)gr1).moveTo(e.getMap(), nx, ny)){
-                            //                 gr1.setPos(nx, ny);
-
-                            //                 break a;
-                            //             }
-                            //         }
-                            //     }
-                            // }
+                            // if(!gr2.isMoveable())
+                            //     ((Entity)gr1).clip(this);
                         }
                     }
 
@@ -325,6 +322,10 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     @Override
     public void paint(PaintEvent e) {
         e.getRenderer().filterRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT, filter);
+
+        // e.getRenderer().renderText(
+        //     objectsInDist(camera, renderDist).size()+"", 
+        //         200,100, 0, new ColorFilter(java.awt.Color.RED.getRGB()));
     }
 
     //--------------------------------------------------------------------
@@ -373,7 +374,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             
         for (int i = 0; i < structures.size(); i++){ 
             Structure s = structures.get(i);
-
+            
             if(s.getX() > left && s.getX() < right && s.getY() < up && s.getY() > down)
                 all.add(s);
         }
@@ -393,7 +394,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
         for(int i = nx-rwidth/2; i < nx+rwidth/2; i++){
             for(int j = ny-rheight/2; j < ny+rheight/2; j++){
-                if(i > -1 && j > -1 && i < tiles.length && j < tiles[0].length)
+                if(i > -1 && j > -1 && i < tiles[0].length && j < tiles.length)
                     rdTiles[j-(ny-rheight/2)][i-(nx-rwidth/2)] = tiles[j][i];
             }
         }
@@ -475,6 +476,10 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         }
     }
     
+    public GameMap getThis(){
+        return this;
+    }
+
     public ColorFilter getFilter() {
         return this.filter;
     }
