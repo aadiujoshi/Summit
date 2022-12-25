@@ -53,6 +53,9 @@ public abstract class WeaponItem extends Item implements Paintable{
             y = e.getCamera().getY();
         }
         
+        x += owner.getSpriteOffsetX();
+        y += owner.getSpriteOffsetY();
+
         e.getRenderer().renderGame(getSprite(), x+0.5f, y-0.2f, 
                                     (getOwner().getRenderOp() & ~Renderer.FLIP_X), 
                                     ColorFilter.NOFILTER, 

@@ -47,7 +47,7 @@ public abstract class Structure extends GameRegion {
     }
 
     @Override
-    public void collide(Entity e){
+    public void collide(GameUpdateEvent ev, Entity e){
         //do nothing
     }
 

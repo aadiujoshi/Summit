@@ -3,6 +3,7 @@ package summit.util;
 import java.util.HashMap;
 
 import summit.game.GameClickReciever;
+import summit.game.GameUpdateEvent;
 import summit.game.GameUpdateReciever;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.Player;
@@ -53,7 +54,7 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
         this.tags = new HashMap<>();
     }
 
-    public abstract void collide(Entity e);
+    public abstract void collide(GameUpdateEvent ev, Entity e);
 
     @Override
     public void setRenderLayer(OrderPaintEvent e){
@@ -193,21 +194,21 @@ public abstract class GameRegion extends Region implements Paintable, GameUpdate
         this.rLayer = rLayer;
     }
 
-    public float getXOffset() {
-        return this.xOffset;
-    }
+    // public float getXOffset() {
+    //     return this.xOffset;
+    // }
 
-    public void setXOffset(float xOffset) {
-        this.xOffset = xOffset;
-    }
+    // public void setXOffset(float xOffset) {
+    //     this.xOffset = xOffset;
+    // }
 
-    public float getYOffset() {
-        return this.yOffset;
-    }
+    // public float getYOffset() {
+    //     return this.yOffset;
+    // }
 
-    public void setYOffset(float yOffset) {
-        this.yOffset = yOffset;
-    }
+    // public void setYOffset(float yOffset) {
+    //     this.yOffset = yOffset;
+    // }
 
     public int getColor() {
         return this.color;

@@ -10,6 +10,7 @@ import summit.game.GameUpdateEvent;
 import summit.game.ai.EntityAI;
 import summit.game.entity.Entity;
 import summit.game.entity.projectile.Projectile;
+import summit.game.item.RedKey;
 import summit.game.item.WeaponItem;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
@@ -37,25 +38,30 @@ public abstract class MobEntity extends Entity{
     }
 
     @Override
-    public void damage(Entity hitBy){
-        super.damage(hitBy);
+    public void damage(GameUpdateEvent e, Entity hitBy){
+        super.damage(e, hitBy);
         if(getHealth() <= 0){
-            Player pl = null;
 
-            if((hitBy instanceof Projectile && ((Projectile)hitBy).getOrigin() instanceof Player)){
-                pl = (Player)((Projectile)hitBy).getOrigin();
-            } else if(hitBy instanceof Player){
-                pl = (Player)hitBy;
-            }
+            if(hitBy instanceof Projectile)
+                hitBy = (Entity)((Projectile)hitBy).getOrigin();
             
-            if(pl != null){
+            //if player hasnt gotten the red key yet
+            if(e.getMap().getPlayer().getObtainedKeys()[0] == false){
+
                 if(getCurMap().equals("DungeonsMap") && is(MobEntity.hostile)){
-                    if(Math.random() < 0.05){
-                        pl.getObtainedKeys()[0] = true;
+
+                    double chance = Math.random();
+                    System.out.println(chance);
+
+                    //10 percent chance to get key
+                    if(chance < 0.1){
+                        addItems(new RedKey(this), 1);
                     }
                 }
-
-                pl.addXp(3);
+            }
+            
+            if(hitBy.is(pickupItems)){
+                hitBy.pickupItems(this.getItems());
             }
         }
     }
@@ -89,18 +95,18 @@ public abstract class MobEntity extends Entity{
     public void gameClick(GameUpdateEvent e) {
     }
 
-    @Override
-    public void collide(Entity contact) {
-        super.collide(contact);
+    // @Override
+    // public void collide(GameUpdateEvent ev, Entity contact) {
+    //     super.collide(ev, contact);
 
         
-        // if(contact instanceof Item){
-        //     Item c = (Item)contact;
-        //     if(is(pickupItems) && items != null){
-        //         getItems().addItem(c);
-        //     }
-        // }
-    }
+    //     // if(contact instanceof Item){
+    //     //     Item c = (Item)contact;
+    //     //     if(is(pickupItems) && items != null){
+    //     //         getItems().addItem(c);
+    //     //     }
+    //     // }
+    // }
 
     //------  getters and setters -------------------------------------------
     

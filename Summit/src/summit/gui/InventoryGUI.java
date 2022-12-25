@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import summit.game.item.Item;
+import summit.game.item.ItemStorage;
 import summit.gfx.ColorFilter;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
@@ -17,7 +18,7 @@ import summit.gfx.Sprite;
 public class InventoryGUI extends Container{
 
     //ref to actual player inventory
-    private HashMap<String, Stack<Item>> items;
+    private ItemStorage items;
     
     //a little bit of hardcoding never hurt anyone
     private float[] item_x = new float[]{0.25f, 0.25f, 0.25f, 
@@ -33,7 +34,7 @@ public class InventoryGUI extends Container{
     //                                         Sprite.STICK_ITEM, Sprite.BONE_ITEM, Sprite.GOLD_COIN,
     //                                         null, null, null};
 
-    public InventoryGUI(HashMap<String, Stack<Item>> inv) {
+    public InventoryGUI(ItemStorage inv) {
         super(null, null, 0.5f, 0.5f, Sprite.INVENTORY);
         this.items = inv;
 
@@ -53,6 +54,9 @@ public class InventoryGUI extends Container{
 
         int i = 0;
         for(Map.Entry<String, Stack<Item>> item : items.entrySet()){
+            if(item.getKey().contains("key"))
+                continue;
+
             int n = item.getValue().size();
 
             int px = (int)(getX()-getWidth()/2) + (int)(getWidth()*item_x[i]);

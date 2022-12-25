@@ -17,6 +17,7 @@ import summit.game.entity.mob.MobEntity;
 import summit.game.entity.mob.Player;
 import summit.game.entity.mob.Skeleton;
 import summit.game.entity.mob.Zombie;
+import summit.game.entity.projectile.Projectile;
 import summit.game.structure.Structure;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
@@ -50,10 +51,10 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     private Player player;
 
     //render distance
-    private int rd = 25;
-
+    private int renderDist;
+    
     //simulation distance for gameupdaterecievers
-    private int sd = 50;
+    private int simDist;
 
     //hostile mob cap
     private int hostileMobCap = 10;
@@ -90,6 +91,9 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.WIDTH = tiles[0].length;
         this.HEIGHT = tiles.length;
 
+        this.renderDist = 20;
+        this.simDist = 50;
+
         this.setPlayer(player);
         this.camera = new Camera(width/2, height/2);
 
@@ -105,7 +109,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                 
                 int h_count = hostileMobCount();
                 
-                float range = sd/2f;
+                float range = simDist/2f;
                 
                 //try to spawn
                 for (int i = 0; i < hostileMobCap-h_count; i++) {
@@ -168,6 +172,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                 return;
             }
         }
+
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
 
@@ -183,28 +188,36 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     @Override
     public void update(GameUpdateEvent e) {
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[0].length; j++) {
-                tiles[i][j].update(e);
+
+        ArrayList<GameRegion> updateObjects = objectsInDist(camera, simDist);
+        TileStack[][] updateTiles = tilesInDist(camera, simDist);
+
+        for (int i = 0; i < updateTiles.length; i++) {
+            for (int j = 0; j < updateTiles[0].length; j++) {
+                if(updateTiles[i][j] != null)
+                    updateTiles[i][j].update(e);
             }
-        }
-        for (int i = 0; i < entities.size(); i++) {
-            Entity et = entities.get(i);
-            et.update(e);
-            if(entities.get(i).is(Entity.destroyed)){
-                et.destroy(e);
-                entities.remove(i);
-                i--;
-            }
-        }
-        for (int i = 0; i < structures.size(); i++) {
-            structures.get(i).update(e);
         }
 
+        for (int i = 0; i < updateObjects.size(); i++) {
+            
+            GameRegion gr = updateObjects.get(i);
+
+            if(gr == null)
+                continue;
+
+            gr.update(e);
+
+            if(updateObjects.get(i).is(Entity.destroyed)){
+                ((Entity)gr).destroy(e);
+                entities.remove((Entity)gr);
+            }
+        }
+        
         //-----------------------------------------------------------------------------------
 
         //do collision
-        ArrayList<GameRegion> objects = objectsInDist(camera, sd);
+        ArrayList<GameRegion> objects = objectsInDist(camera, simDist);
 
         for (int i = 0; i < objects.size(); i++) {
             for (int j = 0; j < objects.size(); j++) {
@@ -213,10 +226,25 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                     GameRegion gr2 = objects.get(j);
 
                     if(gr1 instanceof Entity){
-                        getTileAt(gr1.getX(), gr1.getY()).collide((Entity)gr1);
+                        getTileAt(gr1.getX(), gr1.getY()).collide(e, (Entity)gr1);
                         
                         if(i != j && gr1.overlap(gr2)){         
-                            gr2.collide((Entity)gr1);
+                            gr2.collide(e, (Entity)gr1);
+                            
+                            //clip gr1
+                            // if(!(gr2 instanceof Projectile)){
+                            //     a: for (float nx = gr1.getX()-1f; nx <= gr1.getX()+1f; nx++) {
+                            //         for (float ny = gr1.getY()-1f; ny <= gr1.getY()+1f; ny++) {
+                            //             System.out.println(nx + "  " + ny);
+
+                            //             if(((Entity)gr1).moveTo(e.getMap(), nx, ny)){
+                            //                 gr1.setPos(nx, ny);
+
+                            //                 break a;
+                            //             }
+                            //         }
+                            //     }
+                            // }
                         }
                     }
 
@@ -257,7 +285,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         }
 
         //tiles in render distance (from cameraa position)
-        TileStack[][] rdTiles = this.tilesInRD(e.getCamera());
+        TileStack[][] rdTiles = this.tilesInDist(e.getCamera(), renderDist);    
 
         for (int i = 0; i < rdTiles.length; i++) {
             for (int j = 0; j < rdTiles[0].length; j++) {
@@ -270,7 +298,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         ambientOcclusion.setRenderLayer(e);
 
         //front to back depth
-        ArrayList<GameRegion> sorted = objectsInDist(e.getCamera(), rd);
+        ArrayList<GameRegion> sorted = objectsInDist(e.getCamera(), renderDist);
 
         for (int i = 0; i < sorted.size(); i++) {
             int lowestInd = i;
@@ -353,19 +381,19 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         return all;
     }
 
-    public TileStack[][] tilesInRD(Camera c){
+    public TileStack[][] tilesInDist(Camera c, int dist){
         int nx = Math.round(c.getX());
         int ny = Math.round(c.getY());
 
         //range of tiles to display
-        int rwidth = (Renderer.WIDTH/16)+3;
-        int rheight = (Renderer.HEIGHT/16)+3;
+        int rwidth = dist;
+        int rheight = dist;
 
         TileStack[][] rdTiles = new TileStack[rheight][rwidth];
 
-        for(int i = nx-rwidth/2; i < nx+rwidth/2 && i < tiles.length; i++){
-            for(int j = ny-rheight/2; j < ny+rheight/2 && j < tiles[0].length; j++){
-                if(i > -1 && j > -1)
+        for(int i = nx-rwidth/2; i < nx+rwidth/2; i++){
+            for(int j = ny-rheight/2; j < ny+rheight/2; j++){
+                if(i > -1 && j > -1 && i < tiles.length && j < tiles[0].length)
                     rdTiles[j-(ny-rheight/2)][i-(nx-rwidth/2)] = tiles[j][i];
             }
         }
@@ -469,6 +497,22 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+    
+    public int getSimDist() {
+        return this.simDist;
+    }
+
+    public void setSimDist(int simDist) {
+        this.simDist = simDist;
+    }
+
+    public int getRenderDist() {
+        return this.renderDist;
+    }
+
+    public void setRenderDist(int renderDist) {
+        this.renderDist = renderDist;
     }
 
     public void dontSpawnMobs(){

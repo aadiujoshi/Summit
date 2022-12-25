@@ -4,13 +4,18 @@
 */
 package summit.game.entity.mob;
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Stack;
 
 import summit.game.GameUpdateEvent;
 import summit.game.entity.projectile.Arrow;
+import summit.game.item.BlueKey;
 import summit.game.item.BowItem;
+import summit.game.item.GreenKey;
 import summit.game.item.Item;
+import summit.game.item.ItemStorage;
+import summit.game.item.RedKey;
 import summit.game.item.Sword;
 import summit.game.item.WeaponItem;
 import summit.gfx.Camera;
@@ -39,22 +44,21 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     private int xp;
     
     public Player(float x, float y) {
-        super(x, y, 1, 2);
-        super.setDx(4.2f);
-        super.setDy(4.2f);
+        super(x, y);
+        super.setDx(4.20f);
+        super.setDy(4.20f);
         super.setMaxHealth(10f);
-        super.setHealth(5.5f);
+        super.setSpriteOffsetY(0.5f);
+        super.setHealth(getMaxHealth());
         super.setAttackDamage(1);
         super.set(pickupItems, true);
         super.setAI(null);
         
         super.setEquipped(new Sword(this));
         
-        var items = super.getItems();
-
-        items.put(Sprite.RED_KEY, new Stack<Item>());
-        items.put(Sprite.GREEN_KEY, new Stack<Item>());
-        items.put(Sprite.BLUE_KEY, new Stack<Item>());
+        addItems(new RedKey(this), 0);
+        addItems(new GreenKey(this), 0);
+        addItems(new BlueKey(this), 0);
 
         this.hud = new HUD(this);
         this.invGui = new InventoryGUI(super.getItems());
@@ -73,6 +77,10 @@ public class Player extends HumanoidEntity implements ControlsReciever{
                                     getRenderOp(),
                                     getColorFilter(),
                                     e.getCamera());
+
+        // Point p = Renderer.toPixel(getX(), getY(), e.getCamera());
+
+        // e.getRenderer().fillRect((int)(1+p.x-getWidth()/2*16), (int)(p.y-getHeight()/2*16), (int)(getWidth()*16), (int)(getHeight()*16), Renderer.toIntRGB(0, 255, 0));
     }
 
     @Override
@@ -99,7 +107,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         super.update(e);
 
         if(!e.getMap().getName().equals("MainMap")){
-            Light li = new Light(getX(), getY(), 5.5f, 80, 80, 80);
+            Light li = new Light(getX(), getY(), 5.5f,120, 120, 120);
             li.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER+1);
             super.setLight(li);
         } else
@@ -229,7 +237,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     }
 
     @Override
-    public void pickupItems(HashMap<String, Stack<Item>> items){
+    public void pickupItems(ItemStorage items){
         for (var i : items.entrySet()) {
             if((i.getValue().size()) != 0 && i.getValue().peek() != null){
                 hud.addMessage("+" + (i.getValue().size()) + " " + i.getValue().peek().getTextName());

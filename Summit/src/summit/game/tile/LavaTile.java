@@ -31,9 +31,9 @@ public class LavaTile extends Tile{
     }
 
     @Override
-    public void collide(Entity e) {
-        super.collide(e);
-        e.damage(dummy);
+    public void collide(GameUpdateEvent ev, Entity e) {
+        super.collide(ev, e);
+        e.damage(ev, dummy);
         
         e.set(Entity.onFire, true);
     }

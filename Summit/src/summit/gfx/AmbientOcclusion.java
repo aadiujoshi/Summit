@@ -46,7 +46,7 @@ public class AmbientOcclusion implements Serializable, Paintable{
 
     @Override
     public void paint(PaintEvent e) {
-        TileStack[][] tiles = e.getLoadedMap().tilesInRD(e.getCamera());
+        TileStack[][] tiles = e.getLoadedMap().tilesInDist(e.getCamera(), e.getLoadedMap().getRenderDist());
 
         for(int r = 0; r < tiles.length; r++) {
             for (int c = 0; c < tiles[0].length; c++) {

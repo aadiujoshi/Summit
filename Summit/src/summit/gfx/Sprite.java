@@ -32,7 +32,9 @@ public class Sprite {
     public static final String INVENTORY = "inventory";
     public static final String SKELETON_FACE_BACK = "skeleton-face_back";
     public static final String TALL_ROCK1 = "tall-rock1";
+    public static final String RAISED_STONE = "raised-stone";
     public static final String BLUE_LAMP1 = "blue-lamp1";
+    public static final String ICE_DOOR = "ice-door-locked";
     public static final String BOW = "bow";
     public static final String BOW_2 = "bow-pull";
     public static final String APPLE_ITEM = "apple-item";

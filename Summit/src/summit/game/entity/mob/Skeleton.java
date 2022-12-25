@@ -18,7 +18,7 @@ import summit.gfx.Sprite;
 public class Skeleton extends HumanoidEntity{
 
     public Skeleton(float x, float y) {
-        super(x, y, 1, 2);
+        super(x, y);
         super.setSprite(Sprite.SKELETON_FACE_BACK);
         super.setAI(new HostileMobAI(this));
         super.setAttackRange(4f);
@@ -29,17 +29,14 @@ public class Skeleton extends HumanoidEntity{
 
         super.setEquipped(new BowItem(this));
 
-        super.addItems(new BoneItem(this), (int)(Math.random()*5));
-        super.addItems(new GoldCoin(this), (int)(Math.random()*5));
-
         super.set(hostile, true);
     }
 
     @Override
-    public void damage(Entity hitBy){
+    public void damage(GameUpdateEvent e, Entity hitBy){
         // if()
 
-        super.damage(hitBy);
+        super.damage(e, hitBy);
 
         if(is(destroyed)){
 

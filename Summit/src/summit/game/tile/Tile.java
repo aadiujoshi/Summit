@@ -104,7 +104,7 @@ public abstract class Tile extends GameRegion {
     }
 
     @Override
-    public void collide(Entity e) {
+    public void collide(GameUpdateEvent ev, Entity e) {
         e.set(Entity.inWater, false);
         e.set(Entity.onFire, false);
 

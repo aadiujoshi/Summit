@@ -49,6 +49,10 @@ public class Region implements Serializable{
         return false;
     }
 
+    public float distance(Region other){
+        return distance(this.x, this.y, other.getX(), other.getY());
+    }
+
     public static float distance(float x1, float y1, float x2, float y2){
         return (float)Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }

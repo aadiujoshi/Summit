@@ -19,8 +19,8 @@ public class WaterTile extends Tile{
     }
     
     @Override
-    public void collide(Entity e) {
-        super.collide(e);
+    public void collide(GameUpdateEvent ev, Entity e) {
+        super.collide(ev, e);
         e.set(Entity.inWater, true);
         e.set(Entity.onFire, false);
     }

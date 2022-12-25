@@ -31,6 +31,9 @@ public class GameWorld implements Paintable, Serializable{
     
     private GameMap loadedMap;
 
+    //just for debugging
+    private volatile int tickSpeed = 0;
+
     private long gametime;
     private long elapsedtime;
     private final long START_TIME = Time.timeMs();
@@ -49,6 +52,7 @@ public class GameWorld implements Paintable, Serializable{
 
     private final long SEED;
     public static final int MS_PER_TICK = 15;
+    private static final boolean DYNAMIC_TICKS = true;
 
     //Same object shared by all GameMaps 
     private Player player;
@@ -93,15 +97,17 @@ public class GameWorld implements Paintable, Serializable{
 
     public void initUpdateThread(){
         gameUpdateThread = new Thread(() -> {
+
+            //needed if using dynamic ticks
+            long prev_ns = Time.NS_IN_MS;
+
             while(!parentWindow.isClosed()){
                 //show pause button
                 if(paused)
                     continue;
 
-                    
                 parentWindow.pushGameContainer(pauseButton);
                 
-
                 long startTime = Time.timeNs();
                 
                 this.elapsedtime = Time.timeMs() - startTime;
@@ -109,13 +115,14 @@ public class GameWorld implements Paintable, Serializable{
                 //20 minutes
                 this.gametime = (elapsedtime) % 1200000;
 
-                GameUpdateEvent e = new GameUpdateEvent(this);
+                GameUpdateEvent e = (DYNAMIC_TICKS) ? new GameUpdateEvent(this, prev_ns) : 
+                                                    new GameUpdateEvent(this, MS_PER_TICK);
                 
                 if(loadedMap != null){
                     try{
                         loadedMap.update(e);
                     } catch(Exception ex) {
-                        System.out.println(ex);
+                        ex.printStackTrace();
                         // GameLogger.logError();
                     }
                 }
@@ -133,10 +140,16 @@ public class GameWorld implements Paintable, Serializable{
                     this.mapTransition = new TransitionAnimation();
                     GraphicsScheduler.registerEvent(mapTransition);
                 }
-                
-                long delay_ns = Time.timeNs()-startTime;
 
-                Time.nanoDelay((MS_PER_TICK*Time.NS_IN_MS)-delay_ns);
+                long delay_ns = Time.timeNs()-startTime;
+                
+                if(DYNAMIC_TICKS){
+                    prev_ns = delay_ns;
+                    this.tickSpeed = (int)prev_ns;
+
+                } else {
+                    Time.nanoDelay((MS_PER_TICK*Time.NS_IN_MS)-delay_ns);
+                }
             }
 
             Sound.stopAll();
@@ -171,6 +184,11 @@ public class GameWorld implements Paintable, Serializable{
 
     @Override
     public void paint(PaintEvent e){
+        //debug tickspeed
+        if(DYNAMIC_TICKS){
+            e.getRenderer().renderText((tickSpeed/1000000)+"", 100, 100, 0, null);
+        }
+            
     }
 
     public GameMap getLoadedMap() {

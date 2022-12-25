@@ -63,7 +63,7 @@ public class Projectile extends Entity {
 
     @Override
     public void attack(Entity e, GameUpdateEvent ev) {
-        this.collide(e);
+        this.collide(ev, e);
     }
 
     @Override
@@ -109,10 +109,10 @@ public class Projectile extends Entity {
     }
 
     @Override
-    public void collide(Entity contact) {
+    public void collide(GameUpdateEvent e, Entity contact) {
         if(((GameRegion)contact) == origin) return;
 
-        contact.damage(this);
+        contact.damage(e, this);
 
         set(destroyed, true);
     }

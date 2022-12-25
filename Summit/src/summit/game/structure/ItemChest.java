@@ -11,6 +11,7 @@ import summit.game.item.ArrowItem;
 import summit.game.item.BoneItem;
 import summit.game.item.GoldCoin;
 import summit.game.item.Item;
+import summit.game.item.ItemStorage;
 import summit.game.item.StickItem;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
@@ -20,7 +21,7 @@ import summit.gfx.Sprite;
 
 public class ItemChest extends Structure{
 
-    private HashMap<String, Stack<Item>> items;
+    private ItemStorage items;
     
     //gamekey is one of the keys the player is trying to find
     public ItemChest(float x, float y, Item gameKey, GameMap parentMap) {
@@ -46,7 +47,7 @@ public class ItemChest extends Structure{
             //hit edge of map
         }
 
-        this.items = new HashMap<>();
+        this.items = new ItemStorage(null);
         
         Player p = parentMap.getPlayer();
 

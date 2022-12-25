@@ -12,8 +12,16 @@ import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.projectile.Projectile;
 import summit.game.gamemap.GameMap;
+import summit.game.item.AppleItem;
+import summit.game.item.ArrowItem;
+import summit.game.item.BoneItem;
+import summit.game.item.GoldCoin;
 import summit.game.item.Item;
+import summit.game.item.ItemStorage;
+import summit.game.item.SnowballItem;
+import summit.game.item.StickItem;
 import summit.game.item.WeaponItem;
+import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
@@ -28,8 +36,7 @@ import summit.util.GraphicsScheduler;
 
 public abstract class Entity extends GameRegion{
 
-    //string key is the sprite from Sprite class, with the value of stack of items
-    private HashMap<String, Stack<Item>> items;
+    private ItemStorage items;
 
     //currently equipped weapon
     private WeaponItem equipped;
@@ -80,14 +87,21 @@ public abstract class Entity extends GameRegion{
         
         this.shadow = new Light(x, y, 1f, -50, -50, -50);
 
-        this.items = new HashMap<>();
+        this.items = new ItemStorage(this);
 
-        items.put(Sprite.ARROW_ITEM, new Stack<Item>());
-        items.put(Sprite.SNOWBALL, new Stack<Item>());
-        items.put(Sprite.APPLE_ITEM, new Stack<Item>());
-        items.put(Sprite.STICK_ITEM, new Stack<Item>());
-        items.put(Sprite.BONE_ITEM, new Stack<Item>());
-        items.put(Sprite.GOLD_COIN, new Stack<Item>());
+        items.addItems(new ArrowItem(this), 0);
+        items.addItems(new SnowballItem(this), 0);
+        items.addItems(new AppleItem(this), 0);
+        items.addItems(new StickItem(this), 0);
+        items.addItems(new BoneItem(this), 0);
+        items.addItems(new GoldCoin(this), 0);
+
+        // items.put(Sprite.ARROW_ITEM, new Stack<Item>());
+        // items.put(Sprite.SNOWBALL, new Stack<Item>());
+        // items.put(Sprite.APPLE_ITEM, new Stack<Item>());
+        // items.put(Sprite.STICK_ITEM, new Stack<Item>());
+        // items.put(Sprite.BONE_ITEM, new Stack<Item>());
+        // items.put(Sprite.GOLD_COIN, new Stack<Item>());
 
         this.add(attackCooldown);
         this.add(damageCooldown);
@@ -135,12 +149,12 @@ public abstract class Entity extends GameRegion{
     }
 
     @Override
-    public void collide(Entity e){
+    public void collide(GameUpdateEvent ev, Entity e){
         if(e.is(onFire))
             set(onFire, true);
     }
 
-    public void damage(Entity hitBy){
+    public void damage(GameUpdateEvent e, Entity hitBy){
         if(hitBy.is(attackCooldown) || this.is(damageCooldown))
             return;
         if(hitBy instanceof Projectile && !is(projectileDamage))
@@ -185,7 +199,7 @@ public abstract class Entity extends GameRegion{
     }
 
     public void attack(Entity e, GameUpdateEvent ev){
-        e.damage(this);
+        e.damage(ev, this);
         
         if(!is(attackCooldown))
             set(attackCooldown, true);
@@ -200,11 +214,25 @@ public abstract class Entity extends GameRegion{
     }
     
     public boolean moveTo(GameMap map, float newX, float newY){
+        //leniancy 
+        // float settle = 1/16f;
+        // float settle = 0;
+
         if(map.getTileAt(newX, newY) == null || 
             map.getTileAt(newX, newY).isBoundary()){
+
             return false;
         }
 
+        // for (float x = newX-getWidth()/2f+settle; x <= newX+getWidth()/2f-settle; x+= (settle != 0 ? settle : 1/16f)) {
+        //     for (float y = newY-getHeight()/2f+settle; y <= newY+getHeight()/2f-settle; y+= (settle != 0 ? settle : 1/16f)) {
+        //         if(map.getTileAt(x, y) == null || 
+        //             map.getTileAt(x, y).isBoundary()){
+
+        //             return false;
+        //         }
+        //     }
+        // }
         return true;
     }
 
@@ -262,6 +290,18 @@ public abstract class Entity extends GameRegion{
         ly = getY();
     }
 
+    public void addItems(Item item, int num){
+        items.addItems(item, num);
+    }
+
+    public void pickupItems(ItemStorage items2){
+        items.pickupItems(items2);
+    }
+
+    public void useItem(String item){
+        items.useItem(item);
+    }
+
     //---------------------------------------------------------
     //getters and setters
     //---------------------------------------------------------
@@ -270,7 +310,7 @@ public abstract class Entity extends GameRegion{
     public void setX(float x){
         super.setX(x);
         if(shadow != null){
-            shadow.setX(x + getXOffset());
+            shadow.setX(x);
         }
         updateMoving();
     }
@@ -279,7 +319,7 @@ public abstract class Entity extends GameRegion{
     public void setY(float y){
         super.setY(y);
         if(shadow != null){
-            shadow.setY(y + getYOffset());
+            shadow.setY(y);
         }
         updateMoving();
     }  
@@ -434,50 +474,8 @@ public abstract class Entity extends GameRegion{
         this.equipped = equipped;
     }
 
-    public HashMap<String, Stack<Item>> getItems(){
+    public ItemStorage getItems(){
         return this.items;
-    }
-    
-    public void pickupItems(HashMap<String, Stack<Item>> items2){
-        if(!is(pickupItems))
-            return;
-        
-        for (var itemStack : items2.entrySet()) {
-            for (Item it : itemStack.getValue()) {
-                if(it != null)
-                    it.setOwner(this);
-            }
-
-            if(items.get(itemStack.getKey()) != null)
-                items.get(itemStack.getKey()).addAll(itemStack.getValue());
-            
-            itemStack.getValue().clear();
-        }
-    }
-
-    public void useItem(String item){
-        var s = items.get(item);
-        if(s.isEmpty())
-            return;
-
-        s.peek().use();
-
-        if(s.peek().isUsed())
-            s.pop();
-    }
-
-    /**
-     * used when initializing an entity, NOT for recieving items
-     * @param copy
-     * @param num
-     */
-    public void addItems(Item copy, int num){
-        
-        for(int i = 0; i < num; i++){
-            Item c = copy.copy();
-            c.setOwner(this);
-            items.get(copy.getSprite()).push(c);
-        }
     }
 
     //-----------  game tag / property keys ------------------------------

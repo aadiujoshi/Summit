@@ -26,8 +26,9 @@ public abstract class HumanoidEntity extends MobEntity{
     
     private ScheduledEvent walkAnimation;
 
-    public HumanoidEntity(float x, float y, float width, float height) {
-        super(x, y, width, height);
+    public HumanoidEntity(float x, float y) {
+        super(x, y, 1, 1);
+        super.setSpriteOffsetY(0.5f);
 
         this.walkAnimation = new ScheduledEvent(400, ScheduledEvent.FOREVER){
 

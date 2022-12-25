@@ -2,6 +2,7 @@ package summit.game.item;
 
 import java.io.Serializable;
 
+import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 import summit.game.entity.mob.MobEntity;
 

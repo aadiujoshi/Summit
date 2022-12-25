@@ -7,6 +7,6 @@ package summit.game.entity.mob;
 public class Trader extends HumanoidEntity{
 
     public Trader(float x, float y, float width, float height) {
-        super(x, y, width, height);
+        super(x, y);
     }
 }

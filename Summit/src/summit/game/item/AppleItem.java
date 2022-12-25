@@ -1,5 +1,6 @@
 package summit.game.item;
 
+import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 import summit.gfx.Sprite;
 

@@ -16,7 +16,7 @@ import summit.gfx.Sprite;
 public class Zombie extends HumanoidEntity{
 
     public Zombie(float x, float y) {
-        super(x, y, 1, 2);
+        super(x, y);
         super.setAI(new HostileMobAI(this));
         super.setAttackRange(0.5f);
         super.setHealth(5);

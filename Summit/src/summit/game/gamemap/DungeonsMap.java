@@ -9,6 +9,7 @@ import summit.game.item.BlueKey;
 import summit.game.item.GreenKey;
 import summit.game.item.Item;
 import summit.game.structure.ItemChest;
+import summit.game.structure.RaisedStone;
 import summit.game.tile.EmptyTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
@@ -25,6 +26,7 @@ public class DungeonsMap extends GameMap{
         super(player, seed, 128, 128);
 
         super.setFilter(new ColorFilter(-100, -100, -100));
+        super.setRenderDist(10);
 
         int width = getWidth();
         int height = getHeight();
@@ -88,6 +90,14 @@ public class DungeonsMap extends GameMap{
 
             addStructure(new ItemChest(point.x, point.y, k, this));
             i++;
+        }
+
+        for (int j = 0; j < tiles.length; j++) {
+            for (int j2 = 0; j2 < tiles[0].length; j2++) {
+                if(tiles[j][j2].topTile().isBoundary() && !chest_locs.contains(new Point(j2, j))){
+                    addStructure(new RaisedStone(j2, j, this));
+                }
+            }
         }
 
     }

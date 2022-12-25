@@ -42,7 +42,7 @@ public class Tree extends Entity{
     }
     
     @Override
-    public void damage(Entity hitBy){
+    public void damage(GameUpdateEvent e, Entity hitBy){
         if(this.is(damageCooldown))
             return;
         if(hitBy instanceof Projectile && !is(projectileDamage))
@@ -72,7 +72,7 @@ public class Tree extends Entity{
         if(this.is(damageCooldown))
             return;
 
-        damage(e.getMap().getPlayer());
+        damage(e, e.getMap().getPlayer());
         e.getMap().addAnimation(new ParticleAnimation(getX(), getY()-0.25f, 
                                         500, 20, getColor()));
     }
