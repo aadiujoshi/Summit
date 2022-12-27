@@ -91,7 +91,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.WIDTH = tiles[0].length;
         this.HEIGHT = tiles.length;
 
-        this.renderDist = 20;
+        this.renderDist = 18;
         this.simDist = 50;
 
         this.setPlayer(player);
@@ -360,23 +360,31 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     public ArrayList<GameRegion> objectsInDist(Camera c, float dist){
         ArrayList<GameRegion> all = new ArrayList<>();
 
-        float left = c.getX()-dist/2f;
-        float right = c.getX()+dist/2f;
-        float up = c.getY()+dist/2f;
-        float down = c.getY()-dist/2f;
+        Region r = new Region(c.getX(), c.getY(), 0, 0);
+
+        // float left = c.getX()-dist/2f;
+        // float right = c.getX()+dist/2f;
+        // float up = c.getY()+dist/2f;
+        // float down = c.getY()-dist/2f;
 
         for (int i = 0; i < entities.size(); i++){
             Entity e = entities.get(i);
 
-            if(e.getX() > left && e.getX() < right && e.getY() < up && e.getY() > down)
+            if(e.distance(r) <= dist)
                 all.add(e);
+
+            // if(e.getX() > left && e.getX() < right && e.getY() < up && e.getY() > down)
+            //     all.add(e);
         }
             
         for (int i = 0; i < structures.size(); i++){ 
             Structure s = structures.get(i);
             
-            if(s.getX() > left && s.getX() < right && s.getY() < up && s.getY() > down)
+            if(s.distance(r) <= dist)
                 all.add(s);
+
+            // if(s.getX() > left && s.getX() < right && s.getY() < up && s.getY() > down)
+            //     all.add(s);
         }
 
         return all;

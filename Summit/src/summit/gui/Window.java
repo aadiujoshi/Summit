@@ -146,11 +146,11 @@ public class Window implements MouseListener, KeyListener{
                             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
                             
                             {
-                                try{
+                                // try{
                                     renderFrame(g);
-                                } catch(Exception e){
-                                    System.out.println("Render error: " + e);
-                                }
+                                // } catch(Exception e){
+                                //     System.out.println("Render error: " + e);
+                                // }
                             }
 
                             if(Time.timeMs()-lastFpsUpdate > 500){
@@ -274,11 +274,11 @@ public class Window implements MouseListener, KeyListener{
             if(world != null)
                 world.setRenderLayer(ope);
                 
-            try{
+            // try{
                 ope.getRenderLayers().renderLayers(pe);
-            } catch (Exception e) {
-                System.out.println("Map render exception: " + e);
-            }
+            // } catch (Exception e) {
+            //     System.out.println("Map render exception: " + e);
+            // }
 
             if(!guiContainersGame.isEmpty())
                 guiContainersGame.peek().paint(pe);
@@ -313,7 +313,7 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.NEWGAME){
-            world = new GameWorld("ihatetiktok", this, 3L);
+            world = new GameWorld("ihatetiktok", this, (long)(Math.random()*Long.MAX_VALUE));
             state = WindowState.GAME;
             return;
         }
@@ -452,13 +452,14 @@ public class Window implements MouseListener, KeyListener{
                 (SCREEN_HEIGHT/Renderer.HEIGHT);
     }
 
-    public void setFullscreen(boolean full) {
+    public void setFullscreen(boolean f) {
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-                fullscreen = full;
+                fullscreen = f;
                 if(fullscreen){
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(frame);
+                    renderer.setFullscreen(true);
                 }
                 else if(!fullscreen){
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
@@ -491,12 +492,12 @@ public class Window implements MouseListener, KeyListener{
             }
         }
 
-        Controls.setPress(e);
+        Controls.setPress(e, world.instanceEvent());
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        Controls.setRelease(e);
+        Controls.setRelease(e, world.instanceEvent());
     }
 
     //-------------------------------------------------------------------
@@ -521,7 +522,7 @@ public class Window implements MouseListener, KeyListener{
         if(state == WindowState.GAME){
             if(world != null){
                 GameMap loadedmap = world.getLoadedMap();
-                loadedmap.gameClick(new GameUpdateEvent(world, 0));
+                loadedmap.gameClick(world.instanceEvent());
                 this.availableClick = true;
             }
             

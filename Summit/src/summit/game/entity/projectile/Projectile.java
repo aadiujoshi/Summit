@@ -62,8 +62,7 @@ public class Projectile extends Entity {
     }
 
     @Override
-    public void attack(Entity e, GameUpdateEvent ev) {
-        this.collide(ev, e);
+    public void attack(float targetX, float targetY, GameUpdateEvent ev) {
     }
 
     @Override

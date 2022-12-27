@@ -1,5 +1,6 @@
 package summit.game.gamemap;
 
+import summit.game.entity.mob.IceKing;
 import summit.game.entity.mob.Player;
 import summit.game.tile.IceTile;
 import summit.game.tile.SnowTile;
@@ -40,15 +41,13 @@ public class BossRoom extends GameMap{
             }
         }
 
-        int roomWidth = 15;
-        int roomHeight = 15;
+        int roomWidth = 16;
+        int roomHeight = 16;
 
         int sr = tiles.length/2 - roomHeight/2;
         int sc = tiles[0].length/2 - roomWidth/2;
         int er = tiles.length/2 + roomHeight/2;
         int ec = tiles[0].length/2 + roomWidth/2;
-
-        // System.out.println(sr + "  " + sc + "  " + er + "  " + ec);
 
         //cut out walkable area
         for (int r = sr; r < er; r++) {
@@ -61,5 +60,7 @@ public class BossRoom extends GameMap{
                 tiles[r][c].pushTile(s);
             }
         }
+
+        spawn(new IceKing(20, 15));
     }
 }

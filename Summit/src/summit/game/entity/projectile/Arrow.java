@@ -10,7 +10,7 @@ import summit.util.GameRegion;
 public class Arrow extends Projectile {
 
     public Arrow(GameRegion origin, float angle, float damage) {
-        super(origin, angle, 12, 0.5f, 0.25f);
+        super(origin, angle, 20, 0.5f, 0.25f);
         super.setColor(0xDCDCDC);
         super.setSprite(Sprite.ARROW_PROJ);
         super.setAttackDamage(damage);

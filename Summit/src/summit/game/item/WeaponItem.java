@@ -1,37 +1,52 @@
 package summit.game.item;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
+import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
+import summit.game.entity.projectile.Projectile;
+import summit.gfx.Camera;
 import summit.gfx.ColorFilter;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
+import summit.util.GameRegion;
+import summit.util.Region;
 
 public abstract class WeaponItem extends Item implements Paintable{
-
     private float mult;
     private float baseDamage;
+
+    private float x;
+    private float y;
 
     public WeaponItem(Entity owner) {
         super(owner);
 
+        // ATTACK_TYPE = type;
         baseDamage = 1;
         mult = 1;
     }
 
     @Override
-    public void use() {
-        getOwner().setAttackDamage(baseDamage * mult);
+    public abstract void use();
+    
+    public void addLevel() {
+        this.mult += 0.2f;
     }
     
-    public void setDamageMult(float mult) {
-        this.mult = mult;
+    public float getNetDamage() {
+        return this.baseDamage*mult;
     }
-    
+
     public void setBaseDamage(float baseDamage) {
         this.baseDamage = baseDamage;
     }
+    
+    public abstract void useWeapon(float targetX, float targetY, GameUpdateEvent e);
 
     @Override
     public void setRenderLayer(OrderPaintEvent e){
@@ -45,20 +60,28 @@ public abstract class WeaponItem extends Item implements Paintable{
         if(owner.is(Entity.inWater))
             return;
 
-        float x = owner.getX();
-        float y = owner.getY();
+        x = owner.getX();
+        y = owner.getY();
 
         if(owner.getName().equals("Player")){
             x = e.getCamera().getX();
             y = e.getCamera().getY();
         }
         
-        x += owner.getSpriteOffsetX();
-        y += owner.getSpriteOffsetY();
+        this.x += owner.getSpriteOffsetX();
+        this.y += owner.getSpriteOffsetY();
 
         e.getRenderer().renderGame(getSprite(), x+0.5f, y-0.2f, 
                                     (getOwner().getRenderOp() & ~Renderer.FLIP_X), 
                                     ColorFilter.NOFILTER, 
                                     e.getCamera());
+    }
+    
+    public float getX() {
+        return this.x;
+    }
+
+    public float getY() {
+        return this.y;
     }
 }

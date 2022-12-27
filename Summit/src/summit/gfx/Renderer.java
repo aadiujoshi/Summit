@@ -18,6 +18,8 @@ public class Renderer implements Serializable{
 
     private int[][] frame;
 
+    private static volatile boolean fullscreen;
+    
     //--  used by final frame writer threads  --
     private final Writer[] writers;
     private int[] finalFrame;
@@ -315,6 +317,36 @@ public class Renderer implements Serializable{
         return reformatted;
     }
 
+    public void drawLine(int sx, int sy, int ex, int ey, int color, boolean dotted){
+        if(sx < 0 || ex < 0 || sy < 0 || ey < 0)
+            return;
+        if(sx > WIDTH || ex > WIDTH || sy > HEIGHT || ey > HEIGHT)
+            return;
+
+        if(sx == sy){
+            int start = Math.min(sy, ey);
+            int end = Math.max(sy, ey);
+
+            for(int y = start; y <= end; y++){
+                if(dotted && y % 5 != 0)
+                    frame[y][sx] = color;
+            }
+
+            return;
+        }
+
+        float m = (float)(ey-sy) / (float)(ex-sx);
+        int b = (int)(-1*(m*sx-sy));
+
+        int start = Math.min(sx, ex);
+        int end = Math.max(sx, ex);
+
+        for(float inc_x = start; inc_x < end; inc_x += (1f/WIDTH)){
+            if(dotted && Math.round(inc_x) % 5 != 0)
+                frame[(int)(inc_x*m + b)][Math.round(inc_x)] = color;
+        }
+    }
+
     //--------------------------------------------------------------------
     // utility methods
     //--------------------------------------------------------------------
@@ -366,7 +398,7 @@ public class Renderer implements Serializable{
      */
     public static Point2D.Float toTile(int mx, int my, Camera cam){
         float rx = (cam.getX() - ((WIDTH/16f)/2)) + (mx/16f);// - 0.1f;
-        float ry = (cam.getY() + ((HEIGHT/16f)/2)) - (my/16f) + 0.25f;
+        float ry = (cam.getY() + ((HEIGHT/16f)/2)) - (my/16f) + (fullscreen ? 0 : 0.25f);
 
         return new Point2D.Float(rx, ry);
     }
@@ -471,6 +503,10 @@ public class Renderer implements Serializable{
     //------------------------------------------------------------------
     //getters and setters
     //------------------------------------------------------------------
+
+    public static void setFullscreen(boolean f) {
+        fullscreen = f;
+    }
 
     public int[][] getFrame(){
         return frame;

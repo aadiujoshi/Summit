@@ -8,6 +8,7 @@ import summit.game.GameUpdateEvent;
 import summit.game.ai.HostileMobAI;
 import summit.game.entity.Entity;
 import summit.game.entity.projectile.Arrow;
+import summit.game.item.ArrowItem;
 import summit.game.item.BoneItem;
 import summit.game.item.Bow;
 import summit.game.item.GoldCoin;
@@ -29,29 +30,24 @@ public class Skeleton extends HumanoidEntity{
 
         super.setEquipped(new Bow(this));
 
+        super.addItems(new BoneItem(this), (int)(Math.random()*7));
+        super.addItems(new GoldCoin(this), (int)(Math.random()*7));
+
+        //drop these items once destroyed
+        super.addItems(new ArrowItem(this), 100);
+
         super.set(hostile, true);
     }
 
     @Override
     public void damage(GameUpdateEvent e, Entity hitBy){
-        // if()
+        if(getHealth() - hitBy.getAttackDamage() <= 0){
+            //clear arrows
+            getItems().remove(Sprite.ARROW_ITEM);
 
+            //add random amount of arrow
+            addItems(new ArrowItem(this), (int)(Math.random()*5));
+        }
         super.damage(e, hitBy);
-
-        if(is(destroyed)){
-
-        }
-    }
-
-    @Override
-    public void attack(Entity e, GameUpdateEvent ev) {
-        if(!is(attackCooldown)){
-            //inaccuracy of 30 degrees
-            ev.getMap().spawn(new Arrow(this, 
-                                theta(e.getX(), getX(), 
-                                            e.getY(), getY()),// + (float)(Math.random()*(Math.PI/6)-(Math.PI/6)),
-                                            1));
-            set(attackCooldown, true);
-        }
     }
 }

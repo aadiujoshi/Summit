@@ -23,6 +23,8 @@ public abstract class Item implements Serializable{
     }
 
     public abstract Item copy();
+    
+    public void reinit(){}
 
     public void use() {
         setUsed(true);
@@ -63,5 +65,4 @@ public abstract class Item implements Serializable{
     public void setTextName(String textName) {
         this.textName = textName;
     }
-
 }

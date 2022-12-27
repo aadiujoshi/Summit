@@ -4,10 +4,6 @@
 */
 package summit.game.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
-
 import summit.game.GameUpdateEvent;
 import summit.game.animation.ParticleAnimation;
 import summit.game.entity.projectile.Projectile;
@@ -21,18 +17,16 @@ import summit.game.item.ItemStorage;
 import summit.game.item.SnowballItem;
 import summit.game.item.StickItem;
 import summit.game.item.WeaponItem;
-import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
-import summit.gfx.Sprite;
 import summit.util.Direction;
 import summit.util.GameRegion;
-import summit.util.ScheduledEvent;
 import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
+import summit.util.ScheduledEvent;
 
 public abstract class Entity extends GameRegion{
 
@@ -56,9 +50,7 @@ public abstract class Entity extends GameRegion{
     private Direction facing;
 
     private Light shadow;
-
-    private float projDamage;
-
+    
     private float attackDamage;
     private int damageCooldownMS;
 
@@ -79,7 +71,6 @@ public abstract class Entity extends GameRegion{
         this.maxHealth = 1;
         this.health = maxHealth;
         this.attackDamage = 0;
-        this.projDamage = 1;
         this.attackRange = 2;
         this.damageResistance = 0;
 
@@ -193,17 +184,32 @@ public abstract class Entity extends GameRegion{
         }
     }
 
+    @Override
+    public void reinit(){
+        super.reinit();
+        items.reinit();
+        equipped.reinit();
+    }
 
     @Override
     public void gameClick(GameUpdateEvent e){
-        
     }
 
-    public void attack(Entity e, GameUpdateEvent ev){
-        e.damage(ev, this);
-        
+    public void attack(float targetX, float targetY, GameUpdateEvent ev){
+        if(is(attackCooldown))
+            return;
+
+        if(equipped != null)
+            //spawn projectile towards the entity
+            //or melee sweep damage towards the entity
+            equipped.useWeapon(targetX, targetY, ev);
+        else{
+            //direct damage
+            // e.damage(ev, this);
+        }
+            
         if(!is(attackCooldown))
-            set(attackCooldown, true);
+        set(attackCooldown, true);
     }
 
     public void destroy(GameUpdateEvent e){
@@ -219,14 +225,7 @@ public abstract class Entity extends GameRegion{
      */
     @Deprecated
     public void clip(GameMap map){
-
         setPos(Math.round(getX()), Math.round(getY()));
-
-        //check 4 corners of hitbox
-        // if(){
-
-        // }
-
     }
 
     public boolean moveTo(GameMap map, float newX, float newY){
@@ -249,7 +248,6 @@ public abstract class Entity extends GameRegion{
     }
 
     public boolean lineOfSight(Entity e, GameMap map){
-
         //vertically aligned
         if(e.getX() == getX()){
             float start = Math.min(getY(), e.getY());
@@ -312,6 +310,10 @@ public abstract class Entity extends GameRegion{
 
     public void useItem(String item){
         items.useItem(item);
+    }
+
+    public int countItems(String item){
+        return items.countItem(item);
     }
 
     //---------------------------------------------------------
@@ -468,14 +470,6 @@ public abstract class Entity extends GameRegion{
 
     public void setDamageCooldownMS(int hitCooldownMS) {
         this.damageCooldownMS = hitCooldownMS;
-    }
-    
-    public float getProjDamage() {
-        return this.projDamage;
-    }
-
-    public void setProjDamage(float projDamage) {
-        this.projDamage = projDamage;
     }
     
     public WeaponItem getEquipped() {

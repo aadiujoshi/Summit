@@ -34,6 +34,12 @@ public class MapEntrance extends Structure{
         }
     }
 
+    @Override
+    public void reinit(){
+        super.reinit();
+        exMap.reinit();
+    }
+
     public Direction getEnterOrientation(){
         return enterOrientation;
     }

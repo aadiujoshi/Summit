@@ -9,9 +9,9 @@ import summit.util.GameRegion;
 
 public class Snowball extends Projectile {
 
-    public Snowball(GameRegion origin, float angle) {
+    public Snowball(GameRegion origin, float angle, float damage) {
         super(origin, angle, 20, 0.5f, 0.5f);
         super.setSprite(Sprite.SNOWBALL);
-        super.setAttackDamage(0);
+        super.setAttackDamage(damage);
     }
 }

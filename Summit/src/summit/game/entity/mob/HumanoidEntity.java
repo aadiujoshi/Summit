@@ -69,6 +69,7 @@ public abstract class HumanoidEntity extends MobEntity{
 
     @Override
     public void reinit(){
+        super.reinit();
         GraphicsScheduler.registerEvent(this.walkAnimation);
     }
 

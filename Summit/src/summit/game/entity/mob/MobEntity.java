@@ -85,10 +85,16 @@ public abstract class MobEntity extends Entity{
         // if(this instanceof Player)
         // System.out.println(getLight() != Light.NO_LIGHT);
 
+        ColorFilter cf = getColorFilter();
+
         if(getCurMap().equals("DungeonsMap") && getLight() == Light.NO_LIGHT)
-            setColorFilter(new ColorFilter(-100, -100, -100));
+            setColorFilter(new ColorFilter(
+                            cf.getRed()-100, 
+                            cf.getGreen()-100, 
+                            cf.getBlue()-100));
             
         super.paint(e);
+        setColorFilter(cf);
     }
     
     @Override

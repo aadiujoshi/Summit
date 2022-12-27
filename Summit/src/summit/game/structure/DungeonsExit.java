@@ -15,5 +15,4 @@ public class DungeonsExit extends MapEntrance {
         super.setShadow(ColorFilter.NOFILTER);
         super.situate(parentMap);
     }
-    
 }

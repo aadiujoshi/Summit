@@ -13,9 +13,11 @@ import summit.game.entity.projectile.Arrow;
 import summit.game.item.BlueKey;
 import summit.game.item.Bow;
 import summit.game.item.GreenKey;
+import summit.game.item.IceStaff;
 import summit.game.item.Item;
 import summit.game.item.ItemStorage;
 import summit.game.item.RedKey;
+import summit.game.item.SnowballItem;
 import summit.game.item.Sword;
 import summit.game.item.WeaponItem;
 import summit.gfx.Camera;
@@ -57,16 +59,16 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         super.set(pickupItems, true);
         super.setAI(null);
         
-        super.setEquipped(new Sword(this));
-        
-        super.addItems(new RedKey(this), 1);
-        super.addItems(new GreenKey(this), 1);
-        super.addItems(new BlueKey(this), 1);
+        // super.addItems(new RedKey(this), 1);
+        // super.addItems(new GreenKey(this), 1);
+        // super.addItems(new BlueKey(this), 1);
 
         this.hud = new HUD(this);
         this.invGui = new InventoryGUI(super.getItems());
         this.sword = new Sword(this);
         this.bow = new Bow(this);
+        
+        super.setEquipped(bow);
 
         Controls.addControlsReciever(this);
         
@@ -75,6 +77,15 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     
     @Override
     public void paint(PaintEvent e){
+        //draw line
+        if(Controls.SHIFT){
+            e.getRenderer().drawLine(Renderer.WIDTH/2, 
+                                    Renderer.HEIGHT/2, 
+                                    e.mouseX(), 
+                                    e.mouseY(), 
+                                    0x000000, true);
+        }
+
         if(outline())
             this.outline(e);
         e.getRenderer().renderGame(getSprite(), 
@@ -82,14 +93,13 @@ public class Player extends HumanoidEntity implements ControlsReciever{
                                     getRenderOp(),
                                     getColorFilter(),
                                     e.getCamera());
-
-        // Point p = Renderer.toPixel(getX(), getY(), e.getCamera());
-
-        // e.getRenderer().fillRect((int)(1+p.x-getWidth()/2*16), (int)(p.y-getHeight()/2*16), (int)(getWidth()*16), (int)(getHeight()*16), Renderer.toIntRGB(0, 255, 0));
     }
 
     @Override
     public void reinit(){
+        super.reinit();
+        sword.reinit();
+        bow.reinit();
         Controls.addControlsReciever(this);
     }
 
@@ -110,8 +120,9 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         }
 
         super.update(e);
-
-        if(!e.getMap().getName().equals("MainMap")){
+        
+        if(getCurMap().equals("DungeonsMap") || 
+            getCurMap().equals("BossRoom")){
             Light li = new Light(getX(), getY(), 5.5f,120, 120, 120);
             li.setRenderLayer(RenderLayers.STRUCTURE_ENTITY_LAYER+1);
             super.setLight(li);
@@ -120,10 +131,9 @@ public class Player extends HumanoidEntity implements ControlsReciever{
             
         //simulate click
         if(e.mouseClicked()){
-            e.getMap().spawn(new Arrow(this, 
-                                Region.theta(e.gameX(), getX(), 
-                                            e.gameY(), getY()),
-                                            getProjDamage()));
+            if(Controls.SHIFT){
+                attack(e.gameX(), e.gameY(), e);
+            }
         }
 
         float del_x = getDx()/Time.NS_IN_S *e.getDeltaTimeNS();
@@ -143,6 +153,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         }
 
         //--- extra -----------------------------
+        //MOVE TO HUMANOIDENTITY
         if(is(inWater))
             setSprite(Sprite.PLAYER_SUBMERGED_SOUTH);
         else if(!is(moving))
@@ -162,18 +173,27 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     }
 
     @Override
-    public void keyPress() {
+    public void keyPress(GameUpdateEvent e) {
         if(Controls.Q){
             useItem(Sprite.APPLE_ITEM);
         }
         if(Controls.R){
-            setEquipped(getEquipped());
+            setEquipped(bow);
         }
-
+        if(Controls.C){
+            setEquipped(sword);
+        }
+        if(Controls.F){
+            if(getItems().countItem(Sprite.SNOWBALL) > 0)
+                setEquipped((WeaponItem)getItems().get(Sprite.SNOWBALL).peek());
+        }
+        if(Controls.T){
+            setEquipped(new IceStaff(this));
+        }
     }
 
     @Override
-    public void keyRelease() {
+    public void keyRelease(GameUpdateEvent e) {
         
     }
 

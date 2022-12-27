@@ -184,12 +184,17 @@ public class GameWorld implements Paintable, Serializable{
         return this.player;
     }
 
+    //generate an gameupdateevent for this gameworld instance | used for gameclicks etc
+    public GameUpdateEvent instanceEvent(){
+        return new GameUpdateEvent(this, 0);
+    }
+
     @Override
     public void paint(PaintEvent e){
         //debug tickspeed
-        if(DYNAMIC_TICKS){
-            e.getRenderer().renderText((tickSpeed/1000000)+"", 100, 100, 0, null);
-        }
+        // if(DYNAMIC_TICKS){
+        //     e.getRenderer().renderText((tickSpeed/1000000)+"", 100, 100, 0, null);
+        // }
             
     }
 

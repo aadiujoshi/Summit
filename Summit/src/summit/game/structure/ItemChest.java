@@ -68,6 +68,11 @@ public class ItemChest extends Structure{
     }
     
     @Override
+    public void reinit(){
+        items.reinit();
+    }
+
+    @Override
     public void gameClick(GameUpdateEvent e) {
         Player p = e.getMap().getPlayer();
         

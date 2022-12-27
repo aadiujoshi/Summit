@@ -1,6 +1,7 @@
 package summit.game.item;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import summit.game.GameUpdateEvent;
@@ -17,6 +18,10 @@ public class ItemStorage extends HashMap<String, Stack<Item>>{
         this.owner = owner;
     }
 
+    public int countItem(String item){
+        return get(item).size();
+    }
+
     public void pickupItems(ItemStorage items2){
         if(!owner.is(Entity.pickupItems))
             return;
@@ -31,6 +36,27 @@ public class ItemStorage extends HashMap<String, Stack<Item>>{
                 get(itemStack.getKey()).addAll(itemStack.getValue());
             
             itemStack.getValue().clear();
+        }
+    }
+
+    public void reinit(){
+        for (Map.Entry<String, Stack<Item>> itemStack : this.entrySet()) {
+            for (Item it : itemStack.getValue()) {
+                it.reinit();
+            }
+        }
+    }
+
+    public void updateStack(String item){
+        synchronized(this){
+            Stack<Item> s = get(item);
+            for (int i = 0; i < s.size(); i++) {
+                if(s.get(i).isUsed()){
+                    s.remove(i);
+                    i--;
+                    continue;
+                }
+            }
         }
     }
 

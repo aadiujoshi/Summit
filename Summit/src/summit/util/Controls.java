@@ -7,6 +7,8 @@ package summit.util;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import summit.game.GameUpdateEvent;
+
 public class Controls {
     private static ArrayList<ControlsReciever> cr = new ArrayList<>();
 
@@ -21,6 +23,7 @@ public class Controls {
     public static volatile boolean R;
     public static volatile boolean T;
     public static volatile boolean F;
+    public static volatile boolean C;
 
     public static volatile boolean UP;
     public static volatile boolean DOWN;
@@ -32,7 +35,7 @@ public class Controls {
     //toggleable not press and release
     public static volatile boolean E;
 
-    public static void setPress(KeyEvent e){
+    public static void setPress(KeyEvent e, GameUpdateEvent ev){
         switch(e.getKeyCode()){
             case KeyEvent.VK_W:
                 W = true;
@@ -57,6 +60,9 @@ public class Controls {
                 break;
             case KeyEvent.VK_F:
                 F = true;
+                break;
+            case KeyEvent.VK_C:
+                C = true;
                 break;
             case KeyEvent.VK_UP:
                 UP = true;
@@ -88,11 +94,11 @@ public class Controls {
         }
 
         for (ControlsReciever controlsReciever : cr) {
-            controlsReciever.keyPress();
+            controlsReciever.keyPress(ev);
         }
     }
 
-    public static void setRelease(KeyEvent e){
+    public static void setRelease(KeyEvent e, GameUpdateEvent ev){
         switch(e.getKeyCode()){
             case KeyEvent.VK_W:
                 W = false;
@@ -117,6 +123,9 @@ public class Controls {
                 break;
             case KeyEvent.VK_F:
                 F = false;
+                break;
+            case KeyEvent.VK_C:
+                C = false;
                 break;
             case KeyEvent.VK_UP:
                 UP = false;
@@ -143,7 +152,9 @@ public class Controls {
                 break;
         }
 
-        
+        for (ControlsReciever controlsReciever : cr) {
+            controlsReciever.keyRelease(ev);
+        }
     }
 
     public static synchronized void addControlsReciever(ControlsReciever contR){

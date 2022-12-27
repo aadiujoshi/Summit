@@ -56,7 +56,7 @@ public class HostileMobAI extends EntityAI{
             reached++;
         
         if(reached == 2)
-            entity.attack(p, e);
+            entity.attack(p.getX(), p.getY(), e);
     }
     
     public float getAttackRange() {

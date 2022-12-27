@@ -5,6 +5,7 @@
 package summit.game.tile;
 
 import summit.game.GameUpdateEvent;
+import summit.game.item.ItemStorage;
 import summit.game.item.SnowballItem;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
@@ -14,6 +15,8 @@ import summit.gfx.Sprite;
 
 public class SnowTile extends Tile{
     
+    private ItemStorage snowballs;
+
     public SnowTile(float x, float y){
         super(x, y);
         super.setSprite(Sprite.SNOW_TILE);
@@ -25,6 +28,10 @@ public class SnowTile extends Tile{
         
         super.particleAnimation(true);
         super.setColor(Renderer.toIntRGB(170, 214, 230));
+
+        this.snowballs = new ItemStorage(null);
+
+        snowballs.addItems(new SnowballItem(null), (int)(Math.random()*2));
     }
 
     @Override
@@ -32,10 +39,7 @@ public class SnowTile extends Tile{
         super.gameClick(e);
 
         if(isBreakable()){
-            e.getMap().getPlayer().addItems(
-                    new SnowballItem(
-                        e.getMap().getPlayer()),  
-                        1);
+            e.getMap().getPlayer().pickupItems(snowballs);
         }
     }
 }

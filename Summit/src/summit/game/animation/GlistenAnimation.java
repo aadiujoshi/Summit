@@ -26,7 +26,7 @@ public class GlistenAnimation extends Animation{
 
     private float spread = 0.75f;
     
-    private static final int frame_len = 125;
+    private static final int frame_len = (int)(Math.random()*100+100);
 
     //duration in ms
     // delay * calls = duration
@@ -97,20 +97,3 @@ public class GlistenAnimation extends Animation{
         }
     }
 }
-
-
-        // this.p1 = new Point2D.Float[]{
-        //     new Point2D.Float(sx + (float)((Math.random()*2-1)/2), 
-        //                       sy + (float)((Math.random()*2-1)/2)), 
-        //     new Point2D.Float(sx + (float)((Math.random()*2-1)/2), 
-        //                       sy + (float)((Math.random()*2-1)/2))};
-        // this.p2 = new Point2D.Float[]{
-        //     new Point2D.Float(sx + (float)((Math.random()*2-1)/2), 
-        //                       sy + (float)((Math.random()*2-1)/2)), 
-        //     new Point2D.Float(sx + (float)((Math.random()*2-1)/2), 
-        //                       sy + (float)((Math.random()*2-1)/2))};
-        // this.p3 = new Point2D.Float[]{
-        //     new Point2D.Float(sx + (float)((Math.random()*2-1)/2), 
-        //                       sy + (float)((Math.random()*2-1)/2)), 
-        //     new Point2D.Float(sx + (float)((Math.random()*2-1)/2), 
-        //                       sy + (float)((Math.random()*2-1)/2))};

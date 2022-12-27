@@ -1,7 +1,6 @@
 package summit.game.gamemap;
 
 import summit.game.entity.mob.Player;
-import summit.game.structure.TraderHouse;
 import summit.game.tile.TileStack;
 import summit.game.tile.WoodPlank;
 import summit.gfx.Camera;

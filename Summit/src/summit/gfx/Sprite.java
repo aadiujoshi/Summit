@@ -9,6 +9,7 @@ public class Sprite {
     public static final String MENU_CORNER = "menu-corner";
     public static final String MENU_FILL = "menu-fill";
     public static final String PINE_TREE = "pine-tree";
+    public static final String ICE_SHARD = "ice-shard";
     public static final String PLAYER_FACE_BACK_1 = "player-face_back_1";
     public static final String PLAYER_FACE_BACK_2 = "player-face_back_2";
     public static final String PLAYER_NEUTRAL_SOUTH = "player-neutral_south";
@@ -17,6 +18,7 @@ public class Sprite {
     public static final String STONE_TILE = "stone-tile";
     public static final String GRASS_TILE = "grass-tile";
     public static final String ICE_TILE = "ice-tile";
+    public static final String ICE_STAFF = "ice-staff";
     public static final String ICE_KING = "ice-king-south";
     public static final String ICE_KING_NEUTRAL = "ice-king-neutral-south";
     public static final String WATER_TILE = "water-tile";
@@ -31,6 +33,7 @@ public class Sprite {
     public static final String WOOD_PLANK = "wood-plank";
     public static final String LAVA_TILE = "lava-tile";
     public static final String DOOR = "door";
+    public static final String ICE_DOOR_NO_LOCKS = "ice-door-no_locks";
     public static final String INVENTORY = "inventory";
     public static final String SKELETON_FACE_BACK = "skeleton-face_back";
     public static final String TALL_ROCK1 = "tall-rock1";
