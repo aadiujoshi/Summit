@@ -15,7 +15,6 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.Renderer;
-import summit.gfx.Sprite;
 import summit.util.Region;
 
 //should extend Region class!!!!!!!!!
@@ -30,6 +29,9 @@ public class Container extends Region implements Paintable, GUIClickReciever{
     private String guiSprite;
 
     private boolean pushed;
+
+    //if can be removed by hitting esc key
+    private boolean navContainer;
 
     private boolean visible = true;
 
@@ -46,6 +48,7 @@ public class Container extends Region implements Paintable, GUIClickReciever{
                             BufferedSprites.getSprite(guiSprite).length) );
 
         components = new ArrayList<>();
+        this.navContainer = true;
         this.parent = parent;
         this.guiSprite = guiSprite;
     }
@@ -141,5 +144,13 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     public void setFilter(ColorFilter filter) {
         this.filter = filter;
+    }
+    
+    public boolean isNavContainer() {
+        return this.navContainer;
+    }
+
+    public void setNavContainer(boolean navContainer) {
+        this.navContainer = navContainer;
     }
 }

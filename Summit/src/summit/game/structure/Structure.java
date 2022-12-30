@@ -15,9 +15,9 @@ import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.RenderLayers;
-import summit.util.GameRegion;
+import summit.util.GameObject;
 
-public abstract class Structure extends GameRegion {
+public abstract class Structure extends GameObject {
 
     private ColorFilter shadow = new ColorFilter(-60, -60, -60);
 

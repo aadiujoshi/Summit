@@ -23,12 +23,12 @@ import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
 import summit.util.Direction;
-import summit.util.GameRegion;
+import summit.util.GameObject;
 import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
 import summit.util.ScheduledEvent;
 
-public abstract class Entity extends GameRegion{
+public abstract class Entity extends GameObject{
 
     private ItemStorage items;
 
@@ -51,10 +51,10 @@ public abstract class Entity extends GameRegion{
 
     private Light shadow;
     
-    private float attackDamage;
+    // private float attackDamage;
     private int damageCooldownMS;
 
-    private float attackRange;
+    // private float attackRange;
     private int attackCooldownMS;
 
     //coefficient
@@ -70,8 +70,8 @@ public abstract class Entity extends GameRegion{
 
         this.maxHealth = 1;
         this.health = maxHealth;
-        this.attackDamage = 0;
-        this.attackRange = 2;
+        // this.attackDamage = 0;
+        // this.attackRange = 2;
         this.damageResistance = 0;
 
         this.lx = x;
@@ -188,7 +188,8 @@ public abstract class Entity extends GameRegion{
     public void reinit(){
         super.reinit();
         items.reinit();
-        equipped.reinit();
+        if(equipped != null)
+            equipped.reinit();
     }
 
     @Override
@@ -199,17 +200,19 @@ public abstract class Entity extends GameRegion{
         if(is(attackCooldown))
             return;
 
+        boolean hit = false;
+
         if(equipped != null)
             //spawn projectile towards the entity
             //or melee sweep damage towards the entity
-            equipped.useWeapon(targetX, targetY, ev);
+            hit = equipped.useWeapon(targetX, targetY, ev);
         else{
             //direct damage
             // e.damage(ev, this);
         }
-            
-        if(!is(attackCooldown))
-        set(attackCooldown, true);
+
+        if(hit && !is(attackCooldown))
+            set(attackCooldown, true);
     }
 
     public void destroy(GameUpdateEvent e){
@@ -345,7 +348,7 @@ public abstract class Entity extends GameRegion{
         switch(property){
             case attackCooldown -> {
                 if(is(attackCooldown)){
-                    GameScheduler.registerEvent(new ScheduledEvent(attackCooldownMS,1) {
+                    GameScheduler.registerEvent(new ScheduledEvent(attackCooldownMS, 1) {
                         @Override
                         public void run() {
                             set(attackCooldown, false);
@@ -358,7 +361,7 @@ public abstract class Entity extends GameRegion{
 
             case damageCooldown -> {
                 if(is(damageCooldown)){
-                    GameScheduler.registerEvent(new ScheduledEvent(damageCooldownMS,1) {
+                    GameScheduler.registerEvent(new ScheduledEvent(damageCooldownMS, 1) {
                         @Override
                         public void run() {
                             set(damageCooldown, false);
@@ -408,11 +411,9 @@ public abstract class Entity extends GameRegion{
     }
     
     public float getAttackDamage() {
-        return this.attackDamage;
-    }
-
-    public void setAttackDamage(float hitDamage) {
-        this.attackDamage = hitDamage;
+        if(equipped != null)
+            return this.equipped.getNetDamage();
+        return 0.5f;
     }
 
     public void setKnockback(float k, int durationMS, Entity hitBy){
@@ -449,13 +450,11 @@ public abstract class Entity extends GameRegion{
     }
 
     public float getAttackRange() {
-        return this.attackRange;
+        if(equipped != null)
+            return this.equipped.getAttackRange();
+        return 0.5f;
     }
-
-    public void setAttackRange(float attackRange) {
-        this.attackRange = attackRange;
-    }
-
+    
     public int getAttackCooldownMS() {
         return this.attackCooldownMS;
     }

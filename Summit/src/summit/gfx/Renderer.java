@@ -115,11 +115,11 @@ public class Renderer implements Serializable{
     }
 
 
-    @Deprecated
     /**
      * does not work
-     * @param scale
+     * @param scale 
      */
+    @Deprecated
     public void contrastFrame(float scale){
         int min = rgbIntensity(frame[0][0]);
         int max = min;
@@ -171,7 +171,7 @@ public class Renderer implements Serializable{
         float radius = light.getRadius()*16;
 
         //for square lights
-        float sqrVertexDist = light.getRadius()*16*1.41421356f;
+        // float sqrVertexDist = light.getRadius()*16*1.41421356f;
 
         int r = light.getRed();
         int b = light.getBlue();
@@ -330,6 +330,8 @@ public class Renderer implements Serializable{
             for(int y = start; y <= end; y++){
                 if(dotted && y % 5 != 0)
                     frame[y][sx] = color;
+                else if(!dotted)
+                    frame[y][sx] = color;
             }
 
             return;
@@ -343,6 +345,8 @@ public class Renderer implements Serializable{
 
         for(float inc_x = start; inc_x < end; inc_x += (1f/WIDTH)){
             if(dotted && Math.round(inc_x) % 5 != 0)
+                frame[(int)(inc_x*m + b)][Math.round(inc_x)] = color;
+            else if(!dotted)
                 frame[(int)(inc_x*m + b)][Math.round(inc_x)] = color;
         }
     }
@@ -464,8 +468,8 @@ public class Renderer implements Serializable{
         for(int r = 0; r < sprite.length; r++){
             for(int c = 0; c < sprite[0].length; c++){
                 if(sprite[r][c] != -1){
-                    if( //check if on edge of sprite and is valid rgb 
-                        
+                    if( 
+                        //check if on edge of sprite and is valid rgb 
                         (r == 0) ||
                         (r == sprite.length-1) ||
                         (c == 0) ||

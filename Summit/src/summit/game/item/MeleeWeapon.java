@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 import summit.gfx.Camera;
-import summit.util.GameRegion;
+import summit.util.GameObject;
 import summit.util.Region;
 
 public abstract class MeleeWeapon extends WeaponItem{
-
+    
     public MeleeWeapon(Entity owner) {
         super(owner);
+        super.setAttackRange(2f);
     }
 
     @Override
@@ -19,26 +20,43 @@ public abstract class MeleeWeapon extends WeaponItem{
     }
     
     @Override
-    public void useWeapon(float targetX, float targetY, GameUpdateEvent e) {
+    public boolean useWeapon(float targetX, float targetY, GameUpdateEvent e) {
         Entity owner = getOwner();
 
         this.use();
 
-        if(Region.distance(owner.getX(), 
-                                owner.getY(), 
-                                targetX, 
-                                targetY) <= owner.getAttackRange()){
+        float sweepRange = 30;
 
-            ArrayList<GameRegion> toHit = e.getMap().objectsInDist(new Camera(owner.getX(), owner.getY()), targetY);
+        float relAngle = Region.theta(owner.getX(), targetX, 
+                                    owner.getY(), targetY) 
+                                    * (float)(180/Math.PI);
+
+        ArrayList<GameObject> inRange = e.getMap().
+                    objectsInDist(new Camera(owner.getX(), owner.getY()), getAttackRange());
+        
+        boolean hit = false;
+        
+        //check relative angle
+        for (int i = 0; i < inRange.size(); i++) {
+
+            if(inRange.get(i) == owner)
+                continue;
+
+            float angle = (float)(Region.theta(owner.getX(), inRange.get(i).getX(),
+                                                owner.getY(), inRange.get(i).getY()) 
+                                                *180/Math.PI);
             
-            //check relative angle
-            for (GameRegion gr : toHit) {
+            if(Math.abs(relAngle - angle) <= sweepRange){
+                if(inRange.get(i) instanceof Entity && 
+                    !inRange.get(i).is(Entity.damageCooldown) &&
+                    !owner.is(Entity.attackCooldown)){
 
-                float angle = (float)(Region.theta(owner.getX(), gr.getX(),
-                                                    owner.getY(), gr.getY()) 
-                                                    *180/Math.PI);
-
+                    ((Entity)inRange.get(i)).damage(e, owner);
+                    hit = true;
+                }
             }
         }
+        
+        return hit;
     }
 }

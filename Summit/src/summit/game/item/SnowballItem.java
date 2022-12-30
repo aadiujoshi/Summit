@@ -16,10 +16,11 @@ public class SnowballItem extends ProjectileWeapon {
     }
 
     @Override
-    public void useWeapon(float targetX, float targetY, GameUpdateEvent e){
+    public boolean useWeapon(float targetX, float targetY, GameUpdateEvent e){
+        boolean b = false;
         if(getOwner().countItems(Sprite.SNOWBALL) > 0){
             getOwner().useItem(Sprite.SNOWBALL);
-            super.useWeapon(targetX, targetY, e);
+            b = super.useWeapon(targetX, targetY, e);
 
             var sLeft = getOwner().getItems().get(Sprite.SNOWBALL);
 
@@ -29,6 +30,8 @@ public class SnowballItem extends ProjectileWeapon {
                 getOwner().setEquipped((WeaponItem)sLeft.peek());
             }
         }
+
+        return b;
     }
 
     @Override

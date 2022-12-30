@@ -21,7 +21,7 @@ public enum WindowState {
     SAVEDGAME,
 
     /**
-     * 
+     * Video Settings
      */
     SETTINGS,
 
@@ -31,7 +31,7 @@ public enum WindowState {
     GAME,
 
     /**
-     * 
+     * Go to the previous window/screen ; determine by Window
      */
     BACK
 }

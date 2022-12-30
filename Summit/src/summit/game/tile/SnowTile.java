@@ -42,4 +42,10 @@ public class SnowTile extends Tile{
             e.getMap().getPlayer().pickupItems(snowballs);
         }
     }
+
+    @Override
+    public void reinit(){
+        super.reinit();
+        snowballs.reinit();
+    }
 }

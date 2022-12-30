@@ -33,8 +33,8 @@ public class GlistenAnimation extends Animation{
     public GlistenAnimation(float x, float y, int p_count, int color) {
         super(frame_len, p_count+1);
 
-        this.sx = x;
-        this.sy = y;
+        this.sx = x+0.5f;
+        this.sy = y+0.5f;
 
         this.light_filter = new ColorFilter(color);
         

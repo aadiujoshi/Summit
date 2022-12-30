@@ -8,10 +8,8 @@ import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
-import summit.util.GameRegion;
+import summit.util.GameObject;
 import summit.util.Region;
-import summit.util.ScheduledEvent;
-import summit.util.GameScheduler;
 import summit.util.Time;
 
 public class Projectile extends Entity {
@@ -20,13 +18,15 @@ public class Projectile extends Entity {
     private float sx;
     private float sy;
 
-    private GameRegion origin;
+    private float contactDamage;
+
+    private GameObject origin;
     
-    public Projectile(GameRegion origin, float angle, float mag, float width, float height) {
+    public Projectile(GameObject origin, float angle, float speed, float width, float height) {
         super(origin.getX(), origin.getY(), width, height);
 
-        super.setDx(mag*(float)Math.cos(angle));
-        super.setDy(mag*(float)Math.sin(angle));
+        super.setDx(speed*(float)Math.cos(angle));
+        super.setDy(speed*(float)Math.sin(angle));
         
         // super.setLight(new Light(getX(), getY(), 0.25f, -100, -100, -100));
 
@@ -109,7 +109,7 @@ public class Projectile extends Entity {
 
     @Override
     public void collide(GameUpdateEvent e, Entity contact) {
-        if(((GameRegion)contact) == origin) return;
+        if(((GameObject)contact) == origin) return;
 
         contact.damage(e, this);
 
@@ -133,7 +133,16 @@ public class Projectile extends Entity {
 
     }
 
-    public GameRegion getOrigin() {
+    public GameObject getOrigin() {
         return this.origin;
+    }
+    
+    @Override
+    public float getAttackDamage() {
+        return this.contactDamage;
+    }
+
+    public void setAttackDamage(float contactDamage) {
+        this.contactDamage = contactDamage;
     }
 }

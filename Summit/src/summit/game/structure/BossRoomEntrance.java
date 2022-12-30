@@ -26,9 +26,17 @@ public class BossRoomEntrance extends MapEntrance{
                 obk++;
         }
 
+        super.gameClick(e);
+
         //player has all 3 keys
         if(obk == 3){
             super.gameClick(e);
         }
+    }
+
+    @Override
+    public void reinit(){
+        super.reinit();
+        getExMap().reinit();
     }
 }

@@ -19,12 +19,10 @@ public class Zombie extends HumanoidEntity{
     public Zombie(float x, float y) {
         super(x, y);
         super.setAI(new HostileMobAI(this));
-        super.setAttackRange(0.5f);
         super.setHealth(5);
         super.setEquipped(new Sword(this));
         super.setSprite(Sprite.PLAYER_FACE_BACK_1);
         super.setMaxHealth(5);
-        super.setAttackDamage(1);
 
         super.addItems(new GoldCoin(this), (int)(Math.random()*10));
 

@@ -9,6 +9,7 @@ public class Sword extends MeleeWeapon {
         super(owner);
         super.setSprite(Sprite.STONE_SWORD);
         super.setBaseDamage(2.5f);
+        super.setAttackRange(1.25f);
         super.setTextName("sword");
     }
 

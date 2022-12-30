@@ -23,12 +23,7 @@ public class BossRoomExit extends MapEntrance{
         super.situate(parentMap);
     }
 
-    // @Override
-    // public void paint(PaintEvent e){
-    //     Point p = Renderer.toPixel(getX(), getY(), e.getCamera());
-
-    //     e.getRenderer().fillRect((int)(1+p.x-getWidth()/2*16), (int)(p.y-getHeight()/2*16), (int)(getWidth()*16), (int)(getHeight()*16), Renderer.toIntRGB(0, 255, 0));
-
-    //     super.paint(e);
-    // }
+    @Override
+    public void reinit(){
+    }
 }

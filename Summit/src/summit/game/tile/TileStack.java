@@ -84,4 +84,10 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
         //     System.out.println(tiles);
         // }
     }
+
+    public void reinit(){
+        for (Tile tile : tiles) {
+            tile.reinit();
+        }
+    }
 }

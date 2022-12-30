@@ -55,19 +55,16 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         super.setMaxHealth(10f);
         super.setSpriteOffsetY(0.5f);
         super.setHealth(getMaxHealth());
-        super.setAttackDamage(1);
         super.set(pickupItems, true);
         super.setAI(null);
         
-        // super.addItems(new RedKey(this), 1);
-        // super.addItems(new GreenKey(this), 1);
-        // super.addItems(new BlueKey(this), 1);
-
         this.hud = new HUD(this);
         this.invGui = new InventoryGUI(super.getItems());
         this.sword = new Sword(this);
         this.bow = new Bow(this);
         
+        sword.setAttackRange(2f);
+
         super.setEquipped(bow);
 
         Controls.addControlsReciever(this);
@@ -79,11 +76,37 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     public void paint(PaintEvent e){
         //draw line
         if(Controls.SHIFT){
-            e.getRenderer().drawLine(Renderer.WIDTH/2, 
+            if(getEquipped() != sword)
+                e.getRenderer().drawLine(Renderer.WIDTH/2, 
                                     Renderer.HEIGHT/2, 
                                     e.mouseX(), 
                                     e.mouseY(), 
-                                    0x000000, true);
+                                    (is(attackCooldown) ? 0xff0000 : 0x000000), true);
+            if(getEquipped() == sword){
+                
+                float theta = Region.theta(e.mouseX(), Renderer.WIDTH/2, e.mouseY(), Renderer.HEIGHT/2);
+
+                float range = (float)(Math.PI/6);
+
+                //draw sword range
+                int minx = (int)(getAttackRange()*16*Math.cos(theta - range)) + Renderer.WIDTH/2;
+                int miny = (int)(getAttackRange()*16*Math.sin(theta - range)) + Renderer.HEIGHT/2;
+
+                int maxx = (int)(getAttackRange()*16*Math.cos(theta + range)) + Renderer.WIDTH/2;
+                int maxy = (int)(getAttackRange()*16*Math.sin(theta + range)) + Renderer.HEIGHT/2;
+
+                e.getRenderer().drawLine(Renderer.WIDTH/2, 
+                                        Renderer.HEIGHT/2, 
+                                        minx, 
+                                        miny, 
+                                        (is(attackCooldown) ? 0xff0000 : 0x000000), true);
+                                    
+                e.getRenderer().drawLine(Renderer.WIDTH/2, 
+                                        Renderer.HEIGHT/2, 
+                                        maxx, 
+                                        maxy, 
+                                        (is(attackCooldown) ? 0xff0000 : 0x000000), true);
+            }
         }
 
         if(outline())
@@ -111,6 +134,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
 
     @Override
     public void update(GameUpdateEvent e) {
+        
         if(Controls.E){
             if(!invGui.isPushed())
                 e.getWindow().pushGameContainer(invGui);
@@ -153,7 +177,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         }
 
         //--- extra -----------------------------
-        //MOVE TO HUMANOIDENTITY
+        //MOVE TO HUMANOID_ENTITY
         if(is(inWater))
             setSprite(Sprite.PLAYER_SUBMERGED_SOUTH);
         else if(!is(moving))
@@ -223,20 +247,15 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     public boolean[] getObtainedKeys(){
         boolean[] keys = new boolean[3];
         
-        for (var itemStack : getItems().entrySet()) {
-            for (var it : itemStack.getValue()) {
-                if(it.getTextName().equals("red key")){
-                    keys[0] = true;
-                }
-                if(it.getTextName().equals("green key")){
-                    keys[1] = true;
-                }
-                if(it.getTextName().equals("blue key")){
-                    keys[2] = true;
-                }
-            }
-        }
+        ItemStorage is = getItems();
 
+        if(is.countItem(Sprite.RED_KEY) > 0)
+            keys[0] = true;
+        if(is.countItem(Sprite.GREEN_KEY) > 0)
+            keys[1] = true;
+        if(is.countItem(Sprite.BLUE_KEY) > 0)
+            keys[2] = true;
+        
         return keys;
     }
 
@@ -274,5 +293,9 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         }
 
         super.pickupItems(items);
+    }
+
+    public float getReach(){
+        return 2.5f;
     }
 }

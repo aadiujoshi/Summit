@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch cheating",
+            "request": "launch",
+            "mainClass": "summit.testing.cheating",
+            "projectName": "Summit_aca78153"
+        },
+        {
+            "type": "java",
+            "name": "Launch FileTesting",
+            "request": "launch",
+            "mainClass": "summit.testing.FileTesting",
+            "projectName": "Summit_aca78153"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"

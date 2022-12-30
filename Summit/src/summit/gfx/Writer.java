@@ -4,8 +4,6 @@
 */
 package summit.gfx;
 
-import summit.util.Time;
-
 public class Writer extends Thread{
 
     private volatile boolean process = true;

@@ -12,12 +12,12 @@ import summit.gfx.Light;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.RenderLayers;
-import summit.util.GameRegion;
+import summit.util.GameObject;
 import summit.util.ScheduledEvent;
 import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
 
-public abstract class Tile extends GameRegion {
+public abstract class Tile extends GameObject {
 
     public static final int UNBREAKABLE = -1;
 
@@ -95,6 +95,7 @@ public abstract class Tile extends GameRegion {
 
     @Override
     public void reinit(){
+        super.reinit();
         rotateAnimation(rotateAnim != null);
     }
 

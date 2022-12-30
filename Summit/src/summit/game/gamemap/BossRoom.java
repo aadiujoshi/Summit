@@ -17,6 +17,7 @@ public class BossRoom extends GameMap{
 
         super.setFilter(new ColorFilter(-110, -100, -30));
         super.setCamera(new Camera(getWidth()/2, getHeight()/2));
+        super.dontSpawnMobs();
 
         TileStack[][] tiles = super.getTiles();
 

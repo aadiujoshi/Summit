@@ -13,10 +13,13 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
-import summit.util.GameRegion;
+import summit.util.GameObject;
 import summit.util.Region;
 
 public abstract class WeaponItem extends Item implements Paintable{
+
+    private float attackRange;
+
     private float mult;
     private float baseDamage;
 
@@ -46,7 +49,7 @@ public abstract class WeaponItem extends Item implements Paintable{
         this.baseDamage = baseDamage;
     }
     
-    public abstract void useWeapon(float targetX, float targetY, GameUpdateEvent e);
+    public abstract boolean useWeapon(float targetX, float targetY, GameUpdateEvent e);
 
     @Override
     public void setRenderLayer(OrderPaintEvent e){
@@ -63,6 +66,7 @@ public abstract class WeaponItem extends Item implements Paintable{
         x = owner.getX();
         y = owner.getY();
 
+        //prevent stuttering
         if(owner.getName().equals("Player")){
             x = e.getCamera().getX();
             y = e.getCamera().getY();
@@ -83,5 +87,13 @@ public abstract class WeaponItem extends Item implements Paintable{
 
     public float getY() {
         return this.y;
+    }
+
+    public float getAttackRange() {
+        return this.attackRange;
+    }
+
+    public void setAttackRange(float attackRange) {
+        this.attackRange = attackRange;
     }
 }

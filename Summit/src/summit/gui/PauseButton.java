@@ -17,6 +17,7 @@ public class PauseButton extends Container{
         super(null, window, 0.96f, 0.08f, Sprite.PAUSE_ICON);
         pm = new PauseMenu(window, world);
         this.world = world;
+        super.setNavContainer(false);
         addComponent(pm);
     }
 

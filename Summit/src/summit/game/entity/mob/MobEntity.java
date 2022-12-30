@@ -10,6 +10,8 @@ import summit.game.GameUpdateEvent;
 import summit.game.ai.EntityAI;
 import summit.game.entity.Entity;
 import summit.game.entity.projectile.Projectile;
+import summit.game.item.BlueKey;
+import summit.game.item.GreenKey;
 import summit.game.item.RedKey;
 import summit.game.item.WeaponItem;
 import summit.gfx.ColorFilter;
@@ -33,7 +35,14 @@ public abstract class MobEntity extends Entity{
         super.setAttackCooldownMS(500);
         super.setDamageCooldownMS(500);
 
+        addItems(new RedKey(this), 0);
+        addItems(new GreenKey(this), 0);
+        addItems(new BlueKey(this), 0);
+
         add(pickupItems);
+
+        set(pickupItems, true);
+        
         add(hostile);
     }
 
@@ -69,7 +78,8 @@ public abstract class MobEntity extends Entity{
     @Override
     public void reinit(){
         super.reinit();
-        ai.reinit();
+        if(ai != null)
+            ai.reinit();
     }
 
     @Override

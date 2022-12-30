@@ -21,8 +21,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -180,9 +183,10 @@ public class Window implements MouseListener, KeyListener{
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             frame.setResizable(true);
             frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-            // frame.setMaximumSize(new java.awt.Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-            // frame.revalidate();
 
+            try { frame.setIconImage(ImageIO.read(new File(Main.path + "resources/sprites/ice-staff.png"))); } 
+            catch (IOException e1) { System.out.println("Game Icon not found"); }
+            
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -321,8 +325,7 @@ public class Window implements MouseListener, KeyListener{
         if(newState == WindowState.SAVEDGAME){
             world = GameLoader.loadWorld(Main.path + "gamesaves/testsave1.txt");
             world.reinit(this, Main.path + "gamesaves/testsave1.txt");
-            world.pause();
-
+            
             state = WindowState.GAME;
             return;
         }
@@ -353,7 +356,7 @@ public class Window implements MouseListener, KeyListener{
         renderer.terminate();
 
         if(world != null){
-            GameLoader.saveWorld(world, Main.path + "gamesaves/testsave1.txt");
+            GameLoader.asyncSaveWorld(world, Main.path + "gamesaves/testsave1.txt");
         }
     } 
 
@@ -393,6 +396,16 @@ public class Window implements MouseListener, KeyListener{
         return tmp;
     }
 
+    public void transition(TransitionScreen ts){
+        pushHomeContainer(ts);
+        state = WindowState.SELECTIONMENUS;
+    }
+
+    public void endTransition(WindowState newState){
+        guiContainersHome.pop();
+        setState(newState);
+    }
+
     public void pushHomeContainer(Container cont){
         if(cont.isPushed())
             return;
@@ -403,6 +416,9 @@ public class Window implements MouseListener, KeyListener{
     }
 
     public void popHomeContainer(){
+        if(!guiContainersHome.peek().isNavContainer())
+            return;
+
         guiContainersHome.peek().close();
         guiContainersHome.pop().setPushed(false);
     }
@@ -425,6 +441,9 @@ public class Window implements MouseListener, KeyListener{
 
     public void popGameContainer(){
         if(!guiContainersGame.isEmpty()){
+            if(!guiContainersHome.peek().isNavContainer())
+                return;
+
             guiContainersGame.peek().close();
             guiContainersGame.pop().setPushed(false);
         }
@@ -459,7 +478,7 @@ public class Window implements MouseListener, KeyListener{
                 fullscreen = f;
                 if(fullscreen){
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(frame);
-                    renderer.setFullscreen(true);
+                    Renderer.setFullscreen(true);
                 }
                 else if(!fullscreen){
                     GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
@@ -475,7 +494,6 @@ public class Window implements MouseListener, KeyListener{
 
     @Override
     public void keyTyped(KeyEvent e) {
-        
     }
 
     @Override
@@ -492,12 +510,14 @@ public class Window implements MouseListener, KeyListener{
             }
         }
 
-        Controls.setPress(e, world.instanceEvent());
+        if(world != null)
+            Controls.setPress(e, world.instanceEvent());
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        Controls.setRelease(e, world.instanceEvent());
+        if(world != null)
+            Controls.setRelease(e, world.instanceEvent());
     }
 
     //-------------------------------------------------------------------

@@ -29,7 +29,7 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
-import summit.util.GameRegion;
+import summit.util.GameObject;
 import summit.util.Region;
 import summit.util.ScheduledEvent;
 import summit.util.GameScheduler;
@@ -100,7 +100,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         this.animations = new ArrayList<>();
         this.ambientOcclusion = new AmbientOcclusion();
 
-        this.spawnMobs = new ScheduledEvent(2500, ScheduledEvent.FOREVER) {
+        this.spawnMobs = new ScheduledEvent(1500, ScheduledEvent.FOREVER) {
             @Override
             public void run() {
                 //------------ spawn hostile mobs ---------------------------------------------------
@@ -113,7 +113,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                 
                 //try to spawn
                 for (int i = 0; i < hostileMobCap-h_count; i++) {
-                    int mobType = (int)(Math.random()*2);
+                    int mobType = (int)(Math.random()*3);
 
                     float offsetx = (float)(Math.random()*range-range/2);
                     float offsety = (float)(Math.random()*range-range/2);
@@ -123,11 +123,11 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
                     MobEntity mob = null;
 
-                    if(mobType == 0){
+                    if(mobType == 0 || mobType == 1){
                         mob = new Zombie(nx, ny);
                     }
 
-                    if(mobType == 1){
+                    if(mobType == 2){
                         mob = new Skeleton(nx, ny);
                     }
 
@@ -145,8 +145,17 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     //saved world
     public void reinit(){
-        this.animation.reinit(2);
-        this.spawnMobs.reinit(1);
+        if(animation != null)
+            this.animation.reinit(2);
+
+        if(spawnMobs != null)
+            this.spawnMobs.reinit(1);
+
+        for (TileStack[] ts1 : tiles) {
+            for (TileStack ts : ts1) {
+                ts.reinit();
+            }
+        }
 
         for (Animation pa : animations) {
             pa.reinit(2);
@@ -165,11 +174,11 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             e.gameY() > getHeight() || e.gameY() < 0)
                 return;
 
-        float reach = player.getAttackRange();
+        float reach = player.getReach();
 
         for(Structure r_struct : structures) {
             if(r_struct.contains(e.gameX(), e.gameY()) && 
-                Region.distance(r_struct.getX(), r_struct.getY(), player.getX(), player.getY()) <= reach){
+                player.distance(r_struct) <= reach){
                 r_struct.gameClick(e);
                 return;
             }
@@ -184,14 +193,14 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                 return;
             }
         }
-        if(Region.distance(player.getX(), player.getY(), e.gameX(), e.gameY()) <= reach)
+        if(getTileAt(e.gameX(), e.gameY()).distance(player) <= reach)
             getTileStackAt(e.gameX(), e.gameY()).gameClick(e);
     }
 
     @Override
     public void update(GameUpdateEvent e) {
 
-        ArrayList<GameRegion> updateObjects = objectsInDist(camera, simDist);
+        ArrayList<GameObject> updateObjects = objectsInDist(camera, simDist);
         TileStack[][] updateTiles = tilesInDist(camera, simDist);
 
         for (int i = 0; i < updateTiles.length; i++) {
@@ -203,7 +212,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
         for (int i = 0; i < updateObjects.size(); i++) {
             
-            GameRegion gr = updateObjects.get(i);
+            GameObject gr = updateObjects.get(i);
 
             if(gr == null)
                 continue;
@@ -219,17 +228,17 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         //-----------------------------------------------------------------------------------
 
         //do collision
-        ArrayList<GameRegion> objects = objectsInDist(camera, simDist);
+        ArrayList<GameObject> objects = objectsInDist(camera, simDist);
 
         for (int i = 0; i < objects.size(); i++) {
-            GameRegion gr1 = objects.get(i);
+            GameObject gr1 = objects.get(i);
 
             if(!gr1.isEnabled())
                         continue;
 
             for (int j = 0; j < objects.size(); j++) {
                 try{
-                    GameRegion gr2 = objects.get(j);
+                    GameObject gr2 = objects.get(j);
 
                     if(!gr2.isEnabled())
                         continue;
@@ -272,13 +281,15 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         
         //particles
         for (int i = 0; i < animations.size(); i++) {
-            animations.get(i).setRenderLayer(e);
+            Animation a = animations.get(i);
 
-            if(animations.get(i).shouldTerminate()){
+            if(a == null || a.shouldTerminate()){
                 animations.remove(i);
                 i--;
                 continue;
             }
+
+            a.setRenderLayer(e);
         }
 
         //tiles in render distance (from cameraa position)
@@ -295,7 +306,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         ambientOcclusion.setRenderLayer(e);
 
         //front to back depth
-        ArrayList<GameRegion> sorted = objectsInDist(e.getCamera(), renderDist);
+        ArrayList<GameObject> sorted = objectsInDist(e.getCamera(), renderDist);
 
         for (int i = 0; i < sorted.size(); i++) {
             int lowestInd = i;
@@ -308,13 +319,13 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                     lowestInd = j;
             }
 
-            GameRegion temp = sorted.get(i);
+            GameObject temp = sorted.get(i);
             sorted.set(i, sorted.get(lowestInd));
             sorted.set(lowestInd, temp);
         }
         
         //sorted GameRegions
-        for (GameRegion r: sorted) {
+        for (GameObject r: sorted) {
             r.setRenderLayer(e);
         }
     }
@@ -333,7 +344,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     //--------------------------------------------------------------------
 
     @Deprecated
-    public GameRegion getContact(GameRegion r){
+    public GameObject getContact(GameObject r){
         for (Structure s : structures) {
             if(r.overlap(s) && s != r)
                 return s;
@@ -357,8 +368,8 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         return total;
     }
 
-    public ArrayList<GameRegion> objectsInDist(Camera c, float dist){
-        ArrayList<GameRegion> all = new ArrayList<>();
+    public ArrayList<GameObject> objectsInDist(Camera c, float dist){
+        ArrayList<GameObject> all = new ArrayList<>();
 
         Region r = new Region(c.getX(), c.getY(), 0, 0);
 
@@ -529,6 +540,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     }
 
     public void dontSpawnMobs(){
+        spawnMobs.manualTerminate();
         spawnMobs = null;
     }
 

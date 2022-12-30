@@ -7,7 +7,7 @@ import summit.game.animation.ForegroundAnimation;
 import summit.game.entity.mob.Player;
 import summit.game.entity.mob.Skeleton;
 import summit.game.gamemap.mapgenerator.OpenSimplexNoise;
-import summit.game.structure.DungeonsEntrace;
+import summit.game.structure.DungeonsEntrance;
 import summit.game.structure.TraderHouse;
 import summit.game.structure.Tree;
 import summit.game.tile.GrassTile;
@@ -78,7 +78,7 @@ public class MainMap extends GameMap{
         spawn(new Skeleton(60, 60));
 
         addStructure(new TraderHouse(19.5f, 19f, this));
-        addStructure(new DungeonsEntrace( 
+        addStructure(new DungeonsEntrance( 
                             getWidth()/2, 
                             getHeight()/2-3, 
                             this));

@@ -14,6 +14,8 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
     private long delay_ms;
     private long lastCall;
 
+    private boolean manualTerminate;
+
     // can be reset after reloading a world
     private long init_ms;
 
@@ -46,15 +48,16 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
     }
     
     public void manualTerminate(){
-        this.n_calls = 0;
+        this.manualTerminate = true;
     }
 
     /**
-     * Returns if this ScheduledEvent should stop revieving calls
+     * Returns if this ScheduledEvent should stop revieving calls, 
+     * and should be removed from the Scheduler 
      * @return boolean
      */
     public boolean shouldTerminate(){
-        return n_calls < 1 && n_calls != FOREVER;
+        return (n_calls < 1 && n_calls != FOREVER) || manualTerminate;
     }
 
     public void shortenLife(){

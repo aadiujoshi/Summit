@@ -16,9 +16,10 @@ public class Bow extends ProjectileWeapon{
     }
     
     @Override
-    public void useWeapon(float targetX, float targetY, GameUpdateEvent e){
+    public boolean useWeapon(float targetX, float targetY, GameUpdateEvent e){
         if(getOwner().countItems(Sprite.ARROW_ITEM) > 0)
-            super.useWeapon(targetX, targetY, e);
+            return super.useWeapon(targetX, targetY, e);
+        return false;
     }
 
     @Override

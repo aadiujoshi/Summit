@@ -59,7 +59,7 @@ public class Sprite {
     public static final String MENUBOX5 = "guibox5";
     public static final String MENUBOX6 = "menu-box6";
     public static final String FILL_SCREEN = "fill-screen";
-    public static final String CAVE_ENTRACE = "cave-entrance";
+    public static final String CAVE_ENTRANCE = "cave-entrance";
     public static final String PLAYER_SUBMERGED_SOUTH = "player-submerged_south";
     public static final String RED_KEY = "red-key";
     public static final String BLUE_KEY = "blue-key";

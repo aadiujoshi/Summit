@@ -15,6 +15,7 @@ import summit.game.tile.EmptyTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
+import summit.util.GameLogger;
 import summit.util.ScheduledEvent;
 import summit.util.Sound;
 import summit.util.Time;
@@ -89,13 +90,19 @@ public class DungeonsMap extends GameMap{
             if(i == key2index)
                 k = new GreenKey(null);
 
+            if(k != null)
+                System.out.println("Key: " + point);
+
             addStructure(new ItemChest(point.x, point.y, k, this));
             i++;
         }
 
         for (int j = 0; j < tiles.length; j++) {
             for (int j2 = 0; j2 < tiles[0].length; j2++) {
-                if(tiles[j][j2].topTile().isBoundary() && !chest_locs.contains(new Point(j2, j))){
+                if(tiles[j][j2].topTile() != null && 
+                   tiles[j][j2].topTile().isBoundary() && 
+                   !chest_locs.contains(new Point(j2, j))){
+
                     addStructure(new RaisedStone(j2, j, this));
                 }
             }
@@ -115,14 +122,20 @@ public class DungeonsMap extends GameMap{
         for (int r = 1; r < tiles.length-1; r++) {
             for (int c = 0; c < tiles[0].length-1; c++) {
                 //check top
-                if(tiles[r+1][c].topTile().isBoundary() && tiles[r+1][c+1].topTile().isBoundary()){
-                    //check this row
-                    if(!tiles[r][c].topTile().isBoundary() && !tiles[r][c+1].topTile().isBoundary()){
-                        //check bottom row
-                        if(!tiles[r-1][c].topTile().isBoundary() && !tiles[r-1][c+1].topTile().isBoundary()){
-                            door_locs.add(new Point(c,r));
+                try{
+                    if(tiles[r+1][c].topTile().isBoundary() && tiles[r+1][c+1].topTile().isBoundary()){
+                        //check this row
+                        if(!tiles[r][c].topTile().isBoundary() && !tiles[r][c+1].topTile().isBoundary()){
+                            //check bottom row
+                            if(!tiles[r-1][c].topTile().isBoundary() && !tiles[r-1][c+1].topTile().isBoundary()){
+                                door_locs.add(new Point(c,r));
+                            }
                         }
                     }
+                } catch(NullPointerException npe){
+                    System.out.println("Boss Door generation error at coordinate: [" + r + ", " + c + "]" + 
+                                        " at line: " + npe.getCause());
+                    // GameLogger.log
                 }
             }
         }
@@ -183,6 +196,7 @@ public class DungeonsMap extends GameMap{
         }
         if(!b){
             Sound.DUNGEON_SOUNDS.stop();
+            this.ambientSounds.manualTerminate();;
             this.ambientSounds = null;
         }
     }

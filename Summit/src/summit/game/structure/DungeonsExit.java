@@ -11,8 +11,12 @@ public class DungeonsExit extends MapEntrance {
      */
     public DungeonsExit(float x, float y, GameMap exMap, GameMap parentMap) {
         super(x, y, 1, 1, exMap, parentMap);
-        super.setSprite(Sprite.CAVE_ENTRACE);
+        super.setSprite(Sprite.CAVE_ENTRANCE);
         super.setShadow(ColorFilter.NOFILTER);
         super.situate(parentMap);
+    }
+
+    @Override
+    public void reinit(){
     }
 }

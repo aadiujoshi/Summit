@@ -7,13 +7,11 @@ package summit.game.entity.mob;
 import summit.game.GameUpdateEvent;
 import summit.game.ai.HostileMobAI;
 import summit.game.entity.Entity;
-import summit.game.entity.projectile.Arrow;
 import summit.game.item.ArrowItem;
 import summit.game.item.BoneItem;
 import summit.game.item.Bow;
 import summit.game.item.GoldCoin;
-import summit.gfx.PaintEvent;
-import summit.gfx.Renderer;
+import summit.game.item.Sword;
 import summit.gfx.Sprite;
 
 public class Skeleton extends HumanoidEntity{
@@ -22,11 +20,9 @@ public class Skeleton extends HumanoidEntity{
         super(x, y);
         super.setSprite(Sprite.SKELETON_FACE_BACK);
         super.setAI(new HostileMobAI(this));
-        super.setAttackRange(4f);
         super.setAttackCooldownMS(1000);
         super.setMaxHealth(7);
         super.setHealth(getMaxHealth());
-        super.setAttackDamage(1);
 
         super.setEquipped(new Bow(this));
 
