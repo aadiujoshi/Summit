@@ -28,7 +28,7 @@ public class DungeonsMap extends GameMap{
         super(player, seed, 128, 128);
 
         super.setFilter(new ColorFilter(-100, -100, -100));
-        // super.setRenderDist(10);
+        super.setRenderDist(10);
 
         int width = getWidth();
         int height = getHeight();

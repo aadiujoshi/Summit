@@ -4,16 +4,12 @@
 */
 package summit.game;
 
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.io.StringWriter;
 
 import summit.game.animation.TransitionAnimation;
 import summit.game.entity.mob.Player;
 import summit.game.gamemap.GameMap;
 import summit.game.gamemap.MainMap;
-import summit.game.tile.SnowTile;
-import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
@@ -21,8 +17,6 @@ import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
 import summit.gui.PauseButton;
 import summit.gui.Window;
-import summit.util.GameLogger;
-import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
 import summit.util.Sound;
 import summit.util.Time;
@@ -40,8 +34,7 @@ public class GameWorld implements Paintable, Serializable{
     private long elapsedtime;
     private final long START_TIME = Time.timeMs();
 
-    private final String SAVE_NAME;
-    private transient String filepath;
+    private final String SAVE_NAME = generateSaveName();
 
     private transient volatile boolean paused;
     private transient PauseButton pauseButton;
@@ -67,12 +60,11 @@ public class GameWorld implements Paintable, Serializable{
      * Use this constructor to create a new game
      * @param parentWindow
      */
-    public GameWorld(final String name, Window parentWindow, long seed){
+    public GameWorld(Window parentWindow, long seed){
         this.parentWindow = parentWindow;
         SEED = seed;
         gametime = 0;
-        SAVE_NAME = name;
-
+        
         player = new Player(0, 0);
         mainMap = new MainMap(player, seed);
         mainMap.setLoaded(true);
@@ -86,9 +78,8 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     // must be called after loading from save
-    public void reinit(Window w, String filepath){
+    public void reinit(Window w){
         this.parentWindow = w;
-        this.filepath = filepath;
 
         pauseButton = new PauseButton(w, this);
 
@@ -225,12 +216,20 @@ public class GameWorld implements Paintable, Serializable{
     public void unpause(){
         this.paused = false;
     }
-    
-    public String getFilepath() {
-        return this.filepath;
-    }
 
-    public void setFilepath(String filepath) {
-        this.filepath = filepath;
+    public String getSaveName() {
+		return this.SAVE_NAME;
+	}
+
+    private String generateSaveName(){
+        String f = "";
+
+        for (int i = 0; i < 16; i++) {
+            f += (char)(Math.random()*59+64);
+        }
+
+        System.out.println(f);
+
+        return f;
     }
 }

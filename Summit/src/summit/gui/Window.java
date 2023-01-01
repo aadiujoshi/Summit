@@ -46,6 +46,9 @@ import summit.util.GraphicsScheduler;
 import summit.util.Settings;
 import summit.util.Time;
 
+/**
+ * window fro the game
+ */
 public class Window implements MouseListener, KeyListener{
     
     private String title;
@@ -259,6 +262,11 @@ public class Window implements MouseListener, KeyListener{
         this.setState(WindowState.SELECTIONMENUS);
     }
 
+    /**
+     * rendering and shit
+     * 
+     * @param g A Graphics2D object provided by the double buffer
+     */
     private void renderFrame(Graphics2D g){
         
         g.setColor(Color.BLACK);
@@ -317,15 +325,17 @@ public class Window implements MouseListener, KeyListener{
         }
 
         if(newState == WindowState.NEWGAME){
-            world = new GameWorld("ihatetiktok", this, (long)(Math.random()*Long.MAX_VALUE));
+            world = new GameWorld(this, (long)(Math.random()*Long.MAX_VALUE));
             state = WindowState.GAME;
             return;
         }
 
         if(newState == WindowState.SAVEDGAME){
+            this.transition(new TransitionScreen(this, "Loading world..."));
             world = GameLoader.loadWorld(Main.path + "gamesaves/testsave1.txt");
-            world.reinit(this, Main.path + "gamesaves/testsave1.txt");
-            
+            world.reinit(this);
+            this.endTransition(WindowState.GAME);
+
             state = WindowState.GAME;
             return;
         }
@@ -356,7 +366,7 @@ public class Window implements MouseListener, KeyListener{
         renderer.terminate();
 
         if(world != null){
-            GameLoader.asyncSaveWorld(world, Main.path + "gamesaves/testsave1.txt");
+            GameLoader.asyncSaveWorld(world);
         }
     } 
 

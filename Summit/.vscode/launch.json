@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch DBConnection",
+            "request": "launch",
+            "mainClass": "summit.util.DBConnection",
+            "projectName": "Summit_aca78153"
+        },
+        {
+            "type": "java",
             "name": "Launch cheating",
             "request": "launch",
             "mainClass": "summit.testing.cheating",

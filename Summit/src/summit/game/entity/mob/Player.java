@@ -211,9 +211,9 @@ public class Player extends HumanoidEntity implements ControlsReciever{
             if(getItems().countItem(Sprite.SNOWBALL) > 0)
                 setEquipped((WeaponItem)getItems().get(Sprite.SNOWBALL).peek());
         }
-        if(Controls.T){
-            setEquipped(new IceStaff(this));
-        }
+        // if(Controls.T){
+        //     setEquipped(new IceStaff(this));
+        // }
     }
 
     @Override
