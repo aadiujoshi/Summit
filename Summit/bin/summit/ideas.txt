@@ -1,0 +1,22 @@
+finish terrain
+texture outlining
+
+finish inventory gui
+
+ !!!almost done!!!!
+pause menu ->  graphics option panel
+
+ -> around 5905 lines of code as of 12/2/2022 :)
+
+game
+ - skeletons
+ - arrows
+ - weapons
+ - traders
+ - items
+ - wood
+ - trading system
+ - levels
+ - grace period between stages
+ - boss room
+ - fire animation
