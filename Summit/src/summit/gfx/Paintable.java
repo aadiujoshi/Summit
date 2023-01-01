@@ -13,9 +13,9 @@ public interface Paintable {
     public void setRenderLayer(OrderPaintEvent e);
 
     /**
-     * Called after the order method to render the Paintable object
+     * Render this object using the provided {@link PaintEvent} object
      * 
-     * @param e a PaintEvent 
+     * @param e A {@link PaintEvent} object
      */
     public void paint(PaintEvent e);
 }

@@ -27,14 +27,16 @@ public class GameLoader {
     public static final String tempFile = "gamesaves/temp.txt";
 
     /**
-     * Returns deserialized GameWorld data from the database 
+     * Returns a deserialized GameWorld object. Serlialized data is retrieved 
+     * from the database
      * 
      * @param saveName The name of the GameWorld 
      * @return The GameWorld object associated with {@code saveName} 
      * 
-     * @see GameWorld#getSaveName
+     * @see GameWorld#getSaveName()
+     * @see DBConnection#getDBSave(String)
      */
-    public static GameWorld loadWorld(String saveName){
+    public synchronized static GameWorld loadWorld(String saveName){
         while(accessing){ 
             try {
                 Thread.sleep(100);
@@ -61,7 +63,12 @@ public class GameLoader {
         return null;
     }
     
-    public static void saveWorld(GameWorld world){
+    /**
+     * Saves a GameWorld to the database
+     * 
+     * @param world The GameWorld to be saved
+     */
+    public synchronized static void saveWorld(GameWorld world){
         while(accessing){ 
             try {
                 Thread.sleep(100);
@@ -89,7 +96,7 @@ public class GameLoader {
         }
     }
 
-    public static void asyncSaveWorld(GameWorld world){
+    public synchronized static void asyncSaveWorld(GameWorld world){
         while(accessing){ 
             try {
                 Thread.sleep(100);
@@ -102,7 +109,7 @@ public class GameLoader {
 
         Thread wr = new Thread(() -> {
             try{
-                FileOutputStream file = new FileOutputStream(world.getSaveName());
+                FileOutputStream file = new FileOutputStream(tempFile);
                 ObjectOutputStream out = new ObjectOutputStream(file);
                 
                 out.writeObject(world);

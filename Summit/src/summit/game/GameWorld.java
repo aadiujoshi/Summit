@@ -34,6 +34,9 @@ public class GameWorld implements Paintable, Serializable{
     private long elapsedtime;
     private final long START_TIME = Time.timeMs();
 
+    /**
+     * 
+     */
     private final String SAVE_NAME = generateSaveName();
 
     private transient volatile boolean paused;

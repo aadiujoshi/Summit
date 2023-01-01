@@ -1,5 +1,7 @@
 package summit.util;
 
+import summit.game.GameWorld;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +13,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLTransientConnectionException;
 import java.sql.Statement;
 
 public class DBConnection{
@@ -40,6 +43,10 @@ public class DBConnection{
         }
     }
 
+    public static synchronized void createSave(String h){
+
+    }
+
     /**
      * Returns the serialized game save file from the local database
      * 
@@ -55,17 +62,28 @@ public class DBConnection{
             st = connection.createStatement();
 
             result = st.executeQuery(("SELECT GameSave FROM gamedata WHERE SaveName=\"" + saveName + "\""));
+
+            //if empty create new entry in database
+            if(!result.next()){
+                System.out.println("Non-existant save name");
+                System.out.println("Creating new database entry... \"" + saveName + "\"");
+                createSave(saveName);
+            }
+
+
             Blob blob = result.getBlob("gameSave");
             
-            out = new FileOutputStream("gamesaves/temp.txt");
-            InputStream in = blob.getBinaryStream();
+            out = new FileOutputStream(GameLoader.tempFile);
 
-            byte[] buff = in.readAllBytes();            
+            InputStream in = blob.getBinaryStream();
+            byte[] buff = in.readAllBytes();    
+
             out.write(buff);
 
-            return new File("gamesaves/temp.txt");
+            return new File(GameLoader.tempFile);
 
-        } catch (SQLException | IOException e) {
+        } catch (IOException e) { 
+        } catch (SQLTransientConnectionException e){
             if(!retry){
                 System.out.println("Retrieve failed");
                 System.out.println("Retrying...");
@@ -73,13 +91,13 @@ public class DBConnection{
                 getDBSave(saveName);
                 retry = true;
             }
-            
+        }
+        catch(SQLException e){
             e.printStackTrace();
-            
-        } 
+        }
         finally{
             try {
-                //close in reverse order of creation incase of npe
+                //close in reverse order of creation incase of null
                 out.close();
                 result.close();
                 st.close();
@@ -95,14 +113,16 @@ public class DBConnection{
     }
     
     /**
-     * Upload game save to database
+     * Upload game save to database. Serialized data is copied from the temp.txt file 
+     * to a BLOB, to be uploaded to the database.
      * 
-     * @param saveName the name of the GameWorld being saved 
-     * @param gameTime
-     * @param gameSave
-     * @return
+     * @param saveName The name of the GameWorld being saved 
+     * @param gameTime The amount of time spent in-game 
+     * @return True if update was successful
+     * 
+     * @see GameWorld#getSaveName()
      */
-    public static synchronized boolean updateSave(String saveName, float gameTime, File gameSave){
+    public static synchronized boolean updateSave(String saveName, float gameTime){
 
         Statement st = null;
         ResultSet result = null;
@@ -112,7 +132,6 @@ public class DBConnection{
             String qry = ("SELECT GameSave FROM gamedata WHERE SaveName=\"" + saveName + "\"");
             result = st.executeQuery(qry);
         } catch (SQLException e) {
-            
         }
         finally{
             try {
