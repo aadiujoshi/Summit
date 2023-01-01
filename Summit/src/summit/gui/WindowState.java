@@ -1,20 +1,22 @@
-/*
-* BPA project by Aadi Joshi, Aditya Bhattacharya, Sanjay Raghav, Aadithya Ramakrishnan Sriram 
-* 2022
-*/
+
 package summit.gui;
 
+/**
+ * An enumeration of the different states that a window can be in.
+ * 
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
+ */
 public enum WindowState {
     /**
      * Home screen
      */
-    SELECTIONMENUS, 
+    SELECTIONMENUS,
 
     /**
      * Open new game window
      */
-    NEWGAME, 
-    
+    NEWGAME,
+
     /**
      * Open saved games window
      */

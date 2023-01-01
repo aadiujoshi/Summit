@@ -9,50 +9,63 @@ import summit.util.Settings;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
+/**
+ * A graphical user interface (GUI) container for video settings options.
+ * Allows the user to adjust ambient occlusion, vsync, and number of threads
+ * used for rendering.
+ *
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
+ * 
+ */
 public class VideoSettings extends Container {
 
-    //relative positions for all the boxes
-    private float[] bx = new float[]{0.65f, 0.75f, 0.85f};
-    private float[] by = new float[]{0.3f, 0.4f, 0.5f};
+    // relative positions for all the boxes
+    private float[] bx = new float[] { 0.65f, 0.75f, 0.85f };
+    private float[] by = new float[] { 0.3f, 0.4f, 0.5f };
 
-    private final int initThreads = (int)Settings.getSetting("threads");
+    private final int initThreads = (int) Settings.getSetting("threads");
     private boolean threadsChange;
 
+    /**
+     * Constructs a new video settings menu.
+     *
+     * @param window the parent window
+     */
     public VideoSettings(Window window) {
         super(null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
-        
+
         TextContainer ao_count = new TextContainer(
-                    Settings.getSetting("ambient_occlusion").toString(),
-                    this, window, bx[0], by[0], Sprite.MENUBOX5);
+                Settings.getSetting("ambient_occlusion").toString(),
+                this, window, bx[0], by[0], Sprite.MENUBOX5);
 
         TextContainer vsync_count = new TextContainer(
-                    Settings.getSetting("vsync").toString(), 
-                    this, window, bx[0], by[1], Sprite.MENUBOX5);
+                Settings.getSetting("vsync").toString(),
+                this, window, bx[0], by[1], Sprite.MENUBOX5);
 
         TextContainer threads_count = new TextContainer(
-                    Settings.getSetting("threads").toString(), 
-                    this, window, bx[0], by[2], Sprite.MENUBOX5);
+                Settings.getSetting("threads").toString(),
+                this, window, bx[0], by[2], Sprite.MENUBOX5);
 
-        //-----------------------------------------------------------------------
-        //-----------------add---------------------------------------------------
-        //-----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        // -----------------add---------------------------------------------------
+        // -----------------------------------------------------------------------
 
-        TextContainer ao_inc = new TextContainer("+", this, window, bx[1], by[0], Sprite.MENUBOX5){
-            public void guiClick(MouseEvent e){
+        TextContainer ao_inc = new TextContainer("+", this, window, bx[1], by[0], Sprite.MENUBOX5) {
+            public void guiClick(MouseEvent e) {
                 updateCont(ao_count, "ambient_occlusion", 1);
             }
         };
 
-        TextContainer vsync_inc = new TextContainer("+", this, window, bx[1], by[1], Sprite.MENUBOX5){
-            public void guiClick(MouseEvent e){
+        TextContainer vsync_inc = new TextContainer("+", this, window, bx[1], by[1], Sprite.MENUBOX5) {
+            public void guiClick(MouseEvent e) {
                 updateCont(vsync_count, "vsync", 1);
             }
         };
 
-        TextContainer threads_inc = new TextContainer("+", this, window, bx[1], by[2], Sprite.MENUBOX5){
-            public void guiClick(MouseEvent e){
+        TextContainer threads_inc = new TextContainer("+", this, window, bx[1], by[2], Sprite.MENUBOX5) {
+            public void guiClick(MouseEvent e) {
                 updateCont(threads_count, "threads", 1);
-                if(initThreads != (int)Settings.getSetting("threads")){
+                if (initThreads != (int) Settings.getSetting("threads")) {
                     threadsChange = true;
                 } else {
                     threadsChange = false;
@@ -60,26 +73,26 @@ public class VideoSettings extends Container {
             }
         };
 
-        //-----------------------------------------------------------------------
-        //-----------------subtract----------------------------------------------
-        //-----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        // -----------------subtract----------------------------------------------
+        // -----------------------------------------------------------------------
 
-        TextContainer ao_dec = new TextContainer("-", this, window, bx[2], by[0], Sprite.MENUBOX5){
-            public void guiClick(MouseEvent e){
+        TextContainer ao_dec = new TextContainer("-", this, window, bx[2], by[0], Sprite.MENUBOX5) {
+            public void guiClick(MouseEvent e) {
                 updateCont(ao_count, "ambient_occlusion", -1);
             }
         };
 
-        TextContainer vsync_dec = new TextContainer("-", this, window, bx[2], by[1], Sprite.MENUBOX5){
-            public void guiClick(MouseEvent e){
+        TextContainer vsync_dec = new TextContainer("-", this, window, bx[2], by[1], Sprite.MENUBOX5) {
+            public void guiClick(MouseEvent e) {
                 updateCont(vsync_count, "vsync", -1);
             }
         };
 
-        TextContainer threads_dec = new TextContainer("-", this, window, bx[2], by[2], Sprite.MENUBOX5){
-            public void guiClick(MouseEvent e){
+        TextContainer threads_dec = new TextContainer("-", this, window, bx[2], by[2], Sprite.MENUBOX5) {
+            public void guiClick(MouseEvent e) {
                 updateCont(threads_count, "threads", -1);
-                if(initThreads != (int)Settings.getSetting("threads")){
+                if (initThreads != (int) Settings.getSetting("threads")) {
                     threadsChange = true;
                 } else {
                     threadsChange = false;
@@ -87,10 +100,10 @@ public class VideoSettings extends Container {
             }
         };
 
-        //-----------------------------------------------------------------------
-        //-----------------------------------------------------------------------
-        //-----------------------------------------------------------------------
-        
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+
         ColorFilter incf = new ColorFilter(Color.GREEN.getRGB());
         ColorFilter decf = new ColorFilter(Color.RED.getRGB());
 
@@ -120,53 +133,59 @@ public class VideoSettings extends Container {
         addComponent(vsync_dec);
         addComponent(threads_dec);
     }
-    
 
-    private void updateCont(TextContainer c, String property, int add){
+    /**
+     * Updates the value for a particular setting and displays it in the GUI.
+     *
+     * @param cont    the TextContainer object displaying the setting value
+     * @param setting the name of the setting to update
+     * @param change  the amount to change the setting by
+     */
+    private void updateCont(TextContainer c, String property, int add) {
         int n = Integer.parseInt(c.getText()) + add;
-        if(n >= 0 && n <= 9){
-            if(property.equals("threads") && n == 0){
-                c.setText((1)+"");
+        if (n >= 0 && n <= 9) {
+            if (property.equals("threads") && n == 0) {
+                c.setText((1) + "");
                 Settings.changeSetting(property, 1);
                 return;
             }
-            c.setText((n)+"");
+            c.setText((n) + "");
             Settings.changeSetting(property, n);
         }
     }
 
 
     @Override
-    public void paint(PaintEvent e){
+    public void paint(PaintEvent e) {
         e.getRenderer().fillRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT, 0x254aff);
 
         paintComponents(e);
 
         ColorFilter f = new ColorFilter(0x969696);
 
-        int px = (int)(Renderer.WIDTH*0.3);
+        int px = (int) (Renderer.WIDTH * 0.3);
 
-        e.getRenderer().renderText("AMBIENT OCCLUSION", 
-                    px, 
-                    (int)(Renderer.HEIGHT*by[0]), 
-                    Renderer.NO_OP, f);
+        e.getRenderer().renderText("AMBIENT OCCLUSION",
+                px,
+                (int) (Renderer.HEIGHT * by[0]),
+                Renderer.NO_OP, f);
 
-        e.getRenderer().renderText("VSYNC", 
-                    px, 
-                    (int)(Renderer.HEIGHT*by[1]), 
-                    Renderer.NO_OP, f);
-                    
-        e.getRenderer().renderText("THREADS", 
-                    px, 
-                    (int)(Renderer.HEIGHT*by[2]), 
-                    Renderer.NO_OP, f);
+        e.getRenderer().renderText("VSYNC",
+                px,
+                (int) (Renderer.HEIGHT * by[1]),
+                Renderer.NO_OP, f);
 
-        //threads count change warning
-        if(threadsChange){
-            e.getRenderer().renderText("!Restart game", px, 
-                                    (int)(Renderer.HEIGHT*by[2])+10, 
-                                    Renderer.NO_OP, 
-                                    new ColorFilter(0xff0009));
+        e.getRenderer().renderText("THREADS",
+                px,
+                (int) (Renderer.HEIGHT * by[2]),
+                Renderer.NO_OP, f);
+
+        // threads count change warning
+        if (threadsChange) {
+            e.getRenderer().renderText("!Restart game", px,
+                    (int) (Renderer.HEIGHT * by[2]) + 10,
+                    Renderer.NO_OP,
+                    new ColorFilter(0xff0009));
         }
     }
 }
