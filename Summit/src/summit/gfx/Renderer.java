@@ -29,7 +29,7 @@ public class Renderer implements Serializable {
 
     // -- used by final frame writer threads --
 
-    /** Array of threads used for concurrent rendering. */
+    /** Array of threads used for concurrent image upscaling. These are initialized at creation*/
     private final Writer[] writers;
 
     /**
@@ -89,7 +89,7 @@ public class Renderer implements Serializable {
         this.finalHeight = fHeight;
 
         // --------------------------------------------------------------------------
-        // concurrent rendering
+        // concurrent rendering upscaling
         // --------------------------------------------------------------------------
 
         if (t == 1) {
@@ -274,12 +274,13 @@ public class Renderer implements Serializable {
     }
 
     /**
-     * 
-     * Renders the given sprite to the frame buffer.
+     * Renders the given sprite to the frame buffer. 
+     * Any render operation flags are done in the order:
+     * {@code ROTATE_90} -> {@code FLIP_X} -> {@code FLIP_Y} -> {@code OUTLINING}
      * 
      * @param sprite    the sprite to render
-     * @param x         x-coordinate at which to render the sprite
-     * @param y         y-coordinate at which to render the sprite
+     * @param x         pixel x-coordinate at which to render the sprite
+     * @param y         pixel y-coordinate at which to render the sprite
      * @param operation optional operation to modify the rendering of the sprite
      *                  (e.g. flip, rotate)
      * @param filter    optional color filter to apply to the sprite during
@@ -288,21 +289,17 @@ public class Renderer implements Serializable {
     public void render(String sprite, int x, int y, int operation, ColorFilter filter) {
         this.render(BufferedSprites.getSprite(sprite), x, y, operation, filter);
     }
-
+    
     /**
-     * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE
-     * SCREEN COORDINATES
-     */
-
-    /**
-     * 
      * Renders the given 2D array of pixels to the frame buffer.
+     * Any render operation flags are done in the order:
+     * {@code ROTATE_90} -> {@code FLIP_X} -> {@code FLIP_Y} -> {@code OUTLINING}
      * 
      * @param sprite    2D array of pixels representing the sprite to render
      * 
-     * @param x         x-coordinate at which to render the sprite
+     * @param x         pixel x-coordinate at which to render the sprite
      * 
-     * @param y         y-coordinate at which to render the sprite
+     * @param y         pixel y-coordinate at which to render the sprite
      * 
      * @param operation optional operation to modify the rendering of the sprite
      *                  (e.g. flip, rotate)
@@ -377,20 +374,13 @@ public class Renderer implements Serializable {
                 render(text.charAt(i) + Sprite.TEXT_APPEND_KEY, offsetX + (i * 8), y, operation, filter);
         }
     }
-
+    
     /**
-     * USE THIS METHOD FOR RENDERING GAME STUFF (ANYTHING THAT IS POSITIONALLY BASED
-     * ON A CAMERA).
-     * COORDINATES ARE GAMESPACE COORDINATES.
-     */
-
-    /**
-     * 
      * Renders a sprite on the screen using gamespace coordinates. The sprite will
      * be adjusted for the camera's position.
      * 
      * Use this method for rendering anything that is positionally based on a
-     * camera.
+     * camera/in-game.
      * 
      * @param sprite    the sprite to render
      * 
@@ -407,15 +397,6 @@ public class Renderer implements Serializable {
      *                  screen
      */
     public void renderGame(String sprite, float x, float y, int operation, ColorFilter filter, Camera camera) {
-
-        // if((operation & IS_PLAYER) == IS_PLAYER){
-        // Point spritePos = toPixel(camera.getX(), camera.getY(), camera);
-        // operation &= ~IS_PLAYER;
-        // this.render(sprite, spritePos.x, spritePos.y, operation, filter);
-        // return;
-        // }
-
-        // operation &= ~IS_PLAYER;
 
         Point spritePos = toPixel(x, y, camera);
 
@@ -534,12 +515,11 @@ public class Renderer implements Serializable {
     // utility methods
     // --------------------------------------------------------------------
 
-    // just for thread
-
     /**
      * 
      * Returns the closest factor of the target to the given number. If the target
-     * cannot be reached exactly, the closest possible factor will be returned.
+     * cannot be reached exactly, the closest possible factor will be returned. This 
+     * is just a helper method for initializing the {@code Writer} upscaling threads
      * 
      * @param target the target factor to find
      * @param number the number to find the closest factor for
@@ -557,7 +537,6 @@ public class Renderer implements Serializable {
     }
 
     /**
-     * 
      * Converts the given red, green, and blue values to an integer representation
      * of a color. If any of the values exceed 255, they will be set to 255.
      * 
@@ -573,11 +552,10 @@ public class Renderer implements Serializable {
     }
 
     /**
-     * 
-     * Returns whether or not the given integer represents a valid RGB color.
+     * Returns whether or not the given integer represents a valid RGB color (transparent RGB).
      * 
      * @param rgb the integer to check
-     * @return true if the integer represents a valid RGB color, false otherwise
+     * @return false if RGB color is transparent (equal to -1)
      */
     public static boolean validRGB(int rgb) {
         return rgb != -1;
@@ -596,15 +574,10 @@ public class Renderer implements Serializable {
                 ((color >> 8) & 0xff) +
                 ((color >> 0) & 0xff)) / 3;
     }
-
+    
     /**
-     * Camera is left in gamecoordinates
-     */
-
-    /**
-     * 
      * Converts the given game space coordinates to pixel coordinates using the
-     * given camera. The camera is left in game space coordinates.
+     * given camera.
      * 
      * @param x   the x coordinate in game space
      * 
@@ -622,7 +595,6 @@ public class Renderer implements Serializable {
     }
 
     /**
-     * 
      * Converts the given mouse coordinates to tile coordinates in game space using
      * the given camera. The mouse coordinates are assumed to be in renderer pixel
      * space (256x144).
@@ -669,14 +641,15 @@ public class Renderer implements Serializable {
     /**
      * 
      * Flips the given array horizontally, vertically, or both according to the
-     * transform flag.
+     * transform flag. {@code FLIP_X} is applied first, which flips across the y-axis (horizontally),
+     * then {@code FLIP_Y} which does the opposite.
      * 
      * @param arr       the array to flip
      * 
-     * @param transform the transform flag, which can be FLIP_X, FLIP_Y, or FLIP_X |
-     *                  FLIP_Y
-     * 
-     * @return the flipped array
+     * @param transform the transform flag, which can be {@code FLIP_X}, {@code FLIP_Y}, or both using 
+     *                  binary OR operator, {@code FLIP_X | FLIP_Y}
+     *  
+     * @return the transformed/flipped array
      */
     public static int[][] flip(int[][] arr, int transform) {
         int[][] transformed = new int[arr.length][arr[0].length];
@@ -726,8 +699,8 @@ public class Renderer implements Serializable {
             for (int c = 0; c < sprite[0].length; c++) {
                 if (sprite[r][c] != -1) {
                     if (
-                    // check if on edge of sprite and is valid rgb
-                    (r == 0) ||
+                            // check if on edge of sprite and is valid rgb
+                            (r == 0) ||
                             (r == sprite.length - 1) ||
                             (c == 0) ||
                             (c == sprite[0].length - 1) ||
@@ -769,8 +742,8 @@ public class Renderer implements Serializable {
      * @return true if the indices are within the bounds of the array, false
      *         otherwise
      */
-    public static boolean inArrBounds(int r, int c, int rows, int cols) {
-        return (r >= 0) && (r < rows) && (c >= 0) && (c < cols);
+    public static boolean inArrBounds(int row, int col, int numRows, int numCols) {
+        return (row >= 0) && (row < numRows) && (col >= 0) && (col < numCols);
     }
 
     // ------------------------------------------------------------------
@@ -778,7 +751,6 @@ public class Renderer implements Serializable {
     // ------------------------------------------------------------------
 
     /**
-     * 
      * Sets the fullscreen mode for the renderer.
      * 
      * @param f true for fullscreen mode, false for windowed mode
@@ -789,7 +761,6 @@ public class Renderer implements Serializable {
 
     
     /**
-     * 
      * Returns the current frame being rendered by the renderer.
      * 
      * @return the current frame

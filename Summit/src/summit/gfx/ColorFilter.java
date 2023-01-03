@@ -11,9 +11,7 @@ import java.io.Serializable;
  * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class ColorFilter implements Serializable {
-
-    // jvm crashes if colorfilter is null for some reason
-
+    
     /**
      * A ColorFilter object with all color channels set to 0.
      */
@@ -59,17 +57,17 @@ public class ColorFilter implements Serializable {
 
         int r1 = ((color >> 16) & 0xff);
         int g1 = ((color >> 8) & 0xff);
-        int blue = ((color >> 0) & 0xff);
+        int b1 = ((color >> 0) & 0xff);
 
         r1 = ((r1 + this.getRed() > 255) ? 255 : r1 + this.getRed());
         g1 = ((g1 + this.getGreen() > 255) ? 255 : g1 + this.getGreen());
-        blue = ((blue + this.getBlue() > 255) ? 255 : blue + this.getBlue());
+        b1 = ((b1 + this.getBlue() > 255) ? 255 : b1 + this.getBlue());
 
         r1 = ((r1 < 0) ? 0 : r1);
         g1 = ((g1 < 0) ? 0 : g1);
-        blue = ((blue < 0) ? 0 : blue);
+        b1 = ((b1 < 0) ? 0 : b1);
 
-        return (r1 << 16) | (g1 << 8) | (blue << 0);
+        return (r1 << 16) | (g1 << 8) | (b1 << 0);
     }
 
     // ------- getters and setters ----------------------------

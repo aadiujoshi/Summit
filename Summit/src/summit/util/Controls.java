@@ -32,7 +32,7 @@ public class Controls {
     public static volatile boolean SHIFT;
     public static volatile boolean SPACEBAR;
 
-    //toggleable not press and release
+    //toggleable ; NOT press and release
     public static volatile boolean E;
 
     public static void setPress(KeyEvent e, GameUpdateEvent ev){

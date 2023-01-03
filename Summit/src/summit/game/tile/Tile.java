@@ -119,9 +119,11 @@ public abstract class Tile extends GameObject {
         hits++;
 
         if(isBreakable()){
-            if((iced && hits == 3) ||
-                (!iced))
-            this.setDestroy(true);
+            if(iced && hits == 3)
+                this.iced = !iced;
+
+            if(!iced)
+                this.setDestroy(true);
         }
     }
 

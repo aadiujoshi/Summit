@@ -1,5 +1,7 @@
 package summit.game.entity.mob;
 
+import summit.game.GameUpdateEvent;
+import summit.game.GameWorld;
 import summit.game.ai.HostileMobAI;
 import summit.game.ai.IceKingAI;
 import summit.game.item.IceStaff;
@@ -14,5 +16,11 @@ public class IceKing extends HumanoidEntity{
         super.setSprite(Sprite.ICE_KING_NEUTRAL);
         super.setEquipped(new IceStaff(this));
         super.setAI(new HostileMobAI(this));
+    }
+
+    @Override
+    public void destroy(GameUpdateEvent e){
+        super.destroy(e);
+        e.getWorld().setCompletion(GameWorld.GAME_VICTORY);
     }
 }

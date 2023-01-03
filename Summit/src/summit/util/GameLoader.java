@@ -16,7 +16,7 @@ import summit.game.GameWorld;
 /**
  * This class is responsible for GameWorld seriliazation/deserialization (game saves). 
  * Serliazation data is sent and retrieved from the database, which is accessed through the
- * {@code DBConnection} class. 
+ * {@link DBConnection} class. 
  */
 public class GameLoader {
     
@@ -27,10 +27,12 @@ public class GameLoader {
     public static final String tempFile = "gamesaves/temp.txt";
 
     /**
-     * Creates a 
+     * Creates a new entry in the database using {@code DBConnection}.
+     * 
      * 
      * @param saveName The name of the GameWorld 
      * 
+     * @see DBConnection#createSave(String)
      * @see GameWorld#getSaveName()
      */
     public synchronized static void createSave(String saveName){
@@ -57,7 +59,9 @@ public class GameLoader {
         }
 
         try{
-            FileInputStream file = new FileInputStream(tempFile);
+            File dbOut = DBConnection.getSave(saveName);
+
+            FileInputStream file = new FileInputStream(dbOut);
             ObjectInputStream out = new ObjectInputStream(file);
                 
             GameWorld world = (GameWorld)out.readObject();
@@ -75,11 +79,23 @@ public class GameLoader {
     }
     
     /**
-     * Saves a GameWorld to the database
+     * Serializes {@code world} and outputs it to {@code gamesaves/temp.txt}, then updates the database
+     * with {@code DBConnection}
+     * 
+     * However, if {@code GameWorld.getCompletion() == GameWorld.GAME_OVER_PLAYER_DEAD} is true, 
+     * the database entry associated with {@code saveName} will be deleted, and {@code world} will
+     * not be saved.
      * 
      * @param world The GameWorld to be saved
      */
     public synchronized static void saveWorld(GameWorld world){
+
+        if(world.getCompletion() == GameWorld.GAME_OVER_PLAYER_DEAD){
+            System.out.println("Will not save world with completion status: GameWorld.GAME_OVER_PLAYER_DEAD");
+            DBConnection.removeSave(world.getSaveName());
+            return;
+        }
+        
         while(accessing){ 
             try {
                 Thread.sleep(100);
@@ -99,8 +115,10 @@ public class GameLoader {
             out.close();
             file.close();
 
+            System.out.println("Save to temp file complete");
+            DBConnection.updateSave(world.getSaveName(), world.getElapsedTime(), world.getCompletion());
+
             accessing = false;
-            System.out.println("Save complete");
             
         } catch(ClassCastException | IOException e) {
             e.printStackTrace();
@@ -128,9 +146,11 @@ public class GameLoader {
                 out.close();
                 file.close();
     
+                System.out.println("Save to temp file complete");
+                DBConnection.updateSave(world.getSaveName(), world.getElapsedTime(), world.getCompletion());
+
                 accessing = false;
-                System.out.println("Save complete");
-                
+
             } catch(ClassCastException | IOException e) {
                 e.printStackTrace();
             }

@@ -38,6 +38,7 @@ import summit.gfx.RenderLayers;
 import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.Controls;
+import summit.util.DBConnection;
 import summit.util.GameLoader;
 import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
@@ -393,6 +394,10 @@ public class Window implements MouseListener, KeyListener {
             clearHomeContainers();
             clearGameContainers();
             pushHomeContainer(mainMenu);
+            if(world != null){
+                world.terminate();
+                world = null;
+            }
             state = newState;
             return;
         }
@@ -411,8 +416,10 @@ public class Window implements MouseListener, KeyListener {
         }
 
         if(newState == WindowState.SAVEDGAME){
+            // if(true) return;
+
             this.transition(new TransitionScreen(this, "Loading world..."));
-            world = GameLoader.loadWorld(Main.path + "gamesaves/testsave1.txt");
+            world = GameLoader.loadWorld("testsave");
             world.reinit(this);
             this.endTransition(WindowState.GAME);
 
@@ -426,6 +433,7 @@ public class Window implements MouseListener, KeyListener {
                     setState(WindowState.SELECTIONMENUS);
                     break;
                 case GAME:
+                    world.terminate();
                     setState(WindowState.SELECTIONMENUS);
                     break;
                 case NEWGAME:
@@ -449,8 +457,11 @@ public class Window implements MouseListener, KeyListener {
         renderer.terminate();
 
         if(world != null){
+            world.terminate();
             GameLoader.asyncSaveWorld(world);
         }
+
+        DBConnection.closeConnection();
     }
 
     /**

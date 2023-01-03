@@ -5,6 +5,7 @@
 package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
+import summit.game.GameWorld;
 import summit.game.item.Bow;
 import summit.game.item.Item;
 import summit.game.item.ItemStorage;
@@ -105,6 +106,12 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         setSpriteOffsetY(0.5f+(e.getCamera().getY() - getY()));
         
         super.paint(e);
+    }
+
+    @Override
+    public void destroy(GameUpdateEvent e){
+        super.destroy(e);
+        e.getWorld().setCompletion(GameWorld.GAME_OVER_PLAYER_DEAD);
     }
 
     @Override

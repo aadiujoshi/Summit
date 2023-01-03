@@ -22,6 +22,8 @@ public class BufferedSprites {
      * A HashMap that stores the sprites, with the keys being the names of the
      * sprites and the values being the
      * pixel data for the sprites.
+     * 
+     * @see summit.gfx.Sprite
      */
     private static HashMap<String, int[][]> sprites = new HashMap<>();
 
@@ -111,7 +113,7 @@ public class BufferedSprites {
     /**
      * Returns the sprite with the specified name. If the sprite does not exist,
      * returns a sprite with a single
-     * white pixel.
+     * transparent pixel.
      * 
      * @param spriteInd the name of the sprite to retrieve
      * @return the sprite with the specified name

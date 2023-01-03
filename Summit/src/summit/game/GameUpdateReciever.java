@@ -7,7 +7,9 @@ package summit.game;
 public interface GameUpdateReciever{
 
     /**
-    * ticking + game physics + situational checking
+     * This method allows {@code GameObjects} to recieve game information through  
+     * 
+     * @param e A {@link GameUpdateEvent} provided by the 
     */
     public void update(GameUpdateEvent e) throws Exception;
 }

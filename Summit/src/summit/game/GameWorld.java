@@ -22,6 +22,12 @@ import summit.util.GraphicsScheduler;
 import summit.util.Sound;
 import summit.util.Time;
 
+/**
+ * This is the class which contains all game data and objects, and manages 
+ * the creation of game updates
+ * 
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
+ */
 public class GameWorld implements Paintable, Serializable{
 
     /** The {@link MainMap} where the game starts */
@@ -30,7 +36,7 @@ public class GameWorld implements Paintable, Serializable{
     /**The current loaded {@link GameMap} that recieves game updates*/
     private GameMap loadedMap;
 
-    /** Ignore this field*/
+    /** Ignore this field, only used for debugging*/
     private volatile int tickSpeed = 0;
 
     /** The current time in the game, used for game mechanics*/
@@ -43,13 +49,23 @@ public class GameWorld implements Paintable, Serializable{
     private long sessionStartTime = Time.timeMs();
 
     /** A randomized key generated at creation to distinguish GameWorlds */
-    private final String SAVE_NAME = generateSaveName();
+    private final String SAVE_NAME = "testsave";
+    // private final String SAVE_NAME = generateSaveName();
 
     /**If the game update loop is paused*/
     private transient volatile boolean paused;
 
     /**The GUI {@link Container} */
     private transient PauseButton pauseButton;
+
+    /**Whether or not the {@code gameUpdateThread} should be terminated to end the current game session. */
+    private transient volatile boolean terminate;
+
+    public static final int GAME_NOT_COMPLETED = 0;
+    public static final int GAME_VICTORY = 1;
+    public static final int GAME_OVER_PLAYER_DEAD = 2;
+
+    private int completion = GAME_NOT_COMPLETED;
 
     /**
      * Used for safer map transitioning. 
@@ -62,7 +78,8 @@ public class GameWorld implements Paintable, Serializable{
     private GameMap queuedNewMap;
 
     /**
-     * The map transition animation. 
+     * The map transition animation. A visual effect which is applied when 
+     * a {@code GameMap} transition occurs.
      */
     private TransitionAnimation mapTransition;
 
@@ -70,7 +87,7 @@ public class GameWorld implements Paintable, Serializable{
     private final long SEED;
 
     /**Fixed game update intervals*/
-    public static final int MS_PER_TICK = 20;
+    public static final int MS_PER_TICK = 10;
 
     /**
      * If true, game updates happen dynamically instead of at fixed intervals.
@@ -134,6 +151,9 @@ public class GameWorld implements Paintable, Serializable{
             long prev_ns = Time.NS_IN_MS;
 
             while(!parentWindow.isClosed()){
+                if(terminate)
+                    break;
+
                 //show pause button
                 if(paused)
                     continue;
@@ -260,8 +280,20 @@ public class GameWorld implements Paintable, Serializable{
         this.paused = false;
     }
 
+    public void terminate() {
+        this.terminate = true;
+    }
+    
+    public int getCompletion() {
+        return this.completion;
+    }
+
+    public void setCompletion(int completion) {
+        this.completion = completion;
+    } 
+
     /**
-     * Get the distint SaveName of this GameWorld
+     * Get the distint Save Name of this GameWorld
      * 
      * @return This GameWorld {@code SAVE_NAME}
      */
