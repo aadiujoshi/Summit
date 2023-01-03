@@ -41,6 +41,8 @@ public class Renderer implements Serializable{
     public static final int OUTLINE_RED = 0b1000;
     public static final int OUTLINE_GREEN = 0b10000;
     public static final int OUTLINE_BLUE = 0b100000;
+
+    // public static final int IS_PLAYER = 0b1000000;
     
 
     public Renderer(int t, int fWidth, int fHeight){
@@ -266,11 +268,20 @@ public class Renderer implements Serializable{
      * USE THIS METHOD FOR RENDERING GAME STUFF (ANYTHING THAT IS POSITIONALLY BASED ON A CAMERA).
      * COORDINATES ARE GAMESPACE COORDINATES.
     */
-    public void renderGame(String s, float x, float y, int operation, ColorFilter filter, Camera camera){
+    public void renderGame(String sprite, float x, float y, int operation, ColorFilter filter, Camera camera){
+
+        // if((operation & IS_PLAYER) == IS_PLAYER){ 
+        //     Point spritePos = toPixel(camera.getX(), camera.getY(), camera);
+        //     operation &= ~IS_PLAYER;
+        //     this.render(sprite, spritePos.x, spritePos.y, operation, filter);
+        //     return;
+        // }
+
+        // operation &= ~IS_PLAYER;
 
         Point spritePos = toPixel(x, y, camera);
         
-        this.render(s, spritePos.x, spritePos.y, operation, filter);
+        this.render(sprite, spritePos.x, spritePos.y, operation, filter);
     }
 
     /**

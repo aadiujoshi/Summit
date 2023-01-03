@@ -14,7 +14,7 @@ public class IceShard extends Projectile{
     }
     
     @Override
-    public void update(GameUpdateEvent e){
+    public void update(GameUpdateEvent e) throws Exception{
         super.update(e);
         if(Math.random() > 0.69)
             e.getMap().addAnimation(new GlistenAnimation(getX(), getY(), (int)(Math.random()*5+1), 0x3792CB));

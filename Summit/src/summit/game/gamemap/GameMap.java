@@ -201,7 +201,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
     }
 
     @Override
-    public void update(GameUpdateEvent e) {
+    public void update(GameUpdateEvent e) throws Exception{
 
         ArrayList<GameObject> updateObjects = objectsInDist(camera, simDist);
         TileStack[][] updateTiles = tilesInDist(camera, simDist);

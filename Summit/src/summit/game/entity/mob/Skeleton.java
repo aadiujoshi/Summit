@@ -24,6 +24,10 @@ public class Skeleton extends HumanoidEntity{
         super.setMaxHealth(7);
         super.setHealth(getMaxHealth());
 
+        super.setSpriteStates(Sprite.SKELETON_SUBMERGED, 
+                                Sprite.SKELETON_FACE_BACK, 
+                                Sprite.SKELETON_NEUTRAL);
+
         super.setEquipped(new Bow(this));
 
         super.addItems(new BoneItem(this), (int)(Math.random()*7));

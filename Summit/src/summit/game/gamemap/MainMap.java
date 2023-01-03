@@ -85,10 +85,8 @@ public class MainMap extends GameMap{
     }
 
     @Override
-    public void update(GameUpdateEvent e){
+    public void update(GameUpdateEvent e) throws Exception{
         super.update(e);
-
-        // iceTiles();
     }
 
     private void iceTiles(){

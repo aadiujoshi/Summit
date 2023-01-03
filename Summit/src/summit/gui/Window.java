@@ -54,64 +54,40 @@ import summit.util.Time;
  * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Window implements MouseListener, KeyListener {
-    /**
-     * The title of the window displayed in the title bar.
-     */
+    /** The title of the window displayed in the title bar. */
     private String title;
 
-    /**
-     * The JFrame object representing the window.
-     */
+    /** The JFrame object representing the window.*/
     private JFrame frame;
 
-    /**
-     * The Canvas object for drawing graphics on the window.
-     */
+    /** The Canvas object for drawing graphics on the window.*/
     private Canvas canvas;
 
-    /**
-     * The Renderer object for rendering graphics to the Canvas.
-     */
+    /** The Renderer object for rendering graphics to the Canvas.*/
     private Renderer renderer;
 
-    /**
-     * A boolean flag indicating whether the window is in fullscreen mode.
-     */
+    /** A boolean flag indicating whether the window is in fullscreen mode.*/
     private boolean fullscreen;
 
-    /**
-     * The frames per second (fps) of the window.
-     */
+    /** The frames per second (fps) of the window. */
     public float fps;
 
-    /**
-     * The timestamp of the last frame.
-     */
+    /** The timestamp of the last frame.*/
     private long lastFrame;
 
-    /**
-     * A boolean flag indicating whether a click is available.
-     */
+    /**A boolean flag indicating whether a click is available.*/
     private boolean availableClick;
 
-    /**
-     * The width of the window.
-     */
+    /** The width of the window.*/
     public static final int SCREEN_WIDTH = 1280;
 
-    /**
-     * The height of the window.
-     */
+    /** The height of the window.*/
     public static final int SCREEN_HEIGHT = 720;
 
-    /**
-     * A boolean flag indicating whether the window is closed.
-     */
+    /**A boolean flag indicating whether the window is closed.*/
     private volatile boolean closed;
 
-    /**
-     * A boolean flag indicating whether the mouse is down.
-     */
+    /** A boolean flag indicating whether the mouse is down.*/
     private static boolean mouseDown;
 
     /**
@@ -160,14 +136,14 @@ public class Window implements MouseListener, KeyListener {
     private Thread graphicsThread;
 
     /**
-     * The first scheduler thread for the window.
+     * The game scheduler thread for the window.
      */
-    private Thread scheduler1Thread;
+    private Thread gameSchedulerThread;
 
     /**
-     * The second scheduler thread for the window.
+     * The graphics scheduler thread for the window.
      */
-    private Thread scheduler2Thread;
+    private Thread graphicsSchedulerThread;
 
     /**
      * The MainSelectionMenu object for the main menu.
@@ -194,17 +170,18 @@ public class Window implements MouseListener, KeyListener {
         width = SCREEN_WIDTH;
         height = SCREEN_HEIGHT;
 
+        finalFrame = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
+
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
         int _t = ((int) Settings.getSetting("threads") == 0) ? 1 : (int) Settings.getSetting("threads");
-
         renderer = new Renderer(_t, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu(this);
         settings = new VideoSettings(this);
 
-        scheduler1Thread = new Thread(new Runnable() {
+        gameSchedulerThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (!closed)
@@ -214,7 +191,7 @@ public class Window implements MouseListener, KeyListener {
             }
         });
 
-        scheduler2Thread = new Thread(new Runnable() {
+        graphicsSchedulerThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (!closed)
@@ -349,8 +326,8 @@ public class Window implements MouseListener, KeyListener {
         }
 
         graphicsThread.start();
-        scheduler1Thread.start();
-        scheduler2Thread.start();
+        gameSchedulerThread.start();
+        graphicsSchedulerThread.start();
 
         System.out.println("Threads in use: " + (Thread.activeCount() + 1) + "\n");
 

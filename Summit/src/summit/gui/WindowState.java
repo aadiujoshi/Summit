@@ -33,7 +33,7 @@ public enum WindowState {
     GAME,
 
     /**
-     * Go to the previous window/screen ; determine by Window
+     * Go to the previous window/screen ; determined by Window
      */
     BACK
 }

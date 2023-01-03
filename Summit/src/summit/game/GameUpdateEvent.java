@@ -7,7 +7,6 @@ package summit.game;
 import summit.game.gamemap.GameMap;
 import summit.gfx.Renderer;
 import summit.gui.Window;
-import summit.util.Time;
 
 public class GameUpdateEvent{
 

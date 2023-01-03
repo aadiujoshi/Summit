@@ -1,9 +1,6 @@
 package summit.util;
 
-import summit.game.GameWorld;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTransientConnectionException;
 import java.sql.Statement;
+
+import summit.game.GameWorld;
 
 public class DBConnection{
 
@@ -121,6 +120,7 @@ public class DBConnection{
      * @return True if update was successful
      * 
      * @see GameWorld#getSaveName()
+     * @see GameWorld#getGametime()
      */
     public static synchronized boolean updateSave(String saveName, float gameTime){
 
@@ -131,9 +131,10 @@ public class DBConnection{
             st = connection.createStatement();
             String qry = ("SELECT GameSave FROM gamedata WHERE SaveName=\"" + saveName + "\"");
             result = st.executeQuery(qry);
+
+
         } catch (SQLException e) {
-        }
-        finally{
+        } finally{
             try {
                 st.close();
             } catch (SQLException e) {
@@ -153,7 +154,7 @@ public class DBConnection{
         }
     }
 
-    public static void main(String[] args) {
+    public static void main0(String[] args) {
         //test
         getDBSave("hello");
     }

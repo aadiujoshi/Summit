@@ -48,7 +48,7 @@ public class ignore extends javax.swing.JComponent{
         }
     }
 
-    public static void main(String[] args) {
+    public static void main0(String[] args) {
         new ignore();
     }
 

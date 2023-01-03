@@ -36,6 +36,8 @@ public class Sprite {
     public static final String ICE_DOOR_NO_LOCKS = "ice-door-no_locks";
     public static final String INVENTORY = "inventory";
     public static final String SKELETON_FACE_BACK = "skeleton-face_back";
+    public static final String SKELETON_SUBMERGED = "skeleton-south-submerged";
+    public static final String SKELETON_NEUTRAL = "skeleton-south-neutral";
     public static final String TALL_ROCK1 = "tall-rock1";
     public static final String RAISED_STONE = "raised-stone";
     public static final String BLUE_LAMP1 = "blue-lamp1";

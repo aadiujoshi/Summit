@@ -4,26 +4,26 @@
 */
 package summit.game.entity.mob;
 
-import summit.game.GameUpdateEvent;
-import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
-import summit.util.Direction;
-import summit.util.ScheduledEvent;
-import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
+import summit.util.ScheduledEvent;
 
 public abstract class HumanoidEntity extends MobEntity{
 
-    private String sprite_north_moving;
-    private String sprite_north_neutral;
+    // private String sprite_north_moving;
+    // private String sprite_north_neutral;
 
-    private String sprite_south_moving;
-    private String sprite_south_neutral;
+    // private String sprite_south_moving;
+    // private String sprite_south_neutral;
 
-    private String sprite_east_moving;
-    private String sprite_east_neutral;
+    // private String sprite_east_moving;
+    // private String sprite_east_neutral;
     
+    private String sprite_submerged;
+    private String sprite_walking;
+    private String sprite_neutral;
+
     private ScheduledEvent walkAnimation;
 
     public HumanoidEntity(float x, float y) {
@@ -54,18 +54,40 @@ public abstract class HumanoidEntity extends MobEntity{
         GraphicsScheduler.registerEvent(walkAnimation);
     }
 
-    protected void setSprites(String sprite_north_moving, String sprite_north_neutral, 
-                                String sprite_south_moving, String sprite_south_neutral, 
-                                String sprite_east_moving, String sprite_east_neutral){
-        this.sprite_north_moving = sprite_north_moving;
-        this.sprite_north_neutral = sprite_north_neutral;
-
-        this.sprite_south_moving = sprite_south_moving;
-        this.sprite_south_neutral = sprite_south_neutral;
+    protected void setSpriteStates(String sprite_submerged, 
+                                    String sprite_walking, 
+                                    String sprite_neutral){
         
-        this.sprite_east_moving = sprite_east_moving;
-        this.sprite_east_neutral = sprite_east_neutral;
+        this.sprite_neutral = sprite_neutral;
+        this.sprite_submerged = sprite_submerged;
+        this.sprite_walking = sprite_walking;
     }
+
+    @Override
+    public void paint(PaintEvent e){
+        if(is(inWater))
+            setSprite(sprite_submerged);
+        else if(!is(moving))
+            setSprite(sprite_neutral);
+        else
+            setSprite(sprite_walking);
+    
+
+        super.paint(e);
+    }
+
+    // protected void setSprites(String sprite_north_moving, String sprite_north_neutral, 
+    //                             String sprite_south_moving, String sprite_south_neutral, 
+    //                             String sprite_east_moving, String sprite_east_neutral){
+    //     this.sprite_north_moving = sprite_north_moving;
+    //     this.sprite_north_neutral = sprite_north_neutral;
+
+    //     this.sprite_south_moving = sprite_south_moving;
+    //     this.sprite_south_neutral = sprite_south_neutral;
+        
+    //     this.sprite_east_moving = sprite_east_moving;
+    //     this.sprite_east_neutral = sprite_east_neutral;
+    // }
 
     @Override
     public void reinit(){
@@ -75,22 +97,21 @@ public abstract class HumanoidEntity extends MobEntity{
 
     // @Override
     public void paintNOTDONE(PaintEvent e){
-        super.paint(e);
         
-        Direction d = getFacing();
-        Camera c = e.getCamera();
-        Renderer r = e.getRenderer();
+        // Direction d = getFacing();
+        // Camera c = e.getCamera();
+        // Renderer r = e.getRenderer();
 
-        r.renderGame( switch(d){
-                        case EAST -> (is(moving) ? sprite_east_moving : sprite_east_neutral);
-                        case NORTH -> (is(moving) ? sprite_north_moving : sprite_north_neutral);
-                        case SOUTH -> (is(moving) ? sprite_south_moving : sprite_south_neutral);
-                        case WEST -> (is(moving) ? sprite_east_moving : sprite_east_neutral);
-                        default -> null;
-                    }, 
-                    getX(), getY()+4, 
-                    Renderer.NO_OP, getColorFilter(),
-                    c);
+        // r.renderGame( switch(d){
+        //                 case EAST -> (is(moving) ? sprite_east_moving : sprite_east_neutral);
+        //                 case NORTH -> (is(moving) ? sprite_north_moving : sprite_north_neutral);
+        //                 case SOUTH -> (is(moving) ? sprite_south_moving : sprite_south_neutral);
+        //                 case WEST -> (is(moving) ? sprite_east_moving : sprite_east_neutral);
+        //                 default -> null;
+        //             }, 
+        //             getX(), getY()+4, 
+        //             Renderer.NO_OP, getColorFilter(),
+        //             c);
 
         // switch(d){
         //     case NORTH:

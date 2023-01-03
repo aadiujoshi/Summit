@@ -86,7 +86,7 @@ public class Projectile extends Entity {
     }
 
     @Override
-    public void update(GameUpdateEvent e){
+    public void update(GameUpdateEvent e) throws Exception{
         if(Region.distance(getX(), getY(), sx, sy) >= 20){
             set(destroyed, true);
             return;

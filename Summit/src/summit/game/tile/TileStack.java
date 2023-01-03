@@ -61,7 +61,7 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
     }
 
     @Override
-    public void update(GameUpdateEvent e) {
+    public void update(GameUpdateEvent e) throws Exception{
         
         if(tiles.size()-2 >= 0)
             tiles.get(tiles.size()-2).setIced(topTile().isIced());
