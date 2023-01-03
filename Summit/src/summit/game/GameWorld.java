@@ -39,7 +39,7 @@ public class GameWorld implements Paintable, Serializable{
     /**Total elapsed in-game time*/
     private long elapsedtime;
 
-    /** */
+    /**Start time of this game session */
     private long sessionStartTime = Time.timeMs();
 
     /** A randomized key generated at creation to distinguish GameWorlds */
@@ -89,7 +89,7 @@ public class GameWorld implements Paintable, Serializable{
     private transient Window parentWindow;
     
     /** The main game update thread. It is reinitialized after deserilization
-     * @see GameWorld#reinit(Window)
+     * @see GameWorld#initUpdateThread(Window)
     */
     private transient Thread gameUpdateThread;
 
@@ -260,6 +260,11 @@ public class GameWorld implements Paintable, Serializable{
         this.paused = false;
     }
 
+    /**
+     * Get the distint SaveName of this GameWorld
+     * 
+     * @return This GameWorld {@code SAVE_NAME}
+     */
     public String getSaveName() {
 		return this.SAVE_NAME;
 	}

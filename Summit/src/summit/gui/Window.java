@@ -405,6 +405,7 @@ public class Window implements MouseListener, KeyListener {
 
         if(newState == WindowState.NEWGAME){
             world = new GameWorld(this, (long)(Math.random()*Long.MAX_VALUE));
+            GameLoader.createSave(world.getSaveName());
             state = WindowState.GAME;
             return;
         }

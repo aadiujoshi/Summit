@@ -1,6 +1,9 @@
 package summit.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,9 +11,9 @@ import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLTransientConnectionException;
 import java.sql.Statement;
 
 import summit.game.GameWorld;
@@ -22,7 +25,7 @@ public class DBConnection{
     private static final String PASSWORD = "djk%f$dj01prS";
     private static Connection connection;
 
-    private static boolean retry;
+    // private static boolean retry;
 
     static{
         connect();
@@ -42,8 +45,28 @@ public class DBConnection{
         }
     }
 
-    public static synchronized void createSave(String h){
+    public static synchronized void createSave(String saveName){
+        PreparedStatement ps = null;
 
+        try {
+            ps = connection.prepareStatement("INSERT INTO gamedata VALUES (?, ?, ?)");
+
+            ps.setString(1, saveName);
+            ps.setFloat(2, -1);
+
+            //empty blob
+            ps.setBlob(3,  new ByteArrayInputStream(new byte[0]));
+
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -51,7 +74,7 @@ public class DBConnection{
      * 
      * @param saveName Name of the file in the database
      */
-    public static synchronized File getDBSave(String saveName){
+    public static synchronized File getSave(String saveName){
         
         Statement st = null;
         ResultSet result = null;
@@ -64,13 +87,10 @@ public class DBConnection{
 
             //if empty create new entry in database
             if(!result.next()){
-                System.out.println("Non-existant save name");
-                System.out.println("Creating new database entry... \"" + saveName + "\"");
-                createSave(saveName);
+                throw new IllegalArgumentException("Non-existant save name... please create new database entry");
             }
 
-
-            Blob blob = result.getBlob("gameSave");
+            Blob blob = result.getBlob("GameSave");
             
             out = new FileOutputStream(GameLoader.tempFile);
 
@@ -81,17 +101,15 @@ public class DBConnection{
 
             return new File(GameLoader.tempFile);
 
+        } catch(IllegalArgumentException e){
+            e.printStackTrace();
         } catch (IOException e) { 
-        } catch (SQLTransientConnectionException e){
-            if(!retry){
-                System.out.println("Retrieve failed");
-                System.out.println("Retrying...");
-                connect();
-                getDBSave(saveName);
-                retry = true;
-            }
-        }
-        catch(SQLException e){
+            e.printStackTrace();
+        } catch(SQLException e){
+            System.out.println("Retrieve failed");
+            System.out.println("Re-establishing connection... please retry command");
+            connect();
+
             e.printStackTrace();
         }
         finally{
@@ -102,12 +120,10 @@ public class DBConnection{
                 st.close();
             } catch (NullPointerException e) {
             } catch(SQLException | IOException e){
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
         
-        retry = false;
-
         return null;
     }
     
@@ -124,19 +140,23 @@ public class DBConnection{
      */
     public static synchronized boolean updateSave(String saveName, float gameTime){
 
-        Statement st = null;
-        ResultSet result = null;
-
+        PreparedStatement ps = null;
+        
         try {
-            st = connection.createStatement();
-            String qry = ("SELECT GameSave FROM gamedata WHERE SaveName=\"" + saveName + "\"");
-            result = st.executeQuery(qry);
+            ps = connection.prepareStatement
+            ("UPDATE gamedata SET GameTime=?, GameSave=? WHERE SaveName=\"" + saveName + "\"");
 
-
+            ps.setFloat(1, gameTime);
+            ps.setBlob(2, new FileInputStream(GameLoader.tempFile));
+            
+            ps.execute();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
         } finally{
             try {
-                st.close();
+                ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -156,6 +176,6 @@ public class DBConnection{
 
     public static void main0(String[] args) {
         //test
-        getDBSave("hello");
+        getSave("hello");
     }
 }

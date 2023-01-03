@@ -1,10 +1,13 @@
 ## Summit: Arcade Game
 BPA project by Aadi Joshi, Adithya Bhattacharya, Sanjay Raghav, and Aadithya Ramikrishnan Sriram
 
-* this is a markdown test 
+* press Q to eat apples
+* press R to equip bow
+* press F to equip snowballs
+* press C to equip sword
+* (not impl yet) press T to craft arrows
 
-## dsfa
-
+## 
     public static void main(String args[]){
-        System.out.println("i love markdown!!11");
+        System.out.println("I hate tiktok");
     }

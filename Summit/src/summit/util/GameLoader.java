@@ -27,6 +27,17 @@ public class GameLoader {
     public static final String tempFile = "gamesaves/temp.txt";
 
     /**
+     * Creates a 
+     * 
+     * @param saveName The name of the GameWorld 
+     * 
+     * @see GameWorld#getSaveName()
+     */
+    public synchronized static void createSave(String saveName){
+        DBConnection.createSave(saveName);
+    }
+
+    /**
      * Returns a deserialized GameWorld object. Serlialized data is retrieved 
      * from the database
      * 
@@ -34,7 +45,7 @@ public class GameLoader {
      * @return The GameWorld object associated with {@code saveName} 
      * 
      * @see GameWorld#getSaveName()
-     * @see DBConnection#getDBSave(String)
+     * @see DBConnection#getSave(String)
      */
     public synchronized static GameWorld loadWorld(String saveName){
         while(accessing){ 
