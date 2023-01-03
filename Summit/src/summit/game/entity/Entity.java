@@ -117,14 +117,9 @@ public abstract class Entity extends GameObject{
         if(equipped != null)
             equipped.setRenderLayer(ope);
     }
-
+    
     @Override
-    public void paint(PaintEvent e){
-        super.paint(e);
-    }
-
-    @Override
-    public void update(GameUpdateEvent e){
+    public void update(GameUpdateEvent e) throws Exception {
         curMap = e.getMap().getName();
 
         if(health <= 0){

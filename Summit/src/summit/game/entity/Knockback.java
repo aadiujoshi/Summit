@@ -57,7 +57,7 @@ public class Knockback implements GameUpdateReciever, Serializable {
         return (Time.timeNs() - START_TIME >= duration_ms*Time.NS_IN_MS) || overrideFinish;
     }
     
-    public void update(GameUpdateEvent e){
+    public void update(GameUpdateEvent e) throws Exception{
         GameMap map = e.getMap();
 
         float delta_t = (Time.timeNs() - START_TIME)/(float)Time.NS_IN_S;

@@ -9,5 +9,5 @@ public interface GameUpdateReciever{
     /**
     * ticking + game physics + situational checking
     */
-    public void update(GameUpdateEvent e);
+    public void update(GameUpdateEvent e) throws Exception;
 }

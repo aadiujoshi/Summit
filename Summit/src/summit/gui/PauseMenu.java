@@ -32,7 +32,7 @@ public class PauseMenu extends Container{
                 if(window != null){
                     Sound.stopAll();
                     window.transition(new TransitionScreen(window, "Saving world..."));
-                    GameLoader.saveWorld(world, Main.path + "gamesaves/testsave1.txt");
+                    GameLoader.saveWorld(world);
                     window.endTransition(WindowState.SELECTIONMENUS);
                 }
             }

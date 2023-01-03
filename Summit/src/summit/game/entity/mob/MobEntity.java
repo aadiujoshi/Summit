@@ -83,7 +83,7 @@ public abstract class MobEntity extends Entity{
     }
 
     @Override
-    public void update(GameUpdateEvent e){
+    public void update(GameUpdateEvent e)  throws Exception{
         super.update(e);
 
         if(ai != null)
@@ -92,9 +92,6 @@ public abstract class MobEntity extends Entity{
 
     @Override
     public void paint(PaintEvent e){
-        // if(this instanceof Player)
-        // System.out.println(getLight() != Light.NO_LIGHT);
-
         ColorFilter cf = getColorFilter();
 
         if(getCurMap().equals("DungeonsMap") && getLight() == Light.NO_LIGHT)

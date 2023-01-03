@@ -17,7 +17,6 @@ import summit.gfx.Paintable;
 import summit.gfx.Renderer;
 import summit.util.Region;
 
-//should extend Region class!!!!!!!!!
 public class Container extends Region implements Paintable, GUIClickReciever{
 
     private List<Container> components;

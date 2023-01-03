@@ -4,75 +4,106 @@
 */
 package summit.game;
 
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.io.StringWriter;
 
 import summit.game.animation.TransitionAnimation;
 import summit.game.entity.mob.Player;
 import summit.game.gamemap.GameMap;
 import summit.game.gamemap.MainMap;
-import summit.game.tile.SnowTile;
-import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.OrderPaintEvent;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.RenderLayers;
+import summit.gui.Container;
 import summit.gui.PauseButton;
 import summit.gui.Window;
-import summit.util.GameLogger;
-import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
 import summit.util.Sound;
 import summit.util.Time;
 
 public class GameWorld implements Paintable, Serializable{
 
+    /** The {@link MainMap} where the game starts */
     private MainMap mainMap;
     
+    /**The current loaded {@link GameMap} that recieves game updates*/
     private GameMap loadedMap;
 
-    //just for debugging
+    /** Ignore this field*/
     private volatile int tickSpeed = 0;
 
+    /** The current time in the game, used for game mechanics*/
     private long gametime;
+
+    /**Total elapsed in-game time*/
     private long elapsedtime;
-    private final long START_TIME = Time.timeMs();
 
-    private final String SAVE_NAME;
-    private transient String filepath;
+    /** */
+    private long sessionStartTime = Time.timeMs();
 
+    /** A randomized key generated at creation to distinguish GameWorlds */
+    private final String SAVE_NAME = generateSaveName();
+
+    /**If the game update loop is paused*/
     private transient volatile boolean paused;
+
+    /**The GUI {@link Container} */
     private transient PauseButton pauseButton;
 
-    //used for safer map transitioning
-    //if not null, the loaded map is set to this on the next update tick and this is set to null
+    /**
+     * Used for safer map transitioning. 
+     * If {@code queuedNewMap} is not null, the {@code loadedMap} is set to 
+     * {@code queuedNewMap} after the current 
+     * update tick is finished processing and {@code queuedNewMap} is set to null
+     * 
+     * @see GameWorld#setLoadedMap(GameMap)
+     */
     private GameMap queuedNewMap;
 
+    /**
+     * The map transition animation. 
+     */
     private TransitionAnimation mapTransition;
 
+    /**The fixed seed of this game world */
     private final long SEED;
-    public static final int MS_PER_TICK = 15;
+
+    /**Fixed game update intervals*/
+    public static final int MS_PER_TICK = 20;
+
+    /**
+     * If true, game updates happen dynamically instead of at fixed intervals.
+     * However, If the game is running slow, there can be input delay and higher
+     * latency. This is the default game tick option.
+    */
     private static final boolean DYNAMIC_TICKS = true;
 
-    //Same object shared by all GameMaps 
+    /**The global {@link Player} object*/
     private Player player;
 
+    /**
+     * The parent {@link Window} object. It is reset after deserilization
+     * @see GameWorld#reinit(Window)
+    */
     private transient Window parentWindow;
     
+    /** The main game update thread. It is reinitialized after deserilization
+     * @see GameWorld#reinit(Window)
+    */
     private transient Thread gameUpdateThread;
 
     /**
      * Use this constructor to create a new game
-     * @param parentWindow
+     * 
+     * @param parentWindow The current {@link Window} object
+     * @param seed A long number for procedural map generation
      */
-    public GameWorld(final String name, Window parentWindow, long seed){
+    public GameWorld(Window parentWindow, long seed){
         this.parentWindow = parentWindow;
         SEED = seed;
         gametime = 0;
-        SAVE_NAME = name;
-
+        
         player = new Player(0, 0);
         mainMap = new MainMap(player, seed);
         mainMap.setLoaded(true);
@@ -86,9 +117,8 @@ public class GameWorld implements Paintable, Serializable{
     }
 
     // must be called after loading from save
-    public void reinit(Window w, String filepath){
+    public void reinit(Window w){
         this.parentWindow = w;
-        this.filepath = filepath;
 
         pauseButton = new PauseButton(w, this);
 
@@ -118,15 +148,15 @@ public class GameWorld implements Paintable, Serializable{
                 this.gametime = (elapsedtime) % 1200000;
 
                 GameUpdateEvent e = (DYNAMIC_TICKS) ? new GameUpdateEvent(this, prev_ns) : 
-                                                    new GameUpdateEvent(this, MS_PER_TICK);
-                
+                                                    new GameUpdateEvent(this, MS_PER_TICK*Time.NS_IN_MS);
+                                                    
                 if(loadedMap != null){
-                    loadedMap.update(e);
-                    // try{
-                    //     loadedMap.update(e);
-                    // } catch(ArrayIndexOutOfBoundsException ex) {
-                    //     ex.printStackTrace();
-                    // }
+                    // loadedMap.update(e);
+                    try{
+                        loadedMap.update(e);
+                    } catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
                 
                 //change gamemaps
@@ -210,6 +240,10 @@ public class GameWorld implements Paintable, Serializable{
         return this.loadedMap.getCamera();
     }
 
+    public long getElapsedTime(){
+        return this.elapsedtime;
+    }
+
     public Window getParentWindow() {
         return this.parentWindow;
     }
@@ -225,12 +259,20 @@ public class GameWorld implements Paintable, Serializable{
     public void unpause(){
         this.paused = false;
     }
-    
-    public String getFilepath() {
-        return this.filepath;
-    }
 
-    public void setFilepath(String filepath) {
-        this.filepath = filepath;
+    public String getSaveName() {
+		return this.SAVE_NAME;
+	}
+
+    private String generateSaveName(){
+        String f = "";
+
+        for (int i = 0; i < 16; i++) {
+            f += (char)(Math.random()*59+64);
+        }
+
+        System.out.println(f);
+
+        return f;
     }
 }

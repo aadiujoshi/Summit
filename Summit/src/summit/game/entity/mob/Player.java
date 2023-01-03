@@ -4,20 +4,10 @@
 */
 package summit.game.entity.mob;
 
-import java.awt.Point;
-import java.util.HashMap;
-import java.util.Stack;
-
 import summit.game.GameUpdateEvent;
-import summit.game.entity.projectile.Arrow;
-import summit.game.item.BlueKey;
 import summit.game.item.Bow;
-import summit.game.item.GreenKey;
-import summit.game.item.IceStaff;
 import summit.game.item.Item;
 import summit.game.item.ItemStorage;
-import summit.game.item.RedKey;
-import summit.game.item.SnowballItem;
 import summit.game.item.Sword;
 import summit.game.item.WeaponItem;
 import summit.gfx.Camera;
@@ -29,7 +19,6 @@ import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.gui.HUD;
 import summit.gui.InventoryGUI;
-import summit.gui.Window;
 import summit.util.Controls;
 import summit.util.ControlsReciever;
 import summit.util.Region;
@@ -58,6 +47,10 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         super.set(pickupItems, true);
         super.setAI(null);
         
+        super.setSpriteStates(Sprite.PLAYER_SUBMERGED_SOUTH, 
+                                Sprite.PLAYER_FACE_BACK_1, 
+                                Sprite.PLAYER_NEUTRAL_SOUTH);
+
         this.hud = new HUD(this);
         this.invGui = new InventoryGUI(super.getItems());
         this.sword = new Sword(this);
@@ -68,8 +61,6 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         super.setEquipped(bow);
 
         Controls.addControlsReciever(this);
-        
-        // this.invGui = new ItemGUI((Inventory)super.getItems());
     }
     
     @Override
@@ -109,13 +100,11 @@ public class Player extends HumanoidEntity implements ControlsReciever{
             }
         }
 
-        if(outline())
-            this.outline(e);
-        e.getRenderer().renderGame(getSprite(), 
-                                    e.getCamera().getX()+getSpriteOffsetX(), e.getCamera().getY()+getSpriteOffsetY(), 
-                                    getRenderOp(),
-                                    getColorFilter(),
-                                    e.getCamera());
+        //align with camera
+        setSpriteOffsetX((e.getCamera().getX() - getX()));
+        setSpriteOffsetY(0.5f+(e.getCamera().getY() - getY()));
+        
+        super.paint(e);
     }
 
     @Override
@@ -133,7 +122,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
     }
 
     @Override
-    public void update(GameUpdateEvent e) {
+    public void update(GameUpdateEvent e) throws Exception{
         
         if(Controls.E){
             if(!invGui.isPushed())
@@ -144,7 +133,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         }
 
         super.update(e);
-        
+
         if(getCurMap().equals("DungeonsMap") || 
             getCurMap().equals("BossRoom")){
             Light li = new Light(getX(), getY(), 5.5f,120, 120, 120);
@@ -175,19 +164,7 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         if(Controls.D && moveTo(e.getMap(), this.getX()+del_x, this.getY())){
             this.setX(this.getX()+del_x);
         }
-
-        //--- extra -----------------------------
-        //MOVE TO HUMANOID_ENTITY
-        if(is(inWater))
-            setSprite(Sprite.PLAYER_SUBMERGED_SOUTH);
-        else if(!is(moving))
-            setSprite(Sprite.PLAYER_NEUTRAL_SOUTH);
-        else
-            setSprite(Sprite.PLAYER_FACE_BACK_1);
         
-        //-----------------------------------------
-        //sounds
-
         if(is(moving) && !is(inWater)){
             if(!Sound.WALKING_HARD.playing())
                 Sound.WALKING_HARD.play();
@@ -210,9 +187,6 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         if(Controls.F){
             if(getItems().countItem(Sprite.SNOWBALL) > 0)
                 setEquipped((WeaponItem)getItems().get(Sprite.SNOWBALL).peek());
-        }
-        if(Controls.T){
-            setEquipped(new IceStaff(this));
         }
     }
 

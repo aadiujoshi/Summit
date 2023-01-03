@@ -43,7 +43,7 @@ public abstract class Structure extends GameObject {
     }
 
     @Override
-    public void update(GameUpdateEvent e) {
+    public void update(GameUpdateEvent e) throws Exception{
         //do nothing
     }
 

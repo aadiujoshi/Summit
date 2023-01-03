@@ -21,7 +21,11 @@ public class Zombie extends HumanoidEntity{
         super.setAI(new HostileMobAI(this));
         super.setHealth(5);
         super.setEquipped(new Sword(this));
-        super.setSprite(Sprite.PLAYER_FACE_BACK_1);
+        
+        super.setSpriteStates(Sprite.PLAYER_SUBMERGED_SOUTH, 
+                                Sprite.PLAYER_FACE_BACK_1, 
+                                Sprite.PLAYER_NEUTRAL_SOUTH);
+
         super.setMaxHealth(5);
 
         super.addItems(new GoldCoin(this), (int)(Math.random()*10));
@@ -33,14 +37,8 @@ public class Zombie extends HumanoidEntity{
     public void paint(PaintEvent e){
         if(!is(damageCooldown)){
             setColorFilter(new ColorFilter(0, 100, 0));
-            
-            // if(getCurMap().equals("DungeonsMap")){
-            //     setColorFilter(new ColorFilter(0, 60, 0));
-            // }
         }
         
-        super.paint0(e);
-
-        // e.getRenderer().renderGame(Sprite.STONE_SWORD, getX()+0.25f, getY()-0.25f, Renderer.NO_OP, ColorFilter.NOFILTER, e.getCamera());
+        super.paint(e);
     }
 }

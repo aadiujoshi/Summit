@@ -27,25 +27,10 @@ public class InventoryGUI extends Container{
     private float[] item_y = new float[]{0.25f, 0.5f, 0.75f,
                                             0.25f, 0.5f, 0.75f,
                                             0.25f, 0.5f, 0.75f};
-
-    // private HashMap<String, String> sprites;
-
-    // private String[] sprites = new String[]{Sprite.ARROW_ITEM, Sprite.SNOWBALL, Sprite.APPLE_ITEM,
-    //                                         Sprite.STICK_ITEM, Sprite.BONE_ITEM, Sprite.GOLD_COIN,
-    //                                         null, null, null};
-
+                                            
     public InventoryGUI(ItemStorage inv) {
         super(null, null, 0.5f, 0.5f, Sprite.INVENTORY);
         this.items = inv;
-
-        // this.sprites = new HashMap<>();
-        
-        // sprites.put("apples", Sprite.APPLE_ITEM);
-        // sprites.put("arrows", Sprite.ARROW_ITEM);
-        // sprites.put("bones", Sprite.BONE_ITEM);
-        // sprites.put("gold", Sprite.GOLD_COIN);
-        // sprites.put("sticks", Sprite.STICK_ITEM);
-        // sprites.put("snowballs", Sprite.SNOWBALL);
     }
     
     @Override

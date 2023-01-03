@@ -20,8 +20,7 @@ public class TextContainer extends Container {
     private ColorFilter textFilter;
 
     /**
-     * Constructs a TextContainer with the given text, parent container, window,
-     * relative x and y position, and sprite.
+     * Constructs a TextContainer 
      * 
      * @param text   the text to be displayed
      * @param parent the parent container of this container

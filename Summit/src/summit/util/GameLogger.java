@@ -11,5 +11,4 @@ public class GameLogger {
     public static void logLoad(){
 
     }
-
 }

@@ -29,7 +29,6 @@ public class ItemChest extends Structure{
     public ItemChest(float x, float y, Item gameKey, GameMap parentMap) {
         super(x, y, 1, 1, parentMap);
         super.setSprite(Sprite.CHEST_CLOSED);
-        // super.setLight(new Light(x, y, 4, new ColorFilter(0xffffff)));
         super.setColorFilter(new ColorFilter(0, 0, 0));
         super.setShadow(ColorFilter.NOFILTER);
         super.situate(parentMap);

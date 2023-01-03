@@ -59,7 +59,7 @@ public abstract class Tile extends GameObject {
     }    
 
     @Override
-    public void update(GameUpdateEvent e){
+    public void update(GameUpdateEvent e) throws Exception{
         //cover with snow
         // if(Math.random() < 0.000005)
         //     reqPushTile = new SnowTile(getX(), getY());

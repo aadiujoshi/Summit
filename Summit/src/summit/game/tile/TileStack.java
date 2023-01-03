@@ -51,16 +51,17 @@ public class TileStack implements Serializable, GameClickReciever, Paintable, Ga
 
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
-        for (int i = 0; i < tiles.size(); i++) {
-            Tile t = tiles.get(i);
+        tiles.peek().setRenderLayer(ope);
+        // for (int i = 0; i < tiles.size(); i++) {
+        //     Tile t = tiles.get(i);
 
-            if(t != null)
-                t.setRenderLayer(ope);
-        }
+        //     if(t != null)
+        //         t.setRenderLayer(ope);
+        // }
     }
 
     @Override
-    public void update(GameUpdateEvent e) {
+    public void update(GameUpdateEvent e) throws Exception{
         
         if(tiles.size()-2 >= 0)
             tiles.get(tiles.size()-2).setIced(topTile().isIced());

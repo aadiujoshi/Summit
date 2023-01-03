@@ -7,20 +7,25 @@ package summit.gfx;
 import java.util.ArrayList;
 
 /**
- * A RenderLayers stores all the Paintable objects to be rendered, which are stored in layers.
+ * The RenderLayers class stores all the Paintable objects to be rendered, which are stored in layers.
  * Each layer is an ArrayList of Paintable objects, and there are 10 layers stored in an array.
- * Once all the Paintable objects have been added, the renderLayers(PaintEvent) method is called, which calls the 
- * paint(PaintEvent) method on all the objects in order of their layer.
- * 
+ * Once all the Paintable objects have been added, the {@link RenderLayers#renderLayers(PaintEvent)} method is called, 
+ * which calls the {@link Paintable#paint(PaintEvent)} method on all the objects in order of their layer.
  */
 public class RenderLayers{
 
+    /**The layer index to which game tiles are added to */
     public static final int TILE_LAYER = 2;
+
+    /**The layer index to which enitites and structures are added to */
     public static final int STRUCTURE_ENTITY_LAYER = 5;
+
+    /**The top most render layer*/
     public static final int TOP_LAYER = 9;
 
     private ArrayList<Paintable>[] layers;
 
+    @SuppressWarnings(value = "unchecked")
     public RenderLayers(int n_layers){
         this.layers = new ArrayList[n_layers];
 
@@ -37,13 +42,20 @@ public class RenderLayers{
         return this.layers[layer];
     }
 
+    /**
+     * Calls the paint method for all added {@link Paintable} objects in each layer, in order
+     * 
+     * @param e A {@link PaintEvent} object
+     */
     public void renderLayers(PaintEvent e){
         for (ArrayList<Paintable> layer : layers) {
             for (Paintable p : layer) {
-                p.paint(e);
-                // System.out.println(p.getClass());
+                try{
+                    p.paint(e);
+                } catch(Exception ex){
+                    System.out.println(ex);
+                }
             }
-            // System.out.println("------------------------------");
         }
     }
 }

@@ -193,12 +193,15 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
                 return;
             }
         }
-        if(getTileAt(e.gameX(), e.gameY()).distance(player) <= reach)
-            getTileStackAt(e.gameX(), e.gameY()).gameClick(e);
+
+        Tile tat = getTileAt(e.gameX(), e.gameY());
+
+        if(tat != null && tat.distance(player) <= reach)
+            tat.gameClick(e);
     }
 
     @Override
-    public void update(GameUpdateEvent e) {
+    public void update(GameUpdateEvent e) throws Exception{
 
         ArrayList<GameObject> updateObjects = objectsInDist(camera, simDist);
         TileStack[][] updateTiles = tilesInDist(camera, simDist);
