@@ -13,7 +13,7 @@ public class IceKing extends HumanoidEntity{
         super(x, y); 
         super.setMaxHealth(50);
         super.setHealth(getMaxHealth());
-        super.setSprite(Sprite.ICE_KING_NEUTRAL);
+        super.setSpriteStates(Sprite.ICE_KING_NEUTRAL, Sprite.ICE_KING, Sprite.ICE_KING_NEUTRAL);
         super.setEquipped(new IceStaff(this));
         super.setAI(new HostileMobAI(this));
     }

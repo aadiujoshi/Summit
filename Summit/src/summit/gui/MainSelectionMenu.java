@@ -29,7 +29,7 @@ public class MainSelectionMenu extends Container{
         TextContainer savedGames = new TextContainer("SAVED GAMES", this, window, 0.5f, 0.5f, Sprite.MENUBOX2){
             @Override
             public void guiClick(MouseEvent e){
-                window.setState(WindowState.SAVEDGAME);
+                window.setState(WindowState.SAVEDGAMESELECTION);
             }
         };
 
@@ -37,7 +37,7 @@ public class MainSelectionMenu extends Container{
             @Override
             public void guiClick(MouseEvent e){
                 if(window != null){
-                    window.quit();
+                    window.manualQuit();
                 }
             }
         };

@@ -15,7 +15,7 @@ public class GraphicsScheduler {
 
     private static ArrayList<ScheduledEvent> eventAddQueue = new ArrayList<>();
 
-    /** Singleton */
+    /** Singleton, no instantiation */
     private GraphicsScheduler(){}
 
     //called by some thread

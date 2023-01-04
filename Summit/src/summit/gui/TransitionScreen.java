@@ -23,14 +23,15 @@ public class TransitionScreen extends TextContainer {
      * @param text   the text to be displayed on the TransitionScreen
      */
     public TransitionScreen(Window window, String text) {
-        super(text, null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
+        super(text, null, window, 0.5f, 0.5f, Sprite.SUMMIT_BACKGROUND2);
         super.setNavContainer(false);
+        super.setOutline(false);
     }
 
 
     @Override
     public void paint(PaintEvent e) {
-        e.getRenderer().fillRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT, 0x254aff);
+        // e.getRenderer().fillRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT, 0x254aff);
         super.paint(e);
     }
 }

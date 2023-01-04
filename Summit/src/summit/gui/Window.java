@@ -152,9 +152,27 @@ public class Window implements MouseListener, KeyListener {
     private MainSelectionMenu mainMenu;
 
     /**
+     * The Saved Games Selection Menu to load a previous game from the database
+     */
+    private SavedGamesSelectionMenu selMenu;
+
+    /**
+     * The Saved Games Selection Menu to load a previous game from the database
+     */
+    private GameCreationMenu createMenu;
+
+    /**
      * The VideoSettings object for the video settings.
      */
     private VideoSettings settings;
+
+    /**
+     * Used for transtioning between Window States
+     * 
+     * @see Window#transition(TransitionScreen)
+     * @see Window#endTransition(WindowState)
+     */
+    private volatile TransitionScreen transition;
 
     /**
      * Constructs a new Window with the given title. Initializes the frame,
@@ -176,11 +194,15 @@ public class Window implements MouseListener, KeyListener {
         guiContainersHome = new Stack<>();
         guiContainersGame = new Stack<>();
 
+        //miniumin 1 thread
         int _t = ((int) Settings.getSetting("threads") == 0) ? 1 : (int) Settings.getSetting("threads");
         renderer = new Renderer(_t, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         mainMenu = new MainSelectionMenu(this);
+        selMenu = new SavedGamesSelectionMenu(this);
         settings = new VideoSettings(this);
+        createMenu = new GameCreationMenu(this);
+        transition = null;
 
         gameSchedulerThread = new Thread(new Runnable() {
             @Override
@@ -271,9 +293,9 @@ public class Window implements MouseListener, KeyListener {
                 public void windowClosing(WindowEvent e) {
                     super.windowClosing(e);
 
-                    closed = true;
-
                     onQuit();
+                    
+                    closed = true;
                 }
 
                 @Override
@@ -326,6 +348,8 @@ public class Window implements MouseListener, KeyListener {
 
         }
 
+        frame.addMouseWheelListener(selMenu);
+
         graphicsThread.start();
         gameSchedulerThread.start();
         graphicsSchedulerThread.start();
@@ -336,7 +360,7 @@ public class Window implements MouseListener, KeyListener {
 
         this.setState(WindowState.SELECTIONMENUS);
     }
-
+    
     /**
      * Renders the current frame to the window.
      * 
@@ -352,23 +376,24 @@ public class Window implements MouseListener, KeyListener {
         OrderPaintEvent ope = new OrderPaintEvent(new RenderLayers(10), null);
 
         if (state != WindowState.GAME) {
-            renderer.render(Sprite.SUMMIT_BACKGROUND, Renderer.WIDTH / 2, Renderer.HEIGHT / 2, Renderer.NO_OP, null);
+            renderer.render(Sprite.SUMMIT_BACKGROUND1, Renderer.WIDTH / 2, Renderer.HEIGHT / 2, Renderer.NO_OP, null);
 
             if (!guiContainersHome.isEmpty())
                 guiContainersHome.peek().paint(pe);
         } else if (state == WindowState.GAME) {
+
             if (world != null)
                 world.setRenderLayer(ope);
 
-            // try{
             ope.getRenderLayers().renderLayers(pe);
-            // } catch (Exception e) {
-            // System.out.println("Map render exception: " + e);
-            // }
-
+            
             if (!guiContainersGame.isEmpty())
                 guiContainersGame.peek().paint(pe);
         }
+
+        //superimpose transition screen
+        if(transition != null)
+            transition.paint(pe);
 
         // ----------------------------------------------------------------------------------
         // draw final frame to screen
@@ -379,6 +404,41 @@ public class Window implements MouseListener, KeyListener {
         g.drawImage(finalFrame, null, 0, 0);
 
         renderer.resetFrame();
+    }
+
+    /**
+     * Retrieves the {@code GameWorld} associated with the {@code saveKey} from the database,
+     * and sets that as the current game session, ready to play on
+     * 
+     * @param saveKey
+     */
+    public void loadWorld(String saveKey){
+
+        this.transition(new TransitionScreen(this, "Loading world..."));
+
+        world = GameLoader.loadWorld(saveKey);
+
+        if(world == null){
+            System.out.println(world.getName() + ", " + saveKey + ", does not exist");
+            this.endTransition();
+            return;
+        }
+
+        System.out.println("Successfully loaded world: " + world.getName() + " [Key:" + saveKey + "]");
+
+        world.reinit(this);
+        this.endTransition();
+        state = WindowState.GAME;
+    }
+
+    public void createWorld(String name){
+        transition(new TransitionScreen(this, "CREATING WORLD"));
+
+        world = new GameWorld(name, this, (long)(Math.random()*Long.MAX_VALUE));
+        GameLoader.createSave(world.getSaveKey(), world.getName());
+
+        endTransition();
+        state = WindowState.GAME;
     }
 
     /**
@@ -394,9 +454,9 @@ public class Window implements MouseListener, KeyListener {
             clearHomeContainers();
             clearGameContainers();
             pushHomeContainer(mainMenu);
+
             if(world != null){
                 world.terminate();
-                world = null;
             }
             state = newState;
             return;
@@ -409,21 +469,15 @@ public class Window implements MouseListener, KeyListener {
         }
 
         if(newState == WindowState.NEWGAME){
-            world = new GameWorld(this, (long)(Math.random()*Long.MAX_VALUE));
-            GameLoader.createSave(world.getSaveName());
-            state = WindowState.GAME;
+            pushHomeContainer(createMenu);
+            state = WindowState.NEWGAME;
             return;
         }
 
-        if(newState == WindowState.SAVEDGAME){
-            // if(true) return;
+        if(newState == WindowState.SAVEDGAMESELECTION){
+            pushHomeContainer(selMenu);
 
-            this.transition(new TransitionScreen(this, "Loading world..."));
-            world = GameLoader.loadWorld("testsave");
-            world.reinit(this);
-            this.endTransition(WindowState.GAME);
-
-            state = WindowState.GAME;
+            state = WindowState.SAVEDGAMESELECTION;
             return;
         }
 
@@ -439,7 +493,7 @@ public class Window implements MouseListener, KeyListener {
                 case NEWGAME:
                     setState(WindowState.SELECTIONMENUS);
                     break;
-                case SAVEDGAME:
+                case SAVEDGAMESELECTION:
                     setState(WindowState.SELECTIONMENUS);
                     break;
                 case SELECTIONMENUS:
@@ -453,24 +507,27 @@ public class Window implements MouseListener, KeyListener {
      * Performs tasks necessary when quitting the game.
      */
     private void onQuit() {
-        // terminate upscaling threads
-        renderer.terminate();
-
-        if(world != null){
+        if(world != null && state == WindowState.GAME){
             world.terminate();
-            GameLoader.asyncSaveWorld(world);
+            GameLoader.saveWorld(world);
         }
 
         DBConnection.closeConnection();
+        
+        // terminate upscaling threads
+        renderer.terminate();
     }
 
     /**
      * Closes the game, and disposes of all active threads.
      * If a game is in session, it is automatically saved.
      */
-    public void quit() {
-        closed = true;
+    public void manualQuit() {
+        
         onQuit();
+
+        closed = true;
+
         canvas.setVisible(false);
         frame.setVisible(false);
         frame.dispose();
@@ -497,26 +554,6 @@ public class Window implements MouseListener, KeyListener {
         boolean tmp = availableClick;
         availableClick = false;
         return tmp;
-    }
-
-    /**
-     * Transitions to the specified TransitionScreen.
-     *
-     * @param ts the TransitionScreen to transition to
-     */
-    public void transition(TransitionScreen ts) {
-        pushHomeContainer(ts);
-        state = WindowState.SELECTIONMENUS;
-    }
-
-    /**
-     * Ends the current transition and sets the state to the specified new state.
-     * 
-     * @param newState the new state to set after the transition
-     */
-    public void endTransition(WindowState newState) {
-        guiContainersHome.pop();
-        setState(newState);
     }
 
     /**
@@ -590,6 +627,24 @@ public class Window implements MouseListener, KeyListener {
             container.setPushed(false);
         }
         guiContainersGame.clear();
+    }
+    
+    /**
+     * Transitions to the specified TransitionScreen.
+     *
+     * @param ts the TransitionScreen to transition to
+     */
+    public void transition(TransitionScreen ts) {
+        transition = ts;
+    }
+
+    /**
+     * Ends the current transition screen and sets the state to the specified new state.
+     * 
+     * @param newState the new state to set after the transition
+     */
+    public void endTransition() {
+        transition = null;
     }
 
     /**
@@ -677,6 +732,9 @@ public class Window implements MouseListener, KeyListener {
             }
         }
 
+        if(state == WindowState.NEWGAME)
+            createMenu.keyPressed(e);
+
         if (world != null)
             Controls.setPress(e, world.instanceEvent());
     }
@@ -713,6 +771,9 @@ public class Window implements MouseListener, KeyListener {
      */
     @Override
     public void mousePressed(MouseEvent e) {
+        if(transition != null)
+            return;
+
         mouseDown = true;
         this.availableClick = true;
 

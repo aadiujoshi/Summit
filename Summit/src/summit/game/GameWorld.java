@@ -49,9 +49,10 @@ public class GameWorld implements Paintable, Serializable{
     private long sessionStartTime = Time.timeMs();
 
     /** A randomized key generated at creation to distinguish GameWorlds */
-    private final String SAVE_NAME = "testsave";
-    // private final String SAVE_NAME = generateSaveName();
+    private final String SAVE_KEY = generateSaveKey();
 
+    private final String NAME;
+    
     /**If the game update loop is paused*/
     private transient volatile boolean paused;
 
@@ -116,9 +117,10 @@ public class GameWorld implements Paintable, Serializable{
      * @param parentWindow The current {@link Window} object
      * @param seed A long number for procedural map generation
      */
-    public GameWorld(Window parentWindow, long seed){
+    public GameWorld(String name, Window parentWindow, long seed){
         this.parentWindow = parentWindow;
         SEED = seed;
+        NAME = name;
         gametime = 0;
         
         player = new Player(0, 0);
@@ -140,6 +142,7 @@ public class GameWorld implements Paintable, Serializable{
         pauseButton = new PauseButton(w, this);
 
         mainMap.reinit();
+        player.reinit();
 
         initUpdateThread();
     }
@@ -293,23 +296,32 @@ public class GameWorld implements Paintable, Serializable{
     } 
 
     /**
-     * Get the distint Save Name of this GameWorld
+     * Get the distint Save Key of this GameWorld
      * 
-     * @return This GameWorld {@code SAVE_NAME}
+     * @return This GameWorld {@code SAVE_KEY}
      */
-    public String getSaveName() {
-		return this.SAVE_NAME;
+    public String getSaveKey() {
+		return this.SAVE_KEY;
 	}
 
-    private String generateSaveName(){
+    private String generateSaveKey(){
         String f = "";
 
         for (int i = 0; i < 16; i++) {
-            f += (char)(Math.random()*59+64);
+            int c = (int)(Math.random()*59+64);
+            if(c == 92){
+                f+="L";
+                continue;
+            }
+            f+=(char)c;
         }
 
         System.out.println(f);
 
         return f;
+    }
+    
+    public String getName() {
+        return this.NAME;
     }
 }

@@ -31,6 +31,7 @@ public class InventoryGUI extends Container{
     public InventoryGUI(ItemStorage inv) {
         super(null, null, 0.5f, 0.5f, Sprite.INVENTORY);
         this.items = inv;
+        super.setOutline(false);
     }
     
     @Override

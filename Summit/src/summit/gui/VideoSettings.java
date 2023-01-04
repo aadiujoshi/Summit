@@ -32,7 +32,7 @@ public class VideoSettings extends Container {
      * @param window the parent window
      */
     public VideoSettings(Window window) {
-        super(null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
+        super(null, window, 0.5f, 0.5f, Sprite.SUMMIT_BACKGROUND2);
 
         TextContainer ao_count = new TextContainer(
                 Settings.getSetting("ambient_occlusion").toString(),

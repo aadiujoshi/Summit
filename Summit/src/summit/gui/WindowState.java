@@ -20,7 +20,7 @@ public enum WindowState {
     /**
      * Open saved games window
      */
-    SAVEDGAME,
+    SAVEDGAMESELECTION,
 
     /**
      * Video Settings

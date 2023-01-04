@@ -34,7 +34,8 @@ public class PauseMenu extends Container{
                     world.terminate();
                     window.transition(new TransitionScreen(window, "Saving world..."));
                     GameLoader.saveWorld(world);
-                    window.endTransition(WindowState.BACK);
+                    window.endTransition();
+                    window.setState(WindowState.SELECTIONMENUS);
                 }
             }
         });

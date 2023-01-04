@@ -161,6 +161,9 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             pa.reinit(2);
         }
         for (Entity e : entities) {
+            if(e instanceof Player)
+                continue;
+            
             e.reinit();
         }
         for (Structure s : structures) {

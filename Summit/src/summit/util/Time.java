@@ -4,6 +4,8 @@
 */
 package summit.util;
 
+import java.util.function.Predicate;
+
 public class Time{
 
     public static final long INIT_TIME = timeMs();
@@ -29,5 +31,21 @@ public class Time{
         do {
             timeLeft = end - System.nanoTime();
         } while (timeLeft > 0);
+    }
+
+    /**
+     * Waits while the Predicate {@code bool} returns true.
+     * No value is passed to the Predicate when calling {@code test()}
+     * 
+     * @param bool The {@link Predicate} to wait for while true
+     */
+    public static void waitWhile(Predicate<Object> bool){
+        while(bool.test(null)){
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

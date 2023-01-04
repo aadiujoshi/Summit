@@ -29,11 +29,11 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     private boolean pushed;
 
+    private boolean outline;
+
     //if can be removed by hitting esc key
     private boolean navContainer;
-
-    private boolean visible = true;
-
+    
     public Container(Container parent, Window window, float relX, float relY, String guiSprite){
         super( (parent == null) ?
                 new Region(((int)(Renderer.WIDTH*relX)), 
@@ -47,6 +47,7 @@ public class Container extends Region implements Paintable, GUIClickReciever{
                             BufferedSprites.getSprite(guiSprite).length) );
 
         components = new ArrayList<>();
+        this.outline = true;
         this.navContainer = true;
         this.parent = parent;
         this.guiSprite = guiSprite;
@@ -62,7 +63,6 @@ public class Container extends Region implements Paintable, GUIClickReciever{
     }
 
     public void close(){
-        
     }
 
     @Override
@@ -72,7 +72,12 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     @Override
     public void paint(PaintEvent e) {
-        e.getRenderer().render(guiSprite, (int)getX(), (int)getY(), Renderer.NO_OP, filter);
+        e.getRenderer().render(guiSprite, (int)getX(), (int)getY(), 
+                    (this.contains(e.mouseX(), e.mouseY()-4) && outline() ? Renderer.OUTLINE_BLUE | 
+                                                            Renderer.OUTLINE_GREEN | 
+                                                            Renderer.OUTLINE_RED : 
+                                                            Renderer.NO_OP), 
+                    filter);
         paintComponents(e);
     }
 
@@ -113,14 +118,6 @@ public class Container extends Region implements Paintable, GUIClickReciever{
         return this.components.get(index);
     }
     
-    public boolean isVisible() {
-        return this.visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-    
     public boolean isPushed() {
         return this.pushed;
     }
@@ -151,5 +148,13 @@ public class Container extends Region implements Paintable, GUIClickReciever{
 
     public void setNavContainer(boolean navContainer) {
         this.navContainer = navContainer;
+    }
+
+    public boolean outline() {
+        return this.outline;
+    }
+
+    public void setOutline(boolean outline) {
+        this.outline = outline;
     }
 }
