@@ -37,7 +37,20 @@ public class DBConnection{
     // private static boolean retry;
 
     static{
-        connect();
+        boolean b = connect();
+        
+
+        // if(b){
+        //     System.out.println();
+        //     Statement st = null;
+
+        //     try {
+        //         st = connection.createStatement();
+        //         // st.exe
+        //     } catch (SQLException e) {
+                
+        //     }
+        // }
     }
 
     /**
@@ -47,17 +60,30 @@ public class DBConnection{
         System.out.println();
         try {
             System.out.println("\nCreating connection to database: " + URL);
+
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
             connection.setAutoCommit(true);
+            
             System.out.println("Connection successful");
             return true;
 
         } catch (SQLException e) {
-            System.out.print("Failed to connect to database: ");
+            System.out.println("Failed to connect to database: ");
+            if(e.getLocalizedMessage().contains("Unknown database")){
+                System.out.println("Could not find database... initi");
+            }
+            System.out.println(e.getLocalizedMessage());
             e.printStackTrace();
         }
 
         return false;
+    }
+
+    /**
+     * Called if the table is not found/ hasn't been created yet
+     */
+    private static void initTable(){
+
     }
 
     /**
@@ -78,6 +104,11 @@ public class DBConnection{
         PreparedStatement ps = null;
 
         try {
+            if(connection == null){
+                System.out.println("Failed to create save \"" + saveKey + "\"");
+                return;
+            }
+
             //first check if already exists
             ResultSet check = connection.createStatement().executeQuery(("SELECT GameSave FROM gamedata WHERE SaveKey=\"" + saveKey + "\""));
 
@@ -132,6 +163,11 @@ public class DBConnection{
         Statement st = null;
 
         try {
+            if(connection == null){
+                System.out.println("Failed to retrieve game save keys and names");
+                return savesMap;
+            }
+
             st = connection.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM gamedata");
 
@@ -148,6 +184,7 @@ public class DBConnection{
             accessing = false;
             try {
                 st.close();
+            } catch(NullPointerException e){
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -304,6 +341,11 @@ public class DBConnection{
         try {
             System.out.println("Updating database game save \"" + saveKey + "\"");
 
+            if(connection == null){
+                System.out.println("Failed to update database game save \"" + saveKey + "\"");
+                return false;
+            }
+
             ps = connection.prepareStatement
             ("UPDATE gamedata SET GameTime=?, GameSave=?, GameCompleted=? WHERE SaveKey=\"" + saveKey + "\"");
 
@@ -316,6 +358,7 @@ public class DBConnection{
             System.out.println("Successfully updated database game save \"" + saveKey + "\"");
         } catch (SQLNonTransientConnectionException e){
         } catch (SQLException e) {
+            System.out.println("Failed to update database game save \"" + saveKey + "\"");
             e.printStackTrace();
         } catch(FileNotFoundException e) {
             e.printStackTrace();
@@ -340,6 +383,11 @@ public class DBConnection{
         });
 
         try {
+            if(connection == null){
+                System.out.println("Failed to close database connection");
+                return;
+            }
+            
             connection.close();
             System.out.println("Successfully closed database connection");
         } catch (SQLException e) {

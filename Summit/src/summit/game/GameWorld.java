@@ -138,6 +138,7 @@ public class GameWorld implements Paintable, Serializable{
     // must be called after loading from save
     public void reinit(Window w){
         this.parentWindow = w;
+        this.sessionStartTime = Time.timeMs();
 
         pauseButton = new PauseButton(w, this);
 
