@@ -173,7 +173,7 @@ public class DBConnection{
 
         try {
             st = connection.createStatement();
-
+            
             st.executeUpdate("DELETE FROM gamedata WHERE SaveKey=\"" + saveKey + "\"");
 
             System.out.println("Successfully deleted database entry: \"" + saveKey + "\"");

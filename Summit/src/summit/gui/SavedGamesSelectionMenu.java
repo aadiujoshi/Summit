@@ -17,7 +17,6 @@ import summit.util.ScheduledEvent;
 public class SavedGamesSelectionMenu extends Container implements MouseWheelListener{
 
     //-------------------------------------------------------------------------------------
-
     private class WorldSaveBox extends TextContainer{
         private String saveName;
         private String saveKey;
@@ -27,14 +26,14 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
                                 String saveName, String saveKey) {
 
             super(saveName, parent, window, relX, relY, Sprite.TEXTBOX1);
-            
+            super.setSplit(false);
             this.saveName = saveName;
             this.saveKey = saveKey;
         }
         
         @Override
         public void guiClick(MouseEvent e){
-            getParentWindow().loadWorld(saveKey);
+            getParentWindow().loadWorld(saveKey, saveName);
         }
     }
 
@@ -78,6 +77,8 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
                 DBConnection.removeSave(saveKey);
 
                 popup = "Deleted " + saveName;
+
+                createSaveBoxes();
 
                 GraphicsScheduler.registerEvent(new ScheduledEvent(2000, 1) {
                     @Override

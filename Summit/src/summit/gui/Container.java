@@ -73,7 +73,7 @@ public class Container extends Region implements Paintable, GUIClickReciever{
     @Override
     public void paint(PaintEvent e) {
         e.getRenderer().render(guiSprite, (int)getX(), (int)getY(), 
-                    (this.contains(e.mouseX(), e.mouseY()-4) && outline() ? Renderer.OUTLINE_BLUE | 
+                    (this.contains(e.mouseX(), e.mouseY()) && outline() ? Renderer.OUTLINE_BLUE | 
                                                             Renderer.OUTLINE_GREEN | 
                                                             Renderer.OUTLINE_RED : 
                                                             Renderer.NO_OP), 

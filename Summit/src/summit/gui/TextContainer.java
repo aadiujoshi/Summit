@@ -19,6 +19,9 @@ public class TextContainer extends Container {
     private String text;
     private ColorFilter textFilter;
 
+    /**Flag to make new line on whitespaces in the text*/
+    private boolean split;
+
     /**
      * Constructs a TextContainer 
      * 
@@ -35,12 +38,19 @@ public class TextContainer extends Container {
             String sprite) {
         super(parent, window, relX, relY, sprite);
         this.text = text;
+        this.split = true;
         textFilter = new ColorFilter(0xffffff);
     }
 
     @Override
     public void paint(PaintEvent e) {
         super.paint(e);
+
+        if(!split){
+            e.getRenderer().renderText(text, (int)getX(), (int)getY(), Renderer.NO_OP, textFilter);
+            return;
+        }
+
 
         List<String> lines = new ArrayList<>();
 
@@ -98,5 +108,10 @@ public class TextContainer extends Container {
      */
     public void setTextFilter(ColorFilter textFilter) {
         this.textFilter = textFilter;
+    }
+
+    
+    public void setSplit(boolean split) {
+        this.split = split;
     }
 }

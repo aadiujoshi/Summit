@@ -6,9 +6,12 @@ package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
 import summit.game.GameWorld;
+import summit.game.item.BlueKey;
 import summit.game.item.Bow;
+import summit.game.item.GreenKey;
 import summit.game.item.Item;
 import summit.game.item.ItemStorage;
+import summit.game.item.RedKey;
 import summit.game.item.Sword;
 import summit.game.item.WeaponItem;
 import summit.gfx.Camera;
@@ -58,6 +61,10 @@ public class Player extends HumanoidEntity implements ControlsReciever{
         this.bow = new Bow(this);
         
         sword.setAttackRange(2f);
+
+        addItems(new RedKey(this), 1);
+        addItems(new GreenKey(this), 1);
+        addItems(new BlueKey(this), 1);
 
         super.setEquipped(bow);
 

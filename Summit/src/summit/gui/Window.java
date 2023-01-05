@@ -412,14 +412,14 @@ public class Window implements MouseListener, KeyListener {
      * 
      * @param saveKey
      */
-    public void loadWorld(String saveKey){
+    public void loadWorld(String saveKey, String saveName){
 
         this.transition(new TransitionScreen(this, "Loading world..."));
 
         world = GameLoader.loadWorld(saveKey);
 
         if(world == null){
-            System.out.println(world.getName() + ", " + saveKey + ", does not exist");
+            System.out.println(saveName + ", " + saveKey + ", does not exist");
             this.endTransition();
             return;
         }
@@ -673,7 +673,7 @@ public class Window implements MouseListener, KeyListener {
      */
     public int mouseY() {
         return (java.awt.MouseInfo.getPointerInfo().getLocation().y - frame.getLocation().y) /
-                (SCREEN_HEIGHT / Renderer.HEIGHT);
+                (SCREEN_HEIGHT / Renderer.HEIGHT) - (fullscreen ? 0 : 4);
     }
 
     /**
@@ -777,8 +777,8 @@ public class Window implements MouseListener, KeyListener {
         mouseDown = true;
         this.availableClick = true;
 
-        int rx = e.getX() / (SCREEN_WIDTH / Renderer.WIDTH);
-        int ry = (e.getY()) / (SCREEN_HEIGHT / Renderer.HEIGHT);
+        int rx = mouseX();
+        int ry = mouseY();
 
         e = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(), rx, ry,
                 e.getClickCount(), e.isPopupTrigger(), e.getButton());

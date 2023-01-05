@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Scanner;
 
 import summit.Main;
 import summit.util.GameLoader;
@@ -16,11 +17,19 @@ public class FileTesting {
     
     public static void main(String asfd[]){
 
-    System.out.println(GameLoader.getSaves());
+    // System.out.println(GameLoader.getSaves());
 
+    // String rev = "";
 
+    Scanner scanner = new Scanner(System.in);
+        
+    String testString = scanner.nextLine();
 
+    for (int i = 0; i < testString.length(); i++) {
+        System.out.print(testString.charAt(i));
+    }
 
+    scanner.close();
 
 
 
