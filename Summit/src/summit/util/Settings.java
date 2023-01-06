@@ -13,7 +13,7 @@ public class Settings {
         FileOutputStream fos = null; 
 
         properties = DBConnection.getSettings();
-        
+
         // System.out.println(properties);
 
         try {
@@ -37,7 +37,7 @@ public class Settings {
         
         try{
             fos = new FileOutputStream("settings.properties");
-            properties.store(fos, "");
+            properties.store(fos, null);
             
         } catch(IOException e){
             e.printStackTrace();

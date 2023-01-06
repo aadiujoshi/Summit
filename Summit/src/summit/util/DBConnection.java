@@ -58,7 +58,7 @@ public class DBConnection{
                 fos = new FileOutputStream("db_config.properties");
                 initDB();
                 dbinfo.setProperty("db.initialized", "true");
-                dbinfo.store(fos, "");
+                dbinfo.store(fos, null);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -186,7 +186,7 @@ public class DBConnection{
         } catch (SQLException e) {
             System.out.println("Failed to connect to database: ");
             if(e.getLocalizedMessage().contains("Unknown database")){
-                System.out.println("Could not find database... initi");
+                System.out.println("Could not find database... initializing Summit database");
             }
             System.out.println(e.getLocalizedMessage());
             e.printStackTrace();

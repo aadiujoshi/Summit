@@ -45,15 +45,13 @@ public class ForegroundAnimation extends Animation {
     /** The color of the particles. */
     private int pColor;
 
-    // front 16 bits are x, and last 16 bits are y
-
+    
     /**
      * 
      * The positions of the particles. The x and y positions of each particle are
      * stored as 16-bit integers in a
-     * single long value, with the x position stored in the most significant 16 bits
-     * and the y position stored in the
-     * least significant 16 bits.
+     * single long value, with the x position stored in the first 16 bits
+     * and the y position stored in the last 16 bits.
      */
     private long[] particles;
 
