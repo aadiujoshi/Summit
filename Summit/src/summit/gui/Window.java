@@ -511,7 +511,7 @@ public class Window implements MouseListener, KeyListener {
             world.terminate();
             GameLoader.saveWorld(world);
         }
-
+        DBConnection.updateSettings();
         DBConnection.closeConnection();
         
         // terminate upscaling threads

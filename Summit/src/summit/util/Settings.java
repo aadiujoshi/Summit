@@ -1,57 +1,62 @@
 package summit.util;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.Properties;
 
 public class Settings {
 
-    private static HashMap<String, String> properties = new HashMap<>();
+    // private static HashMap<String, String> properties = new HashMap<>();
+    private static Properties properties;
 
     static{
+        FileOutputStream fos = null; 
+
+        properties = DBConnection.getSettings();
+        
+        // System.out.println(properties);
+
         try {
-            Scanner s = new Scanner(new File("settings.txt"));
-
-            while(s.hasNext()) {
-                properties.put(s.next(), s.next());
-            }
-
-            System.out.println("Settings: " + properties);
-
-            updateFile();
-
+            fos = new FileOutputStream("settings.properties");
+            properties.store(fos, null);
         } catch (IOException e) {
             e.printStackTrace();
+        } 
+        finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        
     }
 
     private static void updateFile(){
-        String newSettings = "";
-
-        for (Map.Entry<String, String> setting : properties.entrySet()) {
-            newSettings += setting.getKey() + " " + setting.getValue() + "\n";
-        }
+        FileOutputStream fos = null;
         
         try{
-            FileWriter file = new FileWriter(new File("settings.txt"));
-            file.write(newSettings);
-            file.flush();
-            file.close();
+            fos = new FileOutputStream("settings.properties");
+            properties.store(fos, "");
+            
         } catch(IOException e){
             e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static void changeSetting(String key, Object newVal){
-        properties.put(key, newVal+"");
+        properties.put(key, newVal);
         updateFile();
     }
 
     public static Object getSetting(String key){
-        String p = properties.get(key);
+        String p = (String)properties.get(key);
 
         if(p == null)
             throw new Error("No such setting: " + key);

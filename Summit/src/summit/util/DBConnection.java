@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.SQLNonTransientConnectionException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Properties;
 
 import summit.game.GameWorld;
 
@@ -27,30 +29,144 @@ import summit.game.GameWorld;
  */
 public class DBConnection{
 
-    private static final String URL = "jdbc:mysql://localhost:3306/summitdata";
-    private static final String USER = "root";
-    private static final String PASSWORD = "djk%f$dj01prS";
+    private static String URL;
+    private static String USER;
+    private static String PASSWORD;
     private static Connection connection;
 
+    //prevent concurrrent access to the database
     private static volatile boolean accessing;
-
-    // private static boolean retry;
-
+    
     static{
-        boolean b = connect();
+        Properties dbinfo = new Properties();
         
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+        String init = "";
 
-        // if(b){
-        //     System.out.println();
-        //     Statement st = null;
+        try {
+            fis = new FileInputStream("db_config.properties");
 
-        //     try {
-        //         st = connection.createStatement();
-        //         // st.exe
-        //     } catch (SQLException e) {
-                
-        //     }
-        // }
+            dbinfo.load(fis);
+            URL = (String)dbinfo.get("db.url");
+            USER = (String)dbinfo.get("db.user");
+            PASSWORD = (String)dbinfo.get("db.password");
+            
+            init = (String)dbinfo.get("db.initialized");
+
+            if(init.equals("false")){
+                fos = new FileOutputStream("db_config.properties");
+                initDB();
+                dbinfo.setProperty("db.initialized", "true");
+                dbinfo.store(fos, "");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(fos != null){
+                    fos.flush();
+                    fos.close();
+                }
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        connect();
+    }
+
+    public static boolean updateSettings(){
+        Time.waitWhile((Object obj) -> {
+            return accessing;
+        });
+
+        accessing = true;
+        
+        FileInputStream tempSettings = null;
+        PreparedStatement ps = null;
+
+        try {
+            System.out.println("Updating settings in database...");
+
+            ps = connection.prepareStatement
+            ("UPDATE settings SET Settings=?");
+
+            tempSettings = new FileInputStream("settings.properties");
+
+            ps.setString(1, new String(tempSettings.readAllBytes(), StandardCharsets.UTF_8));
+            
+            ps.executeUpdate();
+
+            System.out.println("Successfully updated game settings in database");
+            return true;
+        } catch (SQLException | IOException e) {
+            System.out.println("Failed to update game settings in database");
+            e.printStackTrace();
+        }
+        finally {
+            accessing = false;
+            try {
+                tempSettings.close();
+                ps.close();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+
+    public static Properties getSettings(){
+        Time.waitWhile((Object obj) -> {
+            return accessing;
+        });
+
+        accessing = true;
+
+        Properties settings = new Properties();
+        ByteArrayInputStream tempSettings = null;
+        Statement st = null;
+
+        try {
+            st = connection.createStatement();
+
+            ResultSet rs = st.executeQuery("SELECT * FROM settings");
+
+            rs.next();
+
+            //copy properties as a string
+            String prop = rs.getString("Settings");
+
+            // prop.replaceAll("\n", ", ");
+            //write properties to local file
+            
+            // System.out.println(prop);
+
+            tempSettings = new ByteArrayInputStream(prop.getBytes());
+            settings.load(tempSettings);
+
+            // System.out.println(settings);
+
+            return settings;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        finally {
+            accessing = false;
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return settings;
     }
 
     /**
@@ -82,7 +198,7 @@ public class DBConnection{
     /**
      * Called if the table is not found/ hasn't been created yet
      */
-    private static void initTable(){
+    private static void initDB(){
 
     }
 
@@ -274,6 +390,7 @@ public class DBConnection{
 
             InputStream in = blob.getBinaryStream();
             byte[] buff = in.readAllBytes();    
+            in.close();
 
             out.write(buff);
 
@@ -331,7 +448,8 @@ public class DBConnection{
         accessing = true;
 
         PreparedStatement ps = null;
-        
+        FileInputStream fis = null;
+
         if(completion == GameWorld.GAME_OVER_PLAYER_DEAD){
             System.out.println("Will not save world with completion status: GameWorld.GAME_OVER_PLAYER_DEAD");
             accessing = false;
@@ -349,8 +467,10 @@ public class DBConnection{
             ps = connection.prepareStatement
             ("UPDATE gamedata SET GameTime=?, GameSave=?, GameCompleted=? WHERE SaveKey=\"" + saveKey + "\"");
 
+            fis = new FileInputStream(GameLoader.tempFile);
+
             ps.setFloat(1, gameTime);
-            ps.setBlob(2, new FileInputStream(GameLoader.tempFile));
+            ps.setBlob(2, fis);
             ps.setInt(3, completion);
             
             ps.execute();
@@ -365,11 +485,13 @@ public class DBConnection{
         } finally{
             accessing = false;
             try {
+                fis.close();
                 ps.close();
             } catch (NullPointerException e) {
+            } catch (IOException e) {   
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            } 
         }
 
         return false;

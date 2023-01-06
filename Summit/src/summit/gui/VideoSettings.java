@@ -150,7 +150,7 @@ public class VideoSettings extends Container {
                 return;
             }
             c.setText((n) + "");
-            Settings.changeSetting(property, n);
+            Settings.changeSetting(property, n+"");
         }
     }
 
