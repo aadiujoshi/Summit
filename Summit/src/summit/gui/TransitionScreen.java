@@ -25,6 +25,7 @@ public class TransitionScreen extends TextContainer {
     public TransitionScreen(Window window, String text) {
         super(text, null, window, 0.5f, 0.5f, Sprite.SUMMIT_BACKGROUND2);
         super.setNavContainer(false);
+        super.setSplit(false);
         super.setOutline(false);
     }
 

@@ -37,6 +37,8 @@ public class DBConnection{
     //prevent concurrrent access to the database
     private static volatile boolean accessing;
     
+    private DBConnection(){}
+
     static{
         Properties dbinfo = new Properties();
         
@@ -187,6 +189,7 @@ public class DBConnection{
             System.out.println("Failed to connect to database: ");
             if(e.getLocalizedMessage().contains("Unknown database")){
                 System.out.println("Could not find database... initializing Summit database");
+                return false;
             }
             System.out.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -349,12 +352,12 @@ public class DBConnection{
     /**
      * Returns the serialized game save file from the local database. 
      * It first retrieves the {@code BLOB} which contains a serialized
-     * byte stream, then writes it to the {@code gamesaves/temp.txt} file
+     * byte stream, then writes it to the {@code cache/temp.txt} file
      * to be deserialized by the {@code GameLoader}.
      * 
      * @param saveKey the {@code SAVE_KEY} of the {@code GameWorld} in the database
      * 
-     * @return A {@code File} object pointing to {@code gamesaves/temp.txt}.
+     * @return A {@code File} object pointing to {@code cache/temp.txt}.
      *          Returns null if an exception occured.
      * 
      * @see GameWorld#getSaveKey()
@@ -427,7 +430,7 @@ public class DBConnection{
     }
     
     /**
-     * Upload game save to database. Serialized data is copied from the {@code gamesaves/temp.txt} file 
+     * Upload game save to database. Serialized data is copied from the {@code cache/temp.txt} file 
      * to a {@code BLOB}, to be uploaded to the database. However, if 
      * {@code completion == GameWorld.GAME_OVER_PLAYER_DEAD} is true, the database entry associated with 
      * {@code saveKey} will be deleted

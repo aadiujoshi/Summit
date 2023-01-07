@@ -130,6 +130,22 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
         addComponent(retry);
         //------------------------------------------------------------------
 
+        //LOAD FROM CACHE BUTTON -------------------------------------------------
+        TextContainer cache = new TextContainer("cache", this, getParentWindow(), 0.13f, 0.75f, Sprite.MENUBOX4){
+            @Override
+            public synchronized void guiClick(MouseEvent e){
+                System.out.println("Loading world save from cache...");
+                setTextFilter(new ColorFilter(0xff0000));
+
+                getParentWindow().loadCache();
+
+                setTextFilter(new ColorFilter(0x00ff00));
+            }
+        };
+        cache.setTextFilter(new ColorFilter(0x00ff00));
+        addComponent(cache);
+        //------------------------------------------------------------------
+
         HashMap<String, String> saves = GameLoader.getSaves();
 
         float ry = 0.2f;
@@ -160,7 +176,7 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
 
         super.paint(e);
 
-        if(getComponents().size()-1 == 0 && connected){
+        if(getComponents().size()-2 == 0 && connected){
             e.getRenderer().renderText("No saved worlds found...", 
                     128, 65, Renderer.NO_OP, new ColorFilter(0xffffff));
             e.getRenderer().renderText(" create new world", 

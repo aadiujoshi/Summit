@@ -25,7 +25,7 @@ public class GameLoader {
 
     private static volatile boolean accessing;
 
-    public static final String tempFile = "gamesaves/temp.txt";
+    public static final String tempFile = "cache/temp.txt";
 
     /**
      * Creates a new entry in the database using {@code DBConnection}.
@@ -38,6 +38,20 @@ public class GameLoader {
      */
     public static void createSave(String saveKey, String saveName){
         DBConnection.createSave(saveKey, saveName);
+    }
+
+    private static void saveProtocol(GameWorld world){
+        try{
+            FileOutputStream file = new FileOutputStream(tempFile);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+            
+            out.writeObject(world);
+            
+            out.close();
+            file.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public static HashMap<String, String> getSaves(){
@@ -83,7 +97,7 @@ public class GameLoader {
     }
     
     /**
-     * Serializes {@code world} and outputs it to {@code gamesaves/temp.txt}, then updates the database
+     * Serializes {@code world} and outputs it to {@code cache/temp.txt}, then updates the database
      * with {@code DBConnection}
      * 
      * However, if {@code GameWorld.getCompletion() == GameWorld.GAME_OVER_PLAYER_DEAD} is true, 
@@ -107,22 +121,39 @@ public class GameLoader {
         accessing = true;
 
         try{
-            FileOutputStream file = new FileOutputStream(tempFile);
-            ObjectOutputStream out = new ObjectOutputStream(file);
-            
-            out.writeObject(world);
-            
-            out.close();
-            file.close();
+            saveProtocol(world);
 
             System.out.println("Save to temp file complete");
             DBConnection.updateSave(world.getSaveKey(), world.getElapsedTime(), world.getCompletion());
 
             accessing = false;
             
-        } catch(ClassCastException | IOException e) {
+        } catch(ClassCastException e) {
             e.printStackTrace();
         }
+    }
+
+    public static GameWorld loadCache(){
+        Time.waitWhile((Object obj) -> {
+            return accessing;
+        });
+
+        try{
+            FileInputStream file = new FileInputStream(tempFile);
+            ObjectInputStream out = new ObjectInputStream(file);
+                
+            GameWorld world = (GameWorld)out.readObject();
+            
+            out.close();
+            file.close();
+            
+            return world;
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+
+        //return null if error
+        return null;
     }
 
     public static void asyncSaveWorld(GameWorld world){
@@ -135,20 +166,14 @@ public class GameLoader {
 
         Thread wr = new Thread(() -> {
             try{
-                FileOutputStream file = new FileOutputStream(tempFile);
-                ObjectOutputStream out = new ObjectOutputStream(file);
-                
-                out.writeObject(world);
-                
-                out.close();
-                file.close();
+                saveProtocol(world);
     
                 System.out.println("Save to temp file complete");
                 DBConnection.updateSave(world.getSaveKey(), world.getElapsedTime(), world.getCompletion());
 
                 accessing = false;
 
-            } catch(ClassCastException | IOException e) {
+            } catch(ClassCastException e) {
                 e.printStackTrace();
             }
         });

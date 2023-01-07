@@ -101,4 +101,24 @@ public class ItemStorage extends HashMap<String, Stack<Item>>{
             }
         }
     }
+
+    
+    @Override
+    public String toString(){
+        String str = "";
+
+        str += "[Items: ";
+
+        int i = 0;
+        for (var stack : entrySet()) {
+            i++;
+            str += stack.getKey() + ":" + stack.getValue().size();
+            if(i != entrySet().size())
+                str += ", ";
+        }
+
+        str += "]";
+
+        return str;
+    }
 }

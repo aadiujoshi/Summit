@@ -4,6 +4,9 @@
 */
 package summit.util;
 
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.function.Predicate;
 
 public class Time{
@@ -47,5 +50,10 @@ public class Time{
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String timestamp(char sep){
+        LocalTime t = LocalTime.now();
+        return "[" + t.getHour() + sep + t.getMinute() + sep + t.getSecond() + "]";
     }
 }

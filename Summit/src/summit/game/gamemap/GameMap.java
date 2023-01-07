@@ -19,6 +19,7 @@ import summit.game.entity.mob.Skeleton;
 import summit.game.entity.mob.Zombie;
 import summit.game.entity.projectile.Projectile;
 import summit.game.structure.Structure;
+import summit.game.structure.Tree;
 import summit.game.tile.Tile;
 import summit.game.tile.TileStack;
 import summit.gfx.AmbientOcclusion;
@@ -427,12 +428,31 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         return rdTiles;
     }
 
-    public void addStructure(Structure s){
-        this.structures.add(s);
+    @Override
+    public String toString(){
+        String str = "";
+        
+        str += "---- ENTITES -----------------------------------------\n";
+        for (Entity ent : entities) {
+            if(ent instanceof Tree)
+                continue;
+                
+            str += ent.toString()  + "\n";
+        }
+
+        str += "\n---- ITEMS -----------------------------------------\n";
+        for (Entity ent : entities) {
+            if(ent instanceof Tree)
+                continue;
+
+            str += ent.getName() + ":" + ent.getItems().toString() + "\n\n";
+        }
+
+        return str;
     }
 
-    public void removeStructure(Structure s){
-        this.structures.remove(s);
+    public void addStructure(Structure s){
+        this.structures.add(s);
     }
 
     public Tile getTileAt(float x, float y){

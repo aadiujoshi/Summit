@@ -112,7 +112,7 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
 
     @Override
     public String toString(){
-        return NAME; //+ ": " + super.toString();
+        return NAME + " " + super.toString();
     }
 
     @Override

@@ -325,4 +325,24 @@ public class GameWorld implements Paintable, Serializable{
     public String getName() {
         return this.NAME;
     }
+
+    public long getSeed(){
+        return this.SEED;
+    }
+
+    public String toString(){
+        String str = "";
+
+        str += "\t\t----------------- CURRENT MAP -----------------\n\n";
+        str += loadedMap.toString();
+
+        str += "\t\t----------------- QUEUED MAP -----------------\n\n";
+        if(queuedNewMap != null){
+            str += loadedMap.toString();
+        } else {
+            str += "No queued map";
+        }
+        
+        return str;
+    }
 }

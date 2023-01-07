@@ -63,7 +63,7 @@ public class Region implements Serializable{
 
     @Override
     public String toString(){
-        return "x: " + x + ", y: " + y + ", width: " + width + ", height: " + height;
+        return "[x:" + x + " y:" + y + " width:" + width + " height:" + height + "]";
     }
 
     //--------------------------------------------------------------------

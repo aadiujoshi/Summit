@@ -39,6 +39,7 @@ import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.Controls;
 import summit.util.DBConnection;
+import summit.util.GameCrashReportGenerator;
 import summit.util.GameLoader;
 import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
@@ -406,6 +407,24 @@ public class Window implements MouseListener, KeyListener {
         renderer.resetFrame();
     }
 
+    public void loadCache(){
+        this.transition(new TransitionScreen(this, "Loading world from cache..."));
+
+        world = GameLoader.loadCache();
+
+        if(world == null){
+            System.out.println("Could not load cached save");
+            this.endTransition();
+            return;
+        }
+
+        System.out.println("Successfully loaded world: " + world.getName() + " [Key:" + world.getSaveKey() + "]");
+
+        world.reinit(this);
+        this.endTransition();
+        state = WindowState.GAME;
+    }
+
     /**
      * Retrieves the {@code GameWorld} associated with the {@code saveKey} from the database,
      * and sets that as the current game session, ready to play on
@@ -436,6 +455,8 @@ public class Window implements MouseListener, KeyListener {
 
         world = new GameWorld(name, this, (long)(Math.random()*Long.MAX_VALUE));
         GameLoader.createSave(world.getSaveKey(), world.getName());
+        
+        GameCrashReportGenerator.generateGameCrashReport(null, world);
 
         endTransition();
         state = WindowState.GAME;
