@@ -12,15 +12,14 @@ public class GameCrashReportGenerator {
     private GameCrashReportGenerator(){}
 
     public static void generateGameCrashReport(Exception cause, GameWorld world){
-        
-        cause = new Exception("lol");
+
+        cause = new Exception("llo");
 
         FileOutputStream cr = null;
         PrintWriter pw = null;
 
         String report = "";
-
-        final String sep = "\n\n------------------------------------------------------------\n\n";
+        
         final String ln = "\n";
 
         try {
@@ -36,7 +35,7 @@ public class GameCrashReportGenerator {
             report += "GameWorld Name: " + world.getName() + ", Save Key: " + world.getSaveKey() + ln;
             report += "Seed: " + world.getSeed();
             
-            report += sep;
+            report += ln+ln;
 
             //write exception
             StringWriter sw = new StringWriter();
@@ -44,7 +43,7 @@ public class GameCrashReportGenerator {
             cause.printStackTrace(pw);
             report += sw.toString();
 
-            report += sep;
+            report += ln+ln;
 
             report += world.toString();
 

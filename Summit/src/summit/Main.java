@@ -16,7 +16,7 @@ import summit.gui.Window;
 
 public class Main {
 
-    public static final String os = System.getProperty("os.name");
+    // public static final String os = System.getProperty("os.name");
 
     //extra path incase folder names are different
     public static final String path = "";

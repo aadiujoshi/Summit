@@ -20,24 +20,21 @@ import summit.gfx.Renderer;
  */
 public abstract class GameObject extends Region implements Paintable, GameUpdateReciever, GameClickReciever{
 
-    //optional for some classes
     private String sprite;
 
+    //render game distance values (offset 1 => 16 pixels)
     private float spriteOffsetX;
     private float spriteOffsetY;
 
+    //outline if mouse is hovering over it
     private boolean outline = true;
 
     private boolean moveable = true;
     private boolean enabled = true;
 
     private HashMap<String, Boolean> tags;
-
-    // +x is right -x is left +y is up -y is down
-    //DO NOT USE
-    private float xOffset;
-    private float yOffset;
     
+    //the render layer at which this object is added to
     private int rLayer = RenderLayers.TILE_LAYER;
 
     private int renderOp;
@@ -117,9 +114,9 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
 
     @Override
     public void setX(float x){
-        super.setX(x + xOffset);
+        super.setX(x);
         if(light != null){
-            light.setX(x + yOffset);
+            light.setX(x);
         }
     }
 
@@ -204,23 +201,7 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
     public void setRenderLayer(int rLayer) {
         this.rLayer = rLayer;
     }
-
-    // public float getXOffset() {
-    //     return this.xOffset;
-    // }
-
-    // public void setXOffset(float xOffset) {
-    //     this.xOffset = xOffset;
-    // }
-
-    // public float getYOffset() {
-    //     return this.yOffset;
-    // }
-
-    // public void setYOffset(float yOffset) {
-    //     this.yOffset = yOffset;
-    // }
-
+    
     public int getColor() {
         return this.color;
     }

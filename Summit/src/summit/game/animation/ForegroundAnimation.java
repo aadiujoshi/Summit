@@ -70,7 +70,8 @@ public class ForegroundAnimation extends Animation {
      */
     public ForegroundAnimation(int dx, int dy, int pColor) {
         super(Time.MS_IN_S / 100, ScheduledEvent.FOREVER);
-
+        super.setRLayer(RenderLayers.TOP_LAYER);
+        
         this.dx = dx;
         this.dy = dy;
 
@@ -114,22 +115,7 @@ public class ForegroundAnimation extends Animation {
             particles[i] = (nx << 16) | (ny << 0);
         }
     }
-
-    /**
-     * Adds the animation to the top layer of the game's render stack.
-     * 
-     * This method is called when the animation is registered with the
-     * `GraphicsScheduler` and adds the animation to the top layer of the
-     * game's render stack. This ensures that the particles are drawn on top
-     * of all other objects in the game.
-     * 
-     * @param ope the `OrderPaintEvent` object that stores the render stack
-     */
-    @Override
-    public void setRenderLayer(OrderPaintEvent ope) {
-        ope.getRenderLayers().addToLayer(RenderLayers.TOP_LAYER, this);
-    }
-
+    
     /**
      * Draws the particles on the screen.
      * 

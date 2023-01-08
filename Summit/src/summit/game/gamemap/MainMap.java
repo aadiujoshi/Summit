@@ -78,9 +78,12 @@ public class MainMap extends GameMap{
         spawn(new Skeleton(60, 60));
 
         addStructure(new TraderHouse(19.5f, 19f, this));
+
+
+
         addStructure(new DungeonsEntrance( 
-                            getWidth()/2, 
-                            getHeight()/2-3, 
+                            getWidth()/2+0.5f, 
+                            getHeight()/2-3+0.5f, 
                             this));
     }
 

@@ -18,6 +18,7 @@ import summit.gfx.RenderLayers;
 import summit.gui.Container;
 import summit.gui.PauseButton;
 import summit.gui.Window;
+import summit.util.GameCrashReportGenerator;
 import summit.util.GraphicsScheduler;
 import summit.util.Sound;
 import summit.util.Time;
@@ -175,11 +176,10 @@ public class GameWorld implements Paintable, Serializable{
                                                     new GameUpdateEvent(this, MS_PER_TICK*Time.NS_IN_MS);
                                                     
                 if(loadedMap != null){
-                    // loadedMap.update(e);
                     try{
                         loadedMap.update(e);
                     } catch(Exception ex) {
-                        ex.printStackTrace();
+                        GameCrashReportGenerator.generateGameCrashReport(ex, this);
                     }
                 }
                 
@@ -310,15 +310,13 @@ public class GameWorld implements Paintable, Serializable{
 
         for (int i = 0; i < 16; i++) {
             int c = (int)(Math.random()*59+64);
-            if(c == 92){
+            if(!Character.isAlphabetic(c)){
                 f+="L";
                 continue;
             }
             f+=(char)c;
         }
-
-        System.out.println(f);
-
+        
         return f;
     }
     
@@ -342,6 +340,8 @@ public class GameWorld implements Paintable, Serializable{
         } else {
             str += "No queued map";
         }
+
+        str += "\n\n";
         
         return str;
     }

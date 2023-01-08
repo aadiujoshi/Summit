@@ -3,7 +3,9 @@ package summit.game.item;
 import summit.game.GameUpdateEvent;
 import summit.game.entity.Entity;
 import summit.game.entity.projectile.Arrow;
+import summit.game.entity.projectile.Projectile;
 import summit.gfx.Sprite;
+import summit.util.Region;
 
 public class Bow extends ProjectileWeapon{
 
@@ -12,7 +14,6 @@ public class Bow extends ProjectileWeapon{
         super.setSprite(Sprite.BOW);
         super.setBaseDamage(1);
         super.setTextName("bow");
-        super.setProjType(Arrow.class);
     }
     
     @Override
@@ -23,8 +24,11 @@ public class Bow extends ProjectileWeapon{
     }
 
     @Override
-    public void reinit(){
-        super.setProjType(Arrow.class);
+    public Projectile getProjInstance(float tx, float ty){
+        return new Arrow(getOwner(),
+                            Region.theta(tx, getOwner().getX(), 
+                                        ty, getOwner().getY()), 
+                            getNetDamage());
     }
 
     @Override

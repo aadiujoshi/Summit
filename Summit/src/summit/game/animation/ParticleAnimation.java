@@ -74,6 +74,7 @@ public class ParticleAnimation extends Animation {
      */
     public ParticleAnimation(float x, float y, int duration_ms, int particleCount, int color) {
         super(1, duration_ms);
+        super.setRLayer(RenderLayers.TILE_LAYER+1);
 
         pdx = new float[particleCount];
         pdy = new float[particleCount];
@@ -93,18 +94,6 @@ public class ParticleAnimation extends Animation {
         }
 
         GraphicsScheduler.registerEvent(this);
-    }
-
-    /**
-     * Registers this `ParticleAnimation` to be rendered on the top layer of the
-     * game screen.
-     *
-     * @param ope the `OrderPaintEvent` used to register this `ParticleAnimation`
-     *            for rendering
-     */
-    @Override
-    public void setRenderLayer(OrderPaintEvent ope) {
-        ope.addToLayer(RenderLayers.TILE_LAYER + 1, this);
     }
 
     /**

@@ -5,8 +5,6 @@
 package summit.util;
 
 import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.function.Predicate;
 
 public class Time{
@@ -25,8 +23,7 @@ public class Time{
         return System.nanoTime();
     }
 
-    public static void nanoDelay(long nanos)
-    {
+    public static void nanoDelay(long nanos) {
         if(nanos < 0) return;
         
         final long end = System.nanoTime() + nanos;
@@ -52,6 +49,8 @@ public class Time{
         }
     }
 
+    //[hh `sep` mm `sep` ss]
+    //[08:45:01]
     public static String timestamp(char sep){
         LocalTime t = LocalTime.now();
         return "[" + t.getHour() + sep + t.getMinute() + sep + t.getSecond() + "]";

@@ -2,10 +2,12 @@ package summit.game.item;
 
 import summit.game.entity.Entity;
 import summit.game.entity.projectile.IceShard;
+import summit.game.entity.projectile.Projectile;
 import summit.gfx.ColorFilter;
 import summit.gfx.Light;
 import summit.gfx.PaintEvent;
 import summit.gfx.Sprite;
+import summit.util.Region;
 
 public class IceStaff extends ProjectileWeapon{
 
@@ -14,12 +16,14 @@ public class IceStaff extends ProjectileWeapon{
         super.setSprite(Sprite.ICE_STAFF);
         super.setBaseDamage(3.5f);
         super.setTextName("ice staff");
-        super.setProjType(IceShard.class);
     }
     
     @Override
-    public void reinit(){
-        super.setProjType(IceShard.class);
+    public Projectile getProjInstance(float tx, float ty){
+        return new IceShard(getOwner(),
+                            Region.theta(tx, getOwner().getX(), 
+                                        ty, getOwner().getY()), 
+                            getNetDamage());
     }
 
     @Override

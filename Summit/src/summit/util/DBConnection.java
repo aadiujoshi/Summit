@@ -79,6 +79,7 @@ public class DBConnection{
         connect();
     }
 
+    //only called when game is closed
     public static boolean updateSettings(){
         Time.waitWhile((Object obj) -> {
             return accessing;
@@ -90,8 +91,13 @@ public class DBConnection{
         PreparedStatement ps = null;
 
         try {
-            System.out.println("Updating settings in database...");
+            System.out.println("Updating settings to database...");
 
+            if(connection == null || connection.isClosed()){
+                System.out.println("Failed to update settings to database");
+                return false;
+            }
+            
             ps = connection.prepareStatement
             ("UPDATE settings SET Settings=?");
 
@@ -101,10 +107,10 @@ public class DBConnection{
             
             ps.executeUpdate();
 
-            System.out.println("Successfully updated game settings in database");
+            System.out.println("Successfully updated game settings to database");
             return true;
         } catch (SQLException | IOException e) {
-            System.out.println("Failed to update game settings in database");
+            System.out.println("Failed to update game settings to database");
             e.printStackTrace();
         }
         finally {
@@ -112,6 +118,7 @@ public class DBConnection{
             try {
                 tempSettings.close();
                 ps.close();
+            } catch (NullPointerException e) {
             } catch (SQLException | IOException e) {
                 e.printStackTrace();
             }
@@ -462,7 +469,7 @@ public class DBConnection{
         try {
             System.out.println("Updating database game save \"" + saveKey + "\"");
 
-            if(connection == null){
+            if(connection == null || connection.isClosed()){
                 System.out.println("Failed to update database game save \"" + saveKey + "\"");
                 return false;
             }
@@ -479,7 +486,6 @@ public class DBConnection{
             ps.execute();
 
             System.out.println("Successfully updated database game save \"" + saveKey + "\"");
-        } catch (SQLNonTransientConnectionException e){
         } catch (SQLException e) {
             System.out.println("Failed to update database game save \"" + saveKey + "\"");
             e.printStackTrace();

@@ -436,7 +436,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
         for (Entity ent : entities) {
             if(ent instanceof Tree)
                 continue;
-                
+
             str += ent.toString()  + "\n";
         }
 
@@ -445,7 +445,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
             if(ent instanceof Tree)
                 continue;
 
-            str += ent.getName() + ":" + ent.getItems().toString() + "\n\n";
+            str += ent.getName() + ":" + ent.getItems().toString() + "\n";
         }
 
         return str;

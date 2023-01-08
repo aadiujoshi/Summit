@@ -53,9 +53,6 @@ public class GlistenAnimation extends Animation {
     /** The length of a single frame of the animation, in milliseconds. */
     private static final int frame_len = (int) (Math.random() * 100 + 100);
 
-    // duration in ms
-    // delay * calls = duration
-
     /**
      * Constructs a new `GlistenAnimation` with the specified number of lights and
      * color.
@@ -69,7 +66,7 @@ public class GlistenAnimation extends Animation {
      */
     public GlistenAnimation(float x, float y, int p_count, int color) {
         super(frame_len, p_count + 1);
-
+        
         this.sx = x + 0.5f;
         this.sy = y + 0.5f;
 
@@ -101,7 +98,7 @@ public class GlistenAnimation extends Animation {
      */
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
-        ope.addToLayer(RenderLayers.TILE_LAYER + 1, this);
+        super.setRenderLayer(ope);
 
         for (int i = 0; i < lights.length; i++) {
             lights[i].setRenderLayer(ope);
@@ -156,7 +153,8 @@ public class GlistenAnimation extends Animation {
                 float ny = sy + (float) (Math.random() * spread - spread);
 
                 lights[i] = new Light(nx, ny, 0.25f, light_filter);
-            }
+                lights[i].setRenderLayer(getRLayer());
+            }   
             if (calls[i] != 0 && calls[i] != 1 && calls[i] != -1) {
                 lights[i] = Light.NO_LIGHT;
             }

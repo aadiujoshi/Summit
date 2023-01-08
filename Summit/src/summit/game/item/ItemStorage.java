@@ -72,7 +72,7 @@ public class ItemStorage extends HashMap<String, Stack<Item>>{
     }
 
     /**
-     * used when initializing an entity, NOT for recieving items
+     * 
      * @param copy
      * @param num
      */

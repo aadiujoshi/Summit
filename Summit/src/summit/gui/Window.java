@@ -89,6 +89,9 @@ public class Window implements MouseListener, KeyListener {
     /**A boolean flag indicating whether the window is closed.*/
     private volatile boolean closed;
 
+    /**Prevents the {@code onQuit()} method from being called several times by multiple "close window" requests*/
+    private volatile boolean validateClosed;
+
     /** A boolean flag indicating whether the mouse is down.*/
     private static boolean mouseDown;
 
@@ -528,6 +531,13 @@ public class Window implements MouseListener, KeyListener {
      * Performs tasks necessary when quitting the game.
      */
     private void onQuit() {
+        //if true, this method has already been called
+        if(validateClosed)
+            return;
+
+        //flag this method
+        validateClosed = true;
+        
         if(world != null && state == WindowState.GAME){
             world.terminate();
             GameLoader.saveWorld(world);

@@ -1,6 +1,8 @@
 package summit.game.animation;
 
+import summit.gfx.OrderPaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.RenderLayers;
 import summit.util.ScheduledEvent;
 
 /**
@@ -16,10 +18,10 @@ import summit.util.ScheduledEvent;
  */
 public abstract class Animation extends ScheduledEvent implements Paintable {
 
+    private int rLayer = RenderLayers.STRUCTURE_ENTITY_LAYER;
+
     /**
-     * 
      * Constructs a new Animation.
-     * 
      * 
      * @param delay_ms the delay between each call of the run method, in
      *                 milliseconds
@@ -31,4 +33,25 @@ public abstract class Animation extends ScheduledEvent implements Paintable {
     public Animation(long delay_ms, int n_calls) {
         super(delay_ms, n_calls);
     }
+
+    
+    /**
+     * Adds the animation to the top layer of the game's render stack.
+     * 
+     * This method is called when the animation is registered with the
+     * `GraphicsScheduler` and adds the animation to the top layer of the
+     * game's render stack.
+     */
+    @Override
+    public void setRenderLayer(OrderPaintEvent e){
+        e.addToLayer(rLayer, this);
+    }
+
+    public int getRLayer() {
+        return this.rLayer;
+    }
+
+    public void setRLayer(int rLayer) {
+		this.rLayer = rLayer;
+	}
 }

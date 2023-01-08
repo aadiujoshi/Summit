@@ -7,11 +7,11 @@ import summit.gfx.Renderer;
 import summit.util.Region;
 
 /**
- * A transition animation that expands a circle of random colors from the center
+ * A transition animation that expands a circle of from the center
  * of the screen.
  *
  * This class extends Animation and is used to create a transition animation
- * that consists of a circle of random colors
+ * that consists of a circle
  * expanding from the center of the screen. The radius of the circle increases
  * with each frame until the animation is complete.
  *
@@ -20,7 +20,6 @@ import summit.util.Region;
 public class TransitionAnimation extends Animation {
 
     /**
-     * 
      * The radius of the gradient displayed by this TransitionAnimation.
      * The radius determines which pixels on the screen should be colored by
      * the gradient. Pixels farther from the center of the screen than the
@@ -29,7 +28,6 @@ public class TransitionAnimation extends Animation {
     private int radius;
 
     /**
-     * 
      * Constructs a new TransitionAnimation.
      * 
      * This animation will display a random color gradient over the screen that
@@ -40,29 +38,12 @@ public class TransitionAnimation extends Animation {
      */
     public TransitionAnimation() {
         super(4, (int) Region.distance(Renderer.WIDTH / 2, Renderer.HEIGHT / 2, 0, 0) + 5);
-
+        super.setRLayer(RenderLayers.TOP_LAYER);
         radius = 0;
     }
 
     /**
-     * Adds this `TransitionAnimation` to the top layer of the rendering stack.
-     *
-     * This method adds this `TransitionAnimation` to the top layer of the rendering
-     * stack, ensuring that it is drawn on top
-     * of all other objects in the game.
-     *
-     * @param e the `OrderPaintEvent` that contains the rendering stack to which
-     *          this `TransitionAnimation` should be added
-     */
-    @Override
-    public void setRenderLayer(OrderPaintEvent e) {
-        e.addToLayer(RenderLayers.TOP_LAYER, this);
-    }
-
-    /**
-     * Fills the pixels outside the current radius with random colors.
-     *
-     * This method fills the pixels outside the current radius with random colors.
+     * This method fills the pixels outside the current radius with black pixels.
      * The radius of the circle increases with
      * each frame until the animation is complete.
      *
@@ -76,9 +57,6 @@ public class TransitionAnimation extends Animation {
         for (int r = 0; r < frame.length; r++) {
             for (int c = 0; c < frame[0].length; c++) {
                 if (Region.distance(c, r, Renderer.WIDTH / 2, Renderer.HEIGHT / 2) >= radius) {
-                    frame[r][c] = Renderer.toIntRGB((int) (Math.random() * 256),
-                            (int) (Math.random() * 256),
-                            (int) (Math.random() * 256));
                     frame[r][c] = 0;
                 }
             }

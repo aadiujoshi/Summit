@@ -10,9 +10,12 @@ import summit.gfx.Sprite;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.net.URI;
 import java.net.URL;
 
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class MainSelectionMenu extends Container{
 
@@ -49,11 +52,12 @@ public class MainSelectionMenu extends Container{
             }
         };
 
-        TextContainer email = new TextContainer("EMAIL", this, window, 0.89f, 0.85f, Sprite.MENUBOX6){
+        TextContainer email = new TextContainer("EMAIL", this, window, 0.89f, 0.77f, Sprite.MENUBOX6){
             @Override
             public void guiClick(MouseEvent e){
                 try {
-                    Desktop.getDesktop().browse(new URL("https://mail.google.com/mail/?view=cm&fs=1&to=aadiujoshi@gmail.com&su=&body=&bcc=").toURI());
+                    Desktop.getDesktop().browse(new URL("https://mail.google.com/mail/?view=cm&fs=1&to=aadiujoshi@gmail.com&su=Summit+report&body=(Please+include+crash+report+files+as+well+as+recent+server+logs)&bcc=").toURI());
+                    // Desktop.getDesktop().mail(new URI("mailto:aadiujoshi@gmail.com?subject=\"Summit crash report\""));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -61,12 +65,25 @@ public class MainSelectionMenu extends Container{
         };
         email.setTextFilter(new ColorFilter(Color.GREEN.getRGB()));
         email.setGuiSprite(null);
+
+        TextContainer help = new TextContainer("?", this, window, 0.7f, 0.7f, Sprite.MENUBOX5){
+            @Override
+            public void guiClick(MouseEvent e){
+                try {
+                    Desktop.getDesktop().open(new File(System.getProperty("user.dir")));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+        help.setTextFilter(new ColorFilter(0x00ff00));
         
         addComponent(newGame);
         addComponent(savedGames);
         addComponent(quit);
         addComponent(videoSettings);
         addComponent(email);
+        addComponent(help);
     }
     
     @Override

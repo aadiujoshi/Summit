@@ -7,7 +7,7 @@ package summit.game;
 public interface GameUpdateReciever{
 
     /**
-     * This method allows {@code GameObjects} to recieve game information through  
+     * This method allows {@code GameObjects} to recieve game information through gameupdateeventssw  
      * 
      * @param e A {@link GameUpdateEvent} provided by the 
     */

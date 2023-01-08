@@ -2,6 +2,7 @@ package summit.game.entity.mob;
 
 import summit.game.GameUpdateEvent;
 import summit.game.GameWorld;
+import summit.game.item.ArrowItem;
 import summit.game.item.BlueKey;
 import summit.game.item.Bow;
 import summit.game.item.GreenKey;
@@ -77,9 +78,9 @@ public class Player extends HumanoidEntity implements ControlsReciever {
 
         sword.setAttackRange(2f);
 
-        addItems(new RedKey(this), 1);
-        addItems(new GreenKey(this), 1);
-        addItems(new BlueKey(this), 1);
+        // addItems(new RedKey(this), 1);
+        // addItems(new GreenKey(this), 1);
+        // addItems(new BlueKey(this), 1);
 
         super.setEquipped(bow);
 
@@ -258,6 +259,13 @@ public class Player extends HumanoidEntity implements ControlsReciever {
         if (Controls.F) {
             if (getItems().countItem(Sprite.SNOWBALL) > 0)
                 setEquipped((WeaponItem) getItems().get(Sprite.SNOWBALL).peek());
+        }
+        if (Controls.T) {
+            if(countItems(Sprite.STICK_ITEM) > 0 && countItems(Sprite.BONE_ITEM) > 0){
+                addItems(new ArrowItem(this), 1);
+                useItem(Sprite.STICK_ITEM);
+                useItem(Sprite.BONE_ITEM);
+            }
         }
     }
 
