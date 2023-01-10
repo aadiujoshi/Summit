@@ -180,6 +180,7 @@ public class GameWorld implements Paintable, Serializable{
                         loadedMap.update(e);
                     } catch(Exception ex) {
                         GameCrashReportGenerator.generateGameCrashReport(ex, this);
+                        break;
                     }
                 }
                 

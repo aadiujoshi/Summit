@@ -120,8 +120,6 @@ public class GlistenAnimation extends Animation {
             Point po = Renderer.toPixel(lights[i].getX(), lights[i].getY(), e.getCamera());
 
             if (calls[i] == 0 || calls[i] == 2) {
-                // System.out.println(calls[i]);
-                // System.out.println(lights[i].getX() + lights[i].getY());
                 e.getRenderer().fillRect(po.x, po.y, 1, 1, color);
             }
             if (calls[i] == 1) {

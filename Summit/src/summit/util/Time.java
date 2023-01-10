@@ -4,6 +4,7 @@
 */
 package summit.util;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.function.Predicate;
 
@@ -47,6 +48,16 @@ public class Time{
                 e.printStackTrace();
             }
         }
+    }
+
+    //[month day year][Time.timestamp(sep)]
+    public static String datetimeStamp(char sep){
+        LocalDate d = LocalDate.now();
+
+        return "[" + d.getMonth().getValue() + sep + 
+                        d.getDayOfMonth() + sep + 
+                        d.getYear() + "]" + 
+                        timestamp(sep);
     }
 
     //[hh `sep` mm `sep` ss]
