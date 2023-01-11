@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 
 import summit.gfx.BufferedSprites;
 import summit.gui.Window;
+import summit.util.DBConnection;
 import summit.util.DBLogger;
 
 /*

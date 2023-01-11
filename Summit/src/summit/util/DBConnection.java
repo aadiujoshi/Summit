@@ -45,7 +45,7 @@ public class DBConnection{
         FileInputStream fis = null;
         FileOutputStream fos = null;
         String init = "";
-
+        
         try {
             fis = new FileInputStream("db_config.properties");
 
@@ -76,7 +76,10 @@ public class DBConnection{
             }
         }
 
-        connect();
+        //database and tables have already been created
+        //otherwise, if this is the first time opening the game, other protocols are used
+        if(init.equals("true"))
+            connect();
     }
 
     //only called when game is closed
@@ -170,6 +173,7 @@ public class DBConnection{
             accessing = false;
             try {
                 st.close();
+            } catch (NullPointerException e){
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -186,7 +190,7 @@ public class DBConnection{
         try {
             System.out.println("\nCreating connection to database: " + URL);
 
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(URL+"summitdata", USER, PASSWORD);
             connection.setAutoCommit(true);
             
             System.out.println("Connection successful");
@@ -195,10 +199,10 @@ public class DBConnection{
         } catch (SQLException e) {
             System.out.println("Failed to connect to database: ");
             if(e.getLocalizedMessage().contains("Unknown database")){
-                System.out.println("Could not find database... initializing Summit database");
+                System.out.println("Could not find database... try setting the property \"db.initialized\" in db_config.properties equal to \"false\" (ignore quotations), and restart the game");
                 return false;
             }
-            System.out.println(e.getLocalizedMessage());
+            // System.out.println(e.getLocalizedMessage());
             e.printStackTrace();
         }
 
@@ -209,7 +213,61 @@ public class DBConnection{
      * Called if the table is not found/ hasn't been created yet
      */
     private static void initDB(){
+        Statement st_db = null;
+        Statement st_tbl_gamedata = null;
+        Statement st_tbl_settings = null;
+        Statement st_row_settings = null;
+        Connection conn_server = null;
+        Connection conn_db = null;
 
+        try {
+            System.out.println("Initializing database...");
+            System.out.println("Connecting to server...");
+            conn_server = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            System.out.println("Creating database...");
+            st_db = conn_server.createStatement();
+            st_db.executeUpdate("CREATE DATABASE summitdata");
+            System.out.println("Database created successfully...");
+
+            System.out.println("Connecting to database...");
+            conn_db = DriverManager.getConnection(URL+"summitdata", USER, PASSWORD);
+
+            System.out.println("Creating gamedata table...");
+            st_tbl_gamedata = conn_db.createStatement();
+            st_tbl_gamedata.executeUpdate("CREATE TABLE gamedata(SaveKey varchar(32), GameSave MEDIUMBLOB, GameCompleted int, GameTime float)");
+            System.out.println("gamedata Table created successfully...");
+
+            System.out.println("Creating settings table...");
+            st_tbl_settings = conn_db.createStatement();
+            st_tbl_settings.executeUpdate("CREATE TABLE settings(Settings text)");
+            System.out.println("settings Table created successfully...");
+
+            st_row_settings = conn_db.createStatement();
+            st_row_settings.executeUpdate("INSERT INTO settings VALUES(NULL)");
+            System.out.println("blank settings row inserted successfully");
+
+            connect();
+
+            //write default settings.properties to settings table
+            updateSettings();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } 
+        finally {
+            try{
+                conn_server.close();
+                st_db.close();
+                conn_db.close();
+                st_tbl_gamedata.close();
+                st_tbl_settings.close();
+                st_row_settings.close();
+            } catch (NullPointerException e){
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
