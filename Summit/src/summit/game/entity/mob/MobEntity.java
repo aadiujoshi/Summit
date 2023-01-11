@@ -104,7 +104,7 @@ public abstract class MobEntity extends Entity {
                 if (getCurMap().equals("DungeonsMap") && is(MobEntity.hostile)) {
 
                     double chance = Math.random();
-                    System.out.println(chance);
+                    // System.out.println(chance);
 
                     // 10 percent chance to get key
                     if (chance < 0.1) {

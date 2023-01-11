@@ -54,9 +54,9 @@ public class Time{
     public static String datetimeStamp(char sep){
         LocalDate d = LocalDate.now();
 
-        return "[" + d.getMonth().getValue() + sep + 
-                        d.getDayOfMonth() + sep + 
-                        d.getYear() + "]" + 
+        return "[" + f(d.getMonth().getValue()) + sep + 
+                       f(d.getDayOfMonth()) + sep + 
+                        f(d.getYear()) + "]" + 
                         timestamp(sep);
     }
 
@@ -64,6 +64,12 @@ public class Time{
     //[08:45:01]
     public static String timestamp(char sep){
         LocalTime t = LocalTime.now();
-        return "[" + t.getHour() + sep + t.getMinute() + sep + t.getSecond() + "]";
+        return "[" + f(t.getHour()) + sep + f(t.getMinute()) + sep + f(t.getSecond()) + "]";
+    }
+
+    //format time to 2 numbers 
+    //example : "9" becomes "09"
+    private static String f(int i){
+        return (i < 10) ? "0"+i : i+"";
     }
 }

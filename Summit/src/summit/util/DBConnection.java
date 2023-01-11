@@ -15,7 +15,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLNonTransientConnectionException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Properties;
@@ -36,7 +35,7 @@ public class DBConnection{
 
     //prevent concurrrent access to the database
     private static volatile boolean accessing;
-    
+
     private DBConnection(){}
 
     static{
@@ -63,7 +62,7 @@ public class DBConnection{
                 dbinfo.store(fos, null);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(GameLoader.logger);
         } finally {
             try {
                 if(fos != null){
@@ -72,7 +71,7 @@ public class DBConnection{
                 }
                 fis.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             }
         }
 
@@ -94,10 +93,10 @@ public class DBConnection{
         PreparedStatement ps = null;
 
         try {
-            System.out.println("Updating settings to database...");
+            GameLoader.logger.log("Updating settings to database...");
 
             if(connection == null || connection.isClosed()){
-                System.out.println("Failed to update settings to database");
+                GameLoader.logger.log("Failed to update settings to database");
                 return false;
             }
             
@@ -110,11 +109,11 @@ public class DBConnection{
             
             ps.executeUpdate();
 
-            System.out.println("Successfully updated game settings to database");
+            GameLoader.logger.log("Successfully updated game settings to database");
             return true;
         } catch (SQLException | IOException e) {
-            System.out.println("Failed to update game settings to database");
-            e.printStackTrace();
+            GameLoader.logger.log("Failed to update game settings to database");
+            e.printStackTrace(GameLoader.logger);
         }
         finally {
             accessing = false;
@@ -123,7 +122,7 @@ public class DBConnection{
                 ps.close();
             } catch (NullPointerException e) {
             } catch (SQLException | IOException e) {
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             }
         }
 
@@ -154,20 +153,20 @@ public class DBConnection{
             // prop.replaceAll("\n", ", ");
             //write properties to local file
             
-            // System.out.println(prop);
+            // GameLoader.logger.log(prop);
 
             tempSettings = new ByteArrayInputStream(prop.getBytes());
             settings.load(tempSettings);
 
-            // System.out.println(settings);
+            // GameLoader.logger.log(settings);
 
             return settings;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(GameLoader.logger);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.printStackTrace(GameLoader.logger);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(GameLoader.logger);
         } 
         finally {
             accessing = false;
@@ -175,7 +174,7 @@ public class DBConnection{
                 st.close();
             } catch (NullPointerException e){
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             }
         }
 
@@ -186,24 +185,24 @@ public class DBConnection{
      * Creates connection to database.
      */
     public static synchronized boolean connect(){
-        System.out.println();
+        GameLoader.logger.log();
         try {
-            System.out.println("\nCreating connection to database: " + URL);
+            GameLoader.logger.log("Creating connection to database: " + URL + "summitgame");
 
             connection = DriverManager.getConnection(URL+"summitdata", USER, PASSWORD);
             connection.setAutoCommit(true);
             
-            System.out.println("Connection successful");
+            GameLoader.logger.log("Connection successful");
             return true;
 
         } catch (SQLException e) {
-            System.out.println("Failed to connect to database: ");
+            GameLoader.logger.log("Failed to connect to database: ");
             if(e.getLocalizedMessage().contains("Unknown database")){
-                System.out.println("Could not find database... try setting the property \"db.initialized\" in db_config.properties equal to \"false\" (ignore quotations), and restart the game");
+                GameLoader.logger.log("Could not find database... try setting the property \"db.initialized\" in db_config.properties equal to \"false\" (ignore quotations), and restart the game");
                 return false;
             }
-            // System.out.println(e.getLocalizedMessage());
-            e.printStackTrace();
+            // GameLoader.logger.log(e.getLocalizedMessage());
+            e.printStackTrace(GameLoader.logger);
         }
 
         return false;
@@ -221,31 +220,31 @@ public class DBConnection{
         Connection conn_db = null;
 
         try {
-            System.out.println("Initializing database...");
-            System.out.println("Connecting to server...");
+            GameLoader.logger.log("Initializing database...");
+            GameLoader.logger.log("Connecting to server...");
             conn_server = DriverManager.getConnection(URL, USER, PASSWORD);
 
-            System.out.println("Creating database...");
+            GameLoader.logger.log("Creating database...");
             st_db = conn_server.createStatement();
             st_db.executeUpdate("CREATE DATABASE summitdata");
-            System.out.println("Database created successfully...");
+            GameLoader.logger.log("Database created successfully...");
 
-            System.out.println("Connecting to database...");
+            GameLoader.logger.log("Connecting to database...");
             conn_db = DriverManager.getConnection(URL+"summitdata", USER, PASSWORD);
 
-            System.out.println("Creating gamedata table...");
+            GameLoader.logger.log("Creating gamedata table...");
             st_tbl_gamedata = conn_db.createStatement();
-            st_tbl_gamedata.executeUpdate("CREATE TABLE gamedata(SaveKey varchar(32), GameSave MEDIUMBLOB, GameCompleted int, GameTime float)");
-            System.out.println("gamedata Table created successfully...");
+            st_tbl_gamedata.executeUpdate("CREATE TABLE gamedata(SaveKey varchar(32), GameSave MEDIUMBLOB, GameCompleted int, GameTime float, SaveName varchar(16))");
+            GameLoader.logger.log("gamedata Table created successfully...");
 
-            System.out.println("Creating settings table...");
+            GameLoader.logger.log("Creating settings table...");
             st_tbl_settings = conn_db.createStatement();
             st_tbl_settings.executeUpdate("CREATE TABLE settings(Settings text)");
-            System.out.println("settings Table created successfully...");
+            GameLoader.logger.log("settings Table created successfully...");
 
             st_row_settings = conn_db.createStatement();
             st_row_settings.executeUpdate("INSERT INTO settings VALUES(NULL)");
-            System.out.println("blank settings row inserted successfully");
+            GameLoader.logger.log("blank settings row inserted successfully");
 
             connect();
 
@@ -253,7 +252,7 @@ public class DBConnection{
             updateSettings();
 
         } catch (SQLException se) {
-            se.printStackTrace();
+            se.printStackTrace(GameLoader.logger);
         } 
         finally {
             try{
@@ -265,7 +264,7 @@ public class DBConnection{
                 st_row_settings.close();
             } catch (NullPointerException e){
             } catch (SQLException e){
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             }
         }
     }
@@ -282,14 +281,14 @@ public class DBConnection{
             return accessing;
         });
 
-        System.out.println();
+        GameLoader.logger.log();
         accessing = true;
 
         PreparedStatement ps = null;
 
         try {
             if(connection == null){
-                System.out.println("Failed to create save \"" + saveKey + "\"");
+                GameLoader.logger.log("Failed to create save \"" + saveKey + "\"");
                 return;
             }
 
@@ -297,32 +296,32 @@ public class DBConnection{
             ResultSet check = connection.createStatement().executeQuery(("SELECT GameSave FROM gamedata WHERE SaveKey=\"" + saveKey + "\""));
 
             if(check.next()){
-                System.out.println("\"" + saveKey + "\" already exists, did not create");
+                GameLoader.logger.log("\"" + saveKey + "\" already exists, did not create");
                 return;
             }
             
-            System.out.println("Creating save \"" + saveKey + "\"...");
+            GameLoader.logger.log("Creating save \"" + saveKey + "\"...");
             ps = connection.prepareStatement("INSERT INTO gamedata VALUES (?, ?, ?, ?, ?)");
 
             ps.setString(1, saveKey);
-            ps.setFloat(2, -1);
             //empty blob
-            ps.setBlob(3,  new ByteArrayInputStream(new byte[0]));
-            ps.setInt(4,  GameWorld.GAME_NOT_COMPLETED);
+            ps.setBlob(2,  new ByteArrayInputStream(new byte[0]));
+            ps.setInt(3,  GameWorld.GAME_NOT_COMPLETED);
+            ps.setFloat(4, -1);
             ps.setString(5, saveName);
 
             ps.execute();
-            System.out.println("Successfully created Save \"" + saveKey + "\"");
+            GameLoader.logger.log("Successfully created Save \"" + saveKey + "\"");
         } catch (SQLException e) {
-            System.out.println("Failed to create save \"" + saveKey + "\"");
-            e.printStackTrace();
+            GameLoader.logger.log("Failed to create save \"" + saveKey + "\"");
+            e.printStackTrace(GameLoader.logger);
         } finally {
             accessing = false;
             try {
                 ps.close();
             } catch(NullPointerException e){
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             }
         }
     }
@@ -339,7 +338,7 @@ public class DBConnection{
             return accessing;
         });
 
-        System.out.println();
+        GameLoader.logger.log();
 
         accessing = true;
 
@@ -348,7 +347,7 @@ public class DBConnection{
 
         try {
             if(connection == null){
-                System.out.println("Failed to retrieve game save keys and names");
+                GameLoader.logger.log("Failed to retrieve game save keys and names");
                 return savesMap;
             }
 
@@ -361,8 +360,8 @@ public class DBConnection{
             }
 
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve game save keys and names");
-            e.printStackTrace();
+            GameLoader.logger.log("Failed to retrieve game save keys and names");
+            e.printStackTrace(GameLoader.logger);
         }
         finally{
             accessing = false;
@@ -370,7 +369,7 @@ public class DBConnection{
                 st.close();
             } catch(NullPointerException e){
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             }
         }
 
@@ -387,7 +386,7 @@ public class DBConnection{
             return accessing;
         });
 
-        System.out.println();
+        GameLoader.logger.log();
         accessing = true;
 
         Statement st = null;
@@ -397,11 +396,11 @@ public class DBConnection{
             
             st.executeUpdate("DELETE FROM gamedata WHERE SaveKey=\"" + saveKey + "\"");
 
-            System.out.println("Successfully deleted database entry: \"" + saveKey + "\"");
+            GameLoader.logger.log("Successfully deleted database entry: \"" + saveKey + "\"");
 
         } catch (SQLException e) {
-            System.out.println("Failed to delete database entry: \"" + saveKey + "\"");
-            e.printStackTrace();
+            GameLoader.logger.log("Failed to delete database entry: \"" + saveKey + "\"");
+            e.printStackTrace(GameLoader.logger);
         } 
         finally{
             accessing = false;
@@ -409,7 +408,7 @@ public class DBConnection{
             try {
                 st.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             }
         }
     }
@@ -432,7 +431,7 @@ public class DBConnection{
             return accessing;
         });
 
-        System.out.println();
+        GameLoader.logger.log();
         accessing = true;
 
         Statement st = null;
@@ -444,7 +443,7 @@ public class DBConnection{
         try {
             st = connection.createStatement();
 
-            System.out.println("Retrieving save \"" + saveKey + "\"");
+            GameLoader.logger.log("Retrieving save \"" + saveKey + "\"");
 
             result = st.executeQuery(("SELECT GameSave FROM gamedata WHERE SaveKey=\"" + saveKey + "\""));
 
@@ -462,20 +461,20 @@ public class DBConnection{
 
             out.write(buff);
 
-            System.out.println("Retrieve was successful for \"" + saveKey + "\"");
+            GameLoader.logger.log("Retrieve was successful for \"" + saveKey + "\"");
 
             file = new File(GameLoader.tempFile);
 
         } catch(IllegalArgumentException e){
-            // e.printStackTrace();
+            // e.printStackTrace(GameLoader.logger);
         } catch (IOException e){ 
-            e.printStackTrace();
+            e.printStackTrace(GameLoader.logger);
         } catch(SQLException e){
-            System.out.println("Retrieve failed");
-            System.out.println("Re-establishing connection... please retry command");
+            GameLoader.logger.log("Retrieve failed");
+            GameLoader.logger.log("Re-establishing connection... please retry command");
             connect();
 
-            e.printStackTrace();
+            e.printStackTrace(GameLoader.logger);
         }
         finally{
             accessing = false;
@@ -487,7 +486,7 @@ public class DBConnection{
                 st.close();
             } catch (NullPointerException e) {
             } catch(SQLException | IOException e){
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             }
         }
         
@@ -512,23 +511,23 @@ public class DBConnection{
             return accessing;
         });
 
-        System.out.println();
+        GameLoader.logger.log();
         accessing = true;
 
         PreparedStatement ps = null;
         FileInputStream fis = null;
 
         if(completion == GameWorld.GAME_OVER_PLAYER_DEAD){
-            System.out.println("Will not save world with completion status: GameWorld.GAME_OVER_PLAYER_DEAD");
+            GameLoader.logger.log("Will not save world with completion status: GameWorld.GAME_OVER_PLAYER_DEAD");
             accessing = false;
             return false;
         }
         
         try {
-            System.out.println("Updating database game save \"" + saveKey + "\"");
+            GameLoader.logger.log("Updating database game save \"" + saveKey + "\"");
 
             if(connection == null || connection.isClosed()){
-                System.out.println("Failed to update database game save \"" + saveKey + "\"");
+                GameLoader.logger.log("Failed to update database game save \"" + saveKey + "\"");
                 return false;
             }
 
@@ -543,12 +542,12 @@ public class DBConnection{
             
             ps.execute();
 
-            System.out.println("Successfully updated database game save \"" + saveKey + "\"");
+            GameLoader.logger.log("Successfully updated database game save \"" + saveKey + "\"");
         } catch (SQLException e) {
-            System.out.println("Failed to update database game save \"" + saveKey + "\"");
-            e.printStackTrace();
+            GameLoader.logger.log("Failed to update database game save \"" + saveKey + "\"");
+            e.printStackTrace(GameLoader.logger);
         } catch(FileNotFoundException e) {
-            e.printStackTrace();
+            e.printStackTrace(GameLoader.logger);
         } finally{
             accessing = false;
             try {
@@ -557,7 +556,7 @@ public class DBConnection{
             } catch (NullPointerException e) {
             } catch (IOException e) {   
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(GameLoader.logger);
             } 
         }
 
@@ -565,7 +564,7 @@ public class DBConnection{
     }
 
     public static void closeConnection(){
-        System.out.println();
+        GameLoader.logger.log();
         //wait
         Time.waitWhile((Object obj) -> {
             return accessing;
@@ -573,15 +572,15 @@ public class DBConnection{
 
         try {
             if(connection == null){
-                System.out.println("Failed to close database connection");
+                GameLoader.logger.log("Failed to close database connection");
                 return;
             }
             
             connection.close();
-            System.out.println("Successfully closed database connection");
+            GameLoader.logger.log("Successfully closed database connection");
         } catch (SQLException e) {
-            System.out.println("Failed to close database connection");
-            e.printStackTrace();
+            GameLoader.logger.log("Failed to close database connection");
+            e.printStackTrace(GameLoader.logger);
         }
     }
 
