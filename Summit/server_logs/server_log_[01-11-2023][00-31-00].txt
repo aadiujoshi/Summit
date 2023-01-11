@@ -1,0 +1,17 @@
+
+[00:31:00] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitgame
+[00:31:01] Connection successful
+
+[00:31:01] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitgame
+[00:31:01] Connection successful
+
+
+[00:31:04] Creating save "fthmrLeBtBJiPqPN"...
+[00:31:04] Successfully created Save "fthmrLeBtBJiPqPN"
+
+[00:31:13] Updating database game save "fthmrLeBtBJiPqPN"
+[00:31:14] Successfully updated database game save "fthmrLeBtBJiPqPN"
+[00:31:14] Updating settings to database...
+[00:31:14] Successfully updated game settings to database
+
+[00:31:14] Successfully closed database connection
