@@ -5,10 +5,27 @@ import summit.game.tile.TileStack;
 import summit.game.tile.WoodPlank;
 import summit.gfx.Camera;
 
-public class TraderHouseMap extends GameMap{
+/**
+ * 
+ * This class represents the TraderHouseMap, which is a subtype of GameMap.
+ * It has a specific layout and properties that are unique to the
+ * TraderHouseMap.
+ * 
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ */
+public class TraderHouseMap extends GameMap {
 
     /*
      * x and y are house locations
+     */
+
+    /**
+     * Constructor for creating a new TraderHouseMap.
+     * 
+     * @param player the player object that will be present in the map
+     * @param x      the x-coordinate of the house location
+     * @param y      the y-coordinate of the house location
+     * @param seed   the seed used for generating the map
      */
     public TraderHouseMap(Player player, float x, float y, long seed) {
         super(player, seed, 10, 10);

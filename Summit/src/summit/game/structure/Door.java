@@ -11,14 +11,26 @@ import summit.gfx.ColorFilter;
 import summit.gfx.Sprite;
 import summit.util.Direction;
 
-public class Door extends MapEntrance{
+/**
+ * 
+ * Class representing a Door object. Extends the MapEntrance class and is used
+ * to transition between different maps.
+ * 
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ */
+public class Door extends MapEntrance {
 
     /**
-     * exMap is the "main" GameMap, and parentMap is the room/building the door is in
-     * @param x
-     * @param y
-     * @param exMap
-     * @param parentMap
+     * 
+     * Constructor for the Door class. Takes in the x and y coordinates for the
+     * door,
+     * the GameMap that the door leads to and the parent Map that the door is
+     * located in.
+     * 
+     * @param x         the x-coordinate of the door
+     * @param y         the y-coordinate of the door
+     * @param exMap     the GameMap that the door leads to
+     * @param parentMap the parent Map that the door is located in
      */
     public Door(float x, float y, GameMap exMap, GameMap parentMap) {
         super(x, y, 1, 2, exMap, parentMap);
