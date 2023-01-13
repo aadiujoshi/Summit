@@ -15,7 +15,6 @@ import summit.game.tile.EmptyTile;
 import summit.game.tile.StoneTile;
 import summit.game.tile.TileStack;
 import summit.gfx.ColorFilter;
-import summit.util.GameLogger;
 import summit.util.ScheduledEvent;
 import summit.util.Sound;
 import summit.util.Time;

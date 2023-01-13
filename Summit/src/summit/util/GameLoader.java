@@ -27,6 +27,8 @@ public class GameLoader {
 
     public static final String tempFile = "cache/temp.txt";
 
+    public static SystemLogger logger = SystemLogger.getLogger();
+
     /**
      * Creates a new entry in the database using {@code DBConnection}.
      * 

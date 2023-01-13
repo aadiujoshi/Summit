@@ -1,0 +1,11 @@
+
+[00:15:08] Creating connection to database: jdbc:mysql://LAPTOP-RNE155B4:3306/summitgame
+[00:15:08] Connection successful
+
+[00:15:08] Creating connection to database: jdbc:mysql://LAPTOP-RNE155B4:3306/summitgame
+[00:15:08] Connection successful
+
+[00:15:13] Updating settings to database...
+[00:15:13] Successfully updated game settings to database
+
+[00:15:13] Successfully closed database connection

@@ -459,8 +459,6 @@ public class Window implements MouseListener, KeyListener {
         world = new GameWorld(name, this, (long)(Math.random()*Long.MAX_VALUE));
         GameLoader.createSave(world.getSaveKey(), world.getName());
         
-        GameCrashReportGenerator.generateGameCrashReport(null, world);
-
         endTransition();
         state = WindowState.GAME;
     }

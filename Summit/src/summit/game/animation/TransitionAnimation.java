@@ -29,11 +29,8 @@ public class TransitionAnimation extends Animation {
 
     /**
      * Constructs a new TransitionAnimation.
-     * 
-     * This animation will display a random color gradient over the screen that
-     * 
+     * This animation will display a circle that
      * grows from the center of the screen to the edges. The animation will
-     * 
      * run for the duration required for the gradient to fully cover the screen.
      */
     public TransitionAnimation() {
@@ -64,7 +61,6 @@ public class TransitionAnimation extends Animation {
     }
 
     /**
-     * 
      * Called when this TransitionAnimation is scheduled to run.
      * This method increments the radius of the gradient displayed by this
      * animation.

@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 
 import summit.gfx.BufferedSprites;
 import summit.gui.Window;
+import summit.util.DBConnection;
+import summit.util.SystemLogger;
 
 /*
  *  vsync 0
@@ -29,6 +31,7 @@ public class Main {
         System.out.println(System.getProperty("os.name") + "\n");
 
         BufferedSprites.loadSprites();
+        
 
         Window summit = new Window("Summit");
 

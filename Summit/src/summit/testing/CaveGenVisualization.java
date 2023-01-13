@@ -32,7 +32,7 @@ public class CaveGenVisualization extends JPanel{
 
     private int color = 0x00ff00;
     
-    public static void jlk(String args[]) {
+    public static void main(String args[]) {
         new CaveGenVisualization();
     }
 
@@ -75,8 +75,8 @@ public class CaveGenVisualization extends JPanel{
 
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-        // long seed = (long)(Math.random()*Long.MAX_VALUE);
-        long seed = 3;
+        long seed = (long)(Math.random()*Long.MAX_VALUE);
+        // long seed = 3;
 
         Random rand = new Random(seed);
         
