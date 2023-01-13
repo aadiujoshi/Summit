@@ -19,6 +19,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Properties;
 
+import summit.Main;
 import summit.game.GameWorld;
 
 /**
@@ -28,9 +29,11 @@ import summit.game.GameWorld;
  */
 public class DBConnection{
 
-    private static String URL;
+    private static String SERVER_URL;
+    private static String DB_URL;
     private static String USER;
     private static String PASSWORD;
+    // private static String SERIAL;
     private static Connection connection;
 
     //prevent concurrrent access to the database
@@ -43,23 +46,31 @@ public class DBConnection{
         
         FileInputStream fis = null;
         FileOutputStream fos = null;
-        String init = "";
+        String ser = "";
         
         try {
             fis = new FileInputStream("db_config.properties");
 
             dbinfo.load(fis);
-            URL = (String)dbinfo.get("db.url");
+            SERVER_URL = (String)dbinfo.get("db.url");
             USER = (String)dbinfo.get("db.user");
             PASSWORD = (String)dbinfo.get("db.password");
             
-            init = (String)dbinfo.get("db.initialized");
+            ser = (String)dbinfo.get("db.serial");
 
-            if(init.equals("false")){
+            DB_URL = SERVER_URL + "summitdata_" + ser;
+
+            //db has not been created yet... fully initialize db
+            if(ser.equals("%")){
+                String tmp_serial = Main.generateSaveKey();
+                DB_URL = SERVER_URL + "summitdata_" + tmp_serial;
                 fos = new FileOutputStream("db_config.properties");
-                initDB();
-                dbinfo.setProperty("db.initialized", "true");
-                dbinfo.store(fos, null);
+
+                initDB(tmp_serial);
+
+                //only set serial if initDB was successful
+                dbinfo.setProperty("db.serial", tmp_serial);
+                dbinfo.store(fos, "DO NOT MODIFY THE `db.serial` FIELD. YOU CAN LOSE THE DATABASE CONNECTION, AND ALL GAME SAVE DATA");
             }
         } catch (IOException e) {
             e.printStackTrace(GameLoader.logger);
@@ -76,8 +87,8 @@ public class DBConnection{
         }
 
         //database and tables have already been created
-        //otherwise, if this is the first time opening the game, other protocols are used
-        if(init.equals("true"))
+        //otherwise, if this is the first time opening the game, other protocols are used to connect to database
+        if(!ser.equals("%"))
             connect();
     }
 
@@ -187,9 +198,9 @@ public class DBConnection{
     public static synchronized boolean connect(){
         GameLoader.logger.log();
         try {
-            GameLoader.logger.log("Creating connection to database: " + URL + "summitgame");
+            GameLoader.logger.log("Creating connection to database: " + DB_URL);
 
-            connection = DriverManager.getConnection(URL+"summitdata", USER, PASSWORD);
+            connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             connection.setAutoCommit(true);
             
             GameLoader.logger.log("Connection successful");
@@ -198,7 +209,7 @@ public class DBConnection{
         } catch (SQLException e) {
             GameLoader.logger.log("Failed to connect to database: ");
             if(e.getLocalizedMessage().contains("Unknown database")){
-                GameLoader.logger.log("Could not find database... try setting the property \"db.initialized\" in db_config.properties equal to \"false\" (ignore quotations), and restart the game");
+                GameLoader.logger.log("Could not find database... make sure the \"db.serial\" field in the db_config.properties file has not been altered (Check db_config.properties previous versions).\n\t\t\tOtherwise, set the 'db.serial' field in db_config.properties to '%' (no quotations), and restart the game. HOWEVER any saved data will be lost");
                 return false;
             }
             // GameLoader.logger.log(e.getLocalizedMessage());
@@ -211,7 +222,7 @@ public class DBConnection{
     /**
      * Called if the table is not found/ hasn't been created yet
      */
-    private static void initDB(){
+    private static void initDB(String tmp_serial){
         Statement st_db = null;
         Statement st_tbl_gamedata = null;
         Statement st_tbl_settings = null;
@@ -222,15 +233,15 @@ public class DBConnection{
         try {
             GameLoader.logger.log("Initializing database...");
             GameLoader.logger.log("Connecting to server...");
-            conn_server = DriverManager.getConnection(URL, USER, PASSWORD);
+            conn_server = DriverManager.getConnection(SERVER_URL, USER, PASSWORD);
 
             GameLoader.logger.log("Creating database...");
             st_db = conn_server.createStatement();
-            st_db.executeUpdate("CREATE DATABASE summitdata");
+            st_db.executeUpdate("CREATE DATABASE summitdata_"+tmp_serial);
             GameLoader.logger.log("Database created successfully...");
 
             GameLoader.logger.log("Connecting to database...");
-            conn_db = DriverManager.getConnection(URL+"summitdata", USER, PASSWORD);
+            conn_db = DriverManager.getConnection(DB_URL, USER, PASSWORD);
 
             GameLoader.logger.log("Creating gamedata table...");
             st_tbl_gamedata = conn_db.createStatement();

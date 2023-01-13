@@ -1,0 +1,15 @@
+
+[01:02:14] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitdata_mfDYQVHLgTxEdULW
+[01:02:15] Connection successful
+
+[01:02:15] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitdata_mfDYQVHLgTxEdULW
+[01:02:15] Connection successful
+
+
+[01:02:17] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitdata_mfDYQVHLgTxEdULW
+[01:02:17] Connection successful
+
+[01:02:18] Updating settings to database...
+[01:02:18] Successfully updated game settings to database
+
+[01:02:18] Successfully closed database connection

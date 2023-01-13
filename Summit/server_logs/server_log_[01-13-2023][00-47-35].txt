@@ -1,0 +1,4 @@
+
+[00:47:35] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitgame_null
+[00:47:35] Failed to connect to database: 
+[00:47:35] Could not find database... try setting the property "db.initialized" in db_config.properties equal to "false" (ignore quotations), and restart the game

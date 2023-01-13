@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.HashMap;
 
 import summit.game.GameWorld;
@@ -52,7 +54,7 @@ public class GameLoader {
             out.close();
             file.close();
         } catch (IOException e){
-            e.printStackTrace();
+            e.printStackTrace(logger);
         }
     }
 
@@ -91,7 +93,7 @@ public class GameLoader {
             
             return world;
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(logger);
         }
 
         //return null if error
@@ -113,6 +115,13 @@ public class GameLoader {
         if(world.getCompletion() == GameWorld.GAME_OVER_PLAYER_DEAD){
             System.out.println("Will not save world with completion status: GameWorld.GAME_OVER_PLAYER_DEAD");
             DBConnection.removeSave(world.getSaveKey());
+            try {
+                Files.newBufferedWriter(
+                    FileSystems.getDefault().getPath(tempFile), 
+                    java.nio.file.StandardOpenOption.TRUNCATE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace(logger);
+            }
             return;
         }
         
@@ -131,7 +140,7 @@ public class GameLoader {
             accessing = false;
             
         } catch(ClassCastException e) {
-            e.printStackTrace();
+            e.printStackTrace(logger);
         }
     }
 
@@ -140,18 +149,32 @@ public class GameLoader {
             return accessing;
         });
 
+        FileInputStream file = null;
+        ObjectInputStream in = null;
+
         try{
-            FileInputStream file = new FileInputStream(tempFile);
-            ObjectInputStream out = new ObjectInputStream(file);
+            file = new FileInputStream(tempFile);
+            in = new ObjectInputStream(file);
                 
-            GameWorld world = (GameWorld)out.readObject();
-            
-            out.close();
-            file.close();
+            //empty cache
+            if(in.readAllBytes().length == 0){
+                logger.log("Nothing in the cache file... Either no worlds have been loaded or saved, or you died on the previously loaded world");
+                return null;
+            }
+
+            GameWorld world = (GameWorld)in.readObject();
             
             return world;
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(logger);
+        } finally {
+            try {
+                file.close();
+                in.close();
+            } catch (NullPointerException e) {
+            } catch (IOException e) {
+                e.printStackTrace(logger);
+            }
         }
 
         //return null if error
@@ -176,7 +199,7 @@ public class GameLoader {
                 accessing = false;
 
             } catch(ClassCastException e) {
-                e.printStackTrace();
+                e.printStackTrace(logger);
             }
         });
         wr.start();

@@ -165,7 +165,7 @@ public class Window implements MouseListener, KeyListener {
     private GameCreationMenu createMenu;
 
     /**
-     * The VideoSettings object for the video settings.
+     * The SettingsGUI object for the video and game settings.
      */
     private SettingsGUI settings;
 
@@ -415,7 +415,7 @@ public class Window implements MouseListener, KeyListener {
         world = GameLoader.loadCache();
 
         if(world == null){
-            System.out.println("Could not load cached save");
+            System.out.println("Could not load cached save... check server_logs");
             this.endTransition();
             return;
         }

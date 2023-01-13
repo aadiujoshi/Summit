@@ -1,0 +1,5 @@
+
+[00:52:21] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitdata_saYTFPTeMPzpLLbe
+[00:52:22] Failed to connect to database: 
+[00:52:22] Could not find database... make sure the "db.serial" field has not been altered (Check db_config.properties previous versions).
+ Otherwise, set `db.serial` to '%' (no quotations), and restart the game. HOWEVER any saved data will be lost

@@ -1,0 +1,29 @@
+
+[00:26:58] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitgame
+[00:26:59] Connection successful
+
+[00:26:59] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitgame
+[00:26:59] Connection successful
+
+
+[00:27:02] Creating save "LLxQnFjzLLtRxGhy"...
+[00:27:02] Successfully created Save "LLxQnFjzLLtRxGhy"
+
+[00:27:21] Successfully deleted database entry: "LLxQnFjzLLtRxGhy"
+
+[00:27:58] Creating save "CEojULLBIIGXILPR"...
+[00:27:58] Successfully created Save "CEojULLBIIGXILPR"
+
+[00:28:09] Updating database game save "CEojULLBIIGXILPR"
+[00:28:10] Successfully updated database game save "CEojULLBIIGXILPR"
+
+[00:28:13] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitgame
+[00:28:13] Connection successful
+
+
+[00:29:23] Updating database game save "CEojULLBIIGXILPR"
+[00:29:24] Successfully updated database game save "CEojULLBIIGXILPR"
+[00:29:24] Updating settings to database...
+[00:29:24] Successfully updated game settings to database
+
+[00:29:24] Successfully closed database connection

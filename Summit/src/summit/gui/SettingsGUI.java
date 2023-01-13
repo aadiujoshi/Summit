@@ -10,7 +10,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 
 /**
- * A graphical user interface (GUI) container for video settings options.
+ * A graphical user interface (GUI) container for game and video settings options.
  * Allows the user to adjust ambient occlusion, vsync, and number of threads
  * used for rendering.
  *
@@ -26,10 +26,11 @@ public class SettingsGUI extends Container {
     //used to check if the thread option has been changed
     private final int initThreads = (int) Settings.getSetting("threads");
 
+    //true if the threads settings has been changed
     private boolean threadsChange;
 
     /**
-     * Constructs a new video settings menu.
+     * Constructs a new settings menu.
      *
      * @param window the parent window
      */
@@ -225,7 +226,5 @@ public class SettingsGUI extends Container {
                     Renderer.NO_OP,
                     new ColorFilter(0xff0009));
         }
-
-
     }
 }

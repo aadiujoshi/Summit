@@ -19,7 +19,7 @@ public class PauseMenu extends Container{
         vs = new SettingsGUI(window);
         this.world = world;
 
-        addComponent(new TextContainer("VIDEO SETTINGS", vs, window, 0.75f, 0.5f, Sprite.MENUBOX2){
+        addComponent(new TextContainer("SETTINGS", vs, window, 0.75f, 0.5f, Sprite.MENUBOX2){
             @Override
             public void guiClick(MouseEvent e){
                 window.pushGameContainer(vs);

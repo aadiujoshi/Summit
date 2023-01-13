@@ -818,7 +818,7 @@ public class GameMap implements Serializable, Paintable, GameUpdateReciever, Gam
 
     /**
      * 
-     * Stops the spawnMobs thread from spawning any more mobs.
+     * Stops the {@code spawnMobs} {@code ScheduledEvent} from spawning any more mobs.
      */
     public void dontSpawnMobs() {
         spawnMobs.manualTerminate();

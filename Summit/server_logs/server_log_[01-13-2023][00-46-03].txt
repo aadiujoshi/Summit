@@ -1,0 +1,14 @@
+[00:46:03] Initializing database...
+[00:46:03] Connecting to server...
+[00:46:03] Creating database...
+java.sql.SQLException: Can't create database 'summitdata'; database exists
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1334)
+	at com.mysql.cj.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2084)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1245)
+	at summit.util.DBConnection.initDB(DBConnection.java:240)
+	at summit.util.DBConnection.<clinit>(DBConnection.java:69)
+	at summit.util.Settings.<clinit>(Settings.java:15)
+	at summit.gui.Window.<init>(Window.java:201)
+	at summit.Main.main(Main.java:36)

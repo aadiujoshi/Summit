@@ -37,4 +37,20 @@ public class Main {
 
         // summit.setState(WindowState.SELECTIONMENUS);
     }
+
+    //util method for unique string
+    public static String generateSaveKey(){
+        String f = "";
+
+        for (int i = 0; i < 16; i++) {
+            int c = (int)(Math.random()*59+64);
+            if(!Character.isAlphabetic(c)){
+                f+="L";
+                continue;
+            }
+            f+=(char)c;
+        }
+        
+        return f;
+    }
 }

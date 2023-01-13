@@ -1,0 +1,4 @@
+
+[00:50:34] Creating connection to database: jdbc:mysql://192.168.2.135:3306/summitdata_saYTFPTeMPzpLLbe
+[00:50:34] Failed to connect to database: 
+[00:50:34] Could not find database... make sure the "db.serial" field has not been altered (Check db_config.properties previous versions)

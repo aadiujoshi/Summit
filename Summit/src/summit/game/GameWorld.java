@@ -6,6 +6,7 @@ package summit.game;
 
 import java.io.Serializable;
 
+import summit.Main;
 import summit.game.animation.TransitionAnimation;
 import summit.game.entity.mob.Player;
 import summit.game.gamemap.GameMap;
@@ -50,7 +51,7 @@ public class GameWorld implements Paintable, Serializable{
     private long sessionStartTime = Time.timeMs();
 
     /** A randomized key generated at creation to distinguish GameWorlds */
-    private final String SAVE_KEY = generateSaveKey();
+    private final String SAVE_KEY = Main.generateSaveKey();
 
     private final String NAME;
     
@@ -305,21 +306,6 @@ public class GameWorld implements Paintable, Serializable{
     public String getSaveKey() {
 		return this.SAVE_KEY;
 	}
-
-    private String generateSaveKey(){
-        String f = "";
-
-        for (int i = 0; i < 16; i++) {
-            int c = (int)(Math.random()*59+64);
-            if(!Character.isAlphabetic(c)){
-                f+="L";
-                continue;
-            }
-            f+=(char)c;
-        }
-        
-        return f;
-    }
     
     public String getName() {
         return this.NAME;

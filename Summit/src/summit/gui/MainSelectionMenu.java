@@ -45,7 +45,7 @@ public class MainSelectionMenu extends Container{
             }
         };
 
-        TextContainer videoSettings = new TextContainer("SETTINGS", this, window, 0.5f, 0.7f, Sprite.MENUBOX6){
+        TextContainer settings = new TextContainer("SETTINGS", this, window, 0.5f, 0.7f, Sprite.MENUBOX6){
             @Override
             public void guiClick(MouseEvent e){
                 window.setState(WindowState.SETTINGS);
@@ -81,7 +81,7 @@ public class MainSelectionMenu extends Container{
         addComponent(newGame);
         addComponent(savedGames);
         addComponent(quit);
-        addComponent(videoSettings);
+        addComponent(settings);
         addComponent(email);
         addComponent(help);
     }
