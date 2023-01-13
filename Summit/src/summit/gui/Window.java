@@ -39,7 +39,6 @@ import summit.gfx.Renderer;
 import summit.gfx.Sprite;
 import summit.util.Controls;
 import summit.util.DBConnection;
-import summit.util.GameCrashReportGenerator;
 import summit.util.GameLoader;
 import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
@@ -168,7 +167,7 @@ public class Window implements MouseListener, KeyListener {
     /**
      * The VideoSettings object for the video settings.
      */
-    private VideoSettings settings;
+    private SettingsGUI settings;
 
     /**
      * Used for transtioning between Window States
@@ -204,7 +203,7 @@ public class Window implements MouseListener, KeyListener {
 
         mainMenu = new MainSelectionMenu(this);
         selMenu = new SavedGamesSelectionMenu(this);
-        settings = new VideoSettings(this);
+        settings = new SettingsGUI(this);
         createMenu = new GameCreationMenu(this);
         transition = null;
 

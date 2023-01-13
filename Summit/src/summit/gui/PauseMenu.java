@@ -10,13 +10,13 @@ import summit.util.Sound;
 
 public class PauseMenu extends Container{
 
-    private VideoSettings vs;
+    private SettingsGUI vs;
     private GameWorld world;
 
     public PauseMenu(Window window, GameWorld world) {
         super(null, window, 0.5f, 0.5f, Sprite.FILL_SCREEN);
 
-        vs = new VideoSettings(window);
+        vs = new SettingsGUI(window);
         this.world = world;
 
         addComponent(new TextContainer("VIDEO SETTINGS", vs, window, 0.75f, 0.5f, Sprite.MENUBOX2){

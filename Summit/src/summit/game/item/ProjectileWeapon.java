@@ -27,26 +27,5 @@ public abstract class ProjectileWeapon extends WeaponItem{
         e.getMap().spawn(p);
 
         return true;
-            
-        // try {
-            
-        // } catch (InstantiationException | 
-        //         IllegalAccessException | 
-        //         IllegalArgumentException | 
-        //         InvocationTargetException | 
-        //         SecurityException ex) {
-
-        //     //this will never happen
-        //     ex.printStackTrace();
-        // }
     }
-    
-    // public void setProjType(Class<? extends Projectile> projClass) {
-    //     try {
-    //         this.projType = projClass.getConstructor(GameObject.class, float.class, float.class);
-    //     } catch (NoSuchMethodException | 
-    //             SecurityException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 }

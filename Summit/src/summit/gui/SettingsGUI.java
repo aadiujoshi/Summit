@@ -17,13 +17,15 @@ import java.awt.event.MouseEvent;
  * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  * 
  */
-public class VideoSettings extends Container {
+public class SettingsGUI extends Container {
 
     // relative positions for all the boxes
     private float[] bx = new float[] { 0.65f, 0.75f, 0.85f };
     private float[] by = new float[] { 0.3f, 0.4f, 0.5f };
 
+    //used to check if the thread option has been changed
     private final int initThreads = (int) Settings.getSetting("threads");
+
     private boolean threadsChange;
 
     /**
@@ -31,7 +33,7 @@ public class VideoSettings extends Container {
      *
      * @param window the parent window
      */
-    public VideoSettings(Window window) {
+    public SettingsGUI(Window window) {
         super(null, window, 0.5f, 0.5f, Sprite.SUMMIT_BACKGROUND2);
 
         TextContainer ao_count = new TextContainer(
@@ -101,7 +103,30 @@ public class VideoSettings extends Container {
         };
 
         // -----------------------------------------------------------------------
+        // --------------------game difficulty------------------------------------
         // -----------------------------------------------------------------------
+
+        
+        TextContainer easy = new TextContainer("easy", this, window, 0.2f, 0.8f, Sprite.MENUBOX4) {
+            public void guiClick(MouseEvent e) {
+                Settings.changeSetting("difficulty", 1+"");
+            }
+        };
+
+        TextContainer normal = new TextContainer("normal", this, window, 0.5f, 0.8f, Sprite.MENUBOX4) {
+            public void guiClick(MouseEvent e) {
+                Settings.changeSetting("difficulty", 2+"");
+            }
+        };
+
+        TextContainer hard = new TextContainer("hard", this, window, 0.8f, 0.8f, Sprite.MENUBOX4) {
+            public void guiClick(MouseEvent e) {
+                Settings.changeSetting("difficulty", 3+"");
+            }
+        };
+        
+        // -----------------------------------------------------------------------
+        // --------------------game difficulty------------------------------------
         // -----------------------------------------------------------------------
 
         ColorFilter incf = new ColorFilter(Color.GREEN.getRGB());
@@ -121,6 +146,10 @@ public class VideoSettings extends Container {
         vsync_dec.setTextFilter(decf);
         threads_dec.setTextFilter(decf);
 
+        easy.setTextFilter(new ColorFilter(Color.green.getRGB()));
+        normal.setTextFilter(new ColorFilter(Color.yellow.getRGB()));
+        hard.setTextFilter(new ColorFilter(Color.red.getRGB()));
+
         addComponent(ao_count);
         addComponent(vsync_count);
         addComponent(threads_count);
@@ -132,24 +161,28 @@ public class VideoSettings extends Container {
         addComponent(ao_dec);
         addComponent(vsync_dec);
         addComponent(threads_dec);
+
+        addComponent(easy);
+        addComponent(normal);
+        addComponent(hard);
     }
 
     /**
      * Updates the value for a particular setting and displays it in the GUI.
      *
      * @param cont    the TextContainer object displaying the setting value
-     * @param setting the name of the setting to update
-     * @param change  the amount to change the setting by
+     * @param property the name of the setting to update
+     * @param add  the amount to change the setting by
      */
-    private void updateCont(TextContainer c, String property, int add) {
-        int n = Integer.parseInt(c.getText()) + add;
+    private void updateCont(TextContainer cont, String property, int add) {
+        int n = Integer.parseInt(cont.getText()) + add;
         if (n >= 0 && n <= 9) {
             if (property.equals("threads") && n == 0) {
-                c.setText((1) + "");
+                cont.setText((1) + "");
                 Settings.changeSetting(property, 1);
                 return;
             }
-            c.setText((n) + "");
+            cont.setText((n) + "");
             Settings.changeSetting(property, n+"");
         }
     }
@@ -180,6 +213,11 @@ public class VideoSettings extends Container {
                 (int) (Renderer.HEIGHT * by[2]),
                 Renderer.NO_OP, f);
 
+        e.getRenderer().renderText("game difficulty", 
+                Renderer.WIDTH/2, 
+                (int)(Renderer.HEIGHT*0.7f), 
+                Renderer.NO_OP, f);
+
         // threads count change warning
         if (threadsChange) {
             e.getRenderer().renderText("!Restart game", px,
@@ -187,5 +225,7 @@ public class VideoSettings extends Container {
                     Renderer.NO_OP,
                     new ColorFilter(0xff0009));
         }
+
+
     }
 }
