@@ -56,9 +56,7 @@ public class BossRoomEntrance extends MapEntrance {
             if (k)
                 obk++;
         }
-
-        super.gameClick(e);
-
+        
         // player has all 3 keys
         if (obk == 3) {
             super.gameClick(e);

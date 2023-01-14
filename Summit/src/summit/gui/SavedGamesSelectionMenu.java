@@ -114,14 +114,10 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
         TextContainer retry = new TextContainer("reload", this, getParentWindow(), 0.13f, 0.85f, Sprite.MENUBOX4){
             @Override
             public synchronized void guiClick(MouseEvent e){
-                System.out.println("Retrying database connection...");
+                GameLoader.logger.log("Retrying database connection...");
                 setTextFilter(new ColorFilter(0xff0000));
                 connected = DBConnection.connect();
 
-                if(!connected){
-                    //copy server logs file adress to clipboard
-                }
-                
                 createSaveBoxes();
                 setTextFilter(new ColorFilter(0x00ff00));
             }
@@ -134,7 +130,7 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
         TextContainer cache = new TextContainer("cache", this, getParentWindow(), 0.13f, 0.75f, Sprite.MENUBOX4){
             @Override
             public synchronized void guiClick(MouseEvent e){
-                System.out.println("Loading world save from cache...");
+                GameLoader.logger.log("Loading world save from cache...");
                 setTextFilter(new ColorFilter(0xff0000));
 
                 getParentWindow().loadCache();
@@ -166,15 +162,16 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
 
     @Override
     public void paint(PaintEvent e){
-        if(!connected){
-            e.getRenderer().renderText("Error! Database connecion failed!", 
-                    128, 72, Renderer.NO_OP, new ColorFilter(0xffffff));
-            e.getRenderer().renderText("Check server logs for more information, file address was copied to clipboard", 
-                    128, 90, Renderer.NO_OP, new ColorFilter(0xffffff));
-            return;
-        }
-
         super.paint(e);
+
+        if(!connected){
+            e.getRenderer().renderText("Database connecion Error!", 
+                    128, 60, Renderer.NO_OP, new ColorFilter(0xffffff));
+            e.getRenderer().renderText("Check server logs", 
+                    128, 72, Renderer.NO_OP, new ColorFilter(0xffffff));
+            e.getRenderer().renderText("for more information", 
+                    128, 84, Renderer.NO_OP, new ColorFilter(0xffffff));
+        }
 
         if(getComponents().size()-2 == 0 && connected){
             e.getRenderer().renderText("No saved worlds found...", 

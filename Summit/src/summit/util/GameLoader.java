@@ -4,6 +4,7 @@
 */
 package summit.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -113,7 +114,7 @@ public class GameLoader {
     public static void saveWorld(GameWorld world){
 
         if(world.getCompletion() == GameWorld.GAME_OVER_PLAYER_DEAD){
-            System.out.println("Will not save world with completion status: GameWorld.GAME_OVER_PLAYER_DEAD");
+            logger.log("Will not save world with completion status: GameWorld.GAME_OVER_PLAYER_DEAD");
             DBConnection.removeSave(world.getSaveKey());
             try {
                 Files.newBufferedWriter(
@@ -134,7 +135,7 @@ public class GameLoader {
         try{
             saveProtocol(world);
 
-            System.out.println("Save to temp file complete");
+            logger.log("Save to temp file complete");
             DBConnection.updateSave(world.getSaveKey(), world.getElapsedTime(), world.getCompletion());
 
             accessing = false;
@@ -149,15 +150,18 @@ public class GameLoader {
             return accessing;
         });
 
+        accessing = true;
+
         FileInputStream file = null;
         ObjectInputStream in = null;
 
         try{
             file = new FileInputStream(tempFile);
-            in = new ObjectInputStream(file);
+            byte[] bytes = file.readAllBytes();
+            in = new ObjectInputStream(new ByteArrayInputStream(bytes));
                 
             //empty cache
-            if(in.readAllBytes().length == 0){
+            if(bytes.length == 0){
                 logger.log("Nothing in the cache file... Either no worlds have been loaded or saved, or you died on the previously loaded world");
                 return null;
             }
@@ -168,6 +172,7 @@ public class GameLoader {
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace(logger);
         } finally {
+            accessing = false;
             try {
                 file.close();
                 in.close();
@@ -193,7 +198,7 @@ public class GameLoader {
             try{
                 saveProtocol(world);
     
-                System.out.println("Save to temp file complete");
+                logger.log("Save to temp file complete");
                 DBConnection.updateSave(world.getSaveKey(), world.getElapsedTime(), world.getCompletion());
 
                 accessing = false;
@@ -206,10 +211,10 @@ public class GameLoader {
 
         Thread updater = new Thread(() -> {
             while(wr.isAlive()){
-                System.out.println("Saving world...");
+                logger.log("Saving world...");
                 Time.nanoDelay(Time.NS_IN_S);
             }
-            System.out.println("Save complete");
+            logger.log("Save complete");
             accessing = false;
         });
 

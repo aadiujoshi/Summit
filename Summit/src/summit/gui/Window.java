@@ -404,6 +404,8 @@ public class Window implements MouseListener, KeyListener {
 
         renderer.upscaleToImage(finalFrame);
 
+        // finalFrame.getScaledInstance(SCREEN_WIDTH, height, BufferedImage.SCALE_REPLICATE)
+
         g.drawImage(finalFrame, null, 0, 0);
 
         renderer.resetFrame();
@@ -415,12 +417,12 @@ public class Window implements MouseListener, KeyListener {
         world = GameLoader.loadCache();
 
         if(world == null){
-            System.out.println("Could not load cached save... check server_logs");
+            GameLoader.logger.log("Could not load cached save... check server_logs");
             this.endTransition();
             return;
         }
 
-        System.out.println("Successfully loaded world: " + world.getName() + " [Key:" + world.getSaveKey() + "]");
+        GameLoader.logger.log("Successfully loaded world: " + world.getName() + " [Key:" + world.getSaveKey() + "]");
 
         world.reinit(this);
         this.endTransition();

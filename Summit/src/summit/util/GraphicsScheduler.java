@@ -7,7 +7,7 @@ package summit.util;
 import java.util.ArrayList;
 
 /**
- * This scheduler is used for animations, and visuals
+ * This scheduler is used for animations, and visuals. Used for handling ScheduledEvents and giving them updates
  */
 public class GraphicsScheduler {
     

@@ -66,11 +66,14 @@ public class DBConnection{
                 DB_URL = SERVER_URL + "summitdata_" + tmp_serial;
                 fos = new FileOutputStream("db_config.properties");
 
-                initDB(tmp_serial);
+                boolean success = initDB(tmp_serial);
 
                 //only set serial if initDB was successful
-                dbinfo.setProperty("db.serial", tmp_serial);
-                dbinfo.store(fos, "DO NOT MODIFY THE `db.serial` FIELD. YOU CAN LOSE THE DATABASE CONNECTION, AND ALL GAME SAVE DATA");
+                if(success){
+                    dbinfo.setProperty("db.serial", tmp_serial);
+                }
+                
+                dbinfo.store(fos, "DO NOT MODIFY THE 'db.serial' FIELD. YOU CAN LOSE THE DATABASE CONNECTION, AND ALL GAME SAVE DATA");
             }
         } catch (IOException e) {
             e.printStackTrace(GameLoader.logger);
@@ -141,6 +144,16 @@ public class DBConnection{
     }
 
     public static Properties getSettings(){
+        if(connection == null){
+            Properties p = new Properties();
+            try {
+                p.load(new FileInputStream("settings.properties"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return p;
+        }
+
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
@@ -160,17 +173,10 @@ public class DBConnection{
 
             //copy properties as a string
             String prop = rs.getString("Settings");
-
-            // prop.replaceAll("\n", ", ");
-            //write properties to local file
             
-            // GameLoader.logger.log(prop);
-
             tempSettings = new ByteArrayInputStream(prop.getBytes());
             settings.load(tempSettings);
-
-            // GameLoader.logger.log(settings);
-
+            
             return settings;
         } catch (SQLException e) {
             e.printStackTrace(GameLoader.logger);
@@ -196,8 +202,10 @@ public class DBConnection{
      * Creates connection to database.
      */
     public static synchronized boolean connect(){
-        GameLoader.logger.log();
         try {
+            if(connection == null)
+                return false;
+    
             GameLoader.logger.log("Creating connection to database: " + DB_URL);
 
             connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -222,7 +230,7 @@ public class DBConnection{
     /**
      * Called if the table is not found/ hasn't been created yet
      */
-    private static void initDB(String tmp_serial){
+    private static boolean initDB(String tmp_serial){
         Statement st_db = null;
         Statement st_tbl_gamedata = null;
         Statement st_tbl_settings = null;
@@ -262,6 +270,8 @@ public class DBConnection{
             //write default settings.properties to settings table
             updateSettings();
 
+            return true;
+
         } catch (SQLException se) {
             se.printStackTrace(GameLoader.logger);
         } 
@@ -278,6 +288,8 @@ public class DBConnection{
                 e.printStackTrace(GameLoader.logger);
             }
         }
+
+        return false;
     }
 
     /**
@@ -288,11 +300,14 @@ public class DBConnection{
      * @see GameWorld#getSaveKey()
      */
     public static synchronized void createSave(String saveKey, String saveName){
+        if(connection == null)
+            return;
+
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
 
-        GameLoader.logger.log();
+        
         accessing = true;
 
         PreparedStatement ps = null;
@@ -345,11 +360,12 @@ public class DBConnection{
      *          {@code SaveName} (Key) and {@code SaveKey} (Value)
      */
     public static HashMap<String, String> getSaves(){
+        if(connection == null)
+            return new HashMap<>();
+
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
-
-        GameLoader.logger.log();
 
         accessing = true;
 
@@ -393,11 +409,13 @@ public class DBConnection{
      * @param saveKey 
      */
     public static void removeSave(String saveKey) {
+        if(connection == null)
+            return;
+
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
 
-        GameLoader.logger.log();
         accessing = true;
 
         Statement st = null;
@@ -438,11 +456,13 @@ public class DBConnection{
      * @see GameWorld#getSaveKey()
      */
     public static synchronized File getSave(String saveKey){
+        if(connection == null)
+            return new File(GameLoader.tempFile);
+
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
 
-        GameLoader.logger.log();
         accessing = true;
 
         Statement st = null;
@@ -518,11 +538,11 @@ public class DBConnection{
      * @see GameWorld#getElapsedTime()
      */
     public static synchronized boolean updateSave(String saveKey, float gameTime, int completion){
+        
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
 
-        GameLoader.logger.log();
         accessing = true;
 
         PreparedStatement ps = null;
@@ -575,7 +595,7 @@ public class DBConnection{
     }
 
     public static void closeConnection(){
-        GameLoader.logger.log();
+        
         //wait
         Time.waitWhile((Object obj) -> {
             return accessing;
@@ -583,7 +603,7 @@ public class DBConnection{
 
         try {
             if(connection == null){
-                GameLoader.logger.log("Failed to close database connection");
+                GameLoader.logger.log("Failed to close database connection... Database was not connected");
                 return;
             }
             

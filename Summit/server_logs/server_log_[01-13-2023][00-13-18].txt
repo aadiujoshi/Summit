@@ -1,1 +1,0 @@
-[00:13:18] Creating connection to database: jdbc:mysql://192.168.1.2:3306/summitgame
