@@ -45,46 +45,90 @@ public class GameUpdateEvent{
         this.gametime = world.getGametime();
     }
     
+    
+    /** 
+     * @param m
+     */
     public void setLoadedMap(GameMap m){
         world.setLoadedMap(m);
     }
 
+    
+    /** 
+     * @return GameMap
+     */
     public GameMap getMap() {
         return this.map;
     }
     
+    
+    /** 
+     * @return long
+     */
     public long gameTime(){
         return this.gametime;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getDeltaTimeNS() {
         return this.deltaTime;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int mouseX() {
         return this.mouseX_pix;
     }
     
+    
+    /** 
+     * @return int
+     */
     public int mouseY() {
         return this.mouseY_pix;
     }
     
+    
+    /** 
+     * @return GameWorld
+     */
     public GameWorld getWorld(){
         return this.world;
     }
     
+    
+    /** 
+     * @return float
+     */
     public float gameX(){
         return gameX;
     }
 
+    
+    /** 
+     * @return float
+     */
     public float gameY(){
         return gameY;
     }
 
+    
+    /** 
+     * @return Window
+     */
     public Window getWindow() {
         return this.window;
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean mouseClicked(){
         return this.mouseClicked;
     }

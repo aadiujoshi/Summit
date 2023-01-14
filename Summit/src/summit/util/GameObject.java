@@ -54,6 +54,10 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
 
     public abstract void collide(GameUpdateEvent ev, Entity e);
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void setRenderLayer(OrderPaintEvent e){
         e.addToLayer(rLayer, this);
@@ -62,6 +66,10 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
             light.setRenderLayer(e);
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e) {
         paint0(e);
@@ -105,6 +113,10 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
         // System.out.println(this);
     }
 
+    
+    /** 
+     * @return String
+     */
     //-------- getters and setters  --------------------------------
 
     @Override
@@ -112,6 +124,10 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
         return NAME + " " + super.toString();
     }
 
+    
+    /** 
+     * @param x
+     */
     @Override
     public void setX(float x){
         super.setX(x);
@@ -120,6 +136,10 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
         }
     }
 
+    
+    /** 
+     * @param y
+     */
     @Override
     public void setY(float y){
         super.setY(y);
@@ -150,94 +170,186 @@ public abstract class GameObject extends Region implements Paintable, GameUpdate
         tags.put(property, false);
     }
 
+    
+    /** 
+     * @return float
+     */
     public float getSpriteOffsetX() {
         return this.spriteOffsetX;
     }
 
+    
+    /** 
+     * @param spriteOffsetX
+     */
     public void setSpriteOffsetX(float spriteOffsetX) {
         this.spriteOffsetX = spriteOffsetX;
     }
 
+    
+    /** 
+     * @return float
+     */
     public float getSpriteOffsetY() {
         return this.spriteOffsetY;
     }
 
+    
+    /** 
+     * @param spriteOffsetY
+     */
     public void setSpriteOffsetY(float spriteOffsetY) {
         this.spriteOffsetY = spriteOffsetY;
     }
     
+    
+    /** 
+     * @param sprite
+     */
     public void setSprite(String sprite){
         this.sprite = sprite;
     }
 
+    
+    /** 
+     * @param r
+     */
     public void setRenderOp(int r){
         renderOp = r;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getRenderOp(){
         return renderOp;
     }
 
+    
+    /** 
+     * @param cf
+     */
     public void setColorFilter(ColorFilter cf){
         this.filter = cf;
     }
 
+    
+    /** 
+     * @return ColorFilter
+     */
     public ColorFilter getColorFilter(){
         return this.filter;
     }
     
+    
+    /** 
+     * @return Light
+     */
     public Light getLight() {
         return this.light;
     }
 
+    
+    /** 
+     * @param light
+     */
     public void setLight(Light light) {
         this.light = light;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getRLayer() {
         return this.rLayer;
     }
 
+    
+    /** 
+     * @param rLayer
+     */
     public void setRenderLayer(int rLayer) {
         this.rLayer = rLayer;
     }
     
+    
+    /** 
+     * @return int
+     */
     public int getColor() {
         return this.color;
     }
 
+    
+    /** 
+     * @param color
+     */
     public void setColor(int color) {
         this.color = color;
     }
     
+    
+    /** 
+     * @return boolean
+     */
     public boolean outline() {
         return this.outline;
     }
 
+    
+    /** 
+     * @param outline
+     */
     public void setOutline(boolean outline) {
         this.outline = outline;
     }
     
+    
+    /** 
+     * @return String
+     */
     public String getName(){
         return this.NAME;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getSprite(){
         return this.sprite;
     }
     
+    
+    /** 
+     * @return boolean
+     */
     public boolean isMoveable() {
         return this.moveable;
     }
 
+    
+    /** 
+     * @param valid
+     */
     public void setMoveable(boolean valid) {
 		this.moveable = valid;
 	}
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean isEnabled() {
         return this.enabled;
     }
 
+    
+    /** 
+     * @param enabled
+     */
     public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}

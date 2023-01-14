@@ -33,6 +33,14 @@ public abstract class ProjectileWeapon extends WeaponItem {
         super.setAttackRange(5f);
     }
 
+    
+    /** 
+     * @param targetX
+     * @param targetX
+     * @param targetY
+     * @param e
+     * @return Projectile
+     */
     /**
      * 
      * Returns a new instance of a projectile to be fired. This method is to be

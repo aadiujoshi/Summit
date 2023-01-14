@@ -137,6 +137,10 @@ public class GameWorld implements Paintable, Serializable{
         initUpdateThread();
     }
 
+    
+    /** 
+     * @param w
+     */
     // must be called after loading from save
     public void reinit(Window w){
         this.parentWindow = w;
@@ -217,6 +221,10 @@ public class GameWorld implements Paintable, Serializable{
         gameUpdateThread.start();
     }
     
+    
+    /** 
+     * @param ope
+     */
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
         ope.getRenderLayers().addToLayer(RenderLayers.TOP_LAYER, this);
@@ -232,19 +240,35 @@ public class GameWorld implements Paintable, Serializable{
         }
     }
 
+    
+    /** 
+     * @return long
+     */
     public long getGametime() {
         return this.gametime;
     }
 
+    
+    /** 
+     * @return Player
+     */
     public Player getPlayer(){
         return this.player;
     }
 
+    
+    /** 
+     * @return GameUpdateEvent
+     */
     //generate an gameupdateevent for this gameworld instance | used for gameclicks etc
     public GameUpdateEvent instanceEvent(){
         return new GameUpdateEvent(this, 0);
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e){
         //debug tickspeed
@@ -254,26 +278,50 @@ public class GameWorld implements Paintable, Serializable{
             
     }
 
+    
+    /** 
+     * @return GameMap
+     */
     public GameMap getLoadedMap() {
         return this.loadedMap;
     }
 
+    
+    /** 
+     * @param newMap
+     */
     public void setLoadedMap(GameMap newMap) {
         this.queuedNewMap = newMap;
     }
 
+    
+    /** 
+     * @return Camera
+     */
     public Camera getCamera() {
         return this.loadedMap.getCamera();
     }
 
+    
+    /** 
+     * @return long
+     */
     public long getElapsedTime(){
         return this.elapsedtime;
     }
 
+    
+    /** 
+     * @return Window
+     */
     public Window getParentWindow() {
         return this.parentWindow;
     }
 
+    
+    /** 
+     * @param parentWindow
+     */
     public void setParentWindow(Window parentWindow) {
         this.parentWindow = parentWindow;
     }
@@ -290,10 +338,18 @@ public class GameWorld implements Paintable, Serializable{
         this.terminate = true;
     }
     
+    
+    /** 
+     * @return int
+     */
     public int getCompletion() {
         return this.completion;
     }
 
+    
+    /** 
+     * @param completion
+     */
     public void setCompletion(int completion) {
         this.completion = completion;
     } 
@@ -307,14 +363,26 @@ public class GameWorld implements Paintable, Serializable{
 		return this.SAVE_KEY;
 	}
     
+    
+    /** 
+     * @return String
+     */
     public String getName() {
         return this.NAME;
     }
 
+    
+    /** 
+     * @return long
+     */
     public long getSeed(){
         return this.SEED;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String toString(){
         String str = "";
 

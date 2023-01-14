@@ -16,14 +16,26 @@ public class Time{
     public static final long NS_IN_MS = 1000000;
     public static final long NS_IN_S = 1000000000;
 
+    
+    /** 
+     * @return long
+     */
     public static long timeMs(){
         return System.currentTimeMillis();
     }
 
+    
+    /** 
+     * @return long
+     */
     public static long timeNs(){
         return System.nanoTime();
     }
 
+    
+    /** 
+     * @param nanos
+     */
     public static void nanoDelay(long nanos) {
         if(nanos < 0) return;
         
@@ -50,6 +62,11 @@ public class Time{
         }
     }
 
+    
+    /** 
+     * @param sep
+     * @return String
+     */
     //[month day year][Time.timestamp(sep)]
     public static String datetimeStamp(char sep){
         LocalDate d = LocalDate.now();
@@ -60,6 +77,11 @@ public class Time{
                         timestamp(sep);
     }
 
+    
+    /** 
+     * @param sep
+     * @return String
+     */
     //[hh `sep` mm `sep` ss]
     //[08:45:01]
     public static String timestamp(char sep){
@@ -67,6 +89,11 @@ public class Time{
         return "[" + f(t.getHour()) + sep + f(t.getMinute()) + sep + f(t.getSecond()) + "]";
     }
 
+    
+    /** 
+     * @param i
+     * @return String
+     */
     //format time to 2 numbers 
     //example : "9" becomes "09"
     private static String f(int i){

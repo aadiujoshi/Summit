@@ -32,6 +32,10 @@ public class GameCreationMenu extends Container implements KeyListener{
     }
     
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         String text = textbox.getText();
@@ -48,10 +52,18 @@ public class GameCreationMenu extends Container implements KeyListener{
 
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void keyReleased(KeyEvent e) {
     }
     
+    
+    /** 
+     * @param e
+     */
     @Override
     public void keyTyped(KeyEvent e) {
     }

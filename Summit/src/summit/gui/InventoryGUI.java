@@ -34,6 +34,10 @@ public class InventoryGUI extends Container{
         super.setOutline(false);
     }
     
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e){
         super.paint(e);

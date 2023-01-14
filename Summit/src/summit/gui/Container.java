@@ -53,6 +53,10 @@ public class Container extends Region implements Paintable, GUIClickReciever{
         this.guiSprite = guiSprite;
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void guiClick(MouseEvent e) {
         for(int i = 0; i < components.size(); i++){
@@ -65,11 +69,19 @@ public class Container extends Region implements Paintable, GUIClickReciever{
     public void close(){
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void setRenderLayer(OrderPaintEvent e) {
         //conainers are always rendered on the top layer, in order
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e) {
         e.getRenderer().render(guiSprite, (int)getX(), (int)getY(), 
@@ -81,12 +93,20 @@ public class Container extends Region implements Paintable, GUIClickReciever{
         paintComponents(e);
     }
 
+    
+    /** 
+     * @param e
+     */
     protected void paintComponents(PaintEvent e){
         for (int i = 0; i < components.size(); i++) {
             components.get(i).paint(e);
         }
     }
 
+    
+    /** 
+     * @param m
+     */
     //--------------------------------------------------------------------
     //getters and setters
     //--------------------------------------------------------------------
@@ -95,14 +115,26 @@ public class Container extends Region implements Paintable, GUIClickReciever{
         components.add(m);
     }
     
+    
+    /** 
+     * @return List<Container>
+     */
     public List<Container> getComponents() {
         return this.components;
     }
 
+    
+    /** 
+     * @param components
+     */
     public void setComponents(List<Container> components) {
         this.components = components;
     }
     
+    
+    /** 
+     * @param window
+     */
     public void setParentWindow(Window window){
         this.window = window;
         for (Container container : components) {
@@ -110,50 +142,99 @@ public class Container extends Region implements Paintable, GUIClickReciever{
         }
     }
 
+    
+    /** 
+     * @return Window
+     */
     public Window getParentWindow(){
         return this.window;
     }
 
+    
+    /** 
+     * @param index
+     * @return Container
+     */
     public Container getComponent(int index){
         return this.components.get(index);
     }
     
+    
+    /** 
+     * @return boolean
+     */
     public boolean isPushed() {
         return this.pushed;
     }
 
+    
+    /** 
+     * @param pushed
+     */
     public void setPushed(boolean pushed) {
         this.pushed = pushed;
     }
     
+    
+    /** 
+     * @return String
+     */
     public String getGuiSprite() {
         return this.guiSprite;
     }
 
+    
+    /** 
+     * @param guiSprite
+     */
     public void setGuiSprite(String guiSprite) {
         this.guiSprite = guiSprite;
     }
     
+    
+    /** 
+     * @return ColorFilter
+     */
     public ColorFilter getFilter() {
         return this.filter;
     }
 
+    
+    /** 
+     * @param filter
+     */
     public void setFilter(ColorFilter filter) {
         this.filter = filter;
     }
     
+    
+    /** 
+     * @return boolean
+     */
     public boolean isNavContainer() {
         return this.navContainer;
     }
 
+    
+    /** 
+     * @param navContainer
+     */
     public void setNavContainer(boolean navContainer) {
         this.navContainer = navContainer;
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean outline() {
         return this.outline;
     }
 
+    
+    /** 
+     * @param outline
+     */
     public void setOutline(boolean outline) {
         this.outline = outline;
     }

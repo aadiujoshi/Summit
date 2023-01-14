@@ -86,6 +86,10 @@ public class MainSelectionMenu extends Container{
         addComponent(help);
     }
     
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e){
         super.paintComponents(e);

@@ -160,6 +160,10 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
         setParentWindow(getParentWindow());
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e){
         super.paint(e);
@@ -183,6 +187,10 @@ public class SavedGamesSelectionMenu extends Container implements MouseWheelList
         e.getRenderer().renderText(popup, 128, 8, Renderer.NO_OP, new ColorFilter(0));
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         float m = (float)e.getPreciseWheelRotation();

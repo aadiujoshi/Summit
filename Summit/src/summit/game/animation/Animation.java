@@ -47,10 +47,18 @@ public abstract class Animation extends ScheduledEvent implements Paintable {
         e.addToLayer(rLayer, this);
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getRLayer() {
         return this.rLayer;
     }
 
+    
+    /** 
+     * @param rLayer
+     */
     public void setRLayer(int rLayer) {
 		this.rLayer = rLayer;
 	}

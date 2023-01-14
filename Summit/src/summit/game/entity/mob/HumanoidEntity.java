@@ -141,6 +141,10 @@ public abstract class HumanoidEntity extends MobEntity {
         GraphicsScheduler.registerEvent(this.walkAnimation);
     }
 
+    
+    /** 
+     * @param e
+     */
     // @Override
     public void paintNOTDONE(PaintEvent e) {
 

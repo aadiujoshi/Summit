@@ -189,11 +189,19 @@ public class Projectile extends Entity {
         return super.getDy() * (is(inWater) ? 2 : 1);
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void gameClick(GameUpdateEvent e) {
 
     }
 
+    
+    /** 
+     * @return GameObject
+     */
     public GameObject getOrigin() {
         return this.origin;
     }

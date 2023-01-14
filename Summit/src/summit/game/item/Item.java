@@ -49,6 +49,11 @@ public abstract class Item implements Serializable {
         this.owner = owner;
     }
 
+    
+    /** 
+     * @param reinit(
+     * @return Item
+     */
     /**
      *
      * 

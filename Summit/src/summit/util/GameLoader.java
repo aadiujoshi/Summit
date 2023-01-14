@@ -45,6 +45,10 @@ public class GameLoader {
         DBConnection.createSave(saveKey, saveName);
     }
 
+    
+    /** 
+     * @param world
+     */
     private static void saveProtocol(GameWorld world){
         try{
             FileOutputStream file = new FileOutputStream(tempFile);
@@ -59,6 +63,10 @@ public class GameLoader {
         }
     }
 
+    
+    /** 
+     * @return HashMap<String, String>
+     */
     public static HashMap<String, String> getSaves(){
         return DBConnection.getSaves();
     }
@@ -145,6 +153,10 @@ public class GameLoader {
         }
     }
 
+    
+    /** 
+     * @return GameWorld
+     */
     public static GameWorld loadCache(){
         Time.waitWhile((Object obj) -> {
             return accessing;
@@ -186,6 +198,10 @@ public class GameLoader {
         return null;
     }
 
+    
+    /** 
+     * @param world
+     */
     public static void asyncSaveWorld(GameWorld world){
         
         Time.waitWhile((Object obj) -> {

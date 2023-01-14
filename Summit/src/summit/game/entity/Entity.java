@@ -749,10 +749,18 @@ public abstract class Entity extends GameObject {
         this.facing = facing;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getCurMap() {
         return this.curMap;
     }
 
+    
+    /** 
+     * @return float
+     */
     public float getAttackRange() {
         if (equipped != null)
             return this.equipped.getAttackRange();

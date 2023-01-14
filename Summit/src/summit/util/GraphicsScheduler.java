@@ -54,6 +54,10 @@ public class GraphicsScheduler {
     }
 
     
+    
+    /** 
+     * @param e
+     */
     public static void registerEvent(ScheduledEvent e){
         synchronized(eventAddQueue){
             eventAddQueue.add(e);

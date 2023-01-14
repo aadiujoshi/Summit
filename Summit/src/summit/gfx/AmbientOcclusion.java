@@ -34,6 +34,10 @@ public class AmbientOcclusion implements Serializable, Paintable{
         this.spread = (int)(intensity/(20/9f));
     }
 
+    
+    /** 
+     * @param ope
+     */
     @Override
     public void setRenderLayer(OrderPaintEvent ope) {
         this.setVals();
@@ -44,6 +48,10 @@ public class AmbientOcclusion implements Serializable, Paintable{
         ope.addToLayer(RenderLayers.TILE_LAYER, this);
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e) {
         TileStack[][] tiles = e.getLoadedMap().tilesInDist(e.getCamera(), e.getLoadedMap().getRenderDist());
@@ -204,6 +212,13 @@ public class AmbientOcclusion implements Serializable, Paintable{
         }
     }
     
+    
+    /** 
+     * @param dir
+     * @param cx
+     * @param cy
+     * @param frame
+     */
     //draw the corners of the ambient shadow
     private void drawQuadrant(Direction dir, int cx, int cy, int[][] frame){
         

@@ -13,6 +13,10 @@ public class SystemLogger extends PrintStream{
         // super.
     }
 
+    
+    /** 
+     * @return SystemLogger
+     */
     public static SystemLogger getLogger(){
         try {
             final String path = "server_logs/server_log_" + Time.datetimeStamp('-') + ".txt";
@@ -30,6 +34,10 @@ public class SystemLogger extends PrintStream{
         super.println();
     }
 
+    
+    /** 
+     * @param msg
+     */
     public void log(String msg){
         super.println(Time.timestamp(':') + " " + msg);
     }

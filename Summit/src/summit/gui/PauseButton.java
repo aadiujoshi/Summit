@@ -21,11 +21,19 @@ public class PauseButton extends Container{
         addComponent(pm);
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e){
         e.getRenderer().render(getGuiSprite(), (int)getX(), (int)getY(), Renderer.NO_OP, getFilter());
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void guiClick(MouseEvent e){
         world.pause();

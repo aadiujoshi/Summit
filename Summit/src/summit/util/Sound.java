@@ -34,6 +34,10 @@ public class Sound {
         playing = false;
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean playing(){
         return playing;
     }

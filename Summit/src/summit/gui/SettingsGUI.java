@@ -189,6 +189,10 @@ public class SettingsGUI extends Container {
     }
 
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e) {
         e.getRenderer().fillRect(0, 0, Renderer.WIDTH, Renderer.HEIGHT, 0x254aff);

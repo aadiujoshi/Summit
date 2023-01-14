@@ -50,11 +50,21 @@ public class Settings {
         }
     }
 
+    
+    /** 
+     * @param key
+     * @param newVal
+     */
     public static void changeSetting(String key, Object newVal){
         properties.put(key, newVal);
         updateFile();
     }
 
+    
+    /** 
+     * @param key
+     * @return Object
+     */
     public static Object getSetting(String key){
         String p = (String)properties.get(key);
 

@@ -49,6 +49,10 @@ public abstract class WeaponItem extends Item implements Paintable {
         mult = 1;
     }
 
+    
+    /** 
+     * @param addLevel(
+     */
     /**
      * 
      * Uses the weapon. The behavior of this method is determined by the subclasses.
@@ -84,6 +88,13 @@ public abstract class WeaponItem extends Item implements Paintable {
         this.baseDamage = baseDamage;
     }
 
+    
+    /** 
+     * @param targetX
+     * @param targetY
+     * @param e
+     * @return boolean
+     */
     /**
      * 
      * Uses the weapon to attack a target.

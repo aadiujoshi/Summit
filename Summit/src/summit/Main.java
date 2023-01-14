@@ -7,14 +7,6 @@ import java.awt.Toolkit;
 
 import summit.gfx.BufferedSprites;
 import summit.gui.Window;
-import summit.util.DBConnection;
-import summit.util.SystemLogger;
-
-/*
- *  vsync 0
- *  ambient_occlusion true
- *  threads 1
-*/
 
 public class Main {
 
@@ -23,6 +15,10 @@ public class Main {
     //extra path incase folder names are different
     public static final String path = "";
 
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -38,6 +34,10 @@ public class Main {
         // summit.setState(WindowState.SELECTIONMENUS);
     }
 
+    
+    /** 
+     * @return String
+     */
     //util method for unique string
     public static String generateSaveKey(){
         String f = "";

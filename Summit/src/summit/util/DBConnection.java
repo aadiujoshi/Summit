@@ -95,6 +95,10 @@ public class DBConnection{
             connect();
     }
 
+    
+    /** 
+     * @return boolean
+     */
     //only called when game is closed
     public static boolean updateSettings(){
         Time.waitWhile((Object obj) -> {
@@ -143,8 +147,14 @@ public class DBConnection{
         return false;
     }
 
+    
+    /** 
+     * @return Properties
+     */
     public static Properties getSettings(){
         if(connection == null){
+            GameLoader.logger.log("Failed to retrieve settings from database... getting from local file instead");
+
             Properties p = new Properties();
             try {
                 p.load(new FileInputStream("settings.properties"));
@@ -165,6 +175,8 @@ public class DBConnection{
         Statement st = null;
 
         try {
+            GameLoader.logger.log("Retrieving settings from database");
+
             st = connection.createStatement();
 
             ResultSet rs = st.executeQuery("SELECT * FROM settings");
@@ -176,9 +188,12 @@ public class DBConnection{
             
             tempSettings = new ByteArrayInputStream(prop.getBytes());
             settings.load(tempSettings);
+
+            GameLoader.logger.log("Successfully retrieved settings from database");
             
             return settings;
         } catch (SQLException e) {
+            GameLoader.logger.log("Failed to retrieve settings from database");
             e.printStackTrace(GameLoader.logger);
         } catch (FileNotFoundException e) {
             e.printStackTrace(GameLoader.logger);
@@ -203,10 +218,12 @@ public class DBConnection{
      */
     public static synchronized boolean connect(){
         try {
-            if(connection == null)
-                return false;
-    
             GameLoader.logger.log("Creating connection to database: " + DB_URL);
+
+            if(connection == null){
+                GameLoader.logger.log("Failed to connect to database: " + DB_URL);
+                return false;
+            }
 
             connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             connection.setAutoCommit(true);
@@ -300,9 +317,6 @@ public class DBConnection{
      * @see GameWorld#getSaveKey()
      */
     public static synchronized void createSave(String saveKey, String saveName){
-        if(connection == null)
-            return;
-
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
@@ -360,9 +374,6 @@ public class DBConnection{
      *          {@code SaveName} (Key) and {@code SaveKey} (Value)
      */
     public static HashMap<String, String> getSaves(){
-        if(connection == null)
-            return new HashMap<>();
-
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
@@ -409,9 +420,6 @@ public class DBConnection{
      * @param saveKey 
      */
     public static void removeSave(String saveKey) {
-        if(connection == null)
-            return;
-
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
@@ -421,6 +429,13 @@ public class DBConnection{
         Statement st = null;
 
         try {
+            GameLoader.logger.log("Deleting database entry: \"" + saveKey + "\"");
+
+            if(connection == null){
+                GameLoader.logger.log("Failed to delete database entry: \"" + saveKey + "\"... not connected to database");
+                return;
+            }
+
             st = connection.createStatement();
             
             st.executeUpdate("DELETE FROM gamedata WHERE SaveKey=\"" + saveKey + "\"");
@@ -456,9 +471,6 @@ public class DBConnection{
      * @see GameWorld#getSaveKey()
      */
     public static synchronized File getSave(String saveKey){
-        if(connection == null)
-            return new File(GameLoader.tempFile);
-
         Time.waitWhile((Object obj) -> {
             return accessing;
         });
@@ -472,9 +484,14 @@ public class DBConnection{
         File file = null;
 
         try {
-            st = connection.createStatement();
-
             GameLoader.logger.log("Retrieving save \"" + saveKey + "\"");
+
+            if(connection == null){
+                GameLoader.logger.log("Failed to retrieve save \"" + saveKey + "\"... Not connected to database");
+                return new File(GameLoader.tempFile);
+            }
+
+            st = connection.createStatement();
 
             result = st.executeQuery(("SELECT GameSave FROM gamedata WHERE SaveKey=\"" + saveKey + "\""));
 
@@ -497,7 +514,6 @@ public class DBConnection{
             file = new File(GameLoader.tempFile);
 
         } catch(IllegalArgumentException e){
-            // e.printStackTrace(GameLoader.logger);
         } catch (IOException e){ 
             e.printStackTrace(GameLoader.logger);
         } catch(SQLException e){
@@ -613,8 +629,5 @@ public class DBConnection{
             GameLoader.logger.log("Failed to close database connection");
             e.printStackTrace(GameLoader.logger);
         }
-    }
-
-    public static void main0(String[] args) {
     }
 }

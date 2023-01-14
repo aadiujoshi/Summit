@@ -30,10 +30,18 @@ public class HUD extends Container{
         this.messages = new ArrayList<>();
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void guiClick(MouseEvent e){
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void setRenderLayer(OrderPaintEvent e){
         super.setRenderLayer(e);
@@ -41,6 +49,10 @@ public class HUD extends Container{
         e.addToLayer(RenderLayers.TOP_LAYER, this);
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e){
 
@@ -108,6 +120,10 @@ public class HUD extends Container{
         }
     }
     
+    
+    /** 
+     * @param m
+     */
     public synchronized void addMessage(String m) {
         this.messages.add(0, m);
         

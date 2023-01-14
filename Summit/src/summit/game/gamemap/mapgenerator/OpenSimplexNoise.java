@@ -76,6 +76,12 @@ public class OpenSimplexNoise {
 		}
 	}
 	
+	
+	/** 
+	 * @param x
+	 * @param y
+	 * @return double
+	 */
 	// 2D OpenSimplex Noise.
 	public double eval(double x, double y) {
 	
@@ -187,6 +193,13 @@ public class OpenSimplexNoise {
 		return value;
 	}
 	
+	
+	/** 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return double
+	 */
 	// 3D OpenSimplex Noise.
 	public double eval(double x, double y, double z) {
 	
@@ -199,6 +212,13 @@ public class OpenSimplexNoise {
 		return eval3_Base(xs, ys, zs);
 	}
 
+	
+	/** 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return double
+	 */
 	// Not as good as in SuperSimplex/OpenSimplex2S, since there are more visible differences between different slices.
 	// The Z coordinate should always be the "different" coordinate in your use case.
 	public double eval3_XYBeforeZ(double x, double y, double z)
@@ -213,6 +233,13 @@ public class OpenSimplexNoise {
 		return eval3_Base(xs, ys, zs);
 	}
 
+	
+	/** 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return double
+	 */
 	// Similar to the above, except the Y coordinate should always be the "different" coordinate in your use case.
 	public double eval3_XZBeforeY(double x, double y, double z)
 	{
@@ -226,6 +253,13 @@ public class OpenSimplexNoise {
 		return eval3_Base(xs, ys, zs);
 	}
 	
+	
+	/** 
+	 * @param xs
+	 * @param ys
+	 * @param zs
+	 * @return double
+	 */
 	// 3D OpenSimplex Noise (base which takes skewed coordinates directly).
 	private double eval3_Base(double xs, double ys, double zs) {
 		
@@ -776,6 +810,14 @@ public class OpenSimplexNoise {
 		return value;
 	}
 	
+	
+	/** 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param w
+	 * @return double
+	 */
 	public double eval(double x, double y, double z, double w) {
 		
 		// Get points for A4 lattice
@@ -785,6 +827,14 @@ public class OpenSimplexNoise {
 		return eval4_Base(xs, ys, zs, ws);
 	}
 	
+	
+	/** 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param w
+	 * @return double
+	 */
 	public double eval4_XYBeforeZW(double x, double y, double z, double w) {
 		
 		double s2 = (x + y) * -0.178275657951399372 + (z + w) * 0.215623393288842828;
@@ -794,6 +844,14 @@ public class OpenSimplexNoise {
 		return eval4_Base(xs, ys, zs, ws);
 	}
 	
+	
+	/** 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param w
+	 * @return double
+	 */
 	public double eval4_XZBeforeYW(double x, double y, double z, double w) {
 		
 		double s2 = (x + z) * -0.178275657951399372 + (y + w) * 0.215623393288842828;
@@ -803,6 +861,14 @@ public class OpenSimplexNoise {
 		return eval4_Base(xs, ys, zs, ws);
 	}
 	
+	
+	/** 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param w
+	 * @return double
+	 */
 	public double eval4_XYZBeforeW(double x, double y, double z, double w) {
 		
 		double xyz = x + y + z;
@@ -813,6 +879,14 @@ public class OpenSimplexNoise {
 		return eval4_Base(xs, ys, zs, ws);
 	}
 	
+	
+	/** 
+	 * @param xs
+	 * @param ys
+	 * @param zs
+	 * @param ws
+	 * @return double
+	 */
 	// 4D OpenSimplex Noise.
 	private double eval4_Base(double xs, double ys, double zs, double ws) {
 		
@@ -2114,24 +2188,59 @@ public class OpenSimplexNoise {
 		return value;
 	}
 	
+	
+	/** 
+	 * @param xsb
+	 * @param ysb
+	 * @param dx
+	 * @param dy
+	 * @return double
+	 */
 	private double extrapolate(int xsb, int ysb, double dx, double dy)
 	{
 		Grad2 grad = permGrad2[perm[xsb & PMASK] ^ (ysb & PMASK)];
 		return grad.dx * dx + grad.dy * dy;
 	}
 	
+	
+	/** 
+	 * @param xsb
+	 * @param ysb
+	 * @param zsb
+	 * @param dx
+	 * @param dy
+	 * @param dz
+	 * @return double
+	 */
 	private double extrapolate(int xsb, int ysb, int zsb, double dx, double dy, double dz)
 	{
 		Grad3 grad = permGrad3[perm[perm[xsb & PMASK] ^ (ysb & PMASK)] ^ (zsb & PMASK)];
 		return grad.dx * dx + grad.dy * dy + grad.dz * dz;
 	}
 	
+	
+	/** 
+	 * @param xsb
+	 * @param ysb
+	 * @param zsb
+	 * @param wsb
+	 * @param dx
+	 * @param dy
+	 * @param dz
+	 * @param dw
+	 * @return double
+	 */
 	private double extrapolate(int xsb, int ysb, int zsb, int wsb, double dx, double dy, double dz, double dw)
 	{
 		Grad4 grad = permGrad4[perm[perm[perm[xsb & PMASK] ^ (ysb & PMASK)] ^ (zsb & PMASK)] ^ (wsb & PMASK)];
 		return grad.dx * dx + grad.dy * dy + grad.dz * dz + grad.dw * dw;
 	}
 	
+	
+	/** 
+	 * @param x
+	 * @return int
+	 */
 	private static int fastFloor(double x) {
 		int xi = (int)x;
 		return x < xi ? xi - 1 : xi;

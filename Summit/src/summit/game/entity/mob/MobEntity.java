@@ -166,10 +166,18 @@ public abstract class MobEntity extends Entity {
         setColorFilter(cf);
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void gameClick(GameUpdateEvent e) {
     }
 
+    
+    /** 
+     * @return EntityAI
+     */
     // @Override
     // public void collide(GameUpdateEvent ev, Entity contact) {
     // super.collide(ev, contact);

@@ -28,14 +28,26 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
         this.lastCall = init_ms;
     }
 
+    
+    /** 
+     * @param p
+     */
     public void setPaused(boolean p){
         paused = p;
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean paused(){
         return paused;
     }
 
+    
+    /** 
+     * @param schedulerThread
+     */
     public void reinit(int schedulerThread){
         this.init_ms = Time.timeMs();
         this.lastCall = init_ms;
@@ -65,22 +77,42 @@ public abstract class ScheduledEvent implements Serializable, Runnable {
             n_calls--;
     }
     
+    
+    /** 
+     * @return long
+     */
     public long getDelayMS() {
         return this.delay_ms;
     }
     
+    
+    /** 
+     * @param delay_ms
+     */
     public void setDelayMS(long delay_ms) {
         this.delay_ms = delay_ms;
     }
 
+    
+    /** 
+     * @return long
+     */
     public long getInitTime(){
         return init_ms;
     }
     
+    
+    /** 
+     * @return long
+     */
     public long getLastCall() {
         return this.lastCall;
     }
 
+    
+    /** 
+     * @param lastCall
+     */
     public void setLastCall(long lastCall) {
         this.lastCall = lastCall;
     }

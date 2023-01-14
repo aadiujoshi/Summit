@@ -42,6 +42,10 @@ public class TextContainer extends Container {
         textFilter = new ColorFilter(0xffffff);
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void paint(PaintEvent e) {
         super.paint(e);
@@ -111,6 +115,10 @@ public class TextContainer extends Container {
     }
 
     
+    
+    /** 
+     * @param split
+     */
     public void setSplit(boolean split) {
         this.split = split;
     }

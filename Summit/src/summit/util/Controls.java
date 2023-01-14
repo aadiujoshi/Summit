@@ -35,6 +35,11 @@ public class Controls {
     //toggleable ; NOT press and release
     public static volatile boolean E;
 
+    
+    /** 
+     * @param e
+     * @param ev
+     */
     public static void setPress(KeyEvent e, GameUpdateEvent ev){
         switch(e.getKeyCode()){
             case KeyEvent.VK_W:
@@ -98,6 +103,11 @@ public class Controls {
         }
     }
 
+    
+    /** 
+     * @param e
+     * @param ev
+     */
     public static void setRelease(KeyEvent e, GameUpdateEvent ev){
         switch(e.getKeyCode()){
             case KeyEvent.VK_W:
@@ -157,6 +167,10 @@ public class Controls {
         }
     }
 
+    
+    /** 
+     * @param contR
+     */
     public static synchronized void addControlsReciever(ControlsReciever contR){
         synchronized(cr){
             cr.add(contR);

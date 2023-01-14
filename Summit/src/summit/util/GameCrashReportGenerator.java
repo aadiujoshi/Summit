@@ -11,6 +11,11 @@ public class GameCrashReportGenerator {
     
     private GameCrashReportGenerator(){}
 
+    
+    /** 
+     * @param cause
+     * @param world
+     */
     public static void generateGameCrashReport(Exception cause, GameWorld world){
 
         cause = new Exception("llo");
@@ -63,6 +68,10 @@ public class GameCrashReportGenerator {
     }
 
 
+    
+    /** 
+     * @param args
+     */
     public static void main0(String[] args) {
         // generateGameCrashReport(null, new GameWorld("hello", null, 0));
     }

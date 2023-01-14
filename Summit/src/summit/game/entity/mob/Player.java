@@ -269,6 +269,10 @@ public class Player extends HumanoidEntity implements ControlsReciever {
         }
     }
 
+    
+    /** 
+     * @param e
+     */
     @Override
     public void keyRelease(GameUpdateEvent e) {
 

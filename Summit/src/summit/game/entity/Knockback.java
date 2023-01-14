@@ -75,6 +75,10 @@ public class Knockback implements GameUpdateReciever, Serializable {
         this.ay = -ky / ((float) duration_ms / Time.MS_IN_S);
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean finished() {
         return (Time.timeNs() - START_TIME >= duration_ms * Time.NS_IN_MS) || overrideFinish;
     }

@@ -1,7 +1,0 @@
-//mouse tracking
-        // if(world != null){
-        //     java.awt.geom.Point2D.Float mt = Renderer.toTile(mouseX(), mouseY(), world.getCamera());
-        //     java.awt.geom.Point2D.Float mt2 = Renderer.toPixel(mt.x, mt.y, world.getCamera());
-
-        //     renderer.fillRect((int)mt2.x-8, (int)mt2.y-8, 16, 16, Renderer.toIntRGB(0xff, 0, 0));
-        // }

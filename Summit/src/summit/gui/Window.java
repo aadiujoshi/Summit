@@ -454,6 +454,10 @@ public class Window implements MouseListener, KeyListener {
         state = WindowState.GAME;
     }
 
+    
+    /** 
+     * @param name
+     */
     public void createWorld(String name){
         transition(new TransitionScreen(this, "CREATING WORLD"));
 
