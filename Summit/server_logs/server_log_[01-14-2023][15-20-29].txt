@@ -1,0 +1,29 @@
+[15:20:29] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_XbLLehCPDsiNXMgK
+[15:20:30] Connection successful
+[15:20:30] Retrieving settings from database
+[15:20:30] Successfully retrieved settings from database
+[15:20:30] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_XbLLehCPDsiNXMgK
+[15:20:30] Connection successful
+[15:22:40] Deleting database entry: "VZhTCXAUJhRuLLOd"
+[15:22:40] Successfully deleted database entry: "VZhTCXAUJhRuLLOd"
+[15:22:41] Retrieving save "SFPmLLOlDJzLQwjI"
+[15:22:41] Retrieve was successful for "SFPmLLOlDJzLQwjI"
+[15:22:49] Successfully loaded world: new game [Key:SFPmLLOlDJzLQwjI]
+[15:23:04] Save to temp file complete
+[15:23:04] Updating database game save "SFPmLLOlDJzLQwjI"
+[15:23:05] Successfully updated database game save "SFPmLLOlDJzLQwjI"
+[15:23:07] Deleting database entry: "SFPmLLOlDJzLQwjI"
+[15:23:07] Successfully deleted database entry: "SFPmLLOlDJzLQwjI"
+[15:23:12] Loading world save from cache...
+[15:23:12] Successfully loaded world: new game [Key:SFPmLLOlDJzLQwjI]
+[15:23:33] Will not save world with completion status: GameWorld.GAME_OVER_PLAYER_DEAD
+[15:23:33] Deleting database entry: "SFPmLLOlDJzLQwjI"
+[15:23:33] Successfully deleted database entry: "SFPmLLOlDJzLQwjI"
+[15:23:46] Creating save "YHJwtsLLvFhLNgSA"...
+[15:23:46] Successfully created Save "YHJwtsLLvFhLNgSA"
+[15:24:32] Save to temp file complete
+[15:24:32] Updating database game save "YHJwtsLLvFhLNgSA"
+[15:24:33] Successfully updated database game save "YHJwtsLLvFhLNgSA"
+[15:24:57] Updating settings to database...
+[15:24:57] Successfully updated game settings to database
+[15:24:57] Successfully closed database connection

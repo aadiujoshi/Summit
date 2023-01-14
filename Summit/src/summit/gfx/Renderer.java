@@ -679,9 +679,9 @@ public class Renderer implements Serializable {
      * Outlines the given array of pixel values with the given color, leaving the
      * original flag packed.
      * 
-     * @param s     the array of pixel values to outline
+     * @param sprite     the array of pixel values to outline
      * 
-     * @param color the color to use for the outline
+     * @param flag the color to use for the outline
      * 
      * @return the outlined array of pixel values
      */

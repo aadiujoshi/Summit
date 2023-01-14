@@ -219,12 +219,7 @@ public class DBConnection{
     public static synchronized boolean connect(){
         try {
             GameLoader.logger.log("Creating connection to database: " + DB_URL);
-
-            if(connection == null){
-                GameLoader.logger.log("Failed to connect to database: " + DB_URL);
-                return false;
-            }
-
+            
             connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             connection.setAutoCommit(true);
             

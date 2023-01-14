@@ -15,22 +15,19 @@ public class GameScheduler {
 
     private static ArrayList<ScheduledEvent> eventAddQueue = new ArrayList<>();
 
-    /** Singleton */
+    /** Singleton, no instantiation */
     private GameScheduler(){}
 
     //called by some thread
     public static void checkEvents(){
-        // Time.nanoDelay(Time.NS_IN_MS/10);
-
-        long now = Time.timeMs();
         
-        // System.out.println("1: " + events.size());
-
         for(int i = 0; i < events.size(); i++) {
+            long now = Time.timeMs();
+        
             ScheduledEvent e = events.get(i);
             
             if(e == null){
-                events.remove(e);
+                events.remove(i);
                 i--;
                 continue;
             }
@@ -40,6 +37,12 @@ public class GameScheduler {
                 e.setLastCall(now);
             }
             if(e.shouldTerminate()){
+                //call delayed calls
+                while(e.callsLeft() > 0){
+                    e.run();
+                    e.shortenLife();
+                }
+
                 events.remove(i);
                 i--;
             }
@@ -52,11 +55,9 @@ public class GameScheduler {
             eventAddQueue.clear();
         }
     }
-
-    
     
     /** 
-     * @param e
+     * @param e The {@code ScheduledEvent} to add to this scheduler
      */
     public static void registerEvent(ScheduledEvent e){
         synchronized(eventAddQueue){

@@ -28,7 +28,6 @@ public class Main {
 
         BufferedSprites.loadSprites();
         
-
         Window summit = new Window("Summit");
 
         // summit.setState(WindowState.SELECTIONMENUS);

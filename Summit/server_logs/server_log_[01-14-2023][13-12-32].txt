@@ -1,0 +1,80 @@
+[13:12:32] Initializing database...
+[13:12:32] Connecting to server...
+[13:12:32] Creating database...
+[13:12:32] Database created successfully...
+[13:12:32] Connecting to database...
+[13:12:32] Creating gamedata table...
+[13:12:32] gamedata Table created successfully...
+[13:12:32] Creating settings table...
+[13:12:32] settings Table created successfully...
+[13:12:32] blank settings row inserted successfully
+[13:12:32] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_UvLcJSMzYjYtCiUy
+[13:12:32] Connection successful
+[13:12:32] Updating settings to database...
+[13:12:32] Successfully updated game settings to database
+[13:12:32] Retrieving settings from database
+[13:12:32] Successfully retrieved settings from database
+[13:12:32] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_UvLcJSMzYjYtCiUy
+[13:12:32] Connection successful
+[13:12:36] Retrying database connection...
+[13:12:36] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_UvLcJSMzYjYtCiUy
+[13:12:36] Connection successful
+[13:12:37] Loading world save from cache...
+java.io.EOFException
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2940)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3435)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:983)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:414)
+	at summit.util.GameLoader.loadCache(GameLoader.java:177)
+	at summit.gui.Window.loadCache(Window.java:417)
+	at summit.gui.SavedGamesSelectionMenu$2.guiClick(SavedGamesSelectionMenu.java:136)
+	at summit.gui.Container.guiClick(Container.java:64)
+	at summit.gui.Window.mousePressed(Window.java:836)
+	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6617)
+	at java.desktop/java.awt.Component.processEvent(Component.java:6385)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:4995)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4827)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:775)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:720)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:714)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:97)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:747)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:745)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:744)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+[13:12:37] Could not load cached save... check server_logs
+[13:12:52] Creating save "SeoELwVVwaLAiqLn"...
+[13:12:52] Successfully created Save "SeoELwVVwaLAiqLn"
+[13:14:14] Save to temp file complete
+[13:14:14] Updating database game save "SeoELwVVwaLAiqLn"
+[13:14:15] Successfully updated database game save "SeoELwVVwaLAiqLn"
+[13:14:19] Retrying database connection...
+[13:14:19] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_UvLcJSMzYjYtCiUy
+[13:14:19] Connection successful
+[13:14:26] Loading world save from cache...
+[13:14:26] Successfully loaded world: slitherio [Key:SeoELwVVwaLAiqLn]
+[13:14:38] Save to temp file complete
+[13:14:38] Updating database game save "SeoELwVVwaLAiqLn"
+[13:14:39] Successfully updated database game save "SeoELwVVwaLAiqLn"
+[13:14:49] Loading world save from cache...
+[13:14:49] Successfully loaded world: slitherio [Key:SeoELwVVwaLAiqLn]
+[13:14:56] Save to temp file complete
+[13:14:56] Updating database game save "SeoELwVVwaLAiqLn"
+[13:14:57] Successfully updated database game save "SeoELwVVwaLAiqLn"
+[13:15:00] Retrieving save "SeoELwVVwaLAiqLn"
+[13:15:00] Retrieve was successful for "SeoELwVVwaLAiqLn"
+[13:15:17] Save to temp file complete
+[13:15:17] Updating database game save "SeoELwVVwaLAiqLn"
+[13:15:17] Successfully updated database game save "SeoELwVVwaLAiqLn"
+[13:15:25] Updating settings to database...
+[13:15:25] Successfully updated game settings to database
+[13:15:25] Successfully closed database connection

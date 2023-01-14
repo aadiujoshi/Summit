@@ -22,7 +22,7 @@ public class BlueKey extends Item {
      * Creates a new instance of the BlueKey class and sets the owner of the item
      * to the specified {@link Entity}.
      * 
-     * @param owner The {@link Entities} that owns this item
+     * @param owner The {@link Entity} that owns this item
      */
     public BlueKey(Entity owner) {
         super(owner);

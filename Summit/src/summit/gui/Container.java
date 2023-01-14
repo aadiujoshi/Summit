@@ -117,7 +117,7 @@ public class Container extends Region implements Paintable, GUIClickReciever{
     
     
     /** 
-     * @return List<Container>
+     * @return A List<Container> containing all the sub containers of this container
      */
     public List<Container> getComponents() {
         return this.components;

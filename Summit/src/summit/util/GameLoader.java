@@ -63,9 +63,13 @@ public class GameLoader {
         }
     }
 
-    
-    /** 
-     * @return HashMap<String, String>
+
+    /**
+     * Retrieves all the saved {@code GameWorld} keys and names, and returns a mapped
+     * {@code HashMap<String, String>}
+     *
+     * @return A {@code HashMap<String, String>} containing a list of the saved GameWorld
+     *          {@code SaveName} (Key) and {@code SaveKey} (Value)
      */
     public static HashMap<String, String> getSaves(){
         return DBConnection.getSaves();
@@ -222,7 +226,7 @@ public class GameLoader {
             } catch(ClassCastException e) {
                 e.printStackTrace(logger);
             }
-        });
+        }, "upscaler");
         wr.start();
 
         Thread updater = new Thread(() -> {

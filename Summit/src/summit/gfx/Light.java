@@ -93,7 +93,7 @@ public class Light implements Serializable, Paintable {
      * @param x      the gamespace x coordinate
      * @param y      the gamespace y coordinate
      * @param radius the gamespace radius of this light
-     * @param fitler a {@code ColorFilter} which contains the RGB values for the
+     * @param filter a {@code ColorFilter} which contains the RGB values for the
      *               light
      */
     public Light(float x, float y, float radius, ColorFilter filter) {

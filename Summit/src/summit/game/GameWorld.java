@@ -20,6 +20,7 @@ import summit.gui.Container;
 import summit.gui.PauseButton;
 import summit.gui.Window;
 import summit.util.GameCrashReportGenerator;
+import summit.util.GameScheduler;
 import summit.util.GraphicsScheduler;
 import summit.util.Sound;
 import summit.util.Time;
@@ -48,17 +49,18 @@ public class GameWorld implements Paintable, Serializable{
     private long elapsedtime;
 
     /**Start time of this game session */
-    private long sessionStartTime = Time.timeMs();
+    private transient long sessionStartTime = Time.timeMs();
 
     /** A randomized key generated at creation to distinguish GameWorlds */
     private final String SAVE_KEY = Main.generateSaveKey();
 
+    /** The Save Name of this GameWorld. This is the name that the user gave during creation */
     private final String NAME;
     
     /**If the game update loop is paused*/
     private transient volatile boolean paused;
 
-    /**The GUI {@link Container} */
+    /**The {@link PauseButton} GUI {@link Container} */
     private transient PauseButton pauseButton;
 
     /**Whether or not the {@code gameUpdateThread} should be terminated to end the current game session. */
@@ -97,7 +99,7 @@ public class GameWorld implements Paintable, Serializable{
      * However, If the game is running slow, there can be input delay and higher
      * latency. This is the default game tick option.
     */
-    private static final boolean DYNAMIC_TICKS = true;
+    private static final boolean DYNAMIC_TICKS = false;
 
     /**The global {@link Player} object*/
     private Player player;
@@ -161,6 +163,8 @@ public class GameWorld implements Paintable, Serializable{
             long prev_ns = Time.NS_IN_MS;
 
             while(!parentWindow.isClosed()){
+                GameScheduler.checkEvents();
+
                 if(terminate)
                     break;
 
@@ -216,7 +220,7 @@ public class GameWorld implements Paintable, Serializable{
 
             Sound.stopAll();
             System.out.println("Game Update Thread Terminated");
-        });
+        }, "gameupdate");
         
         gameUpdateThread.start();
     }

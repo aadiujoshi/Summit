@@ -169,7 +169,7 @@ public class Player extends HumanoidEntity implements ControlsReciever {
      * 
      * Sets the render layer of the Player.
      * 
-     * @param layer the render layer to set the Player to
+     * @param e the OrderPaintEvent to set the render layer to set the Player to
      */
     @Override
     public void setRenderLayer(OrderPaintEvent e) {
@@ -242,8 +242,8 @@ public class Player extends HumanoidEntity implements ControlsReciever {
      * 
      * Handles a key press event for the Player. This includes
      * using items.
-     * 
-     * @param key the key being pressed
+     *
+     * @param e A static GameUpdateEvent
      */
     @Override
     public void keyPress(GameUpdateEvent e) {

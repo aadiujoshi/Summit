@@ -29,7 +29,7 @@ public class Sword extends MeleeWeapon {
      * 
      * Creates a new instance of the Sword class with the specified owner.
      * 
-     * @param owner The {@link Entities} object that will own this item.
+     * @param owner The {@link Entity} object that will own this item.
      */
     public Sword(Entity owner) {
         super(owner);

@@ -217,9 +217,9 @@ public class Projectile extends Entity {
     }
 
     /**
-     * This method sets the contact damage of the projectile.
+     * This method sets the contactDamage of the projectile.
      * 
-     * @param damage the contact damage of the projectile
+     * @param contactDamage the contactDamage of the projectile
      */
     public void setAttackDamage(float contactDamage) {
         this.contactDamage = contactDamage;

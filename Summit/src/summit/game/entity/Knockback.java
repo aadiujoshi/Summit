@@ -84,10 +84,7 @@ public class Knockback implements GameUpdateReciever, Serializable {
     }
 
     /**
-     * 
-     * Returns whether the knockback effect has finished.
-     * 
-     * @return whether the knockback effect has finished
+     * Update the position of the player based on the knockback strength
      */
     public void update(GameUpdateEvent e) throws Exception {
         GameMap map = e.getMap();

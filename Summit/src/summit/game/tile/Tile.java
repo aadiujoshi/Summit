@@ -268,9 +268,9 @@ public abstract class Tile extends GameObject {
     }
 
     /**
-     * Sets whether or not this tile is destroyed.
+     * Sets if this tile is destroyed.
      *
-     * @param destroyed the new destroyed state of this tile
+     * @param destroy the new destroyed state of this tile
      */
     public void setDestroy(boolean destroy) {
         this.destroyed = destroy;
@@ -280,7 +280,7 @@ public abstract class Tile extends GameObject {
      * 
      * Sets the light of the tile.
      * 
-     * @param l the light to set for the tile
+     * @param light the light to set for the tile
      */
     @Override
     public void setLight(Light light) {
@@ -299,9 +299,9 @@ public abstract class Tile extends GameObject {
     }
 
     /**
-     * Sets whether or not this tile is breakable.
+     * Sets if this tile is breakable.
      *
-     * @param breakable the new breakable state of this tile
+     * @param hitsToBreak the new breakable state of this tile
      */
     public void setBreakable(int hitsToBreak) {
         this.hitsToBreak = hitsToBreak;
@@ -329,7 +329,7 @@ public abstract class Tile extends GameObject {
      * 
      * Enables or disables the particle animation for the tile.
      * 
-     * @param enable true to enable particle animation, false to disable
+     * @param a true to enable particle animation, false to disable
      */
     public void particleAnimation(boolean a) {
         this.animateParticles = a;
@@ -339,7 +339,7 @@ public abstract class Tile extends GameObject {
      * 
      * Enables or disables the rotation animation for the tile.
      * 
-     * @param enable true to enable rotation animation, false to disable
+     * @param a true to enable rotation animation, false to disable
      */
     public void rotateAnimation(boolean a) {
         if (a) {

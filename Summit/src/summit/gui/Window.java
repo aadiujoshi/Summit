@@ -138,17 +138,7 @@ public class Window implements MouseListener, KeyListener {
      * The graphics thread for the window.
      */
     private Thread graphicsThread;
-
-    /**
-     * The game scheduler thread for the window.
-     */
-    private Thread gameSchedulerThread;
-
-    /**
-     * The graphics scheduler thread for the window.
-     */
-    private Thread graphicsSchedulerThread;
-
+    
     /**
      * The MainSelectionMenu object for the main menu.
      */
@@ -206,26 +196,7 @@ public class Window implements MouseListener, KeyListener {
         settings = new SettingsGUI(this);
         createMenu = new GameCreationMenu(this);
         transition = null;
-
-        gameSchedulerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!closed)
-                    GameScheduler.checkEvents();
-
-                System.out.println("Scheduler1 Thread Terminated");
-            }
-        });
-
-        graphicsSchedulerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!closed)
-                    GraphicsScheduler.checkEvents();
-
-                System.out.println("Scheduler2 Thread Terminated");
-            }
-        });
+        
 
         graphicsThread = new Thread(new Runnable() {
 
@@ -245,14 +216,10 @@ public class Window implements MouseListener, KeyListener {
                             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
                             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
-                            {
-                                // try{
-                                renderFrame(g);
-                                // } catch(Exception e){
-                                // System.out.println("Render error: " + e);
-                                // }
-                            }
+                            GraphicsScheduler.checkEvents();
 
+                            renderFrame(g);
+                            
                             if (Time.timeMs() - lastFpsUpdate > 500) {
                                 float fps_ = (Time.MS_IN_S / ((Time.timeNs() - startFrame) / 1000000f));
 
@@ -275,7 +242,7 @@ public class Window implements MouseListener, KeyListener {
 
                 System.out.println("Graphics Thread Terminated");
             }
-        });
+        }, "graphics");
 
         // init window frame, canvas, and buffer strategy
         {
@@ -354,10 +321,11 @@ public class Window implements MouseListener, KeyListener {
         frame.addMouseWheelListener(selMenu);
 
         graphicsThread.start();
-        gameSchedulerThread.start();
-        graphicsSchedulerThread.start();
+        // gameSchedulerThread.start();
+        // graphicsSchedulerThread.start();
 
         System.out.println("Threads in use: " + (Thread.activeCount() + 1) + "\n");
+        // System.out.println("Threads in use: " + Thread.activeCount()+1);
 
         Time.nanoDelay(Time.NS_IN_MS * 100);
 
@@ -447,7 +415,7 @@ public class Window implements MouseListener, KeyListener {
             return;
         }
 
-        System.out.println("Successfully loaded world: " + world.getName() + " [Key:" + saveKey + "]");
+        GameLoader.logger.log("Successfully loaded world: " + world.getName() + " [Key:" + saveKey + "]");
 
         world.reinit(this);
         this.endTransition();
