@@ -42,14 +42,22 @@ public class GameWorld implements Paintable, Serializable{
     /** Ignore this field, only used for debugging*/
     private volatile int tickSpeed = 0;
 
+
     /** The current time in the game, used for game mechanics*/
     private long gametime;
 
-    /**Total elapsed in-game time*/
+    /**Total elapsed in-game time. Equal to {@code prevElapsedTime + sessionElapsedTime}*/
     private long elapsedtime;
 
-    /**Start time of this game session */
+    /**Previous session elapsed time*/
+    private long prevElapsedTime;
+
+    /**Start time of this game session. Reset when re-loading a world from save */
     private transient long sessionStartTime = Time.timeMs();
+
+    /**Elapsed time of this game session. Reset when re-loading a world from save */
+    private transient long sessionElapsedTime = 0;
+
 
     /** A randomized key generated at creation to distinguish GameWorlds */
     private final String SAVE_KEY = Main.generateSaveKey();
@@ -97,9 +105,10 @@ public class GameWorld implements Paintable, Serializable{
     /**
      * If true, game updates happen dynamically instead of at fixed intervals.
      * However, If the game is running slow, there can be input delay and higher
-     * latency. This is the default game tick option.
+     * latency. This is the default game tick option. If false, uses the {@code MS_PER_TICK} 
+     * game update speed.
     */
-    private static final boolean DYNAMIC_TICKS = false;
+    private static final boolean DYNAMIC_TICKS = true;
 
     /**The global {@link Player} object*/
     private Player player;
@@ -141,12 +150,12 @@ public class GameWorld implements Paintable, Serializable{
 
     
     /** 
-     * @param w
+     * Called after loading from save (deserializing). Calls {@code reinit()} on all other {@code GameObjects}
      */
-    // must be called after loading from save
     public void reinit(Window w){
         this.parentWindow = w;
         this.sessionStartTime = Time.timeMs();
+        this.sessionElapsedTime = 0;
 
         pauseButton = new PauseButton(w, this);
 
@@ -165,6 +174,9 @@ public class GameWorld implements Paintable, Serializable{
             while(!parentWindow.isClosed()){
                 GameScheduler.checkEvents();
 
+                this.sessionElapsedTime = Time.timeMs() - sessionStartTime;
+                this.elapsedtime = prevElapsedTime + sessionElapsedTime;
+
                 if(terminate)
                     break;
 
@@ -172,12 +184,11 @@ public class GameWorld implements Paintable, Serializable{
                 if(paused)
                     continue;
 
+                //keep the pause button visible
                 parentWindow.pushGameContainer(pauseButton);
                 
                 long startTime = Time.timeNs();
                 
-                this.elapsedtime = Time.timeMs() - startTime;
-
                 //20 minutes
                 this.gametime = (elapsedtime) % 1200000;
 
@@ -217,6 +228,8 @@ public class GameWorld implements Paintable, Serializable{
                     Time.nanoDelay((MS_PER_TICK*Time.NS_IN_MS)-delay_ns);
                 }
             }
+
+            prevElapsedTime += sessionElapsedTime;
 
             Sound.stopAll();
             System.out.println("Game Update Thread Terminated");

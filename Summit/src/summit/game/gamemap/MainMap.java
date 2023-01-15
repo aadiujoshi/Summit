@@ -90,10 +90,7 @@ public class MainMap extends GameMap {
                 }
             }
         }
-
-        // just for testing
-        spawn(new Skeleton(60, 60));
-
+        
         addStructure(new TraderHouse(19.5f, 19f, this));
 
         addStructure(new DungeonsEntrance(

@@ -1,9 +1,0 @@
-[15:31:30] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_XbLLehCPDsiNXMgK
-[15:31:30] Connection successful
-[15:31:30] Retrieving settings from database
-[15:31:30] Successfully retrieved settings from database
-[15:31:30] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_XbLLehCPDsiNXMgK
-[15:31:30] Connection successful
-[15:31:35] Updating settings to database...
-[15:31:35] Successfully updated game settings to database
-[15:31:35] Successfully closed database connection

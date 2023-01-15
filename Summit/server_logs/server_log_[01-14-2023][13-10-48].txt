@@ -1,3 +1,0 @@
-[13:10:48] Creating connection to database: jdbc:mysql://127.0.0.1:3306/summitdata_LwWpRecuLLDjySxR
-[13:10:49] Connection successful
-[13:10:49] Retrieving settings from database
