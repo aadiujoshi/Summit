@@ -18,7 +18,7 @@ import summit.gfx.ColorFilter;
  * The map consists of an ice-themed room with a walkable area in the center
  * where the boss is spawned.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class BossRoom extends GameMap {
 

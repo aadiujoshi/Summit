@@ -14,7 +14,7 @@ import summit.game.entity.mob.Player;
  * which point it will start moving towards the player. If the MobEntity is
  * within attacking range of the player, it will attack the player.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class HostileMobAI extends EntityAI {
 

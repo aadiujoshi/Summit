@@ -11,7 +11,7 @@ import summit.gfx.Sprite;
  * 
  * item that can be used to restore health to the player.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class AppleItem extends Item {
 

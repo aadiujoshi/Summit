@@ -17,7 +17,7 @@ import summit.util.Direction;
  * sprite, shadow and enter orientation. This class also overrides the reinit()
  * method to do nothing.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class BossRoomExit extends MapEntrance {
 

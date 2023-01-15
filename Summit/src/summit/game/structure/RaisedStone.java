@@ -21,7 +21,7 @@ import summit.gfx.Sprite;
  * rendering of the object and the gameClick method to handle player
  * interaction.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class RaisedStone extends Structure {
 

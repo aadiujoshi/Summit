@@ -15,7 +15,7 @@ import summit.util.Region;
  * expanding from the center of the screen. The radius of the circle increases
  * with each frame until the animation is complete.
  *
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class TransitionAnimation extends Animation {
 

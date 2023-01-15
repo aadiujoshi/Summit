@@ -12,7 +12,7 @@ import summit.gfx.Sprite;
  * 
  * {@link Item} class and represents a coin that can be used as currency.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class GoldCoin extends Item {
 

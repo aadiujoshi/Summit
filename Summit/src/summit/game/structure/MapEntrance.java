@@ -20,7 +20,7 @@ import summit.util.Direction;
  * It also has a setEnterOrientation method that sets the direction that the
  * player is facing when entering the MapEntrance.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class MapEntrance extends Structure {
 

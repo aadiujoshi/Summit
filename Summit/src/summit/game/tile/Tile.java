@@ -25,7 +25,7 @@ import summit.util.GraphicsScheduler;
  * serves as the base class for all other tile types such as GrassTile,
  * StoneTile, and LavaTile.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public abstract class Tile extends GameObject {
 

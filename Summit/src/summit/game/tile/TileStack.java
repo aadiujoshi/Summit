@@ -21,7 +21,7 @@ import summit.gfx.Paintable;
  * It implements the GameClickReciever, Paintable, and GameUpdateReciever
  * interfaces to allow for interaction and rendering of its contained tiles.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class TileStack implements Serializable, GameClickReciever, Paintable, GameUpdateReciever {
 

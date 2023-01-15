@@ -23,7 +23,7 @@ import summit.game.entity.Entity;
  * 
  * the specific behavior of the item when used.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public abstract class Item implements Serializable {
     private String sprite;

@@ -23,7 +23,7 @@ import summit.util.GraphicsScheduler;
  * drawn
  * on top of all other objects in the game.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class GlistenAnimation extends Animation {
 

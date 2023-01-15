@@ -21,7 +21,7 @@ import summit.util.Settings;
  * Subclasses of this class can override the {@link #use()} method to define
  * specific behavior when the item is used.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Sword extends MeleeWeapon {
 

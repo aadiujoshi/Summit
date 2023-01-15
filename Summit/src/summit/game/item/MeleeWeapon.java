@@ -19,7 +19,7 @@ import summit.util.Region;
  * 
  * this type of weapon. The class also sets the attack range to 2 units.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public abstract class MeleeWeapon extends WeaponItem {
 

@@ -17,7 +17,7 @@ import summit.util.ScheduledEvent;
  * The paint method of HumanoidEntity will set the sprite to the appropriate
  * state based on whether the HumanoidEntity is in water, moving, or neither.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public abstract class HumanoidEntity extends MobEntity {
 

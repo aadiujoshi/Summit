@@ -45,7 +45,7 @@ import summit.util.GameScheduler;
  * 
  * and user interactions.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class GameMap implements Serializable, Paintable, GameUpdateReciever, GameClickReciever {
 

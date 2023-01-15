@@ -8,7 +8,7 @@ import java.io.Serializable;
  * The {@code Light} class represents a light source in a game space. It can be
  * painted on the screen and has a shape, radius, and RGB values.
  * 
- * @author @ Aadi J, Aditya B, Sanjay R, Aadithya R. S.
+ * @author @ Aadi J, Aditya B, Sanjay R, Aadithya R.
  */
 public class Light implements Serializable, Paintable {
 

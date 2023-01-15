@@ -16,7 +16,7 @@ import summit.util.Time;
  * used to make the entity wander around randomly or move towards a specific
  * destination.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 
 public class EntityAI implements Serializable {

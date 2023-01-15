@@ -22,7 +22,7 @@ import summit.util.Time;
  * be specified. The particles are affected by gravity and move in a specified
  * direction.
  *
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class ParticleAnimation extends Animation {
 

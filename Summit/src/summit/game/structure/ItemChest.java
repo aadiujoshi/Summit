@@ -35,7 +35,7 @@ import summit.gfx.Sprite;
  * chest and the gameClick method to allow the player to pick up the items from
  * the chest.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class ItemChest extends Structure {
 

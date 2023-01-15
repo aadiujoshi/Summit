@@ -15,7 +15,7 @@ import summit.gfx.Sprite;
  * victory when the IceKing is destroyed. It also has a HostileMobAI and is
  * equipped with an IceStaff.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class IceKing extends HumanoidEntity {
 

@@ -8,7 +8,7 @@ import summit.gfx.Sprite;
  * The WoodPlank class is a subclass of the Tile class. It represents a wooden
  * plank tile on the game map that can be broken.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class WoodPlank extends Tile {
 

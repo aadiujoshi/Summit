@@ -16,7 +16,7 @@ import summit.util.Direction;
  * Class representing a Door object. Extends the MapEntrance class and is used
  * to transition between different maps.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Door extends MapEntrance {
 

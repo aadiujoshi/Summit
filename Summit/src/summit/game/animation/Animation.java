@@ -14,7 +14,7 @@ import summit.util.ScheduledEvent;
  * draw behavior of the animation is
  * specified by the subclass.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public abstract class Animation extends ScheduledEvent implements Paintable {
 

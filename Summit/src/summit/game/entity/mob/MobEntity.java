@@ -28,7 +28,7 @@ import summit.util.Direction;
  * has a paint method that changes the color filter of the MobEntity if it is in
  * the DungeonsMap and has no light.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public abstract class MobEntity extends Entity {
 
