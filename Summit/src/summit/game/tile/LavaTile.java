@@ -14,7 +14,7 @@ import summit.gfx.Sprite;
  * The LavaTile class is a subclass of the Tile class. It represents a lava tile
  * on the game map that damages entities that collides with it.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class LavaTile extends Tile {
 

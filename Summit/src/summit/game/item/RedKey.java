@@ -13,7 +13,7 @@ import summit.gfx.Sprite;
  * 
  * copy of the key.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class RedKey extends Item {
 

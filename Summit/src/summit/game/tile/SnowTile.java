@@ -20,7 +20,7 @@ import summit.gfx.Sprite;
  * 
  * that can be broken and drops snowballs.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class SnowTile extends Tile {
 

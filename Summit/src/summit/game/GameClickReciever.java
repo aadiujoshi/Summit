@@ -12,7 +12,7 @@ package summit.game;
  * Classes that implement this interface will be notified when a game click
  * event occurs.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.u
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.u
  */
 public interface GameClickReciever {
 

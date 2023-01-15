@@ -9,7 +9,7 @@ import summit.gfx.Sprite;
  * The IceTile class is a subclass of the Tile class. It represents an icy tile
  * on the game map.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class IceTile extends Tile {
 

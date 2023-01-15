@@ -30,7 +30,7 @@ import summit.util.Time;
  * There's also a chance to spawn a boss room on the map, which is only
  * accessible when the player has collected two specific keys.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class DungeonsMap extends GameMap {
 

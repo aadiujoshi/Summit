@@ -13,7 +13,7 @@ import summit.gfx.Sprite;
  * The StoneTile class is a subclass of the Tile class. It represents a stone
  * tile on the game map.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class StoneTile extends Tile {
 

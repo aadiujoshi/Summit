@@ -27,7 +27,7 @@ import summit.util.GameObject;
  * The Structure class also overrides the setRenderLayer method to update the
  * render layers of the object's shadow.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public abstract class Structure extends GameObject {
 

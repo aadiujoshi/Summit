@@ -37,7 +37,7 @@ import summit.util.Time;
  * standing states, and it can
  * also pick up items.
  *
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Player extends HumanoidEntity implements ControlsReciever {
 

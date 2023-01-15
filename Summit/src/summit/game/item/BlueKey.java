@@ -12,7 +12,7 @@ import summit.gfx.Sprite;
  * {@link Item} class and represents a key that can be used to open blue locked
  * doors.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class BlueKey extends Item {
 

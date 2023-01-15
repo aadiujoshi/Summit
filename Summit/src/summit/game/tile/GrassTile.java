@@ -10,7 +10,7 @@ import summit.gfx.Sprite;
  * The GrassTile class is a subclass of the Tile class. It represents a grassy
  * tile on the game map.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class GrassTile extends Tile {
 

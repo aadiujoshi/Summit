@@ -19,7 +19,7 @@ import summit.gfx.Sprite;
  * Arrows and GoldCoins when it is destroyed. It also has a random amount of
  * Bones in its inventory.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Skeleton extends HumanoidEntity {
 

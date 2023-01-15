@@ -10,7 +10,7 @@ import summit.game.entity.Entity;
  * This class extends EntityAI and is used to control the movement of an Entity
  * object that represents the Ice King.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class IceKingAI extends EntityAI {
 

@@ -22,7 +22,7 @@ import summit.util.ScheduledEvent;
  * 
  * overrides the reinit method to reinitialize the DungeonMap.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  * 
  */
 public class DungeonsExit extends MapEntrance {

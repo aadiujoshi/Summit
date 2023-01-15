@@ -25,7 +25,7 @@ import summit.gfx.Renderer;
  * It overrides the update() method and provides additional functionality to
  * generate the game map.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class MainMap extends GameMap {
 

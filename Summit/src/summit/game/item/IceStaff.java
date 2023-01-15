@@ -18,7 +18,7 @@ import summit.util.Region;
  * the {@link ProjectileWeapon} class and represents a weapon that can be used
  * to shoot ice shards.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class IceStaff extends ProjectileWeapon {
 

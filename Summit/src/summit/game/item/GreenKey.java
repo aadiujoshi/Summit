@@ -13,7 +13,7 @@ import summit.gfx.Sprite;
  * 
  * that can be used to unlock green colored doors or other objects in the game.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class GreenKey extends Item {
 

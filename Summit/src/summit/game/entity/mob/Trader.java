@@ -5,7 +5,7 @@ package summit.game.entity.mob;
  * The Trader class represents a non-playable character that the player can
  * interact with to buy and sell items.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Trader extends HumanoidEntity {
 

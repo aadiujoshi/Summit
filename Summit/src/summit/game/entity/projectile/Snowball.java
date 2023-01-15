@@ -13,7 +13,7 @@ import summit.util.GameObject;
  * 
  * snowball projectile in a game.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Snowball extends Projectile {
 

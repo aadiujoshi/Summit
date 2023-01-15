@@ -20,7 +20,7 @@ import summit.util.Time;
  * It is implemented as a vector with initial velocity, acceleration and time
  * duration.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Knockback implements GameUpdateReciever, Serializable {
 

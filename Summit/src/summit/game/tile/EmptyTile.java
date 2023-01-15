@@ -7,7 +7,7 @@ import summit.game.GameUpdateEvent;
  * The EmptyTile class is a subclass of the Tile class. It represents an empty
  * tile on the game map that is not passable.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class EmptyTile extends Tile {
 

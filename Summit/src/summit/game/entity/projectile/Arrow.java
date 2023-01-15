@@ -12,7 +12,7 @@ import summit.util.GameObject;
  * The Arrow class extends the Projectile class and is used to represent an
  * arrow projectile in a game.
  * 
- * @author @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Arrow extends Projectile {
 

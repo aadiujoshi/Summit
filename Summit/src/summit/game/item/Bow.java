@@ -13,7 +13,7 @@ import summit.util.Region;
  * The Bow class represents a bow in the game. It is a subclass of the
  * {@link ProjectileWeapon} class and represents a weapon that fires arrows.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Bow extends ProjectileWeapon {
 

@@ -20,7 +20,7 @@ import summit.gfx.Sprite;
  * It overrides the gameClick() method to check if the player has all 3 keys
  * before allowing them to enter the boss room.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class BossRoomEntrance extends MapEntrance {
 

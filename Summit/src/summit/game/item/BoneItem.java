@@ -14,7 +14,7 @@ import summit.gfx.Sprite;
  * item that can be used for various purposes in the game, such as crafting or
  * trading.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class BoneItem extends Item {
 

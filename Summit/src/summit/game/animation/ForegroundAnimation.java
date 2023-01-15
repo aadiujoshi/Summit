@@ -29,7 +29,7 @@ import summit.util.Time;
  * 
  * created. The color of the particles can also be specified.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class ForegroundAnimation extends Animation {
 

@@ -18,7 +18,7 @@ import summit.util.Region;
  * this type of weapon. The class also sets the sprite and text name of the
  * weapon.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class SnowballItem extends ProjectileWeapon {
 

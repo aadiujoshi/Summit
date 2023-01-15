@@ -23,7 +23,7 @@ import summit.gfx.Sprite;
  * 
  * It also handles the damage, paint and gameClick events for the tree.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class Tree extends Entity {
 

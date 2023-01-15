@@ -16,7 +16,7 @@ import summit.gfx.Sprite;
  * 
  * and adding a door to the interior of the TraderHouseMap.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class TraderHouse extends MapEntrance {
 

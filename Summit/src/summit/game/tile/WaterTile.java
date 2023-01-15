@@ -10,7 +10,7 @@ import summit.gfx.Sprite;
  * The WaterTile class is a subclass of the Tile class. It represents a water
  * tile on the game map that is not passable.
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class WaterTile extends Tile {
 

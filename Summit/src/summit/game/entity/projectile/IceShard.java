@@ -12,7 +12,7 @@ import summit.util.GameObject;
  * ice shard projectile in a game. It adds a glistening effect on the ice shard
  * when it is updating
  * 
- * @author Aadi J, Aditya B, Sanjay R, Aadithya R.
+ * @author Aadi J, Aditya B, Sanjay R, Aadithya R. S.
  */
 public class IceShard extends Projectile {
 
