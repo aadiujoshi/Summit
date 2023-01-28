@@ -539,6 +539,7 @@ public abstract class Entity extends GameObject {
                 }
 
                 break;
+                
             }
 
             case damageCooldown -> {

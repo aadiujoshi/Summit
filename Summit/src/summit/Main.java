@@ -15,7 +15,6 @@ public class Main {
     //extra path incase folder names are different
     public static final String path = "";
 
-    
     /** 
      * @param args
      */

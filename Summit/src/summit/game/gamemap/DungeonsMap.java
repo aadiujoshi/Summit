@@ -108,8 +108,6 @@ public class DungeonsMap extends GameMap {
             if (i == key2index)
                 k = new GreenKey(null);
 
-            if (k != null)
-                System.out.println("Key: " + point);
 
             addStructure(new ItemChest(point.x, point.y, k, this));
             i++;
@@ -158,9 +156,7 @@ public class DungeonsMap extends GameMap {
         }
 
         Point doorCoord = door_locs.get(rand.nextInt(door_locs.size()));
-
-        System.out.println(doorCoord);
-
+        
         addStructure(new BossRoomEntrance(doorCoord.x + 0.5f, doorCoord.y + 0.5f, this));
     }
 

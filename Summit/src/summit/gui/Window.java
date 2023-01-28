@@ -80,10 +80,10 @@ public class Window implements MouseListener, KeyListener {
     private boolean availableClick;
 
     /** The width of the window.*/
-    public static final int SCREEN_WIDTH = 1280;
+    public static final int SCREEN_WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
 
     /** The height of the window.*/
-    public static final int SCREEN_HEIGHT = 720;
+    public static final int SCREEN_HEIGHT = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
     /**A boolean flag indicating whether the window is closed.*/
     private volatile boolean closed;

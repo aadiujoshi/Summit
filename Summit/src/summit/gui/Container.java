@@ -16,6 +16,7 @@ import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gfx.Renderer;
 import summit.util.Region;
+import summit.util.Sound;
 
 public class Container extends Region implements Paintable, GUIClickReciever{
 
@@ -59,6 +60,8 @@ public class Container extends Region implements Paintable, GUIClickReciever{
      */
     @Override
     public void guiClick(MouseEvent e) {
+        Sound.GUI_CLICK.play();
+
         for(int i = 0; i < components.size(); i++){
             if(components.get(i).contains(e.getX(), e.getY())){
                 components.get(i).guiClick(e);

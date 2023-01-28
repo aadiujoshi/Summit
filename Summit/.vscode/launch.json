@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch rucha",
+            "request": "launch",
+            "mainClass": "summit.testing.rucha",
+            "projectName": "Summit_aca78153"
+        },
+        {
+            "type": "java",
             "name": "Launch GameCrashReportGenerator",
             "request": "launch",
             "mainClass": "summit.util.GameCrashReportGenerator",

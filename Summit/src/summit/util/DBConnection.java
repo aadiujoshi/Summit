@@ -446,6 +446,7 @@ public class DBConnection{
 
             try {
                 st.close();
+            } catch (NullPointerException e) {
             } catch (SQLException e) {
                 e.printStackTrace(GameLoader.logger);
             }

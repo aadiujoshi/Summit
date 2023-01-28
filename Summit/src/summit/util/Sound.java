@@ -15,13 +15,14 @@ public class Sound {
 
     public static final Sound DUNGEON_SOUNDS = new Sound(Main.path + "resources/sound/ambience/dungeons_ambience.wav");
     public static final Sound WALKING_HARD = new Sound(Main.path + "resources/sound/sfx/footsteps_hard.wav");
+    public static final Sound GUI_CLICK = new Sound(Main.path + "resources/sound/sfx/gui_click.wav");
 
     //-----------------------------------------------------------------
     
     private File wav;    
     private volatile boolean playing;
-
-    public Sound(String path) {
+    
+    private Sound(String path) {
         wav = new File(path);
     }
     
@@ -69,6 +70,7 @@ public class Sound {
                 
 
                 //check if manually stopped sound
+
                 while(playing){}
 
                 clip.close();
@@ -79,7 +81,7 @@ public class Sound {
                 e.printStackTrace();
             }
         });
-        s.setPriority(Thread.MIN_PRIORITY);
+        s.setPriority(Thread.NORM_PRIORITY);
         s.setDaemon(true);
         s.start();
     }
