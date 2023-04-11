@@ -1,6 +1,6 @@
 # Summit Arcade Game
 
-BPA project by Aadi Joshi, Adithya Bhattacharya, Sanjay Raghav, Aadithya Ramikrishnan Sriram
+BPA project by Aadi Joshi, Adithya Bhattacharya, Sanjay Raghav, Aadithya Ramikrishnan Sriram. Top 10 National Winner. 
 
 ## How to play:
 
